@@ -4,9 +4,9 @@ import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   signOut,
-  onAuthStateChanged,
+  
 } from "firebase/auth";
-import { doc, setDoc, getDoc } from "firebase/firestore";
+import { doc, setDoc,  } from "firebase/firestore";
 import { firebaseAuth, firestoreDB } from "./getFirebase";
 
 export const LOGIN_USER = createAsyncThunk(
@@ -66,7 +66,7 @@ const firebaseSlice = createSlice({
     setUser: (state, action) => {
       state.user = action.payload;
     },
-    toggleInitState:(state)=>{
+    toggleInitState:(state,action)=>{
         state.initializing=false
     }
   },
@@ -111,6 +111,6 @@ const firebaseSlice = createSlice({
   },
 });
 
-export const { setUser } = firebaseSlice.actions;
+export const { setUser,toggleInitState } = firebaseSlice.actions;
 
 export default firebaseSlice.reducer;
