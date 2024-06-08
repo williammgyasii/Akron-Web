@@ -4,7 +4,7 @@ import { Outlet } from "react-router-dom";
 import { setUser, toggleInitState } from "../Firebase/firebaseSlice";
 import { onAuthStateChanged } from "firebase/auth";
 import { firebaseAuth, firestoreDB } from "../Firebase/getFirebase";
-import { getDoc } from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
 import LoadingView from "../Components/LoadingView";
 
 function RootLayout() {
@@ -13,7 +13,7 @@ function RootLayout() {
   onAuthStateChanged(firebaseAuth, async (user) => {
     if (user) {
       dispatch(toggleInitState());
-      const userDoc = await getDoc(getDoc(firestoreDB, "users", user.uid));
+      const userDoc = await getDoc(doc(firestoreDB, "users", user.uid));
       if (userDoc.exists()) {
         dispatch(setUser({ ...user, role: userDoc.data().role }));
       }

@@ -27,8 +27,8 @@ export const LOGIN_USER = createAsyncThunk(
 export const REGISTER_USER = createAsyncThunk(
   "firebase/registerUser",
   async ({ email, password, name }, { rejectWithValue }) => {
-    console.log("data recieved in thunk", email, password, name);
     try {
+      console.log("data recieved in thunk", email, password, name);
       const userCredential = await createUserWithEmailAndPassword(
         firebaseAuth,
         String(email),
@@ -36,12 +36,13 @@ export const REGISTER_USER = createAsyncThunk(
       );
       const user = userCredential.user;
       await setDoc(doc(firestoreDB, "users", user.uid), {
-        email,
-        role: "Admin",
+        email: email,
+        role: "Cell Leader",
         fullName: name,
       });
       return user;
     } catch (error) {
+      console.log(error);
       return rejectWithValue(error.message);
     }
   }

@@ -21,12 +21,18 @@ const RegisterPage = () => {
     formState: { errors },
   } = useForm();
   const buttonLoading = useSelector((state) => state.firebase.loading);
-  const dispatch=useDispatch()
+  const dispatch = useDispatch();
 
-  const onSubmit = (data) => {
-    console.log(data.email);
-    dispatch(REGISTER_USER())
-    // Handle registration logic here (e.g., send data to your server)
+  const onSubmit = async (event) => {
+    event.preventDefault();
+    console.log("fire");
+    await dispatch(
+      REGISTER_USER({
+        email: "gyaasi.wk@gmail.com",
+        password: "william123",
+        name: "William Gyasi",
+      })
+    );
   };
 
   return (
@@ -45,12 +51,7 @@ const RegisterPage = () => {
         <Typography component="h1" variant="h5">
           Register
         </Typography>
-        <Box
-          component="form"
-          onSubmit={handleSubmit(onSubmit)}
-          noValidate
-          sx={{ mt: 3 }}
-        >
+        <Box component="form" onSubmit={onSubmit} noValidate sx={{ mt: 3 }}>
           <TextField
             variant="outlined"
             margin="normal"
@@ -106,7 +107,7 @@ const RegisterPage = () => {
           />
           <LoadingButton
             loading={buttonLoading}
-            type="submit"
+            onClick={onSubmit}
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
