@@ -11,17 +11,21 @@ import LoginPage from "./Pages/LoginPage";
 import RegisterPage from "./Pages/RegisterPage";
 import ProtectedRoute from "./Routes/ProtectedRoute";
 import { Dashboard } from "@mui/icons-material";
+import LandingPage from "./Pages/LandingPage";
+import ProfilePage from "./Pages/ProfilePage";
 
 function App() {
   const router = createBrowserRouter(
     createRoutesFromElements(
       <Route path="/" element={<RootLayout />}>
-        <Route element={<LoginPage />} />
-        <Route index path="register" element={<RegisterPage />} />
+        <Route element={<LandingPage />} index />
+        <Route path="login" element={<LoginPage />} />
+        <Route path="register" element={<RegisterPage />} />
 
         {/* PROTECTED ROUTES */}
-        <Route element={<ProtectedRoute />}>
-          <Route path="/home" element={<Dashboard />} />
+        <Route path="home" element={<ProtectedRoute />}>
+          <Route index element={<Dashboard />} />
+          <Route path="profile" element={<ProfilePage />} />
         </Route>
       </Route>
     )

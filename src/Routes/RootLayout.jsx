@@ -5,6 +5,7 @@ import { setUser, toggleInitState } from "../Firebase/firebaseSlice";
 import { onAuthStateChanged } from "firebase/auth";
 import { firebaseAuth, firestoreDB } from "../Firebase/getFirebase";
 import { getDoc } from "firebase/firestore";
+import LoadingView from "../Components/LoadingView";
 
 function RootLayout() {
   const dispatch = useDispatch();
@@ -22,7 +23,7 @@ function RootLayout() {
       dispatch(setUser(null));
     }
   });
-  return stateInit ? <h1>Loading....</h1> : <Outlet />;
+  return stateInit ?<LoadingView/> : <Outlet />;
 }
 
 export default RootLayout;

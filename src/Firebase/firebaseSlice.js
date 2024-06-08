@@ -4,9 +4,8 @@ import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   signOut,
-  
 } from "firebase/auth";
-import { doc, setDoc,  } from "firebase/firestore";
+import { doc, setDoc } from "firebase/firestore";
 import { firebaseAuth, firestoreDB } from "./getFirebase";
 
 export const LOGIN_USER = createAsyncThunk(
@@ -27,15 +26,20 @@ export const LOGIN_USER = createAsyncThunk(
 
 export const REGISTER_USER = createAsyncThunk(
   "firebase/registerUser",
-  async ({ email, password, role }, { rejectWithValue }) => {
+  async ({ email, password, name }, { rejectWithValue }) => {
+    console.log("data recieved in thunk", email, password, name);
     try {
       const userCredential = await createUserWithEmailAndPassword(
         firebaseAuth,
-        email,
-        password
+        String(email),
+        String(password)
       );
       const user = userCredential.user;
-      await setDoc(doc(firestoreDB, "users", user.uid), { email, role });
+      await setDoc(doc(firestoreDB, "users", user.uid), {
+        email,
+        role: "Admin",
+        fullName: name,
+      });
       return user;
     } catch (error) {
       return rejectWithValue(error.message);
@@ -60,15 +64,15 @@ const firebaseSlice = createSlice({
     user: null,
     loading: false,
     error: null,
-    initializing:true
+    initializing: true,
   },
   reducers: {
     setUser: (state, action) => {
       state.user = action.payload;
     },
-    toggleInitState:(state,action)=>{
-        state.initializing=false
-    }
+    toggleInitState: (state, action) => {
+      state.initializing = false;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -111,6 +115,6 @@ const firebaseSlice = createSlice({
   },
 });
 
-export const { setUser,toggleInitState } = firebaseSlice.actions;
-export const selectCurrentUser =(state=>state.firebase.user)
+export const { setUser, toggleInitState } = firebaseSlice.actions;
+export const selectCurrentUser = (state) => state.firebase.user;
 export default firebaseSlice.reducer;
