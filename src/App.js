@@ -1,11 +1,36 @@
-import './App.css';
+import {
+  BrowserRouter,
+  RouterProvider,
+  Route,
+  createBrowserRouter,
+  createRoutesFromElements,
+} from "react-router-dom";
+import "./App.css";
+import RootLayout from "./Routes/RootLayout";
+import LoginPage from "./Pages/LoginPage";
+import RegisterPage from "./Pages/RegisterPage";
+import ProtectedRoute from "./Routes/ProtectedRoute";
+import { Dashboard } from "@mui/icons-material";
+import LandingPage from "./Pages/LandingPage";
+import ProfilePage from "./Pages/ProfilePage";
 
 function App() {
-  return (
-    <div className="App">
-      <h1>This is a test thing to check</h1>
-    </div>
+  const router = createBrowserRouter(
+    createRoutesFromElements(
+      <Route path="/" element={<RootLayout />}>
+        <Route element={<LandingPage />} index />
+        <Route path="login" element={<LoginPage />} />
+        <Route path="register" element={<RegisterPage />} />
+
+        {/* PROTECTED ROUTES */}
+        <Route path="home" element={<ProtectedRoute />}>
+          <Route index element={<Dashboard />} />
+          <Route path="profile" element={<ProfilePage />} />
+        </Route>
+      </Route>
+    )
   );
+  return <RouterProvider router={router} />;
 }
 
 export default App;
