@@ -9,13 +9,20 @@ import "./App.css";
 import RootLayout from "./Routes/RootLayout";
 import LoginPage from "./Pages/LoginPage";
 import RegisterPage from "./Pages/RegisterPage";
+import ProtectedRoute from "./Routes/ProtectedRoute";
+import { Dashboard } from "@mui/icons-material";
 
 function App() {
   const router = createBrowserRouter(
     createRoutesFromElements(
-      <Route path="/" element={<RootLayout/>}>
-        <Route element={<LoginPage />}  />
-        <Route index path="register" element={<RegisterPage/>}/>
+      <Route path="/" element={<RootLayout />}>
+        <Route element={<LoginPage />} />
+        <Route index path="register" element={<RegisterPage />} />
+
+        {/* PROTECTED ROUTES */}
+        <Route element={<ProtectedRoute />}>
+          <Route path="/home" element={<Dashboard />} />
+        </Route>
       </Route>
     )
   );

@@ -112,5 +112,5 @@ const firebaseSlice = createSlice({
 });
 
 export const { setUser,toggleInitState } = firebaseSlice.actions;
-
+export const selectCurrentUser =(state=>state.firebase.user)
 export default firebaseSlice.reducer;
