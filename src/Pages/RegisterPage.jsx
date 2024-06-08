@@ -1,9 +1,9 @@
-import React from 'react'
+import React from "react";
+import { useSelector } from "react-redux";
 
 function RegisterPage() {
-  return (
-    <div>Register Page to Sign In User</div>
-  )
+  const selectCount = useSelector((state) => state.firebase.count);
+  return <div>{selectCount}</div>;
 }
 
-export default RegisterPage
+export default RegisterPage;
