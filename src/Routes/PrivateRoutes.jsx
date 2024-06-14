@@ -1,27 +1,21 @@
 import React from "react";
-import { Route, Redirect } from "react-router-dom";
-import { useAuth } from "../contexts/AuthContext";
-import RoleBasedRedirect from "./RoleBasedRedirect";
+import { Route, Navigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { selectCurrentUser } from "../Firebase/firebaseSlice";
+import RoleBasedRedirect from "../Components/RoleBasedRedirect";
 
-const PrivateRoute = ({ component: Component, roles, ...rest }) => {
-  const { currentUser } = useAuth();
+const PrivateRoute = ({ element, roles, ...rest }) => {
+  const currentUser = useSelector(selectCurrentUser);
 
-  return (
-    <Route
-      {...rest}
-      render={(props) => {
-        if (!currentUser) {
-          return <Redirect to="/login" />;
-        }
+  if (!currentUser) {
+    return <Navigate to="/login" replace />;
+  }
 
-        if (roles && roles.indexOf(currentUser.role) === -1) {
-          return <RoleBasedRedirect userRole={currentUser.role} />;
-        }
+  if (roles && !roles.includes(currentUser.role)) {
+    return <RoleBasedRedirect userRole={currentUser.role} />;
+  }
 
-        return <Component {...props} />;
-      }}
-    />
-  );
+  return <Route {...rest} element={element} />;
 };
 
 export default PrivateRoute;

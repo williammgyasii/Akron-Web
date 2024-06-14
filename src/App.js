@@ -23,27 +23,12 @@ function App() {
         <Route path="login" element={<LoginPage />} />
         <Route path="register" element={<RegisterPage />} />
 
-        <PrivateRoute
-          path="/admin/*"
-          element={<AdminRoutes />}
-          roles={["admin"]}
-        />
-        <PrivateRoute
-          path="/teacher/*"
-          element={<TeacherRoutes />}
-          roles={["teacher"]}
-        />
-        <PrivateRoute
-          path="/student/*"
-          element={<StudentRoutes />}
-          roles={["student"]}
-        />
-
         {/* PROTECTED ROUTES */}
-        {/* <Route path="home" element={<ProtectedRoute />}>
+
+        <Route path="home" element={<ProtectedRoute />}>
           <Route index element={<DashboardPage />} />
           <Route path="profile" element={<ProfilePage />} />
-        </Route> */}
+        </Route>
       </Route>
     )
   );
