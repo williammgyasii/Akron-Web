@@ -22,6 +22,7 @@ function App() {
         <Route element={<LandingPage />} index />
         <Route path="login" element={<LoginPage />} />
         <Route path="register" element={<RegisterPage />} />
+        
 
         {/* PROTECTED ROUTES */}
 

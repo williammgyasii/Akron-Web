@@ -1,9 +1,12 @@
-import React from 'react'
+import { Box, Container } from "@mui/material";
+import React from "react";
 
 function LandingPage() {
   return (
-    <div>This is the Landing Page</div>
-  )
+    <Container >
+      <Box>This is going to be the landing page of messyness</Box>
+    </Container>
+  );
 }
 
-export default LandingPage
+export default LandingPage;

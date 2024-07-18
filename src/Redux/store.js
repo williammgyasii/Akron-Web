@@ -13,6 +13,8 @@ import {
 } from 'redux-persist';
 import storage from 'redux-persist/lib/storage'; // defaults to localStorage for web
 import firebaseReducer from '../Firebase/firebaseSlice';
+import groupsReducer from './Slices/Groups/groupsSlice';
+import tasksSlice from './Task/tasksSlice';
 
 const persistConfig = {
   key: 'root',
@@ -22,6 +24,8 @@ const persistConfig = {
 
 const rootReducer = combineReducers({
   firebase: firebaseReducer,
+  groups:groupsReducer,
+  tasks:taskReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
