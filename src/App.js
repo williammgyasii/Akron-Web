@@ -13,7 +13,6 @@ import ProtectedRoute from "./Routes/ProtectedRoute";
 import LandingPage from "./Pages/LandingPage";
 import ProfilePage from "./Pages/ProfilePage";
 import DashboardPage from "./Pages/DashboardPage";
-import PrivateRoute from "./Routes/PrivateRoutes";
 
 function App() {
   const router = createBrowserRouter(

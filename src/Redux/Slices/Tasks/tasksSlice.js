@@ -1,15 +1,15 @@
 // src/features/tasks/tasksSlice.js
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { collection, addDoc, getDocs } from 'firebase/firestore';
-import { firestoreDB } from '../../Firebase/getFirebase';
+import { firebaseFirestore } from '../../../Firebase/getFirebase';
 
 export const fetchTasks = createAsyncThunk('tasks/fetchTasks', async (groupId) => {
-  const querySnapshot = await getDocs(collection(firestoreDB, 'groups', groupId, 'tasks'));
+  const querySnapshot = await getDocs(collection(firebaseFirestore, 'groups', groupId, 'tasks'));
   return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
 });
 
 export const addTask = createAsyncThunk('tasks/addTask', async ({ groupId, taskData }) => {
-  const docRef = await addDoc(collection(firestoreDB, 'groups', groupId, 'tasks'), taskData);
+  const docRef = await addDoc(collection(firebaseFirestore, 'groups', groupId, 'tasks'), taskData);
   return { id: docRef.id, ...taskData };
 });
 

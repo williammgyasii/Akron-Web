@@ -1,6 +1,6 @@
 // src/app/store.js
-import { configureStore } from '@reduxjs/toolkit';
-import { combineReducers } from 'redux';
+import { configureStore } from "@reduxjs/toolkit";
+import { combineReducers } from "redux";
 import {
   persistStore,
   persistReducer,
@@ -10,22 +10,22 @@ import {
   PERSIST,
   PURGE,
   REGISTER,
-} from 'redux-persist';
-import storage from 'redux-persist/lib/storage'; // defaults to localStorage for web
-import firebaseReducer from '../Firebase/firebaseSlice';
-import groupsReducer from './Slices/Groups/groupsSlice';
-import tasksSlice from './Task/tasksSlice';
+} from "redux-persist";
+import storage from "redux-persist/lib/storage"; // defaults to localStorage for web
+import groupsReducer from "./Slices/Groups/groupsSlice";
+import taskReducer from "./Slices/Tasks/tasksSlice";
+import usersReducer from "./Slices/Users/UsersSlice";
 
 const persistConfig = {
-  key: 'root',
+  key: "root",
   version: 1,
   storage,
 };
 
 const rootReducer = combineReducers({
-  firebase: firebaseReducer,
-  groups:groupsReducer,
-  tasks:taskReducer,
+  groups: groupsReducer,
+  tasks: taskReducer,
+  user: usersReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

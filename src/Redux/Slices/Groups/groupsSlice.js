@@ -1,15 +1,15 @@
 // src/features/groups/groupsSlice.js
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { collection, addDoc, getDocs } from 'firebase/firestore';
-import { firestoreDB } from '../../Firebase/getFirebase';
+import { firebaseFirestore } from '../../../Firebase/getFirebase';
 
 export const fetchGroups = createAsyncThunk('groups/fetchGroups', async () => {
-  const querySnapshot = await getDocs(collection(firestoreDB, 'groups'));
+  const querySnapshot = await getDocs(collection(firebaseFirestore, 'groups'));
   return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
 });
 
 export const addGroup = createAsyncThunk('groups/addGroup', async (groupData) => {
-  const docRef = await addDoc(collection(firestoreDB, 'groups'), groupData);
+  const docRef = await addDoc(collection(firebaseFirestore, 'groups'), groupData);
   return { id: docRef.id, ...groupData };
 });
 
