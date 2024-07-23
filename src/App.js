@@ -13,12 +13,16 @@ import ProtectedRoute from "./Routes/ProtectedRoute";
 import LandingPage from "./Pages/LandingPage";
 import ProfilePage from "./Pages/ProfilePage";
 import DashboardPage from "./Pages/DashboardPage";
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { listenForAuthChanges } from "./Redux/Slices/Users/UsersSlice";
 
 function App() {
   const router = createBrowserRouter(
     createRoutesFromElements(
       <Route path="/" element={<RootLayout />}>
         <Route element={<LandingPage />} index />
+        <Route element={<LoginPage />} path="login" />
       </Route>
     )
   );

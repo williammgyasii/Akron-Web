@@ -38,8 +38,6 @@ function LandingPage() {
     //   dispatch(fetchUserGroups(currentUser.uid));
     // }
 
-    console.log("Logged User is", currentUser);
-
     return () => {};
   }, []);
 

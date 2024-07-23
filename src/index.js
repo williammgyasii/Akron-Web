@@ -1,15 +1,24 @@
-import React from "react";
+import React, { useEffect } from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import { Provider } from "react-redux";
+import { Provider, useDispatch } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { store, persistor } from "./Redux/store";
 import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
+import theme from "./Utils/getTheme";
+import { listenForAuthChanges } from "./Redux/Slices/Users/UsersSlice";
 
-const theme = createTheme();
+const AuthListener = () => {
+  const dispatch = useDispatch();
 
+  useEffect(() => {
+    dispatch(listenForAuthChanges());
+  }, [dispatch]);
+
+  return null;
+};
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
@@ -17,6 +26,7 @@ root.render(
       <PersistGate loading={null} persistor={persistor}>
         <ThemeProvider theme={theme}>
           <CssBaseline />
+          <AuthListener />
           <App />
         </ThemeProvider>
       </PersistGate>
