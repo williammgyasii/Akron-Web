@@ -14,7 +14,7 @@ import {
 import storage from "redux-persist/lib/storage"; // defaults to localStorage for web
 import groupsReducer from "./Slices/Groups/groupsSlice";
 import taskReducer from "./Slices/Tasks/tasksSlice";
-import usersReducer from "./Slices/Users/UsersSlice";
+import userReducer from "./Slices/Users/UsersSlice";
 
 const persistConfig = {
   key: "root",
@@ -25,7 +25,7 @@ const persistConfig = {
 const rootReducer = combineReducers({
   groups: groupsReducer,
   tasks: taskReducer,
-  user: usersReducer,
+  user: userReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

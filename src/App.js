@@ -19,16 +19,6 @@ function App() {
     createRoutesFromElements(
       <Route path="/" element={<RootLayout />}>
         <Route element={<LandingPage />} index />
-        <Route path="login" element={<LoginPage />} />
-        <Route path="register" element={<RegisterPage />} />
-        
-
-        {/* PROTECTED ROUTES */}
-
-        <Route path="home" element={<ProtectedRoute />}>
-          <Route index element={<DashboardPage />} />
-          <Route path="profile" element={<ProfilePage />} />
-        </Route>
       </Route>
     )
   );
