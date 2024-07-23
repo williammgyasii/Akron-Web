@@ -7,13 +7,27 @@ on:
     branches:
       - master
 jobs:
-  build_and_deploy:
+  deploy:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
-      - run: npm install && CI=false npm run build
-      - uses:  wzieba/Firebase-Action@v2.2.0
-         with:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18' # Use the version of Node.js your project requires
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build project
+        run: CI=false npm run build # Replace this with your build command if different
+
+      - name: Deploy to Firebase Hosting
+        uses: wzieba/Firebase-Action@v2.2.0
+        with:
           firebase_token: ${{ secrets.FIREBASE_AUTH_TOKEN }}
         env:
           FIREBASE_SERVICE_ACCOUNT_KEY: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_KEY }}
