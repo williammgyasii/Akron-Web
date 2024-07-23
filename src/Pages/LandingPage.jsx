@@ -32,17 +32,9 @@ function LandingPage() {
   const [selectedGroup, setSelectedGroup] = useState(null);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    // dispatch(loginUser({ email: "william@gmail.com", password: "william123" }));
-    // if (loginStatus === "succeeded") {
-    //   dispatch(fetchUserGroups(currentUser.uid));
-    // }
-
-    return () => {};
-  }, []);
-
   const handleLogout = () => {
     dispatch(resetState());
+    dispatch(logoutUser());
     persistor.purge(); // Clear persisted state
     // Perform other logout logic, like redirecting to the login page
     navigate("/", { replace: true });
@@ -59,7 +51,9 @@ function LandingPage() {
   return (
     <Container>
       <Box>This is going to be the landing page of messyness</Box>
-
+      <Button variant="contained" color="primary" onClick={handleLogout}>
+        Logout
+      </Button>
       {groupsStatus === "loading" && <CircularProgress />}
       {groupsStatus === "failed" && (
         <Typography color="error">Failed to load groups</Typography>

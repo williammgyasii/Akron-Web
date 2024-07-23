@@ -49,7 +49,7 @@ export const loginUser = createAsyncThunk(
   }
 );
 
-export const logout = createAsyncThunk(
+export const logoutUser = createAsyncThunk(
   "auth/logout",
   async (_, { rejectWithValue }) => {
     try {
@@ -68,13 +68,14 @@ export const listenForAuthChanges = createAsyncThunk(
       const unsubscribe = onAuthStateChanged(firebaseAuth, async (user) => {
         if (user) {
           // Fetch user data from Firestore
+          console.log(user)
           const userDoc = await getDoc(
             doc(firebaseFirestore, "users", user.uid)
           );
           if (userDoc.exists()) {
-            dispatch(setUser({ user, ...userDoc.data() }));
+            return { user, ...userDoc.data() };
           } else {
-            dispatch(setUser({ user }));
+            return { user };
           }
         } else {
           dispatch(clearUser());
@@ -138,16 +139,18 @@ const usersSlice = createSlice({
         state.loading = false;
         state.error = action.error.message;
       })
-      .addCase(logout.fulfilled, (state) => {
+      .addCase(logoutUser.fulfilled, (state) => {
         state.status = "succeeded";
         state.currentUser = null;
       })
 
       //Auth Changes
       .addCase(listenForAuthChanges.pending, (state) => {
+        console.log("listening....")
         state.loading = true;
       })
       .addCase(listenForAuthChanges.fulfilled, (state) => {
+        console.log("listening ending....")
         state.loading = false;
       });
   },

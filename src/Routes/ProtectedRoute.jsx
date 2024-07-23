@@ -4,9 +4,12 @@ import { useSelector } from "react-redux";
 import { CircularProgress } from "@mui/material";
 
 const PrivateRoute = ({ element }) => {
-  const { currentUser, loading } = useSelector((state) => state.user);
+  const { currentUser, loading, status } = useSelector((state) => state.user);
+  console.log(currentUser, loading, status);
 
-  if (loading) return <CircularProgress size={24} />; // or a spinner
+  if (status === "loading") {
+    if (loading) return <CircularProgress size={24} />; // or a spinner
+  }
 
   return currentUser ? <Outlet /> : <Navigate to="/" />;
 };
