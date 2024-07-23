@@ -22,7 +22,7 @@ jobs:
       - name: Build project
         run: CI=false npm run build # Replace this with your build command if different
 
-       - name: Deploy to Firebase Hosting
+      - name: Deploy to Firebase Hosting
         uses: firebase/github-action@v2
         with:
           args: deploy --only hosting
