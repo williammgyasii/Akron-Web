@@ -7,6 +7,7 @@ import {
   ListItemText,
   Container,
   Typography,
+  CircularProgress,
 } from "@mui/material";
 import { fetchTasks } from "../Redux/Slices/Tasks/tasksSlice";
 
@@ -18,7 +19,7 @@ const TasksList = ({ groupId }) => {
 
   useEffect(() => {
     if (taskStatus === "idle") {
-      console.log(currentGroup)
+      console.log(currentGroup);
       // dispatch(fetchTasks(groupId));
     }
   }, [taskStatus, dispatch, groupId]);
@@ -26,15 +27,18 @@ const TasksList = ({ groupId }) => {
   return (
     <Container>
       <Typography variant="h4" gutterBottom>
-        Tasks
+        Task
       </Typography>
-      <List>
-        {tasks.map((task) => (
-          <ListItem key={task.id}>
-            <ListItemText primary={task.name} secondary={task.description} />
-          </ListItem>
-        ))}
-      </List>
+      {taskStatus === "loading" && <CircularProgress />}
+      {taskStatus === "succeeded" && (
+        <List>
+          {tasks.map((task) => (
+            <ListItem key={task.id}>
+              <ListItemText primary={task.name} secondary={task.description} />
+            </ListItem>
+          ))}
+        </List>
+      )}
     </Container>
   );
 };

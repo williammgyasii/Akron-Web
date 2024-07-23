@@ -10,26 +10,27 @@ import {
   setPrefferedGroup,
 } from "../Redux/Slices/Groups/groupsSlice";
 import GroupSelector from "../Components/GroupSelector";
+import { fetchTasks } from "../Redux/Slices/Tasks/tasksSlice";
 
 function LandingPage() {
   const dispatch = useDispatch();
-  const loginErrorMsg = useSelector((state) => state.user.error);
   const currentUser = useSelector(selectCurrentUser);
-  const groups = useSelector(selectGroups);
   const groupsStatus = useSelector((state) => state.groups.status);
   const [selectedGroup, setSelectedGroup] = useState(null);
 
   useEffect(() => {
-    console.log(groupsStatus);
     dispatch(loginUser({ email: "william@gmail.com", password: "william123" }));
     dispatch(fetchUserGroups(currentUser.uid));
-    // console.log(groups)
+
     return () => {};
   }, []);
 
   const handleSelectGroup = (groupId) => {
     setSelectedGroup(groupId);
     dispatch(setPrefferedGroup(groupId));
+    if (selectedGroup) {
+      dispatch(fetchTasks(groupId));
+    }
   };
 
   return (
@@ -43,7 +44,7 @@ function LandingPage() {
         <>
           <GroupSelector onSelectGroup={handleSelectGroup} />
           {selectedGroup && <TaskForm groupId={selectedGroup} />}
-          <TasksList/>
+          <TasksList />
         </>
       )}
     </Container>
