@@ -40,7 +40,7 @@ const GroupSelector = ({ onSelectGroup }) => {
           >
             {groups.map((group) => (
               <MenuItem key={group.id} value={group.id}>
-                {group.name}
+                {group.groupName}
               </MenuItem>
             ))}
           </Select>

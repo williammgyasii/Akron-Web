@@ -9,7 +9,10 @@ import GroupSelector from "./GroupSelector";
 const TaskForm = ({ groupId }) => {
   const dispatch = useDispatch();
   const users = useSelector(selectCurrentUser); // Assuming currentUser contains user info
- 
+  const selectPrefferedGroupId = useSelector(
+    (state) => state.groups.selectedGroupId
+  );
+
   const [taskData, setTaskData] = useState({
     name: "",
     description: "",
@@ -34,8 +37,9 @@ const TaskForm = ({ groupId }) => {
       dueDate: "",
       assignedTo: users.uid,
     });
+    //UPLOADING TO THE CLOUD
     console.log(taskData);
-    dispatch(addTask({ groupId, taskData }));
+    dispatch(addTask({ groupId: selectPrefferedGroupId, taskData }));
   };
 
   return (
@@ -55,7 +59,7 @@ const TaskForm = ({ groupId }) => {
               required
             />
           </Grid>
-          
+
           <Grid item xs={12}>
             <TextField
               fullWidth

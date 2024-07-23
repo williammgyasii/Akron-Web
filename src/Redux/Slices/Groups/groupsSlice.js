@@ -41,10 +41,14 @@ const groupsSlice = createSlice({
   initialState: {
     groups: [],
     status: "idle",
+    selectedGroupId: "",
   },
   reducers: {
     setGroups: (state, action) => {
       state.groups = action.payload;
+    },
+    setPrefferedGroup: (state, action) => {
+      state.selectedGroupId = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -77,6 +81,6 @@ const groupsSlice = createSlice({
   },
 });
 
-export const { setGroups } = groupsSlice.actions;
+export const { setGroups, setPrefferedGroup } = groupsSlice.actions;
 export const selectGroups = (state) => state.groups.groups;
 export default groupsSlice.reducer;

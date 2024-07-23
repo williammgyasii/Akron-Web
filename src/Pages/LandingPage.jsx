@@ -4,28 +4,32 @@ import TaskForm from "../Components/TaskForm";
 import TasksList from "../Components/TaskLists";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser, selectCurrentUser } from "../Redux/Slices/Users/UsersSlice";
-import { fetchUserGroups, selectGroups } from "../Redux/Slices/Groups/groupsSlice";
+import {
+  fetchUserGroups,
+  selectGroups,
+  setPrefferedGroup,
+} from "../Redux/Slices/Groups/groupsSlice";
 import GroupSelector from "../Components/GroupSelector";
 
 function LandingPage() {
-  const groupId = "exampleGroupId";
   const dispatch = useDispatch();
   const loginErrorMsg = useSelector((state) => state.user.error);
   const currentUser = useSelector(selectCurrentUser);
-
   const groups = useSelector(selectGroups);
   const groupsStatus = useSelector((state) => state.groups.status);
   const [selectedGroup, setSelectedGroup] = useState(null);
+
   useEffect(() => {
-    console.log(groupsStatus)
+    console.log(groupsStatus);
     dispatch(loginUser({ email: "william@gmail.com", password: "william123" }));
     dispatch(fetchUserGroups(currentUser.uid));
-
+    // console.log(groups)
     return () => {};
   }, []);
 
   const handleSelectGroup = (groupId) => {
     setSelectedGroup(groupId);
+    dispatch(setPrefferedGroup(groupId));
   };
 
   return (
@@ -39,6 +43,7 @@ function LandingPage() {
         <>
           <GroupSelector onSelectGroup={handleSelectGroup} />
           {selectedGroup && <TaskForm groupId={selectedGroup} />}
+          <TasksList/>
         </>
       )}
     </Container>
