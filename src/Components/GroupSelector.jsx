@@ -1,7 +1,7 @@
 // src/components/GroupSelector.js
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { selectGroups } from "../features/groups/groupsSlice";
+
 import {
   TextField,
   Button,
@@ -13,6 +13,7 @@ import {
   FormControl,
   InputLabel,
 } from "@mui/material";
+import { selectGroups } from "../Redux/Slices/Groups/groupsSlice";
 
 const GroupSelector = ({ onSelectGroup }) => {
   const dispatch = useDispatch();

@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { TextField, Button, Container, Typography, Grid } from "@mui/material";
 import { addTask } from "../Redux/Slices/Tasks/tasksSlice";
 import { selectCurrentUser } from "../Redux/Slices/Users/UsersSlice";
+import GroupSelector from "./GroupSelector";
 
 const TaskForm = ({ groupId }) => {
   const dispatch = useDispatch();
@@ -54,6 +55,7 @@ const TaskForm = ({ groupId }) => {
               required
             />
           </Grid>
+          
           <Grid item xs={12}>
             <TextField
               fullWidth
@@ -78,7 +80,7 @@ const TaskForm = ({ groupId }) => {
               }}
             />
           </Grid>
-          
+
           <Grid item xs={12}>
             <Button variant="contained" color="primary" type="submit">
               Add Task

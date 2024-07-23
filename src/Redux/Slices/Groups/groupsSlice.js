@@ -25,7 +25,7 @@ export const fetchUserGroups = createAsyncThunk(
   async (userId, { rejectWithValue }) => {
     try {
       const groupsQuery = query(
-        collection(firebase, "groups"),
+        collection(firebaseFirestore, "groups"),
         where("members", "array-contains", userId)
       );
       const querySnapshot = await getDocs(groupsQuery);
@@ -42,7 +42,11 @@ const groupsSlice = createSlice({
     groups: [],
     status: "idle",
   },
-  reducers: {},
+  reducers: {
+    setGroups: (state, action) => {
+      state.groups = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchGroups.pending, (state) => {
@@ -73,4 +77,6 @@ const groupsSlice = createSlice({
   },
 });
 
+export const { setGroups } = groupsSlice.actions;
+export const selectGroups = (state) => state.groups.groups;
 export default groupsSlice.reducer;
