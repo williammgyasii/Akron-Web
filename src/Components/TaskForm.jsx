@@ -1,16 +1,18 @@
 // src/components/TaskForm.js
-import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { TextField, Button, Container, Typography, Grid } from '@mui/material';
-import { addTask } from '../Redux/Slices/Tasks/tasksSlice';
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { TextField, Button, Container, Typography, Grid } from "@mui/material";
+import { addTask } from "../Redux/Slices/Tasks/tasksSlice";
+import { selectCurrentUser } from "../Redux/Slices/Users/UsersSlice";
 
 const TaskForm = ({ groupId }) => {
   const dispatch = useDispatch();
-  const users = useSelector((state) => state.user.currentUser); // Assuming currentUser contains user info
+  const users = useSelector(selectCurrentUser); // Assuming currentUser contains user info
+ 
   const [taskData, setTaskData] = useState({
-    name: '',
-    description: '',
-    dueDate: '',
+    name: "",
+    description: "",
+    dueDate: "",
     assignedTo: users.uid,
   });
 
@@ -24,13 +26,15 @@ const TaskForm = ({ groupId }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(addTask({ groupId, taskData }));
+
     setTaskData({
-      name: '',
-      description: '',
-      dueDate: '',
+      name: "",
+      description: "",
+      dueDate: "",
       assignedTo: users.uid,
     });
+    console.log(taskData);
+    dispatch(addTask({ groupId, taskData }));
   };
 
   return (
@@ -74,6 +78,7 @@ const TaskForm = ({ groupId }) => {
               }}
             />
           </Grid>
+          
           <Grid item xs={12}>
             <Button variant="contained" color="primary" type="submit">
               Add Task

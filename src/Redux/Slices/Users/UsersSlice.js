@@ -7,7 +7,7 @@ import {
   signOut,
 } from "firebase/auth";
 import { doc, setDoc, getDoc } from "firebase/firestore";
-import { firebaseAuth } from "../../../Firebase/getFirebase";
+import { firebaseAuth, firebaseFirestore } from "../../../Firebase/getFirebase";
 
 export const registerUser = createAsyncThunk(
   "users/registerUser",
@@ -18,7 +18,7 @@ export const registerUser = createAsyncThunk(
       password
     );
     const user = userCredential.user;
-    await setDoc(doc(firebaseAuth, "users", user.uid), {
+    await setDoc(doc(firebaseFirestore, "users", user.uid), {
       uid: user.uid,
       name,
       email,
@@ -36,8 +36,8 @@ export const loginUser = createAsyncThunk(
       password
     );
     const user = userCredential.user;
-    const userDoc = await getDoc(doc(firebaseAuth, "users", user.uid));
-    return userDoc.data();
+    const userDoc = await getDoc(doc(firebaseFirestore, "users", user.uid));
+    return { ...userDoc.data(), uid: user.uid };
   }
 );
 
@@ -84,4 +84,5 @@ const usersSlice = createSlice({
   },
 });
 
+export const selectCurrentUser = (state) => state.user.currentUser;
 export default usersSlice.reducer;

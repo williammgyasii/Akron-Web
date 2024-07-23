@@ -1,39 +1,74 @@
 // src/features/groups/groupsSlice.js
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { collection, addDoc, getDocs } from 'firebase/firestore';
-import { firebaseFirestore } from '../../../Firebase/getFirebase';
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { collection, addDoc, getDocs, query, where } from "firebase/firestore";
+import { firebaseFirestore } from "../../../Firebase/getFirebase";
+import firebase from "firebase/compat/app";
 
-export const fetchGroups = createAsyncThunk('groups/fetchGroups', async () => {
-  const querySnapshot = await getDocs(collection(firebaseFirestore, 'groups'));
-  return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+export const fetchGroups = createAsyncThunk("groups/fetchGroups", async () => {
+  const querySnapshot = await getDocs(collection(firebaseFirestore, "groups"));
+  return querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
 });
 
-export const addGroup = createAsyncThunk('groups/addGroup', async (groupData) => {
-  const docRef = await addDoc(collection(firebaseFirestore, 'groups'), groupData);
-  return { id: docRef.id, ...groupData };
-});
+export const addGroup = createAsyncThunk(
+  "groups/addGroup",
+  async (groupData) => {
+    const docRef = await addDoc(
+      collection(firebaseFirestore, "groups"),
+      groupData
+    );
+    return { id: docRef.id, ...groupData };
+  }
+);
+
+export const fetchUserGroups = createAsyncThunk(
+  "groups/fetchUserGroups",
+  async (userId, { rejectWithValue }) => {
+    try {
+      const groupsQuery = query(
+        collection(firebase, "groups"),
+        where("members", "array-contains", userId)
+      );
+      const querySnapshot = await getDocs(groupsQuery);
+      return querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
 
 const groupsSlice = createSlice({
-  name: 'groups',
+  name: "groups",
   initialState: {
     groups: [],
-    status: 'idle',
+    status: "idle",
   },
   reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(fetchGroups.pending, (state) => {
-        state.status = 'loading';
+        state.status = "loading";
       })
       .addCase(fetchGroups.fulfilled, (state, action) => {
-        state.status = 'succeeded';
+        state.status = "succeeded";
         state.groups = action.payload;
       })
       .addCase(fetchGroups.rejected, (state) => {
-        state.status = 'failed';
+        state.status = "failed";
       })
       .addCase(addGroup.fulfilled, (state, action) => {
         state.groups.push(action.payload);
+      })
+      //FETEHC USER GROUPS
+      .addCase(fetchUserGroups.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(fetchUserGroups.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.groups = action.payload;
+      })
+      .addCase(fetchUserGroups.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.payload;
       });
   },
 });
