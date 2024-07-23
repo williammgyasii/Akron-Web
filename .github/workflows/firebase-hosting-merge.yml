@@ -12,9 +12,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: npm install && CI=false npm run build
-      - uses: FirebaseExtended/action-hosting-deploy@v0
-        with:
-          repoToken: ${{ secrets.GITHUB_TOKEN }}
-          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_AKRON_SERVER }}
-          channelId: live
-          projectId: akron-server
+      - uses:  wzieba/Firebase-Action@v2.2.0
+         with:
+          firebase_token: ${{ secrets.FIREBASE_AUTH_TOKEN }}
+        env:
+          FIREBASE_SERVICE_ACCOUNT_KEY: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_KEY }}
