@@ -22,9 +22,9 @@ jobs:
       - name: Build project
         run: CI=false npm run build # Replace this with your build command if different
 
-      - name: Deploy to Firebase Hosting
-        uses: wzieba/Firebase-Action@v2.2.0
+       - name: Deploy to Firebase Hosting
+        uses: firebase/github-action@v2
         with:
-          firebase_token: ${{ secrets.FIREBASE_AUTH_TOKEN }}
+          args: deploy --only hosting
         env:
-          FIREBASE_SERVICE_ACCOUNT_KEY: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_KEY }}
+          FIREBASE_AUTH_TOKEN: ${{ secrets.FIREBASE_AUTH_TOKEN }}
