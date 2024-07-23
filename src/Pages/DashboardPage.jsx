@@ -2,7 +2,7 @@ import React from 'react'
 
 function DashboardPage() {
   return (
-    <div>DashboardPage</div>
+    <div>WELCOME TO THE DASBOARD MADAAME APRUKI</div>
   )
 }
 

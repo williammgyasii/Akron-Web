@@ -23,6 +23,10 @@ function App() {
       <Route path="/" element={<RootLayout />}>
         <Route element={<LandingPage />} index />
         <Route element={<LoginPage />} path="login" />
+
+        <Route path="dashboard" element={<ProtectedRoute />}>
+          <Route element={<DashboardPage />} index />
+        </Route>
       </Route>
     )
   );

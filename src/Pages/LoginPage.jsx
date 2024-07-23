@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { login, clearError } from "./slices/authSlice";
+
 import {
   TextField,
   Button,
@@ -11,6 +11,7 @@ import {
   Alert,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { loginUser } from "../Redux/Slices/Users/UsersSlice";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -22,7 +23,7 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(login({ email, password }))
+    dispatch(loginUser({ email, password }))
       .unwrap() // To handle resolved promise
       .then(() => {
         navigate("/dashboard", { replace: true }); // Redirect to dashboard on successful login
