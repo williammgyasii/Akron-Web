@@ -28,6 +28,13 @@ const rootReducer = combineReducers({
   user: userReducer,
 });
 
+const appReducer = (state,action)=>{
+  if(action.type==="RESET_STATE"){
+    state=undefined
+  }
+  return rootReducer(state,action)
+}
+
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({
@@ -38,6 +45,10 @@ export const store = configureStore({
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
     }),
+});
+
+export const resetState = () => ({
+  type: 'RESET_STATE',
 });
 
 export const persistor = persistStore(store);
