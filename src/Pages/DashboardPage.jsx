@@ -1,9 +1,37 @@
-import React from 'react'
+import { Button, Container } from "@mui/material";
+import React from "react";
+import { useDispatch } from "react-redux";
+import { persistor, resetState } from "../Redux/store";
+import { logoutUser } from "../Redux/Slices/Users/UsersSlice";
+import { useNavigate } from "react-router-dom";
 
 function DashboardPage() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    dispatch(resetState());
+    dispatch(logoutUser());
+    persistor.purge(); // Clear persisted state
+    // Perform other logout logic, like redirecting to the login page
+    navigate("/", { replace: true });
+  };
+
   return (
-    <div>WELCOME TO THE DASBOARD MADAAME APRUKI</div>
-  )
+    <Container>
+      <Button
+        onClick={handleLogout}
+        type="submit"
+        variant="contained"
+        color="primary"
+        fullWidth
+        sx={{ mt: 2 }}
+      >
+        Log Out
+      </Button>
+      <div>WELCOME TO THE DASBOARD MADAAME APRUKI</div>
+    </Container>
+  );
 }
 
-export default DashboardPage
+export default DashboardPage;

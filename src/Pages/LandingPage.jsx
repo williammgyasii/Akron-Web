@@ -32,14 +32,6 @@ function LandingPage() {
   const [selectedGroup, setSelectedGroup] = useState(null);
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-    dispatch(resetState());
-    dispatch(logoutUser());
-    persistor.purge(); // Clear persisted state
-    // Perform other logout logic, like redirecting to the login page
-    navigate("/", { replace: true });
-  };
-
   const handleSelectGroup = (groupId) => {
     setSelectedGroup(groupId);
     dispatch(setPrefferedGroup(groupId));
@@ -51,18 +43,13 @@ function LandingPage() {
   return (
     <Container>
       <Box>This is going to be the landing page of messyness</Box>
-      <Button variant="contained" color="primary" onClick={handleLogout}>
-        Logout
-      </Button>
+
       {groupsStatus === "loading" && <CircularProgress />}
       {groupsStatus === "failed" && (
         <Typography color="error">Failed to load groups</Typography>
       )}
       {groupsStatus === "succeeded" && (
         <>
-          <Button variant="contained" color="primary" onClick={handleLogout}>
-            Logout
-          </Button>
           <GroupSelector onSelectGroup={handleSelectGroup} />
           {selectedGroup && <TaskForm groupId={selectedGroup} />}
           <TasksList />
