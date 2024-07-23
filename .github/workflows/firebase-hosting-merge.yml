@@ -23,9 +23,8 @@ jobs:
         run: CI=false npm run build # Replace this with your build command if different
 
       - name: Deploy to Firebase Hosting
-        uses: FirebaseExtended/action-hosting-deploy@v0
-        with:
-          args: deploy --only hosting
+        run: |
+          firebase deploy --only hosting
         env:
           FIREBASE_SERVICE_ACCOUNT_KEY: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_KEY }}
           projectId: ${{ secrets.FIREBASE_PROJECT_ID }} # Add this secret if needed
