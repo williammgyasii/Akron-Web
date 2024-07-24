@@ -7,13 +7,7 @@ import { Container } from "@mui/material";
 function RootLayout() {
   const dispatch = useDispatch();
 
-  return false ? (
-    <LoadingView />
-  ) : (
-    <Container disableGutters>
-      <Outlet />
-    </Container>
-  );
+  return false ? <LoadingView /> : <Outlet />;
 }
 
 export default RootLayout;

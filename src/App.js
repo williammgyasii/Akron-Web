@@ -5,7 +5,6 @@ import {
   createBrowserRouter,
   createRoutesFromElements,
 } from "react-router-dom";
-import "./App.css";
 import RootLayout from "./Routes/RootLayout";
 import LoginPage from "./Pages/LoginPage";
 import RegisterPage from "./Pages/RegisterPage";
@@ -21,9 +20,9 @@ function App() {
   const router = createBrowserRouter(
     createRoutesFromElements(
       <Route path="/" element={<RootLayout />}>
-        <Route element={<LandingPage />}  />
+        <Route element={<LandingPage />} />
         <Route element={<LoginPage />} index path="login" />
-
+        <Route element={<RegisterPage />} path="join" />
         <Route path="dashboard" element={<ProtectedRoute />}>
           <Route element={<DashboardPage />} index />
           <Route element={<ProfilePage />} path="profile" />

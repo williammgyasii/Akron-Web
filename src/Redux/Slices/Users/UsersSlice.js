@@ -12,19 +12,19 @@ import { firebaseAuth, firebaseFirestore } from "../../../Firebase/getFirebase";
 
 export const registerUser = createAsyncThunk(
   "users/registerUser",
-  async ({ email, password, name }, { rejectWithValue }) => {
+  async (formValues, { rejectWithValue }) => {
     const userCredential = await createUserWithEmailAndPassword(
       firebaseAuth,
-      email,
-      password
+      formValues.email,
+      formValues.password
     );
     const user = userCredential.user;
+    const { password, ...rest } = formValues;
     await setDoc(doc(firebaseFirestore, "users", user.uid), {
       uid: user.uid,
-      name,
-      email,
+      ...rest,
     });
-    return { uid: user.uid, name, email };
+    return { uid: user.uid, ...rest };
   }
 );
 
@@ -68,7 +68,6 @@ export const listenForAuthChanges = createAsyncThunk(
       const unsubscribe = onAuthStateChanged(firebaseAuth, async (user) => {
         if (user) {
           // Fetch user data from Firestore
-          console.log(user)
           const userDoc = await getDoc(
             doc(firebaseFirestore, "users", user.uid)
           );
@@ -114,14 +113,17 @@ const usersSlice = createSlice({
     builder
       .addCase(registerUser.pending, (state) => {
         state.status = "loading";
+        state.loading = true;
       })
       .addCase(registerUser.fulfilled, (state, action) => {
         state.status = "succeeded";
         state.currentUser = action.payload;
+        state.loading = false;
       })
       .addCase(registerUser.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.error.message;
+        state.loading = false;
       })
 
       //LOGIN USER FUNCTIONS
@@ -137,7 +139,7 @@ const usersSlice = createSlice({
       .addCase(loginUser.rejected, (state, action) => {
         state.status = "failed";
         state.loading = false;
-        state.error = action.error.message;
+        state.error = action.error;
       })
       .addCase(logoutUser.fulfilled, (state) => {
         state.status = "succeeded";
@@ -146,11 +148,11 @@ const usersSlice = createSlice({
 
       //Auth Changes
       .addCase(listenForAuthChanges.pending, (state) => {
-        console.log("listening....")
+        console.log("listening....");
         state.loading = true;
       })
       .addCase(listenForAuthChanges.fulfilled, (state) => {
-        console.log("listening ending....")
+        console.log("listening ending....");
         state.loading = false;
       });
   },
