@@ -14,6 +14,8 @@ import {
 import { useNavigate } from "react-router-dom";
 import { loginUser } from "../Redux/Slices/Users/UsersSlice";
 import CustomHeader from "../Components/CustomTitles";
+import { generateRandomQuote } from "../Utils/generateRandomQuote";
+import Quotes from "../Components/Quotes";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -76,9 +78,14 @@ const Login = () => {
         }}
       >
         <Box>
-          <CustomHeader variant="h1"  color={"#fff"}>
+          <CustomHeader variant="h1" color={"#fff"}>
             Life Begins when you start living
           </CustomHeader>
+          <Quotes
+            text="The only way to do great work is to love what you do."
+            author="Steve Jobs"
+          />
+          
         </Box>
       </Box>
       {/* //FORM COMPONENT */}
