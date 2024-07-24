@@ -68,7 +68,6 @@ export const listenForAuthChanges = createAsyncThunk(
       const unsubscribe = onAuthStateChanged(firebaseAuth, async (user) => {
         if (user) {
           // Fetch user data from Firestore
-          console.log(user)
           const userDoc = await getDoc(
             doc(firebaseFirestore, "users", user.uid)
           );

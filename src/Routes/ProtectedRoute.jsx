@@ -11,7 +11,7 @@ const PrivateRoute = ({ element }) => {
     if (loading) return <CircularProgress size={24} />; // or a spinner
   }
 
-  return true ? <Outlet /> : <Navigate to="/login" />;
+  return currentUser ? <Outlet /> : <Navigate to="/login" />;
 };
 
 export default PrivateRoute;

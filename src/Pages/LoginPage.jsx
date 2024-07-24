@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import {
@@ -27,8 +27,9 @@ import CustomSnackBar from "../Components/CustomSnackbar";
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
   const theme = useTheme();
-  const { status, loading, error } = useSelector((state) => state.user);
+  const { currentUser,error,loading } = useSelector((state) => state.user);
   const loginBackgroundImage = require("../Images/loginBG.jpg");
   const [snackBarOpen, setSnackBarOpen] = useState(false);
 
@@ -43,6 +44,12 @@ const Login = () => {
       [name]: value,
     });
   };
+
+  // useEffect(() => {
+  //   if (currentUser) {
+  //     navigate("/dashboard", { replace: true });
+  //   }
+  // }, [currentUser, navigate]);
 
   const validateEmail = (email) => {
     // Regex for validating email
@@ -88,9 +95,8 @@ const Login = () => {
         .then(() => {
           navigate("/dashboard", { replace: true }); // Redirect to dashboard on successful login
         })
-        .catch(() => {
-          // Error handling already managed by the slice
-          setSnackBarOpen(true);
+        .catch((error) => {
+          console.log("Erro logging in", error);
         });
       console.log("Form submitted:", formValues);
       console.log(error);
