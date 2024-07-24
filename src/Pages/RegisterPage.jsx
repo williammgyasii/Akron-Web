@@ -14,7 +14,7 @@ import {
   Grid,
 } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
-import { loginUser } from "../Redux/Slices/Users/UsersSlice";
+import { loginUser, registerUser } from "../Redux/Slices/Users/UsersSlice";
 import CustomHeader from "../Components/CustomTitles";
 import { generateRandomQuote } from "../Utils/generateRandomQuote";
 import Quotes from "../Components/Quotes";
@@ -139,19 +139,19 @@ const RegisterPage = () => {
   //   }
   // };
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   if (validateForm()) {
-  //     try {
-  //       dispatch(register(formValues)).un;
-  //       navigate("/dashboard", { replace: true });
-  //     } catch (error) {
-  //       setSnackbarMessage("Registration failed. Please try again.");
-  //       setSnackbarSeverity("error");
-  //       setSnackbarOpen(true);
-  //     }
-  //   }
-  // };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (validateForm()) {
+      try {
+        await dispatch(registerUser(formValues));
+        navigate("/dashboard", { replace: true });
+      } catch (error) {
+        setSnackbarMessage("Registration failed. Please try again.");
+        setSnackbarSeverity("error");
+        setSnackbarOpen(true);
+      }
+    }
+  };
 
   return (
     <Container
@@ -208,7 +208,7 @@ const RegisterPage = () => {
           flexDirection: "column",
           alignItems: "stretch",
           justifyContent: "flex-start",
-          py: 20,
+          py: 15,
           backgroundColor: theme.palette.background.paper,
           flex: 1,
           height: "100%",
@@ -228,8 +228,8 @@ const RegisterPage = () => {
           Already have an account? <Link to={"/login"}>Log in</Link>{" "}
         </Subtitle>
 
-        <Box component="form" sx={{ mt: 5 }}>
-          <Grid container spacing={3.5}>
+        <Box component="form" onSubmit={handleSubmit} sx={{ mt: 5 }}>
+          <Grid container spacing={2.3}>
             <Grid item xs={12} sm={6}>
               <CustomFormInput
                 label="First Name"
@@ -262,7 +262,7 @@ const RegisterPage = () => {
             </Grid>
             <Grid item xs={12}>
               <CustomFormInput
-                label="Username"
+                label="Username (only letters, numbers and underscores)"
                 name="username"
                 value={formValues.username}
                 onChange={handleInputChange}
@@ -272,7 +272,7 @@ const RegisterPage = () => {
             </Grid>
             <Grid item xs={12}>
               <CustomFormInput
-                label="Password"
+                label="Password (min of 8 characters)"
                 name="password"
                 type="password"
                 value={formValues.password}
@@ -284,7 +284,7 @@ const RegisterPage = () => {
             <Grid item xs={12}>
               <CustomButton
                 fullWidth
-                // startIcon={<Sign />}
+               
                 type="submit"
                 disabled={loading}
                 styleType={"secondary"}
@@ -309,6 +309,11 @@ const RegisterPage = () => {
           >
             Sign Up With Google
           </CustomButton>
+
+          <Subtitle color="#ccc" customStyles={{ fontSize: "1rem", mt: 5 }}>
+            By joining, you agree to the <Link>Terms</Link> and{" "}
+            <Link>Privacy Policy</Link>
+          </Subtitle>
         </Box>
       </Box>
     </Container>

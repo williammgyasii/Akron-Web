@@ -1,6 +1,6 @@
 import { Button, Container } from "@mui/material";
 import React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { persistor, resetState } from "../Redux/store";
 import { logoutUser } from "../Redux/Slices/Users/UsersSlice";
 import { useNavigate } from "react-router-dom";
@@ -8,6 +8,9 @@ import { useNavigate } from "react-router-dom";
 function DashboardPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { currentUser, loading, status, error } = useSelector(
+    (state) => state.user
+  );
 
   const handleLogout = () => {
     dispatch(resetState());
@@ -19,7 +22,7 @@ function DashboardPage() {
   };
 
   return (
-    <Container>
+    <Container disableGutters maxWidth={false} >
       <Button
         onClick={handleLogout}
         type="submit"
@@ -30,7 +33,9 @@ function DashboardPage() {
       >
         Log Out
       </Button>
-      <div>WELCOME TO THE DASBOARD MADAAME APRUKI</div>
+      <div>
+        WELCOME TO THE DASBOARD MADAAME <span>{currentUser.lastname}</span>{" "}
+      </div>
     </Container>
   );
 }
