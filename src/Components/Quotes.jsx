@@ -1,11 +1,24 @@
 import { useTheme } from "@emotion/react";
 import { Container, makeStyles, Typography } from "@mui/material";
-import { generateRandomQuote } from "../Utils/generateRandomQuote";
+import {
+  generateRandomQuote,
+  getRandomQuotes,
+} from "../Utils/generateRandomQuote";
+import { useEffect, useState } from "react";
 
 const Quotes = ({ text, author }) => {
   const theme = useTheme();
-  //   const randomQuote = generateRandomQuote()
-  //   console.log(randomQuote)
+  const [quote, setQuote] = useState("");
+
+  const getQuotes = async () => {
+    const results = await getRandomQuotes();
+    setQuote(results);
+  };
+
+  useEffect(() => {
+    getQuotes();
+  }, []);
+
   return (
     <Container
       sx={{
@@ -16,11 +29,10 @@ const Quotes = ({ text, author }) => {
         marginTop: "30px",
         fontStyle: "italic",
         color: "#fff",
+        
       }}
     >
-      <Typography variant="h5">
-        "{text}" <span style={{ marginLeft: "1rem" }}>- {author}</span>
-      </Typography>
+      <Typography variant="">{quote}</Typography>
     </Container>
   );
 };

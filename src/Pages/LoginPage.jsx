@@ -79,13 +79,8 @@ const Login = () => {
       >
         <Box>
           <CustomHeader variant="h1" color={"#fff"}>
-            Life Begins when you start living
+            <Quotes />
           </CustomHeader>
-          <Quotes
-            text="The only way to do great work is to love what you do."
-            author="Steve Jobs"
-          />
-          
         </Box>
       </Box>
       {/* //FORM COMPONENT */}
