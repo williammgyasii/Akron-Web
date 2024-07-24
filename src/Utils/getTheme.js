@@ -13,7 +13,7 @@ const theme = createTheme({
     },
     background: {
       default: "#f5f5f5", // Light grey background
-      paper: "#ffffff", // White paper background
+      paper: "#ccc", // White paper background
     },
     text: {
       primary: "#333333", // Dark text color

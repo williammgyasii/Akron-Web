@@ -17,6 +17,8 @@ import CustomHeader from "../Components/CustomTitles";
 import { generateRandomQuote } from "../Utils/generateRandomQuote";
 import Quotes from "../Components/Quotes";
 import Subtitle from "../Components/Subtitle";
+import ButtonVariants from "../Components/CustomButton";
+import CustomButton from "../Components/CustomButton";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -62,7 +64,7 @@ const Login = () => {
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
-          alignItems:"center",
+          alignItems: "center",
           // backgroundColor: "blue",
           flexBasis: "40%",
           height: "100%",
@@ -83,9 +85,9 @@ const Login = () => {
         </CustomHeader>
         <Quotes />
         <Subtitle styled={false} variant="h6" color={"#fff"}>
-          Boost Your Productivity and Achieve Your Goals: <br/>
-          Turn Everyday Tasks
-          into Triumphs with Smart Planning and Organized Efficiency
+          Boost Your Productivity and Achieve Your Goals: <br />
+          Turn Everyday Tasks into Triumphs with Smart Planning and Organized
+          Efficiency
         </Subtitle>
       </Box>
       {/* //FORM COMPONENT */}
@@ -95,13 +97,14 @@ const Login = () => {
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
-
           backgroundColor: theme.palette.background.paper,
           flex: 1,
           height: "100%",
+          padding: 10,
         }}
       >
         <Typography variant="h5">Login</Typography>
+
         <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
           <TextField
             label="Email"
@@ -121,16 +124,17 @@ const Login = () => {
             margin="normal"
             required
           />
-          <Button
-            type="submit"
-            variant="contained"
-            color="primary"
+
+          <CustomButton
             fullWidth
+            variant={"contained"}
+            type="submit"
+            styleType={"secondary"}
             disabled={loading}
-            sx={{ mt: 2 }}
+            customStyles={{ mt: 2 }}
           >
             {loading ? <CircularProgress size={24} /> : "Login"}
-          </Button>
+          </CustomButton>
           {error && (
             <Alert severity="error" sx={{ mt: 2 }}>
               {error}
