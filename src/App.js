@@ -22,7 +22,7 @@ function App() {
       <Route path="/" element={<RootLayout />}>
         <Route element={<LandingPage />}  />
         <Route element={<LoginPage />} index path="login" />
-
+        <Route element={<RegisterPage/>} path="join"/>
         <Route path="dashboard" element={<ProtectedRoute />}>
           <Route element={<DashboardPage />} index />
           <Route element={<ProfilePage />} path="profile" />

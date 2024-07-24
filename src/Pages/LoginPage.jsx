@@ -11,7 +11,7 @@ import {
   Alert,
   useTheme,
 } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { loginUser } from "../Redux/Slices/Users/UsersSlice";
 import CustomHeader from "../Components/CustomTitles";
 import { generateRandomQuote } from "../Utils/generateRandomQuote";
@@ -19,6 +19,7 @@ import Quotes from "../Components/Quotes";
 import Subtitle from "../Components/Subtitle";
 import ButtonVariants from "../Components/CustomButton";
 import CustomButton from "../Components/CustomButton";
+import { Google } from "@mui/icons-material";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -80,12 +81,12 @@ const Login = () => {
           objectFit: "contain",
         }}
       >
-        <CustomHeader color={"#fff"}>
+        <CustomHeader styledText color={"#fff"}>
           Life Begins when you start living
         </CustomHeader>
         <Quotes />
-        <Subtitle styled={false} variant="h6" color={"#fff"}>
-          Boost Your Productivity and Achieve Your Goals: <br />
+        <Subtitle subtitleStyle={"small_white"} styled={false} color={"#fff"}>
+          Boost your productivity and achieve Your Goals: <br />
           Turn Everyday Tasks into Triumphs with Smart Planning and Organized
           Efficiency
         </Subtitle>
@@ -96,16 +97,31 @@ const Login = () => {
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          justifyContent: "center",
+          justifyContent: "flex-start",
+          py: 15,
           backgroundColor: theme.palette.background.paper,
           flex: 1,
           height: "100%",
-          padding: 10,
+          px: 15,
         }}
       >
-        <Typography variant="h5">Login</Typography>
+        {/* APP LOGO GOES HERE */}
+        <CustomHeader variant="h5">Log in</CustomHeader>
+        <Subtitle color="#ccc" subtitleStyle={"small_black"}>
+          New To Akron? <Link to={"/join"}>Join us</Link>{" "}
+        </Subtitle>
 
-        <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
+        <CustomButton
+          customStyles={{ mt: 3, textTransform: "capitalize" }}
+          variant={"contained"}
+          startIcon={<Google color="#ff3"  />}
+          fullWidth
+          styleType={"iconAndText"}
+          onClick={() => console.log("Tuiii")}
+        >
+          Sign In With Google
+        </CustomButton>
+        {/* <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
           <TextField
             label="Email"
             type="email"
@@ -140,7 +156,7 @@ const Login = () => {
               {error}
             </Alert>
           )}
-        </Box>
+        </Box> */}
       </Box>
     </Container>
   );

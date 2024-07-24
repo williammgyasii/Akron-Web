@@ -1,28 +1,33 @@
 import React from "react";
 import { capitalize, Typography, useTheme } from "@mui/material";
 
+//REWRITE OPTIMIZATION
 
 const CustomHeader = ({
   variant = "h4",
   align = "center",
   color = "textPrimary",
   children,
-  upperCase
+  styledText,
+  customStyles,
+  upperCase,
 }) => {
-    const theme = useTheme()
+  const theme = useTheme();
   return (
     <Typography
       variant={variant}
       align={align}
-      
       color={color}
-      sx={{
-        marginBottom: 2, // Adjust margin as needed
-        fontSize:theme.typography.h1,
-        textTransform:"upperCase",
-        fontFamily: "Georgia",
-        
-      }}
+      sx={[
+        {
+          fontSize: theme.typography.h1,
+          fontWeight:600,
+          textTransform: "upperCase",
+          fontFamily: styledText ? "Georgia" : "Helvetica",
+          
+        },
+        customStyles,
+      ]}
     >
       {children}
     </Typography>

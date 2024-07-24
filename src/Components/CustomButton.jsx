@@ -45,7 +45,14 @@ const buttonStyles = {
   iconAndText: {
     display: "flex",
     alignItems: "center",
+    fontSize: "1rem",
+    // justifyContent:"space-between",
+    padding: 1.1,
     gap: 1, // theme.spacing(1) equivalent
+    "&:hover": {
+      backgroundColor: (theme) => theme.palette.secondary.hover,
+      color: (theme) => theme.palette.secondary.subtitle,
+    },
   },
 };
 
@@ -57,14 +64,18 @@ const CustomButton = ({
   type,
   disabled,
   customStyles,
+  ...props
 }) => {
   return (
     <Button
       type={type}
+      startIcon={props.startIcon}
+      endIcon={props.endIcon}
       sx={[buttonStyles[styleType], customStyles]}
       fullWidth={fullWidth}
       variant={variant}
       disabled={disabled}
+      onClick={props.onClick}
     >
       {children}
     </Button>
@@ -72,8 +83,6 @@ const CustomButton = ({
 };
 
 export default CustomButton;
-
-
 
 // // ButtonVariants.js
 // import React from 'react';

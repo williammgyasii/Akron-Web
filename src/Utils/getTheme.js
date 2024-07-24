@@ -10,18 +10,25 @@ const theme = createTheme({
     secondary: {
       main: "#000000", // black color
       subtitle: "#fff",
+      hover:"#000000"
     },
     background: {
       default: "#f5f5f5", // Light grey background
-      paper: "#ccc", // White paper background
+      paper: "#ffff", // White paper background
     },
     text: {
       primary: "#333333", // Dark text color
       secondary: "#555555", // Light text color
+      subtitle_black:"#00000",
+      subtitle_white:"#fff",
+      subtitle1:"#fff",
     },
     error: {
       main: "#f44336", // Error color
     },
+    action:{
+      hover:"#ff3"
+    }
   },
   typography: {
     fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
@@ -53,8 +60,8 @@ const theme = createTheme({
       fontSize: "1rem",
       fontWeight: 400,
     },
-    body2: {
-      fontSize: "0.875rem",
+    subtitle1: {
+      fontSize: "1rem",
       fontWeight: 400,
     },
     button: {
