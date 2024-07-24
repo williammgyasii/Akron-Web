@@ -29,7 +29,7 @@ const Login = () => {
   const navigate = useNavigate();
 
   const theme = useTheme();
-  const { currentUser,error,loading } = useSelector((state) => state.user);
+  const { currentUser, error, loading } = useSelector((state) => state.user);
   const loginBackgroundImage = require("../Images/loginBG.jpg");
   const [snackBarOpen, setSnackBarOpen] = useState(false);
 
@@ -114,10 +114,12 @@ const Login = () => {
       sx={{
         // backgroundColor: "red",
         display: "flex",
-        flexDirection: "row",
         justifyContent: "center",
         height: "100vh",
         alignItems: "center",
+        [theme.breakpoints.down("tablets_port")]: {
+          flexDirection: "column",
+        },
       }}
     >
       {/* ALLOW IT TO CHANGE IMAGES IN THE FUTURE */}
@@ -141,13 +143,36 @@ const Login = () => {
           backgroundSize: "cover",
           backgroundPosition: "bottom",
           objectFit: "contain",
+          [theme.breakpoints.down("tablets_port")]: {
+            padding: 3,
+            flexBasis: "30%",
+          },
         }}
       >
-        <CustomHeader styledText color={"#fff"}>
+        <CustomHeader
+          customStyles={{
+            [theme.breakpoints.down("tablets_port")]: {
+              mt: 10,
+              fontSize: "2rem",
+            },
+          }}
+          styledText
+          color={"#fff"}
+        >
           Life Begins when you start living
         </CustomHeader>
         <Quotes />
-        <Subtitle subtitleStyle={"small_white"} styled={false} color={"#fff"}>
+        <Subtitle
+          customStyles={{
+            [theme.breakpoints.down("tablets_port")]: {
+            
+              fontSize: ".8rem",
+            },
+          }}
+          subtitleStyle={"small_white"}
+          styled={false}
+          color={"#fff"}
+        >
           Boost your productivity and achieve Your Goals: <br />
           Turn Everyday Tasks into Triumphs with Smart Planning and Organized
           Efficiency
@@ -165,7 +190,17 @@ const Login = () => {
           backgroundColor: theme.palette.background.paper,
           flex: 1,
           height: "100%",
-          px: 15,
+          px: 20,
+          [theme.breakpoints.down("tablets_landscape")]: {
+            px: 8,
+          },
+          [theme.breakpoints.down("tablets_port")]: {
+            padding: 2,
+            width: "100%",
+          },
+          [theme.breakpoints.up("desktop")]: {
+            px: 25, // Styles for min-width of 'md' breakpoint
+          },
         }}
       >
         <CustomSnackBar

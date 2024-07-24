@@ -30,6 +30,7 @@ const Quotes = ({ text, author }) => {
         fontStyle: "italic",
         color: "#fff",
         
+        
       }}
     >
       <Typography variant="">{quote}</Typography>
