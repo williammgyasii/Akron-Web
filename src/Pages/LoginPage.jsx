@@ -151,6 +151,7 @@ const Login = () => {
       >
         <CustomHeader
           customStyles={{
+            
             [theme.breakpoints.down("tablets_port")]: {
               mt: 10,
               fontSize: "2rem",
@@ -165,7 +166,6 @@ const Login = () => {
         <Subtitle
           customStyles={{
             [theme.breakpoints.down("tablets_port")]: {
-            
               fontSize: ".8rem",
             },
           }}

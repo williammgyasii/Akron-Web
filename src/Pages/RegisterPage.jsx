@@ -11,7 +11,6 @@ import {
   Alert,
   useTheme,
   Stack,
-  Grid,
 } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import { loginUser, registerUser } from "../Redux/Slices/Users/UsersSlice";
@@ -24,6 +23,7 @@ import CustomButton from "../Components/CustomButton";
 import { Google, LoginOutlined } from "@mui/icons-material";
 import CustomFormInput from "../Components/CustomFormInput";
 import CustomSnackBar from "../Components/CustomSnackbar";
+import SideBySideLayout from "../Layouts/SideBySide";
 
 const RegisterPage = () => {
   const dispatch = useDispatch();
@@ -165,6 +165,9 @@ const RegisterPage = () => {
         justifyContent: "center",
         height: "100vh",
         alignItems: "center",
+        [theme.breakpoints.down("tablets_port")]: {
+          flexDirection: "column",
+        },
       }}
     >
       {/* ALLOW IT TO CHANGE IMAGES IN THE FUTURE */}
@@ -188,12 +191,30 @@ const RegisterPage = () => {
           backgroundSize: "cover",
           backgroundPosition: "bottom",
           objectFit: "contain",
+          [theme.breakpoints.down("tablets_port")]: {
+            padding: 3,
+            flexBasis: "40%",
+          },
         }}
       >
         {/* <CustomHeader styledText color={"#fff"}>
           Created For Your Growth
         </CustomHeader> */}
-        <Quotes />
+        <Box
+          sx={{
+            display:"flex",
+            justifyContent:"center",
+            alignItems:"center",
+            [theme.breakpoints.down("tablets_port")]: {
+              mt: 20,
+            },
+            [theme.breakpoints.down("phone")]: {
+              mt: 25,
+            },
+          }}
+        >
+          <Quotes />
+        </Box>
         <Subtitle subtitleStyle={"small_white"} styled={false} color={"#fff"}>
           Boost your productivity and achieve Your Goals: <br />
           Turn Everyday Tasks into Triumphs with Smart Planning and Organized
@@ -206,13 +227,23 @@ const RegisterPage = () => {
         sx={{
           display: "flex",
           flexDirection: "column",
-          alignItems: "stretch",
           justifyContent: "flex-start",
+          backgroundColor: `red`,
           py: 15,
           backgroundColor: theme.palette.background.paper,
           flex: 1,
           height: "100%",
           px: 15,
+          [theme.breakpoints.down("tablets_landscape")]: {
+            px: 8,
+          },
+          [theme.breakpoints.down("tablets_port")]: {
+            padding: 2,
+            width: "100%",
+          },
+          [theme.breakpoints.up("desktop")]: {
+            px: 10, // Styles for min-width of 'md' breakpoint
+          },
         }}
       >
         <CustomSnackBar
@@ -228,76 +259,73 @@ const RegisterPage = () => {
           Already have an account? <Link to={"/login"}>Log in</Link>{" "}
         </Subtitle>
 
-        <Box component="form" onSubmit={handleSubmit} sx={{ mt: 5 }}>
-          <Grid container spacing={2.3}>
-            <Grid item xs={12} sm={6}>
-              <CustomFormInput
-                label="First Name"
-                name="firstName"
-                value={formValues.firstName}
-                onChange={handleInputChange}
-                error={errors.firstName}
-                helperText={helperTexts.firstName}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <CustomFormInput
-                label="Last Name"
-                name="lastName"
-                value={formValues.lastName}
-                onChange={handleInputChange}
-                error={errors.lastName}
-                helperText={helperTexts.lastName}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <CustomFormInput
-                label="Email"
-                name="email"
-                value={formValues.email}
-                onChange={handleInputChange}
-                error={errors.email}
-                helperText={helperTexts.email}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <CustomFormInput
-                label="Username (only letters, numbers and underscores)"
-                name="username"
-                value={formValues.username}
-                onChange={handleInputChange}
-                error={errors.username}
-                helperText={helperTexts.username}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <CustomFormInput
-                label="Password (min of 8 characters)"
-                name="password"
-                type="password"
-                value={formValues.password}
-                onChange={handleInputChange}
-                error={errors.password}
-                helperText={helperTexts.password}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <CustomButton
-                fullWidth
-               
-                type="submit"
-                disabled={loading}
-                styleType={"secondary"}
-                color="primary"
-              >
-                {loading ? (
-                  <CircularProgress sx={{ color: "#fff" }} size={24} />
-                ) : (
-                  "Join"
-                )}
-              </CustomButton>
-            </Grid>
-          </Grid>
+        <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
+          <Stack spacing={2.3}>
+            <SideBySideLayout
+              leftComponent={
+                <CustomFormInput
+                  label="First Name"
+                  name="firstName"
+                  value={formValues.firstName}
+                  onChange={handleInputChange}
+                  error={errors.firstName}
+                  helperText={helperTexts.firstName}
+                />
+              }
+              rightComponent={
+                <CustomFormInput
+                  label="Last Name"
+                  name="lastName"
+                  value={formValues.lastName}
+                  onChange={handleInputChange}
+                  error={errors.lastName}
+                  helperText={helperTexts.lastName}
+                />
+              }
+            />
+
+            <CustomFormInput
+              label="Email"
+              name="email"
+              value={formValues.email}
+              onChange={handleInputChange}
+              error={errors.email}
+              helperText={helperTexts.email}
+            />
+
+            <CustomFormInput
+              label="Username (only letters, numbers and underscores)"
+              name="username"
+              value={formValues.username}
+              onChange={handleInputChange}
+              error={errors.username}
+              helperText={helperTexts.username}
+            />
+
+            <CustomFormInput
+              label="Password (min of 8 characters)"
+              name="password"
+              type="password"
+              value={formValues.password}
+              onChange={handleInputChange}
+              error={errors.password}
+              helperText={helperTexts.password}
+            />
+
+            <CustomButton
+              fullWidth
+              type="submit"
+              disabled={loading}
+              styleType={"secondary"}
+              color="primary"
+            >
+              {loading ? (
+                <CircularProgress sx={{ color: "#fff" }} size={24} />
+              ) : (
+                "Join"
+              )}
+            </CustomButton>
+          </Stack>
 
           <CustomButton
             customStyles={{ mt: 3, textTransform: "capitalize" }}

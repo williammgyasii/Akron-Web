@@ -5,7 +5,7 @@ import { createTheme } from "@mui/material/styles";
 const theme = createTheme({
   breakpoints: {
     values: {
-      phone: 0, // Extra small devices (phones, 600px and down)
+      phone: 350, // Extra small devices (phones, 600px and down)
       tablets_port: 600, // Small devices (tablets, 600px and up)
       tablets_landscape: 970, // Medium devices (small laptops, 900px and up)
       desktop: 1000, // Large devices (desktops, 1200px and up)
