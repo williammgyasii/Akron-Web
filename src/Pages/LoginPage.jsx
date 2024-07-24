@@ -9,6 +9,7 @@ import {
   Container,
   Box,
   Alert,
+  useTheme,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { loginUser } from "../Redux/Slices/Users/UsersSlice";
@@ -16,6 +17,7 @@ import { loginUser } from "../Redux/Slices/Users/UsersSlice";
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const theme = useTheme();
   const { status, loading, error } = useSelector((state) => state.user);
 
   const [email, setEmail] = useState("");
@@ -34,13 +36,46 @@ const Login = () => {
   };
 
   return (
-    <Container component="main" maxWidth="xs">
+    <Container
+      component="main"
+      maxWidth={false}
+      disableGutters
+      sx={{
+        backgroundColor: "red",
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "center",
+        height: "100vh",
+        alignItems: "center",
+      }}
+    >
+
+      {/* ALLOW IT TO CHANGE IMAGES IN THE FUTURE */}
       <Box
         sx={{
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          marginTop: 8,
+          justifyContent: "center",
+          // backgroundColor: "blue",
+          flexBasis: "40%",
+          height: "100%",
+          backgroundImage: `url(${"https://source.unsplash.com/random/"})`,
+        }}
+      >
+
+      </Box>
+      {/* //FORM COMPONENT */}
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+
+          backgroundColor: theme.palette.background.paper,
+          flex: 1,
+          height: "100%",
         }}
       >
         <Typography variant="h5">Login</Typography>
