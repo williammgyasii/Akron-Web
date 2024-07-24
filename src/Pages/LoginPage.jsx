@@ -22,6 +22,7 @@ import ButtonVariants from "../Components/CustomButton";
 import CustomButton from "../Components/CustomButton";
 import { Google, LoginOutlined } from "@mui/icons-material";
 import CustomFormInput from "../Components/CustomFormInput";
+import CustomSnackBar from "../Components/CustomSnackbar";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -29,21 +30,11 @@ const Login = () => {
   const theme = useTheme();
   const { status, loading, error } = useSelector((state) => state.user);
   const loginBackgroundImage = require("../Images/loginBG.jpg");
+  const [snackBarOpen, setSnackBarOpen] = useState(false);
 
-  const [formValues, setFormValues] = useState({
-    email: "",
-    password: "",
-  });
-
-  const [errors, setErrors] = useState({
-    email: false,
-    password: false,
-  });
-
-  const [helperTexts, setHelperTexts] = useState({
-    email: "",
-    password: "",
-  });
+  const [formValues, setFormValues] = useState({ email: "", password: "" });
+  const [errors, setErrors] = useState({ email: false, password: false });
+  const [helperTexts, setHelperTexts] = useState({ email: "", password: "" });
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -80,10 +71,15 @@ const Login = () => {
     return valid;
   };
 
+  const handleCloseSnackbar = () => {
+    setSnackBarOpen(false);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
     if (validateForm()) {
+      setSnackBarOpen(false);
       // Submit form data
       dispatch(
         loginUser({ email: formValues.email, password: formValues.password })
@@ -94,8 +90,13 @@ const Login = () => {
         })
         .catch(() => {
           // Error handling already managed by the slice
+          setSnackBarOpen(true);
         });
       console.log("Form submitted:", formValues);
+      console.log(error);
+    } else {
+      console.log("invalid");
+      setSnackBarOpen(true);
     }
   };
 
@@ -161,9 +162,16 @@ const Login = () => {
           px: 15,
         }}
       >
+        <CustomSnackBar
+          message={"Invalid Email Password"}
+          snackBarOpen={snackBarOpen}
+          vertical={"top"}
+          horizontal={"right"}
+          handleCloseSnackbar={handleCloseSnackbar}
+        />
         {/* APP LOGO GOES HERE */}
         <CustomHeader variant="h5">Log in</CustomHeader>
-        <Subtitle color="#ccc" subtitleStyle={"small_black"}>
+        <Subtitle subtitleStyle={"small_black"}>
           New To Akron? <Link to={"/join"}>Join us</Link>{" "}
         </Subtitle>
 
