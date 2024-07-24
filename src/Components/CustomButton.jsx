@@ -16,6 +16,9 @@ const buttonStyles = {
   },
   secondary: {
     backgroundColor: (theme) => theme.palette.secondary.main,
+    textTransform:"capitalize",
+    fontWeight:500,
+    gap: 1,
     color: (theme) => theme.palette.secondary.contrastText,
     "&:hover": {
       backgroundColor: (theme) => theme.palette.secondary.dark,
@@ -47,7 +50,6 @@ const buttonStyles = {
     alignItems: "center",
     fontSize: "1rem",
     // justifyContent:"space-between",
-    padding: 1.1,
     gap: 1, // theme.spacing(1) equivalent
     "&:hover": {
       backgroundColor: (theme) => theme.palette.secondary.hover,

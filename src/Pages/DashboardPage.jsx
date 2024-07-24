@@ -14,7 +14,8 @@ function DashboardPage() {
     dispatch(logoutUser());
     persistor.purge(); // Clear persisted state
     // Perform other logout logic, like redirecting to the login page
-    navigate("/", { replace: true });
+    navigate("/login", { replace: true });
+    window.location.reload();
   };
 
   return (

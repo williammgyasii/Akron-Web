@@ -10,6 +10,7 @@ import {
   Box,
   Alert,
   useTheme,
+  Stack,
 } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import { loginUser } from "../Redux/Slices/Users/UsersSlice";
@@ -19,29 +20,83 @@ import Quotes from "../Components/Quotes";
 import Subtitle from "../Components/Subtitle";
 import ButtonVariants from "../Components/CustomButton";
 import CustomButton from "../Components/CustomButton";
-import { Google } from "@mui/icons-material";
+import { Google, LoginOutlined } from "@mui/icons-material";
+import CustomFormInput from "../Components/CustomFormInput";
 
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const theme = useTheme();
   const { status, loading, error } = useSelector((state) => state.user);
-
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
   const loginBackgroundImage = require("../Images/loginBG.jpg");
+
+  const [formValues, setFormValues] = useState({
+    email: "",
+    password: "",
+  });
+
+  const [errors, setErrors] = useState({
+    email: false,
+    password: false,
+  });
+
+  const [helperTexts, setHelperTexts] = useState({
+    email: "",
+    password: "",
+  });
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormValues({
+      ...formValues,
+      [name]: value,
+    });
+  };
+
+  const validateEmail = (email) => {
+    // Regex for validating email
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(String(email).toLowerCase());
+  };
+
+  const validateForm = () => {
+    let valid = true;
+    let newErrors = { email: false, password: false };
+    let newHelperTexts = { email: "", password: "" };
+
+    if (!validateEmail(formValues.email)) {
+      newErrors.email = true;
+      newHelperTexts.email = "Invalid email address";
+      valid = false;
+    }
+    if (formValues.password.length <= 8) {
+      newErrors.password = true;
+      newHelperTexts.password = "Password must be more than 8 characters";
+      valid = false;
+    }
+
+    setErrors(newErrors);
+    setHelperTexts(newHelperTexts);
+    return valid;
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(loginUser({ email, password }))
-      .unwrap() // To handle resolved promise
-      .then(() => {
-        navigate("/dashboard", { replace: true }); // Redirect to dashboard on successful login
-      })
-      .catch(() => {
-        // Error handling already managed by the slice
-      });
+
+    if (validateForm()) {
+      // Submit form data
+      dispatch(
+        loginUser({ email: formValues.email, password: formValues.password })
+      )
+        .unwrap() // To handle resolved promise
+        .then(() => {
+          navigate("/dashboard", { replace: true }); // Redirect to dashboard on successful login
+        })
+        .catch(() => {
+          // Error handling already managed by the slice
+        });
+      console.log("Form submitted:", formValues);
+    }
   };
 
   return (
@@ -91,14 +146,15 @@ const Login = () => {
           Efficiency
         </Subtitle>
       </Box>
+
       {/* //FORM COMPONENT */}
       <Box
         sx={{
           display: "flex",
           flexDirection: "column",
-          alignItems: "center",
+          alignItems: "stretch",
           justifyContent: "flex-start",
-          py: 15,
+          py: 20,
           backgroundColor: theme.palette.background.paper,
           flex: 1,
           height: "100%",
@@ -114,49 +170,49 @@ const Login = () => {
         <CustomButton
           customStyles={{ mt: 3, textTransform: "capitalize" }}
           variant={"contained"}
-          startIcon={<Google color="#ff3"  />}
+          startIcon={<Google color="#ff3" />}
           fullWidth
           styleType={"iconAndText"}
           onClick={() => console.log("Tuiii")}
         >
           Sign In With Google
         </CustomButton>
-        {/* <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
-          <TextField
-            label="Email"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            fullWidth
-            margin="normal"
-            required
-          />
-          <TextField
-            label="Password"
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            fullWidth
-            margin="normal"
-            required
-          />
 
-          <CustomButton
-            fullWidth
-            variant={"contained"}
-            type="submit"
-            styleType={"secondary"}
-            disabled={loading}
-            customStyles={{ mt: 2 }}
-          >
-            {loading ? <CircularProgress size={24} /> : "Login"}
-          </CustomButton>
-          {error && (
-            <Alert severity="error" sx={{ mt: 2 }}>
-              {error}
-            </Alert>
-          )}
-        </Box> */}
+        <Box component="form" onSubmit={handleSubmit} sx={{ mt: 5 }}>
+          <Stack spacing={2}>
+            <CustomFormInput
+              label="Email"
+              name="email"
+              value={formValues.email}
+              onChange={handleInputChange}
+              error={errors.email}
+              helperText={helperTexts.email}
+            />
+            <CustomFormInput
+              label="Password"
+              name="password"
+              type="password"
+              value={formValues.password}
+              onChange={handleInputChange}
+              error={errors.password}
+              helperText={helperTexts.password}
+            />
+            <CustomButton
+              fullWidth
+              startIcon={<LoginOutlined />}
+              type="submit"
+              disabled={loading}
+              styleType={"secondary"}
+              color="primary"
+            >
+              {loading ? (
+                <CircularProgress sx={{ color: "#fff" }} size={24} />
+              ) : (
+                "Log in"
+              )}
+            </CustomButton>
+          </Stack>
+        </Box>
       </Box>
     </Container>
   );
