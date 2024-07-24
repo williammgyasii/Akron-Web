@@ -16,6 +16,7 @@ import { loginUser } from "../Redux/Slices/Users/UsersSlice";
 import CustomHeader from "../Components/CustomTitles";
 import { generateRandomQuote } from "../Utils/generateRandomQuote";
 import Quotes from "../Components/Quotes";
+import Subtitle from "../Components/Subtitle";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -60,8 +61,8 @@ const Login = () => {
           position: "relative",
           display: "flex",
           flexDirection: "column",
-          alignItems: "center",
           justifyContent: "center",
+          alignItems:"center",
           // backgroundColor: "blue",
           flexBasis: "40%",
           height: "100%",
@@ -77,11 +78,15 @@ const Login = () => {
           objectFit: "contain",
         }}
       >
-        <Box>
-          <CustomHeader variant="h1" color={"#fff"}>
-            <Quotes />
-          </CustomHeader>
-        </Box>
+        <CustomHeader color={"#fff"}>
+          Life Begins when you start living
+        </CustomHeader>
+        <Quotes />
+        <Subtitle styled={false} variant="h6" color={"#fff"}>
+          Boost Your Productivity and Achieve Your Goals: <br/>
+          Turn Everyday Tasks
+          into Triumphs with Smart Planning and Organized Efficiency
+        </Subtitle>
       </Box>
       {/* //FORM COMPONENT */}
       <Box
