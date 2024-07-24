@@ -13,6 +13,7 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { loginUser } from "../Redux/Slices/Users/UsersSlice";
+import CustomHeader from "../Components/CustomTitles";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -22,6 +23,8 @@ const Login = () => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const loginBackgroundImage = require("../Images/loginBG.jpg");
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -41,7 +44,7 @@ const Login = () => {
       maxWidth={false}
       disableGutters
       sx={{
-        backgroundColor: "red",
+        // backgroundColor: "red",
         display: "flex",
         flexDirection: "row",
         justifyContent: "center",
@@ -49,10 +52,10 @@ const Login = () => {
         alignItems: "center",
       }}
     >
-
       {/* ALLOW IT TO CHANGE IMAGES IN THE FUTURE */}
       <Box
         sx={{
+          position: "relative",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
@@ -60,10 +63,23 @@ const Login = () => {
           // backgroundColor: "blue",
           flexBasis: "40%",
           height: "100%",
-          backgroundImage: `url(${"https://source.unsplash.com/random/"})`,
+          padding: 5,
+          backgroundImage: `
+          linear-gradient(
+            rgba(0, 0, 0, 0.6), 
+            rgba(0, 0, 0, 0.75)
+          ),
+          url(${loginBackgroundImage})`, // Replace with your image URL
+          backgroundSize: "cover",
+          backgroundPosition: "bottom",
+          objectFit: "contain",
         }}
       >
-
+        <Box>
+          <CustomHeader variant="h1"  color={"#fff"}>
+            Life Begins when you start living
+          </CustomHeader>
+        </Box>
       </Box>
       {/* //FORM COMPONENT */}
       <Box

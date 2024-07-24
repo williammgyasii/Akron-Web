@@ -9,6 +9,7 @@ const theme = createTheme({
     },
     secondary: {
       main: '#000000', // black color
+      subtitle:"#fff"
     },
     background: {
       default: '#f5f5f5', // Light grey background
@@ -25,8 +26,8 @@ const theme = createTheme({
   typography: {
     fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
     h1: {
-      fontSize: '2.5rem',
-      fontWeight: 500,
+      fontSize: '3.0rem',
+      fontWeight: 800,
     },
     h2: {
       fontSize: '2rem',
