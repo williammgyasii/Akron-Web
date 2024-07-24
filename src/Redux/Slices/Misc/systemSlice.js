@@ -4,6 +4,7 @@ const systemSlice = createSlice({
   name: "App Slice",
   initialState: {
     loginQuote: "",
+    appInit:false
   },
   reducers: {
     setLoginQuote: (state, action) => {
