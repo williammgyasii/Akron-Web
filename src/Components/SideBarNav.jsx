@@ -19,11 +19,26 @@ import ListItemText from "@mui/material/ListItemText";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
 import { ArrowRightAlt } from "@mui/icons-material";
-import { Link, useLocation } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import { DRAWER_WIDTH } from "../Utils/Constants";
-import { DASHBOARD_ROUTES } from "../Routes/DashboardRoutes";
+import { DASHBOARD_ROUTES } from "../Routes/dashboardRoutes";
+import { makeStyles } from "@mui/styles";
 
 const drawerWidth = DRAWER_WIDTH;
+
+const useStyles = makeStyles((theme) => ({
+  active: {
+    backgroundColor: "#000",
+  },
+  link: {
+    textDecoration: "none",
+    color: "pink",
+    
+    "&.active": {
+      backgroundColor: "yellow",
+    },
+  },
+}));
 
 const openedMixin = (theme) => ({
   width: drawerWidth,
@@ -52,28 +67,11 @@ const DrawerHeader = styled("div")(({ theme }) => ({
   display: "flex",
   alignItems: "center",
   justifyContent: "flex-end",
+  // backgroundColor:"#000",
   //   padding: theme.spacing(0, 1),
   // necessary for content to be below app bar
   ...theme.mixins.toolbar,
 }));
-
-// const AppBar = styled(MuiAppBar, {
-//   shouldForwardProp: (prop) => prop !== "open",
-// })(({ theme, open }) => ({
-//   zIndex: theme.zIndex.drawer + 1,
-//   transition: theme.transitions.create(["width", "margin"], {
-//     easing: theme.transitions.easing.sharp,
-//     duration: theme.transitions.duration.leavingScreen,
-//   }),
-//   ...(open && {
-//     marginLeft: drawerWidth,
-//     width: `calc(100% - ${drawerWidth}px)`,
-//     transition: theme.transitions.create(["width", "margin"], {
-//       easing: theme.transitions.easing.sharp,
-//       duration: theme.transitions.duration.enteringScreen,
-//     }),
-//   }),
-// }));
 
 const Drawer = styled(MuiDrawer, {
   shouldForwardProp: (prop) => prop !== "open",
@@ -98,21 +96,11 @@ const SidebarNav = ({ sections }) => {
   const [open, setOpen] = React.useState(true);
   const theme = useTheme();
   const location = useLocation();
+  const classes = useStyles();
 
-  console.log(`${location.pathname}\\`)
   const toggleDrawer = () => {
     setOpen(!open);
   };
-
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
-
-  const handleDrawerClose = () => {
-    setOpen(false);
-  };
-
-  
 
   return (
     <Drawer variant="permanent" open={open}>
@@ -126,36 +114,14 @@ const SidebarNav = ({ sections }) => {
 
       {/* drawer first item */}
       <List>
-        {DASHBOARD_ROUTES.map((section, index) => (
+        {DASHBOARD_ROUTES.map((section, index, isActive) => (
           <ListItem
-            button
             key={section.title}
-            component={Link}
             to={section.path}
-            sx={{
-              borderRadius: 2,
-              mb: 0.5,
-              "&:hover": {
-                backgroundColor: "black",
-                color: "white",
-              },
-              backgroundColor:location.pathname === `${location.pathname}\\${section.path}` ? "black" : "inherit",
-              color: location.pathname === section.path ? "white" : "inherit",
-            }}
+            component={Link}
+            sx={classes.link}
           >
-            <ListItemIcon
-              sx={{
-                "&:hover": {
-                  backgroundColor: "black",
-                  color: "white",
-                },
-                backgroundColor:
-                  location.pathname === section.path ? "black" : "inherit",
-                color: location.pathname === section.path ? "white" : "inherit",
-              }}
-            >
-              {section.icon}
-            </ListItemIcon>
+            <ListItemIcon sx={{minWidth:35}}>{section.icon}</ListItemIcon>
             <ListItemText primary={section.title} />
           </ListItem>
         ))}

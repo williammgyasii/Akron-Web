@@ -1,6 +1,7 @@
-import { AccountBox } from "@mui/icons-material";
+import { AccountBox, Settings } from "@mui/icons-material";
 import DashboardPage from "../Pages/DashboardPage";
 import ProfilePage from "../Pages/ProfilePage";
+import SettingsPage from "../Pages/SettingsPage";
 
 export const DASHBOARD_ROUTES = [
   {
@@ -15,6 +16,12 @@ export const DASHBOARD_ROUTES = [
     path: "profile",
     icon: <AccountBox />,
     component: <ProfilePage />,
+  },
+  {
+    title: "Settings",
+    path: "settings",
+    icon: <Settings />,
+    component: <SettingsPage />,
   },
 ];
 

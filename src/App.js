@@ -18,7 +18,7 @@ import { useEffect } from "react";
 import { listenForAuthChanges } from "./Redux/Slices/Users/UsersSlice";
 import LandingPageNew from "./Pages/LandingPageNew";
 import { AccountBox } from "@mui/icons-material";
-import { DASHBOARD_ROUTES } from "./Routes/DashboardRoutes";
+import { DASHBOARD_ROUTES } from "./Routes/dashboardRoutes";
 
 function App() {
   const router = createBrowserRouter(
