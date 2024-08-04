@@ -25,6 +25,7 @@ const drawerWidth = 240;
 
 const openedMixin = (theme) => ({
   width: drawerWidth,
+  padding: 7,
   transition: theme.transitions.create("width", {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.enteringScreen,
@@ -38,6 +39,7 @@ const closedMixin = (theme) => ({
     duration: theme.transitions.duration.leavingScreen,
   }),
   overflowX: "hidden",
+  padding:5,
   width: `calc(${theme.spacing(7)} + 1px)`,
   [theme.breakpoints.up("sm")]: {
     width: `calc(${theme.spacing(8)} + 1px)`,
@@ -48,7 +50,7 @@ const DrawerHeader = styled("div")(({ theme }) => ({
   display: "flex",
   alignItems: "center",
   justifyContent: "flex-end",
-  padding: theme.spacing(0, 1),
+//   padding: theme.spacing(0, 1),
   // necessary for content to be below app bar
   ...theme.mixins.toolbar,
 }));
@@ -78,6 +80,8 @@ const Drawer = styled(MuiDrawer, {
   flexShrink: 0,
   whiteSpace: "nowrap",
   boxSizing: "border-box",
+  padding: 4,
+  //   backgroundColor:"red",
   ...(open && {
     ...openedMixin(theme),
     "& .MuiDrawer-paper": openedMixin(theme),
@@ -91,7 +95,7 @@ const Drawer = styled(MuiDrawer, {
 const SidebarNav = ({ sections }) => {
   const [open, setOpen] = React.useState(true);
   const theme = useTheme();
-  const location = useLocation()
+  const location = useLocation();
 
   const toggleDrawer = () => {
     setOpen(!open);
@@ -117,9 +121,11 @@ const SidebarNav = ({ sections }) => {
         {sections.map((section, index) => (
           <ListItem
             button
+            key={section.title}
             component={Link}
             to={section.path}
             sx={{
+              borderRadius: 2,
               "&:hover": {
                 backgroundColor: "black",
                 color: "white",
@@ -135,30 +141,27 @@ const SidebarNav = ({ sections }) => {
       </List>
       <Divider />
 
-      <List>
-        {["All mail", "Trash", "Spam"].map((text, index) => (
-          <ListItem key={text} disablePadding sx={{ display: "block" }}>
-            <ListItemButton
-              sx={{
-                minHeight: 48,
-                justifyContent: open ? "initial" : "center",
-                px: 2.5,
-              }}
-            >
-              <ListItemIcon
-                sx={{
-                  minWidth: 0,
-                  mr: open ? 3 : "auto",
-                  justifyContent: "center",
-                }}
-              >
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
-            </ListItemButton>
+      {/* <List>
+      {sections.map((section, index) => (
+          <ListItem
+            button
+            key={section.title}
+            component={Link}
+            to={section.path}
+            sx={{
+              "&:hover": {
+                backgroundColor: "black",
+                color: "white",
+              },
+              backgroundColor:
+                location.pathname === section.path ? "black" : "inherit",
+              color: location.pathname === section.path ? "white" : "inherit",
+            }}
+          >
+            <ListItemText primary={section.title} />
           </ListItem>
         ))}
-      </List>
+      </List> */}
     </Drawer>
   );
 };
