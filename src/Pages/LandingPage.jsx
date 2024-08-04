@@ -41,9 +41,9 @@ function LandingPage() {
   };
 
   return (
-    <Container>
+    <Container component={"main"} sx={{ backgroundColor: "red" }}>
       <Box>This is going to be the landing page of messyness</Box>
-
+{/* 
       {groupsStatus === "loading" && <CircularProgress />}
       {groupsStatus === "failed" && (
         <Typography color="error">Failed to load groups</Typography>
@@ -54,7 +54,7 @@ function LandingPage() {
           {selectedGroup && <TaskForm groupId={selectedGroup} />}
           <TasksList />
         </>
-      )}
+      )} */}
     </Container>
   );
 }

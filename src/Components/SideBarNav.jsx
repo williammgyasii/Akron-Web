@@ -20,8 +20,10 @@ import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
 import { ArrowRightAlt } from "@mui/icons-material";
 import { Link, useLocation } from "react-router-dom";
+import { DRAWER_WIDTH } from "../Utils/Constants";
+import { DASHBOARD_ROUTES } from "../Routes/DashboardRoutes";
 
-const drawerWidth = 240;
+const drawerWidth = DRAWER_WIDTH;
 
 const openedMixin = (theme) => ({
   width: drawerWidth,
@@ -39,7 +41,7 @@ const closedMixin = (theme) => ({
     duration: theme.transitions.duration.leavingScreen,
   }),
   overflowX: "hidden",
-  padding:5,
+  padding: 5,
   width: `calc(${theme.spacing(7)} + 1px)`,
   [theme.breakpoints.up("sm")]: {
     width: `calc(${theme.spacing(8)} + 1px)`,
@@ -50,7 +52,7 @@ const DrawerHeader = styled("div")(({ theme }) => ({
   display: "flex",
   alignItems: "center",
   justifyContent: "flex-end",
-//   padding: theme.spacing(0, 1),
+  //   padding: theme.spacing(0, 1),
   // necessary for content to be below app bar
   ...theme.mixins.toolbar,
 }));
@@ -97,6 +99,7 @@ const SidebarNav = ({ sections }) => {
   const theme = useTheme();
   const location = useLocation();
 
+  console.log(`${location.pathname}\\`)
   const toggleDrawer = () => {
     setOpen(!open);
   };
@@ -109,16 +112,21 @@ const SidebarNav = ({ sections }) => {
     setOpen(false);
   };
 
+  
+
   return (
     <Drawer variant="permanent" open={open}>
+      {/* drawer header */}
       <DrawerHeader>
         <IconButton onClick={toggleDrawer}>
           {open ? <ChevronRightIcon /> : <MenuIcon />}
         </IconButton>
       </DrawerHeader>
       <Divider />
+
+      {/* drawer first item */}
       <List>
-        {sections.map((section, index) => (
+        {DASHBOARD_ROUTES.map((section, index) => (
           <ListItem
             button
             key={section.title}
@@ -126,15 +134,28 @@ const SidebarNav = ({ sections }) => {
             to={section.path}
             sx={{
               borderRadius: 2,
+              mb: 0.5,
               "&:hover": {
                 backgroundColor: "black",
                 color: "white",
               },
-              backgroundColor:
-                location.pathname === section.path ? "black" : "inherit",
+              backgroundColor:location.pathname === `${location.pathname}\\${section.path}` ? "black" : "inherit",
               color: location.pathname === section.path ? "white" : "inherit",
             }}
           >
+            <ListItemIcon
+              sx={{
+                "&:hover": {
+                  backgroundColor: "black",
+                  color: "white",
+                },
+                backgroundColor:
+                  location.pathname === section.path ? "black" : "inherit",
+                color: location.pathname === section.path ? "white" : "inherit",
+              }}
+            >
+              {section.icon}
+            </ListItemIcon>
             <ListItemText primary={section.title} />
           </ListItem>
         ))}

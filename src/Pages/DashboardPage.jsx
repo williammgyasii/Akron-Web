@@ -22,7 +22,7 @@ function DashboardPage() {
   };
 
   return (
-    <Container disableGutters maxWidth={false} >
+    <Container component={"main"} disableGutters maxWidth={false}>
       <Button
         onClick={handleLogout}
         type="submit"
@@ -34,7 +34,7 @@ function DashboardPage() {
         Log Out
       </Button>
       <div>
-        WELCOME TO THE DASBOARD MADAAME <span>{currentUser.lastname}</span>{" "}
+        WELCOME TO THE DASBOARD MADAAME <span>{currentUser.firstName}</span>{" "}
       </div>
     </Container>
   );
