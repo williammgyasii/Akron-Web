@@ -37,6 +37,7 @@ import {
   selectIsDrawerOpened,
   toggleDrawerIsOpened,
 } from "../Redux/Slices/Misc/systemSlice";
+import ProfileComponent from "./ProfileComponent";
 
 const drawerWidth = DRAWER_WIDTH;
 
@@ -227,7 +228,7 @@ const SidebarNav = ({ sections }) => {
         onClick={() => console.log("ac")}
         sx={{
           mt: "auto",
-          mb: 10,
+          mb: 2,
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
@@ -244,6 +245,12 @@ const SidebarNav = ({ sections }) => {
         {open && <Typography sx={{ fontSize: 13 }}>Logout</Typography>}
         <Logout />
       </Button>
+      <ProfileComponent
+        name="John Doe"
+        role="Software Engineer"
+        avatarUrl="https://via.placeholder.com/150"
+        sx={{ mb: 10 }}
+      ></ProfileComponent>
     </Drawer>
   );
 };
