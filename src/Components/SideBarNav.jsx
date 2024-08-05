@@ -18,31 +18,31 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
-import { ArrowRightAlt } from "@mui/icons-material";
+import {
+  AddAlarm,
+  AddOutlined,
+  AddSharp,
+  ArrowRightAlt,
+  Logout,
+  PlusOne,
+} from "@mui/icons-material";
 import { Link, NavLink, useLocation } from "react-router-dom";
-import { DRAWER_WIDTH } from "../Utils/Constants";
+import { DRAWER_CLOSED_WIDTH, DRAWER_WIDTH } from "../Utils/Constants";
 import { DASHBOARD_ROUTES } from "../Routes/dashboardRoutes";
 import { makeStyles } from "@mui/styles";
+import VariableSizeIconButton from "./CustomIconButton";
+import { Button } from "@mui/material";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  selectIsDrawerOpened,
+  toggleDrawerIsOpened,
+} from "../Redux/Slices/Misc/systemSlice";
 
 const drawerWidth = DRAWER_WIDTH;
 
-const useStyles = makeStyles((theme) => ({
-  active: {
-    backgroundColor: "#000",
-  },
-  link: {
-    textDecoration: "none",
-    color: "pink",
-    
-    "&.active": {
-      backgroundColor: "yellow",
-    },
-  },
-}));
-
 const openedMixin = (theme) => ({
   width: drawerWidth,
-  padding: 7,
+  padding: 8,
   transition: theme.transitions.create("width", {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.enteringScreen,
@@ -57,19 +57,18 @@ const closedMixin = (theme) => ({
   }),
   overflowX: "hidden",
   padding: 5,
-  width: `calc(${theme.spacing(7)} + 1px)`,
-  [theme.breakpoints.up("sm")]: {
-    width: `calc(${theme.spacing(8)} + 1px)`,
+  width: `calc(${theme.spacing(4)} + 1px)`,
+  [theme.breakpoints.up("phone")]: {
+    width: DRAWER_CLOSED_WIDTH,
   },
 });
 
-const DrawerHeader = styled("div")(({ theme }) => ({
+const DrawerHeader = styled("div", {
+  shouldForwardProp: (prop) => prop !== "open",
+})(({ theme, open }) => ({
   display: "flex",
   alignItems: "center",
-  justifyContent: "flex-end",
-  // backgroundColor:"#000",
-  //   padding: theme.spacing(0, 1),
-  // necessary for content to be below app bar
+  justifyContent: open ? "center" : "flex-end",
   ...theme.mixins.toolbar,
 }));
 
@@ -80,8 +79,7 @@ const Drawer = styled(MuiDrawer, {
   flexShrink: 0,
   whiteSpace: "nowrap",
   boxSizing: "border-box",
-  padding: 4,
-  //   backgroundColor:"red",
+  // backgroundColor:"red",
   ...(open && {
     ...openedMixin(theme),
     "& .MuiDrawer-paper": openedMixin(theme),
@@ -93,62 +91,159 @@ const Drawer = styled(MuiDrawer, {
 }));
 
 const SidebarNav = ({ sections }) => {
-  const [open, setOpen] = React.useState(true);
+  // const [open, setOpen] = React.useState(true);
   const theme = useTheme();
   const location = useLocation();
-  const classes = useStyles();
+  const dispatch = useDispatch();
+  const open = useSelector(selectIsDrawerOpened);
 
   const toggleDrawer = () => {
-    setOpen(!open);
+    // setOpen(!open);
   };
 
   return (
     <Drawer variant="permanent" open={open}>
       {/* drawer header */}
-      <DrawerHeader>
-        <IconButton onClick={toggleDrawer}>
+      <DrawerHeader sx={{ minHeight: 10 }}>
+        <IconButton onClick={() => dispatch(toggleDrawerIsOpened())}>
           {open ? <ChevronRightIcon /> : <MenuIcon />}
         </IconButton>
       </DrawerHeader>
-      <Divider />
+      {/* <Divider /> */}
 
       {/* drawer first item */}
       <List>
         {DASHBOARD_ROUTES.map((section, index, isActive) => (
-          <ListItem
+          <NavLink
             key={section.title}
             to={section.path}
-            component={Link}
-            sx={classes.link}
+            style={{ textDecoration: "none", color: "#9896A3" }}
           >
-            <ListItemIcon sx={{minWidth:35}}>{section.icon}</ListItemIcon>
-            <ListItemText primary={section.title} />
-          </ListItem>
+            <ListItem
+              sx={{
+                backgroundColor:
+                  location.pathname === section.path ? "black" : "inherit",
+                color: location.pathname === section.path ? "white" : "inherit",
+                justifyContent: open ? "flex-end" : "center", // Center the icons when closed
+                mb: 0.5,
+                minHeight: 6,
+                py: "4px",
+                borderRadius: 2,
+                "&:hover": {
+                  backgroundColor: "black",
+                  color: "white",
+                },
+              }}
+            >
+              <ListItemIcon
+                sx={{
+                  minWidth: 10,
+                  width: 35,
+                  backgroundColor:
+                    location.pathname === section.path ? "black" : "inherit",
+                  color:
+                    location.pathname === section.path ? "white" : "inherit",
+                }}
+              >
+                {section.icon}
+              </ListItemIcon>
+              {open && <ListItemText primary={section.title} />}
+            </ListItem>
+          </NavLink>
         ))}
       </List>
-      <Divider />
+      <Divider sx={{ mt: 3 }} />
 
-      {/* <List>
-      {sections.map((section, index) => (
-          <ListItem
-            button
-            key={section.title}
-            component={Link}
-            to={section.path}
+      <List>
+        {open && (
+          <Box
             sx={{
-              "&:hover": {
-                backgroundColor: "black",
-                color: "white",
-              },
-              backgroundColor:
-                location.pathname === section.path ? "black" : "inherit",
-              color: location.pathname === section.path ? "white" : "inherit",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              color: "#9896A3",
+              px: 2,
+              mb: 1,
             }}
           >
-            <ListItemText primary={section.title} />
-          </ListItem>
+            <Typography
+              sx={{
+                fontSize: ".8rem",
+                fontWeight: 700,
+              }}
+            >
+              PROJECTS
+            </Typography>
+            <VariableSizeIconButton
+              onClick={() => console.log("ac")}
+              size="tiny"
+            >
+              <AddSharp />
+            </VariableSizeIconButton>
+          </Box>
+        )}
+        {DASHBOARD_ROUTES.map((section, index, isActive) => (
+          <NavLink
+            key={section.title}
+            to={section.path}
+            style={{ textDecoration: "none", color: "#9896A3" }}
+          >
+            <ListItem
+              sx={{
+                backgroundColor:
+                  location.pathname === section.path ? "black" : "inherit",
+                color: location.pathname === section.path ? "white" : "inherit",
+                justifyContent: open ? "flex-end" : "center", // Center the icons when closed
+                mb: 0.5,
+                minHeight: 6,
+                py: "4px",
+                borderRadius: 2,
+                "&:hover": {
+                  backgroundColor: "black",
+                  color: "white",
+                },
+              }}
+            >
+              <ListItemIcon
+                sx={{
+                  minWidth: 10,
+                  width: 35,
+                  backgroundColor:
+                    location.pathname === section.path ? "black" : "inherit",
+                  color:
+                    location.pathname === section.path ? "white" : "inherit",
+                }}
+              >
+                {section.icon}
+              </ListItemIcon>
+              {open && <ListItemText primary={section.title} />}
+            </ListItem>
+          </NavLink>
         ))}
-      </List> */}
+      </List>
+
+      <Button
+        variant="primary"
+        onClick={() => console.log("ac")}
+        sx={{
+          mt: "auto",
+          mb: 10,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          backgroundColor: "red",
+          borderRadius: 1,
+          padding: 1,
+          color: "#fff",
+          gap: 1,
+          "&:hover": {
+            backgroundColor: "black", // Disable the default hover effect
+          },
+        }}
+      >
+        {open && <Typography sx={{ fontSize: 13 }}>Logout</Typography>}
+        <Logout />
+      </Button>
     </Drawer>
   );
 };
