@@ -26,7 +26,13 @@ import {
   Logout,
   PlusOne,
 } from "@mui/icons-material";
-import { Link, NavLink, useLocation } from "react-router-dom";
+import {
+  Link,
+  NavLink,
+  useLocation,
+  useNavigate,
+  useNavigation,
+} from "react-router-dom";
 import { DRAWER_CLOSED_WIDTH, DRAWER_WIDTH } from "../Utils/Constants";
 import { DASHBOARD_ROUTES } from "../Routes/dashboardRoutes";
 import { makeStyles } from "@mui/styles";
@@ -38,6 +44,8 @@ import {
   toggleDrawerIsOpened,
 } from "../Redux/Slices/Misc/systemSlice";
 import ProfileComponent from "./ProfileComponent";
+import { persistor, resetState } from "../Redux/store";
+import { logoutUser } from "../Redux/Slices/Users/UsersSlice";
 
 const drawerWidth = DRAWER_WIDTH;
 
@@ -97,11 +105,16 @@ const SidebarNav = ({ sections }) => {
   const location = useLocation();
   const dispatch = useDispatch();
   const open = useSelector(selectIsDrawerOpened);
+  const navigate = useNavigate();
 
-  const toggleDrawer = () => {
-    // setOpen(!open);
+  const handleLogout = () => {
+    dispatch(resetState());
+    dispatch(logoutUser());
+    persistor.purge(); // Clear persisted state
+    // Perform other logout logic, like redirecting to the login page
+    navigate("/login", { replace: true });
+    window.location.reload();
   };
-
   return (
     <Drawer variant="permanent" open={open}>
       {/* drawer header */}
@@ -163,7 +176,7 @@ const SidebarNav = ({ sections }) => {
               alignItems: "center",
               justifyContent: "space-between",
               color: "#9896A3",
-              px: 2,
+              px: 1,
               mb: 1,
             }}
           >
@@ -223,11 +236,16 @@ const SidebarNav = ({ sections }) => {
         ))}
       </List>
 
+      <ProfileComponent
+        role="Software Engineer"
+        avatarUrl="https://via.placeholder.com/150"
+        style={{ mb: 2, mt: "auto" }}
+      />
+
       <Button
         variant="primary"
-        onClick={() => console.log("ac")}
+        onClick={handleLogout}
         sx={{
-          mt: "auto",
           mb: 2,
           display: "flex",
           alignItems: "center",
@@ -245,12 +263,6 @@ const SidebarNav = ({ sections }) => {
         {open && <Typography sx={{ fontSize: 13 }}>Logout</Typography>}
         <Logout />
       </Button>
-      <ProfileComponent
-        name="John Doe"
-        role="Software Engineer"
-        avatarUrl="https://via.placeholder.com/150"
-        sx={{ mb: 10 }}
-      ></ProfileComponent>
     </Drawer>
   );
 };
