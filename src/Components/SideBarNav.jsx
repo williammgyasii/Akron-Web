@@ -205,7 +205,7 @@ const SidebarNav = ({ sections }) => {
             <ListItem
               sx={{
                 backgroundColor:
-                  location.pathname === section.path ? "black" : "inherit",
+                  location.pathname === section.path ? "#F5F5F7" : "inherit",
                 color: location.pathname === section.path ? "white" : "inherit",
                 justifyContent: open ? "flex-end" : "center", // Center the icons when closed
                 mb: 0.5,
