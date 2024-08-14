@@ -9,6 +9,7 @@ import {
 } from "firebase/auth";
 import { doc, setDoc, getDoc } from "firebase/firestore";
 import { firebaseAuth, firebaseFirestore } from "../../../Firebase/getFirebase";
+import { getAuthErrorMessage } from "../../../Utils/authErrors";
 
 export const registerUser = createAsyncThunk(
   "users/registerUser",
@@ -44,7 +45,9 @@ export const loginUser = createAsyncThunk(
       }
       return { user, ...userDoc.data() };
     } catch (error) {
-      return rejectWithValue(error.message);
+      // console.log(error.code)
+      const errorMessage = getAuthErrorMessage(error.code);
+      return rejectWithValue(errorMessage);
     }
   }
 );
@@ -108,6 +111,9 @@ const usersSlice = createSlice({
     clearError(state) {
       state.error = null;
     },
+    setError: (state, action) => {
+      state.error = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -139,7 +145,8 @@ const usersSlice = createSlice({
       .addCase(loginUser.rejected, (state, action) => {
         state.status = "failed";
         state.loading = false;
-        state.error = action.error;
+        state.error = action.payload;
+        
       })
       .addCase(logoutUser.fulfilled, (state) => {
         state.status = "succeeded";

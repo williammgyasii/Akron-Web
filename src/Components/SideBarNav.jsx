@@ -223,7 +223,7 @@ const SidebarNav = ({ sections }) => {
                   minWidth: 10,
                   width: 35,
                   backgroundColor:
-                    location.pathname === section.path ? "black" : "inherit",
+                    location.pathname === section.path ? "#F5F5F7" : "inherit",
                   color:
                     location.pathname === section.path ? "white" : "inherit",
                 }}
@@ -252,7 +252,7 @@ const SidebarNav = ({ sections }) => {
           justifyContent: "center",
           backgroundColor: "red",
           borderRadius: 1,
-          padding: 1,
+          padding: .5,
           color: "#fff",
           gap: 1,
           "&:hover": {
@@ -260,8 +260,8 @@ const SidebarNav = ({ sections }) => {
           },
         }}
       >
-        {open && <Typography sx={{ fontSize: 13 }}>Logout</Typography>}
-        <Logout />
+        {open && <Typography sx={{ fontSize: 11 }}>Logout</Typography>}
+        <Logout  />
       </Button>
     </Drawer>
   );

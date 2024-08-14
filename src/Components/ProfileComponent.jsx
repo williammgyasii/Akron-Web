@@ -13,7 +13,7 @@ const ProfileComponent = ({ name, role, avatarUrl, onClick, ...props }) => {
 
   
   return (
-    <ButtonBase
+    <Box
       component={Link}
       to={"profile"}
       sx={[
@@ -21,10 +21,10 @@ const ProfileComponent = ({ name, role, avatarUrl, onClick, ...props }) => {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          p: 1,
-          bgcolor: "transparent",
-          border: "2px solid #000",
-          borderRadius: 4,
+          py: 1,
+          bgcolor: "#fff",
+          border: "1px solid #E6E4F0",
+          borderRadius: 2,
         },
         props.style,
       ]}
@@ -32,17 +32,17 @@ const ProfileComponent = ({ name, role, avatarUrl, onClick, ...props }) => {
       <Avatar
         alt={name}
         src={avatarUrl}
-        sx={{ width: 40, height: 40, mr: 1.1 }}
+        sx={{ width: 30, height: 30, mr: 1.1 }}
       />
       <Box>
-        <Typography variant="h6">
+        <Typography sx={{fontSize:12}} variant="h6">
           {currentUser.firstName} {currentUser.lastName}
         </Typography>
         <Typography sx={{ fontSize: 10 }} variant="body2" color="#A0A0A3">
           {role}
         </Typography>
       </Box>
-    </ButtonBase>
+    </Box>
   );
 };
 

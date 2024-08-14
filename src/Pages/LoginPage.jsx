@@ -22,7 +22,8 @@ import ButtonVariants from "../Components/CustomButton";
 import CustomButton from "../Components/CustomButton";
 import { Google, LoginOutlined } from "@mui/icons-material";
 import CustomFormInput from "../Components/CustomFormInput";
-import CustomSnackBar from "../Components/CustomSnackbar";
+import CustomSnackBar from "../Components/SnackbarComponent";
+import SnackbarComponent from "../Components/SnackbarComponent";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -31,7 +32,7 @@ const Login = () => {
   const theme = useTheme();
   const { currentUser, error, loading } = useSelector((state) => state.user);
   const loginBackgroundImage = require("../Images/loginBG.jpg");
-  const [snackBarOpen, setSnackBarOpen] = useState(false);
+  const [snackbar, setSnackbar] = useState({ open: false, message: "" });
 
   const [formValues, setFormValues] = useState({ email: "", password: "" });
   const [errors, setErrors] = useState({ email: false, password: false });
@@ -78,15 +79,22 @@ const Login = () => {
     return valid;
   };
 
-  const handleCloseSnackbar = () => {
-    setSnackBarOpen(false);
+  const handleError = (message) => {
+    setSnackbar({ open: true, message });
   };
+
+  const handleClose = () => {
+    setSnackbar((prev) => ({ ...prev, open: false }));
+  };
+
+  // Example error simulation
+ 
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     if (validateForm()) {
-      setSnackBarOpen(false);
       // Submit form data
       dispatch(
         loginUser({ email: formValues.email, password: formValues.password })
@@ -96,16 +104,14 @@ const Login = () => {
           navigate("/dashboard", { replace: true }); // Redirect to dashboard on successful login
         })
         .catch((error) => {
-          console.log("Erro logging in", error);
+          handleError(error)
         });
-      console.log("Form submitted:", formValues);
-      console.log(error);
     } else {
       console.log("invalid");
-      setSnackBarOpen(true);
     }
   };
 
+ 
   return (
     <Container
       component="main"
@@ -151,7 +157,6 @@ const Login = () => {
       >
         <CustomHeader
           customStyles={{
-            
             [theme.breakpoints.down("tablets_port")]: {
               mt: 10,
               fontSize: "2rem",
@@ -203,12 +208,11 @@ const Login = () => {
           },
         }}
       >
-        <CustomSnackBar
-          message={"Invalid Email Password"}
-          snackBarOpen={snackBarOpen}
-          vertical={"top"}
-          horizontal={"right"}
-          handleCloseSnackbar={handleCloseSnackbar}
+        
+        <SnackbarComponent
+          open={snackbar.open}
+          onClose={handleClose}
+          message={snackbar.message}
         />
         {/* APP LOGO GOES HERE */}
         <CustomHeader variant="h5">Log in</CustomHeader>

@@ -22,7 +22,6 @@ import ButtonVariants from "../Components/CustomButton";
 import CustomButton from "../Components/CustomButton";
 import { Google, LoginOutlined } from "@mui/icons-material";
 import CustomFormInput from "../Components/CustomFormInput";
-import CustomSnackBar from "../Components/CustomSnackbar";
 import SideBySideLayout from "../Layouts/SideBySide";
 
 const RegisterPage = () => {
@@ -55,9 +54,6 @@ const RegisterPage = () => {
     username: "",
     password: "",
   });
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState("");
-  const [snackbarSeverity, setSnackbarSeverity] = useState("error");
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -145,11 +141,7 @@ const RegisterPage = () => {
       try {
         await dispatch(registerUser(formValues));
         navigate("/dashboard", { replace: true });
-      } catch (error) {
-        setSnackbarMessage("Registration failed. Please try again.");
-        setSnackbarSeverity("error");
-        setSnackbarOpen(true);
-      }
+      } catch (error) {}
     }
   };
 
@@ -202,9 +194,9 @@ const RegisterPage = () => {
         </CustomHeader> */}
         <Box
           sx={{
-            display:"flex",
-            justifyContent:"center",
-            alignItems:"center",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
             [theme.breakpoints.down("tablets_port")]: {
               mt: 20,
             },
@@ -246,13 +238,7 @@ const RegisterPage = () => {
           },
         }}
       >
-        <CustomSnackBar
-          message={"Invalid Email Password"}
-          snackBarOpen={snackBarOpen}
-          vertical={"top"}
-          horizontal={"right"}
-          handleCloseSnackbar={handleCloseSnackbar}
-        />
+       
         {/* APP LOGO GOES HERE */}
         <CustomHeader variant="h5">Join Akron</CustomHeader>
         <Subtitle subtitleStyle={"small_black"}>
