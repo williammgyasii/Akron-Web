@@ -21,23 +21,6 @@ const AppBarComponent = () => {
   const randomImage = Math.floor(Math.random() * 100);
   const notificationCount = 4;
 
-  const handleAvatarClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  const notifications = [
-    "You have a new message",
-    "Your order has been shipped",
-    "Update available for download",
-    "Your profile is 80% complete",
-    "You have a new friend request",
-    "Your subscription is expiring soon",
-  ];
-
   return (
     <AppBar position="static" color="transparent" elevation={0}>
       <Toolbar>

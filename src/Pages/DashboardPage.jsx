@@ -25,19 +25,7 @@ function DashboardPage() {
   return (
     <Container  disableGutters maxWidth={false} sx={{backgroundColor:"#fff"}}>
       <AppBarComponent />
-      <Button
-        onClick={handleLogout}
-        type="submit"
-        variant="contained"
-        color="primary"
-        fullWidth
-        sx={{ mt: 2 }}
-      >
-        Log Out
-      </Button>
-      <div>
-        WELCOME TO THE DASBOARD MADAAME <span>{currentUser.firstName}</span>{" "}
-      </div>
+      
     </Container>
   );
 }

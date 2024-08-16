@@ -11,14 +11,13 @@ import {
   Box,
   Button,
 } from "@mui/material";
-import { NotificationsOutlined } from "@mui/icons-material";
 import { IoNotificationsOutline } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-const NotficationsManager = ({}) => {
+const NotficationsManager = () => {
   const [anchorEl, setAnchorEl] = useState(null);
-  const open = Boolean(anchorEl);
+  const [open,setOpen]=useState(true)
   const notifications = useSelector(
     (state) => state.notifications.notifications
   );
