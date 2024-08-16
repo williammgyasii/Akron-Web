@@ -12,7 +12,7 @@ import {
 import { deepPurple } from "@mui/material/colors";
 import { useSelector } from "react-redux";
 import { selectCurrentUser } from "../Redux/Slices/Users/UsersSlice";
-import NotifcationsManager from "./NotificationsManager";
+import NotifcationsManager from "./NotificationsMenu";
 import UserAvatarMenu from "./UserAvatarMenu";
 
 const AppBarComponent = () => {

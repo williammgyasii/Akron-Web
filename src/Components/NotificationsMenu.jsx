@@ -15,9 +15,9 @@ import { IoNotificationsOutline } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-const NotficationsManager = () => {
+const NotificationsMenu = () => {
   const [anchorEl, setAnchorEl] = useState(null);
-  const [open,setOpen]=useState(true)
+  const open =Boolean(anchorEl)
   const notifications = useSelector(
     (state) => state.notifications.notifications
   );
@@ -72,7 +72,7 @@ const NotficationsManager = () => {
         }}
         transformOrigin={{
           vertical: "top",
-          horizontal: "right",
+          horizontal: "center",
         }}
       >
         <Box
@@ -80,12 +80,9 @@ const NotficationsManager = () => {
             minWidth: 300,
             maxHeight: "400px",
             overflowY: "auto",
-            p: 2,
+            p: 1,
           }}
         >
-          <Typography variant="h6" sx={{ mb: 2 }}>
-            Notifications
-          </Typography>
           <List>
             {notifications.slice(0, 5).map((notification, index) => (
               <ListItem key={index}>
@@ -103,7 +100,7 @@ const NotficationsManager = () => {
           </List>
           <Divider />
           <Box sx={{ textAlign: "center", mt: 1 }}>
-            <Button onClick={handleSeeAll} color="primary">
+            <Button fullWidth onClick={handleSeeAll} color="primary">
               SEE ALL
             </Button>
           </Box>
@@ -113,4 +110,4 @@ const NotficationsManager = () => {
   );
 };
 
-export default NotficationsManager;
+export default NotificationsMenu;
