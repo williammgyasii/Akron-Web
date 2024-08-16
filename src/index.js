@@ -9,6 +9,7 @@ import { store, persistor } from "./Redux/store";
 import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
 import theme from "./Utils/getTheme";
 import { listenForAuthChanges } from "./Redux/Slices/Users/UsersSlice";
+import GlobalLoading from "./Components/GlobalLoading";
 
 const AuthListener = () => {
   const dispatch = useDispatch();
@@ -27,6 +28,7 @@ root.render(
         <ThemeProvider theme={theme}>
           <CssBaseline />
           <AuthListener />
+          {/* <GlobalLoading/> */}
           <App />
         </ThemeProvider>
       </PersistGate>

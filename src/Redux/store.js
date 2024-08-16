@@ -16,7 +16,7 @@ import groupsReducer from "./Slices/Groups/groupsSlice";
 import taskReducer from "./Slices/Tasks/tasksSlice";
 import userReducer from "./Slices/Users/UsersSlice";
 import notificationsReducer from './Slices/Users/notificationsSlice'
-import systemReducer from "./Slices/Misc/systemSlice";
+import systemReducer from "./Slices/System/systemSlice";
 
 
 const persistConfig = {

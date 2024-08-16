@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { Fab, Modal, Box, Button, Tooltip } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
+import { useDispatch } from 'react-redux';
 
 const CreateTaskFAB = () => {
   const [open, setOpen] = useState(false);
+  const dispatch=useDispatch()
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);

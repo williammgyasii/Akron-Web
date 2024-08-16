@@ -4,8 +4,8 @@ const systemSlice = createSlice({
   name: "App Slice",
   initialState: {
     loginQuote: "",
-    appInit: false,
     isDrawerOpened: false,
+    isAppLoading: false,
   },
   reducers: {
     setLoginQuote: (state, action) => {
@@ -14,9 +14,24 @@ const systemSlice = createSlice({
     toggleDrawerIsOpened: (state, action) => {
       state.isDrawerOpened = !state.isDrawerOpened;
     },
+    showGlobalLoading: (state) => {
+      state.isAppLoading = true;
+    },
+    hideGlobalLoading: (state) => {
+      state.isAppLoading = false;
+    },
   },
 });
 
-export const { setLoginQuote, toggleDrawerIsOpened } = systemSlice.actions;
+export const {
+  setLoginQuote,
+  toggleDrawerIsOpened,
+  showGlobalLoading,
+  hideGlobalLoading,
+} = systemSlice.actions;
+
 export const selectIsDrawerOpened = (state) => state.system.isDrawerOpened;
+export const selectIsAppLoading = (state) => state.system.isAppLoading;
+export const selectAppInit = (state) => state.system.appInit;
+
 export default systemSlice.reducer;

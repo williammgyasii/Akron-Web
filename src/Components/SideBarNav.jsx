@@ -42,7 +42,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   selectIsDrawerOpened,
   toggleDrawerIsOpened,
-} from "../Redux/Slices/Misc/systemSlice";
+} from "../Redux/Slices/System/systemSlice";
 import ProfileComponent from "./ProfileComponent";
 import { persistor, resetState } from "../Redux/store";
 import { logoutUser } from "../Redux/Slices/Users/UsersSlice";
