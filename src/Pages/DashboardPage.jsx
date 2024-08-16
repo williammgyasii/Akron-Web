@@ -23,7 +23,7 @@ function DashboardPage() {
   };
 
   return (
-    <Container  disableGutters maxWidth={false} sx={{p:0}}>
+    <Container  disableGutters maxWidth={false} sx={{backgroundColor:"#fff"}}>
       <AppBarComponent />
       <Button
         onClick={handleLogout}

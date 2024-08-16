@@ -7,14 +7,20 @@ import {
   Menu,
   MenuItem,
   Typography,
+  Badge,
 } from "@mui/material";
 import { deepPurple } from "@mui/material/colors";
 import { useSelector } from "react-redux";
 import { selectCurrentUser } from "../Redux/Slices/Users/UsersSlice";
+import { NotificationsOutline } from "react-ionicons";
+import NotifcationsManager from "./NotificationsManager";
+import UserAvatarMenu from "./UserAvatarMenu";
 
 const AppBarComponent = () => {
   const [anchorEl, setAnchorEl] = useState(null);
-  const currentUser = useSelector(selectCurrentUser)
+  const currentUser = useSelector(selectCurrentUser);
+  const randomImage = Math.floor(Math.random() * 100);
+  const notificationCount = 4;
 
   const handleAvatarClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -24,40 +30,24 @@ const AppBarComponent = () => {
     setAnchorEl(null);
   };
 
+  const notifications = [
+    "You have a new message",
+    "Your order has been shipped",
+    "Update available for download",
+    "Your profile is 80% complete",
+    "You have a new friend request",
+    "Your subscription is expiring soon",
+  ];
+
   return (
-    <AppBar
-      position="static"
-      color="transparent"
-      elevation={0}
-     
-    >
-      <Toolbar >
+    <AppBar position="static" color="transparent" elevation={0}>
+      <Toolbar>
         <Typography variant="h6" sx={{ flexGrow: 1, fontSize: "1rem" }}>
           Welcome Back! {currentUser.firstName}
         </Typography>
-        <IconButton onClick={handleAvatarClick}>
-          <Avatar sx={{ bgcolor: deepPurple[500], width: 25, height: 25 }}>
-            U
-          </Avatar>
-        </IconButton>
-        <Menu
-          anchorEl={anchorEl}
-          open={Boolean(anchorEl)}
-          onClose={handleClose}
-          anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "center",
-          }}
-          transformOrigin={{
-            vertical: "top",
-            horizontal: "center",
-          }}
-          sx={{ mt: 1 }}
-        >
-          <MenuItem onClick={handleClose}>Profile</MenuItem>
-          <MenuItem onClick={handleClose}>My account</MenuItem>
-          <MenuItem onClick={handleClose}>Logout</MenuItem>
-        </Menu>
+
+        <NotifcationsManager notifications={notifications} />
+        <UserAvatarMenu />
       </Toolbar>
     </AppBar>
   );
