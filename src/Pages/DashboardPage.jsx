@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { persistor, resetState } from "../Redux/store";
 import { logoutUser } from "../Redux/Slices/Users/UsersSlice";
 import { useNavigate } from "react-router-dom";
+import AppBarComponent from "../Components/AppBarComponent";
 
 function DashboardPage() {
   const dispatch = useDispatch();
@@ -22,7 +23,8 @@ function DashboardPage() {
   };
 
   return (
-    <Container component={"main"} disableGutters maxWidth={false}>
+    <Container  disableGutters maxWidth={false} sx={{p:0}}>
+      <AppBarComponent />
       <Button
         onClick={handleLogout}
         type="submit"

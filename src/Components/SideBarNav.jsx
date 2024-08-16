@@ -236,6 +236,8 @@ const SidebarNav = ({ sections }) => {
         ))}
       </List>
 
+
+        {/* CHANGE TO THE NEED HELP SOLUTIONS */}
       <ProfileComponent
         role="Software Engineer"
         avatarUrl="https://via.placeholder.com/150"
