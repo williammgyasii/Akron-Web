@@ -1,9 +1,30 @@
-import React, { useState } from 'react';
-import { IconButton, Badge, Popover, Typography, List, ListItem, ListItemText, Divider, Box } from '@mui/material';
-import { NotificationsOutlined } from '@mui/icons-material';
+import React, { useState } from "react";
+import {
+  IconButton,
+  Badge,
+  Popover,
+  Typography,
+  List,
+  ListItem,
+  ListItemText,
+  Divider,
+  Box,
+  Button,
+} from "@mui/material";
+import { NotificationsOutlined } from "@mui/icons-material";
+import { IoNotificationsOutline } from "react-icons/io5";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
-const NotficationsManager = ({ notifications, onSeeAll }) => {
+const NotficationsManager = ({}) => {
   const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+  const notifications = useSelector(
+    (state) => state.notifications.notifications
+  );
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleNotificationClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -13,63 +34,80 @@ const NotficationsManager = ({ notifications, onSeeAll }) => {
     setAnchorEl(null);
   };
 
+  const handleSeeAll = () => {
+    navigate("notifications");
+    handleClose();
+  };
+
   return (
     <>
-      <IconButton onClick={handleNotificationClick} sx={{ position: 'relative', marginRight: '4px' }}>
-        <Badge 
-          badgeContent={notifications.length} 
-          color="error" 
+      <IconButton
+        onClick={handleNotificationClick}
+        sx={{ position: "relative", marginRight: "4px" }}
+      >
+        <Badge
+          badgeContent={notifications.length}
+          color="error"
           sx={{
-            '& .MuiBadge-badge': {
-              top: '4px',
-              right: '4px',
-              height: '16px',
-              minWidth: '16px',
-              padding: '0 4px',
-              fontSize: '0.75rem',
+            "& .MuiBadge-badge": {
+              top: "4px",
+              right: "4px",
+              height: "16px",
+              minWidth: "16px",
+              padding: "0 4px",
+              fontSize: "0.75rem",
             },
           }}
         >
-          <NotificationsOutlined/>
+          <IoNotificationsOutline />
         </Badge>
       </IconButton>
 
       <Popover
+        open={open}
         anchorEl={anchorEl}
-        open={Boolean(anchorEl)}
         onClose={handleClose}
         anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'center',
+          vertical: "bottom",
+          horizontal: "right",
         }}
         transformOrigin={{
-          vertical: 'top',
-          horizontal: 'center',
+          vertical: "top",
+          horizontal: "right",
         }}
-        sx={{ mt: 1, width: '300px' }}
       >
-        <Box sx={{ padding: '8px', maxWidth: '300px' }}>
-          {notifications.length === 0 ? (
-            <Typography variant="body2" sx={{ padding: '8px' }}>No new notifications</Typography>
-          ) : (
-            <List>
-              {notifications.slice(0, 5).map((notification, index) => (
-                <ListItem button key={index} onClick={handleClose}>
-                  <ListItemText primary={notification} />
-                </ListItem>
-              ))}
-              {notifications.length > 5 && (
-                <>
-                  <Divider />
-                  <ListItem  onClick={onSeeAll} sx={{ justifyContent: 'center' }}>
-                    <Typography variant="body2" color="primary">
-                      See All
-                    </Typography>
-                  </ListItem>
-                </>
-              )}
-            </List>
-          )}
+        <Box
+          sx={{
+            minWidth: 300,
+            maxHeight: "400px",
+            overflowY: "auto",
+            p: 2,
+          }}
+        >
+          <Typography variant="h6" sx={{ mb: 2 }}>
+            Notifications
+          </Typography>
+          <List>
+            {notifications.slice(0, 5).map((notification, index) => (
+              <ListItem key={index}>
+                <ListItemText primary={notification.text} />
+              </ListItem>
+            ))}
+            {notifications.length === 0 && (
+              <Typography
+                variant="body2"
+                sx={{ textAlign: "center", color: "gray" }}
+              >
+                No notifications
+              </Typography>
+            )}
+          </List>
+          <Divider />
+          <Box sx={{ textAlign: "center", mt: 1 }}>
+            <Button onClick={handleSeeAll} color="primary">
+              SEE ALL
+            </Button>
+          </Box>
         </Box>
       </Popover>
     </>

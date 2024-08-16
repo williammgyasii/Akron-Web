@@ -45,7 +45,7 @@ const AppBarComponent = () => {
           Welcome Back! {currentUser.firstName}
         </Typography>
 
-        <NotifcationsManager notifications={notifications} />
+        <NotifcationsManager />
         <UserAvatarMenu />
       </Toolbar>
     </AppBar>
