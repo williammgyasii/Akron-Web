@@ -23,6 +23,8 @@ export const DASHBOARD_ROUTES = [
     icon: <Settings />,
     component: <SettingsPage />,
   },
+
+  
 ];
 
 

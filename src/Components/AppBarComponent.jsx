@@ -12,7 +12,6 @@ import {
 import { deepPurple } from "@mui/material/colors";
 import { useSelector } from "react-redux";
 import { selectCurrentUser } from "../Redux/Slices/Users/UsersSlice";
-import { NotificationsOutline } from "react-ionicons";
 import NotifcationsManager from "./NotificationsManager";
 import UserAvatarMenu from "./UserAvatarMenu";
 

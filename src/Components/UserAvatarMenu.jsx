@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
-import { IconButton, Avatar, Popover, MenuItem } from '@mui/material';
+import { IconButton, Avatar, Popover, MenuItem, ListItemIcon, ListItemText } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import { IoPersonOutline, IoSettingsOutline, IoLogOutOutline } from 'react-icons/io5'; // Ionicons
+import MenuItemWithIcon from './MenuItemWithIcon';
 
-const UserAvatarMenu = ({ imageUrl }) => {
+const UserAvatarMenu = ({ imageUrl="https://i.pravatar.cc/150?img=3" }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const navigate = useNavigate();
+  const AVATAR_SIZE = 40
 
   const handleAvatarClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -22,7 +25,7 @@ const UserAvatarMenu = ({ imageUrl }) => {
   return (
     <>
       <IconButton onClick={handleAvatarClick}>
-        <Avatar sx={{ width: 32, height: 32 }}>
+        <Avatar sx={{ width: AVATAR_SIZE, height: AVATAR_SIZE }}>
           <img 
             src={imageUrl} 
             alt="User Avatar" 
@@ -43,11 +46,29 @@ const UserAvatarMenu = ({ imageUrl }) => {
           vertical: 'top',
           horizontal: 'center',
         }}
-        sx={{ mt: 1 }}
+        
       >
-        <MenuItem onClick={() => handleMenuItemClick('/profile')}>Profile</MenuItem>
-        <MenuItem onClick={() => handleMenuItemClick('/account')}>My account</MenuItem>
-        <MenuItem onClick={() => handleMenuItemClick('/logout')}>Logout</MenuItem>
+        <MenuItemWithIcon
+          icon={IoPersonOutline}
+          text="Profile"
+          path="profile"
+          hoverColor="black"
+          handleClick={()=>handleMenuItemClick("profile")}
+        />
+        <MenuItemWithIcon
+          icon={IoSettingsOutline}
+          text="Settings"
+          path="settings"
+          hoverColor="darkblue"
+          handleClick={()=>handleMenuItemClick("settings")}
+        />
+        <MenuItemWithIcon
+          icon={IoLogOutOutline}
+          text="Logout"
+          path="logout"
+          hoverColor="darkred"
+          handleClick={()=>console.log("i WILL LOGOUT")}
+        />
       </Popover>
     </>
   );
