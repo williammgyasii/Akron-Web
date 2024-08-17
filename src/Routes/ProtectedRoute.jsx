@@ -8,7 +8,7 @@ const PrivateRoute = ({ element }) => {
   const { currentUser, loading, status, error } = useSelector(
     (state) => state.user
   );
-  // console.log(currentUser, loading, status, error);
+  console.log(currentUser, loading, status, error);
 
   if (status === "loading") {
     if (loading) return <CircularProgress size={24} />; // or a spinner

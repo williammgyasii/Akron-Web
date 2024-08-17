@@ -89,10 +89,10 @@ export const listenForAuthChanges = createAsyncThunk(
                 ...userDoc.data(),
               };
               console.log("SOMEONE IS INSIDE WITH DETAILS", userStructure);
-              dispatch(setUser(userStructure));
+              // dispatch(setUser(userStructure));
             }
           } else {
-            dispatch(clearUser());
+            // dispatch(clearUser());
           }
           resolve();
         },

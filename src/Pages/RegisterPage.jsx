@@ -34,7 +34,7 @@ const RegisterPage = () => {
   const registerBg = require("../Images/RegisterBg.jpg");
   const [snackBarOpen, setSnackBarOpen] = useState(false);
 
-  console.log(currentUser);
+  // console.log(currentUser);
 
   const [formValues, setFormValues] = useState({
     firstName: "",
