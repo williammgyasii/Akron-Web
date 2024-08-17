@@ -89,10 +89,10 @@ export const listenForAuthChanges = createAsyncThunk(
                 ...userDoc.data(),
               };
               console.log("SOMEONE IS INSIDE WITH DETAILS", userStructure);
-              // dispatch(setUser(userStructure));
+              dispatch(setUser(userStructure));
             }
           } else {
-            // dispatch(clearUser());
+            dispatch(clearUser());
           }
           resolve();
         },
@@ -175,7 +175,7 @@ const usersSlice = createSlice({
       })
       .addCase(listenForAuthChanges.fulfilled, (state, action) => {
         console.log("listening ending....");
-        state.currentUser = action.payload;
+
         state.loading = false;
       });
   },
