@@ -17,7 +17,7 @@ import { loginUser, registerUser } from "../Redux/Slices/Users/UsersSlice";
 import CustomHeader from "../Components/CustomTitles";
 import { generateRandomQuote } from "../Utils/generateRandomQuote";
 import Quotes from "../Components/Quotes";
-import Subtitle from "../Components/Subtitle";
+import CustomSubtitle from "../Components/CustomSubtitle";
 import ButtonVariants from "../Components/CustomButton";
 import CustomButton from "../Components/CustomButton";
 import { Google, LoginOutlined } from "@mui/icons-material";
@@ -60,12 +60,7 @@ const RegisterPage = () => {
     setFormValues({ ...formValues, [name]: value });
   };
 
-  // useEffect(() => {
-  //   if (currentUser) {
-  //     navigate("/dashboard", { replace: true });
-  //   }
-  // }, [currentUser, navigate]);
-
+ 
   const validateEmail = (email) => {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return re.test(String(email).toLowerCase());
@@ -111,29 +106,6 @@ const RegisterPage = () => {
     setSnackBarOpen(false);
   };
 
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-
-  //   if (validateForm()) {
-  //     setSnackBarOpen(false);
-  //     // Submit form data
-  //     dispatch(
-  //       loginUser({ email: formValues.email, password: formValues.password })
-  //     )
-  //       .unwrap() // To handle resolved promise
-  //       .then(() => {
-  //         navigate("/dashboard", { replace: true }); // Redirect to dashboard on successful login
-  //       })
-  //       .catch((error) => {
-  //         console.log("Erro logging in", error);
-  //       });
-  //     console.log("Form submitted:", formValues);
-  //     console.log(error);
-  //   } else {
-  //     console.log("invalid");
-  //     setSnackBarOpen(true);
-  //   }
-  // };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -176,7 +148,7 @@ const RegisterPage = () => {
           padding: 5,
           backgroundImage: `
           linear-gradient(
-            rgba(0, 0, 0, 0.6), 
+            rgba(159, 132, 253, 0.6), 
             rgba(0, 0, 0, 0.75)
           ),
           url(${registerBg})`, // Replace with your image URL
@@ -189,9 +161,6 @@ const RegisterPage = () => {
           },
         }}
       >
-        {/* <CustomHeader styledText color={"#fff"}>
-          Created For Your Growth
-        </CustomHeader> */}
         <Box
           sx={{
             display: "flex",
@@ -207,11 +176,11 @@ const RegisterPage = () => {
         >
           <Quotes />
         </Box>
-        <Subtitle subtitleStyle={"small_white"} styled={false} color={"#fff"}>
+        <CustomSubtitle variant={"text_base"} color={"#fff"}>
           Boost your productivity and achieve Your Goals: <br />
           Turn Everyday Tasks into Triumphs with Smart Planning and Organized
           Efficiency
-        </Subtitle>
+        </CustomSubtitle>
       </Box>
 
       {/* //FORM COMPONENT */}
@@ -220,7 +189,6 @@ const RegisterPage = () => {
           display: "flex",
           flexDirection: "column",
           justifyContent: "flex-start",
-          backgroundColor: `red`,
           py: 15,
           backgroundColor: theme.palette.background.paper,
           flex: 1,
@@ -238,12 +206,33 @@ const RegisterPage = () => {
           },
         }}
       >
-       
         {/* APP LOGO GOES HERE */}
-        <CustomHeader variant="h5">Join Akron</CustomHeader>
-        <Subtitle subtitleStyle={"small_black"}>
-          Already have an account? <Link to={"/login"}>Log in</Link>{" "}
-        </Subtitle>
+        <CustomHeader
+          weightFont={"bold"}
+          color={theme.palette.secondary.main}
+          variant="text_3xl"
+          capitalize
+        >
+          Join Akron
+        </CustomHeader>
+        <CustomSubtitle
+          customStyles={{
+            marginTop: "-10px",
+            textDecoration: "none",
+          }}
+          variant={"text_base"}
+        >
+          Already have an account?{" "}
+          <Link
+            style={{
+              textDecoration: "none",
+              color: theme.palette.primary.dark900,
+            }}
+            to={"/login"}
+          >
+            Log in
+          </Link>{" "}
+        </CustomSubtitle>
 
         <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
           <Stack spacing={2.3}>
@@ -303,7 +292,7 @@ const RegisterPage = () => {
               type="submit"
               disabled={loading}
               styleType={"secondary"}
-              color="primary"
+              color={theme.palette.secondary.main}
             >
               {loading ? (
                 <CircularProgress sx={{ color: "#fff" }} size={24} />
@@ -323,11 +312,6 @@ const RegisterPage = () => {
           >
             Sign Up With Google
           </CustomButton>
-
-          <Subtitle color="#ccc" customStyles={{ fontSize: "1rem", mt: 5 }}>
-            By joining, you agree to the <Link>Terms</Link> and{" "}
-            <Link>Privacy Policy</Link>
-          </Subtitle>
         </Box>
       </Box>
     </Container>

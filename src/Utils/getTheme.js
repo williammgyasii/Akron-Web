@@ -58,17 +58,9 @@ const theme = createTheme({
       light200: "#FFEFB0",
       light100: "#FFF8D7",
     },
-
     background: {
       default: "#f5f5f5", // Light grey background
       paper: "#ffff", // White paper background
-    },
-    text: {
-      primary: "#333333", // Dark text color
-      secondary: "#555555", // Light text color
-      subtitle_black: "#00000",
-      subtitle_white: "#fff",
-      subtitle1: "#fff",
     },
     error: {
       dark900: "#7A0619", //BluePurple
@@ -92,52 +84,60 @@ const theme = createTheme({
       light200: "#E8FAA6",
       light100: "#F5FCD2",
     },
-    action: {
-      hover: "#ff3",
-    },
   },
   typography: {
-    fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
-    h1: {
-      fontSize: "3.0rem",
-      fontWeight: 800,
+    fontFamily: "Plus Jarkata Sans , Roboto , Arial , sans-serif",
+    text_xs: {
+      fontWeight: "400",
+      fontSize: "12px",
     },
-    h2: {
-      fontSize: "2rem",
-      fontWeight: 500,
+    text_sm: {
+      fontSize: "14px",
     },
-    h3: {
-      fontSize: "1.75rem",
-      fontWeight: 400,
+    text_base: {
+      fontSize: "16px",
+      textDecoration: "none",
     },
-    h4: {
-      fontSize: "1.5rem",
-      fontWeight: 400,
+    text_lg: {
+      fontSize: "20px",
     },
-    h5: {
-      fontSize: "1.25rem",
-      fontWeight: 400,
+    text_xl: {
+      fontSize: "24px",
     },
-    h6: {
-      fontSize: "1rem",
-      fontWeight: 500,
+    text_2xl: {
+      fontSize: "36px",
     },
-    body1: {
-      fontSize: "1rem",
-      fontWeight: 400,
+    text_3xl: {
+      fontSize: "40px",
     },
-    subtitle1: {
-      fontSize: "1rem",
-      fontWeight: 400,
+    text_4xl: {
+      fontSize: "72px",
     },
-    button: {
-      fontSize: "0.875rem",
-      fontWeight: 500,
+  },
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          borderRadius: 4,
+          textTransform: "none",
+          transition: "background-color 0.3s, color 0.3s",
+          "&:hover": {
+            backgroundColor: "rgba(0, 0, 0, 0.1)",
+          },
+          "&:disabled": {
+            backgroundColor: "rgba(0, 0, 0, 0.2)",
+            color: "rgba(0, 0, 0, 0.3)",
+          },
+          "&:focus": {
+            outline: "2px solid #007bff",
+          },
+        },
+      },
     },
-    quote: {
-      fontSize: "1rem",
-      fontWeight: "300",
-    },
+  },
+  spacing: 8, // Default spacing unit
+  shape: {
+    borderRadius: 4,
   },
 });
 

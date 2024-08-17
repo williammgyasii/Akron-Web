@@ -67,23 +67,32 @@ export const logoutUser = createAsyncThunk(
 export const listenForAuthChanges = createAsyncThunk(
   "auth/listenForAuthChanges",
   async (_, { dispatch }) => {
-    return new Promise((resolve) => {
-      const unsubscribe = onAuthStateChanged(firebaseAuth, async (user) => {
-        if (user) {
-          // Fetch user data from Firestore
-          const userDoc = await getDoc(
-            doc(firebaseFirestore, "users", user.uid)
-          );
-          if (userDoc.exists()) {
-            return { user, ...userDoc.data() };
+    return new Promise((resolve, reject) => {
+      const unsubscribe = onAuthStateChanged(
+        firebaseAuth,
+        async (user) => {
+          if (user) {
+            // Fetch user data from Firestore
+            const userDoc = await getDoc(
+              doc(firebaseFirestore, "users", user.uid)
+            );
+            if (userDoc.exists()) {
+              const userStructure = {
+                note: "New User Structure",
+                user,
+                ...userDoc.data(),
+              };
+              dispatch(setUser(userStructure));
+            }
           } else {
-            return { user };
+            dispatch(clearUser());
           }
-        } else {
-          dispatch(clearUser());
+          resolve();
+        },
+        (error) => {
+          reject(error);
         }
-        resolve();
-      });
+      );
 
       // Cleanup listener on component unmount
       return unsubscribe;
@@ -101,7 +110,7 @@ const usersSlice = createSlice({
   },
   reducers: {
     setUser(state, action) {
-      state.user = action.payload;
+      state.currentUser = action.payload;
       state.loading = false;
     },
     clearUser(state) {
@@ -146,7 +155,6 @@ const usersSlice = createSlice({
         state.status = "failed";
         state.loading = false;
         state.error = action.payload;
-        
       })
       .addCase(logoutUser.fulfilled, (state) => {
         state.status = "succeeded";
@@ -154,12 +162,13 @@ const usersSlice = createSlice({
       })
 
       //Auth Changes
-      .addCase(listenForAuthChanges.pending, (state) => {
+      .addCase(listenForAuthChanges.pending, (state, action) => {
         console.log("listening....");
         state.loading = true;
       })
-      .addCase(listenForAuthChanges.fulfilled, (state) => {
+      .addCase(listenForAuthChanges.fulfilled, (state, action) => {
         console.log("listening ending....");
+        state.currentUser = action.payload;
         state.loading = false;
       });
   },

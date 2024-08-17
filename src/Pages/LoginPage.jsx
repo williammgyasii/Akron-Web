@@ -17,8 +17,7 @@ import { loginUser } from "../Redux/Slices/Users/UsersSlice";
 import CustomHeader from "../Components/CustomTitles";
 import { generateRandomQuote } from "../Utils/generateRandomQuote";
 import Quotes from "../Components/Quotes";
-import Subtitle from "../Components/Subtitle";
-import ButtonVariants from "../Components/CustomButton";
+import CustomSubtitle from "../Components/CustomSubtitle";
 import CustomButton from "../Components/CustomButton";
 import { Google, LoginOutlined } from "@mui/icons-material";
 import CustomFormInput from "../Components/CustomFormInput";
@@ -168,7 +167,7 @@ const Login = () => {
           Life Begins when you start living
         </CustomHeader>
         <Quotes />
-        <Subtitle
+        <CustomSubtitle
           customStyles={{
             [theme.breakpoints.down("tablets_port")]: {
               fontSize: ".8rem",
@@ -181,7 +180,7 @@ const Login = () => {
           Boost your productivity and achieve Your Goals: <br />
           Turn Everyday Tasks into Triumphs with Smart Planning and Organized
           Efficiency
-        </Subtitle>
+        </CustomSubtitle>
       </Box>
 
       {/* //FORM COMPONENT */}
@@ -216,9 +215,9 @@ const Login = () => {
         />
         {/* APP LOGO GOES HERE */}
         <CustomHeader variant="h5">Log in</CustomHeader>
-        <Subtitle subtitleStyle={"small_black"}>
+        <CustomSubtitle subtitleStyle={"small_black"}>
           New To Akron? <Link to={"/join"}>Join us</Link>{" "}
-        </Subtitle>
+        </CustomSubtitle>
 
         <CustomButton
           customStyles={{ mt: 3, textTransform: "capitalize" }}
