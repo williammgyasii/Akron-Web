@@ -23,9 +23,11 @@ function DashboardPage() {
   };
 
   return (
-    <Container  disableGutters maxWidth={false} sx={{backgroundColor:"#fff"}}>
-      <AppBarComponent />
-      
+    <Container disableGutters maxWidth={false} sx={{ backgroundColor: "#fff" }}>
+      <AppBarComponent
+        title={`Welcome Back! ${currentUser.firstName}`}
+        showOthers
+      />
     </Container>
   );
 }

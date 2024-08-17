@@ -46,6 +46,7 @@ import {
 import ProfileComponent from "./ProfileComponent";
 import { persistor, resetState } from "../Redux/store";
 import { logoutUser } from "../Redux/Slices/Users/UsersSlice";
+import Logo from "./Logo";
 
 const drawerWidth = DRAWER_WIDTH;
 
@@ -77,7 +78,7 @@ const DrawerHeader = styled("div", {
 })(({ theme, open }) => ({
   display: "flex",
   alignItems: "center",
-  justifyContent: open ? "center" : "flex-end",
+  justifyContent: "center",
   ...theme.mixins.toolbar,
 }));
 
@@ -119,6 +120,7 @@ const SidebarNav = ({ sections }) => {
     <Drawer variant="permanent" open={open}>
       {/* drawer header */}
       <DrawerHeader sx={{ minHeight: 10 }}>
+        <Logo size="medium"/>
         <IconButton onClick={() => dispatch(toggleDrawerIsOpened())}>
           {open ? <ChevronRightIcon /> : <MenuIcon />}
         </IconButton>
