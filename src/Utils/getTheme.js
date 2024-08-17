@@ -118,9 +118,10 @@ const theme = createTheme({
     MuiButton: {
       styleOverrides: {
         root: {
-          borderRadius: 4,
+          borderRadius: 5,
           textTransform: "none",
           transition: "background-color 0.3s, color 0.3s",
+          // marginBottom:10,
           "&:hover": {
             backgroundColor: "rgba(0, 0, 0, 0.1)",
           },

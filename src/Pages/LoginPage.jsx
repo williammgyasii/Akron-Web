@@ -23,6 +23,7 @@ import { Google, LoginOutlined } from "@mui/icons-material";
 import CustomFormInput from "../Components/CustomFormInput";
 import CustomSnackBar from "../Components/SnackbarComponent";
 import SnackbarComponent from "../Components/SnackbarComponent";
+import { IoLogIn } from "react-icons/io5";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -36,6 +37,8 @@ const Login = () => {
   const [formValues, setFormValues] = useState({ email: "", password: "" });
   const [errors, setErrors] = useState({ email: false, password: false });
   const [helperTexts, setHelperTexts] = useState({ email: "", password: "" });
+
+  // console.log(currentUser);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -87,8 +90,6 @@ const Login = () => {
   };
 
   // Example error simulation
- 
-
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -103,14 +104,13 @@ const Login = () => {
           navigate("/dashboard", { replace: true }); // Redirect to dashboard on successful login
         })
         .catch((error) => {
-          handleError(error)
+          handleError(error);
         });
     } else {
       console.log("invalid");
     }
   };
 
- 
   return (
     <Container
       component="main"
@@ -136,12 +136,12 @@ const Login = () => {
           justifyContent: "center",
           alignItems: "center",
           // backgroundColor: "blue",
-          flexBasis: "40%",
+          flexBasis: "50%",
           height: "100%",
           padding: 5,
           backgroundImage: `
           linear-gradient(
-            rgba(0, 0, 0, 0.6), 
+           rgba(159, 132, 253, 0.6), 
             rgba(0, 0, 0, 0.75)
           ),
           url(${loginBackgroundImage})`, // Replace with your image URL
@@ -156,13 +156,15 @@ const Login = () => {
       >
         <CustomHeader
           customStyles={{
+            lineHeight: "40px",
             [theme.breakpoints.down("tablets_port")]: {
               mt: 10,
-              fontSize: "2rem",
             },
           }}
-          styledText
-          color={"#fff"}
+          weightFont={"bold"}
+          color={theme.palette.primary.white}
+          variant="text_3xl"
+          capitalize
         >
           Life Begins when you start living
         </CustomHeader>
@@ -194,7 +196,7 @@ const Login = () => {
           backgroundColor: theme.palette.background.paper,
           flex: 1,
           height: "100%",
-          px: 20,
+          px: 2,
           [theme.breakpoints.down("tablets_landscape")]: {
             px: 8,
           },
@@ -203,32 +205,42 @@ const Login = () => {
             width: "100%",
           },
           [theme.breakpoints.up("desktop")]: {
-            px: 25, // Styles for min-width of 'md' breakpoint
+            px: 5, // Styles for min-width of 'md' breakpoint
           },
         }}
       >
-        
         <SnackbarComponent
           open={snackbar.open}
           onClose={handleClose}
           message={snackbar.message}
         />
         {/* APP LOGO GOES HERE */}
-        <CustomHeader variant="h5">Log in</CustomHeader>
-        <CustomSubtitle subtitleStyle={"small_black"}>
-          New To Akron? <Link to={"/join"}>Join us</Link>{" "}
-        </CustomSubtitle>
-
-        <CustomButton
-          customStyles={{ mt: 3, textTransform: "capitalize" }}
-          variant={"contained"}
-          startIcon={<Google color="#ff3" />}
-          fullWidth
-          styleType={"iconAndText"}
-          onClick={() => console.log("Tuiii")}
+        <CustomHeader
+          weightFont={"bold"}
+          color={theme.palette.secondary.main}
+          variant="text_3xl"
+          capitalize
         >
-          Sign In With Google
-        </CustomButton>
+          Log In
+        </CustomHeader>
+        <CustomSubtitle
+          customStyles={{
+            marginTop: "-10px",
+            textDecoration: "none",
+          }}
+          variant={"text_base"}
+        >
+          New To Akron?{" "}
+          <Link
+            style={{
+              textDecoration: "none",
+              color: theme.palette.primary.dark900,
+            }}
+            to={"/join"}
+          >
+            Join us
+          </Link>{" "}
+        </CustomSubtitle>
 
         <Box component="form" onSubmit={handleSubmit} sx={{ mt: 5 }}>
           <Stack spacing={2}>
@@ -250,12 +262,13 @@ const Login = () => {
               helperText={helperTexts.password}
             />
             <CustomButton
-              fullWidth
-              startIcon={<LoginOutlined />}
-              type="submit"
-              disabled={loading}
-              styleType={"secondary"}
-              color="primary"
+              variant="primary"
+              size="medium"
+              // loading={loading}
+              leftIcon={IoLogIn}
+              // type="iconLeft" // Submit button for the form
+              // label="Submit"
+              submit
             >
               {loading ? (
                 <CircularProgress sx={{ color: "#fff" }} size={24} />

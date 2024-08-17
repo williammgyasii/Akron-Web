@@ -14,18 +14,24 @@ import { getAuthErrorMessage } from "../../../Utils/authErrors";
 export const registerUser = createAsyncThunk(
   "users/registerUser",
   async (formValues, { rejectWithValue }) => {
-    const userCredential = await createUserWithEmailAndPassword(
-      firebaseAuth,
-      formValues.email,
-      formValues.password
-    );
-    const user = userCredential.user;
-    const { password, ...rest } = formValues;
-    await setDoc(doc(firebaseFirestore, "users", user.uid), {
-      uid: user.uid,
-      ...rest,
-    });
-    return { uid: user.uid, ...rest };
+    try {
+      const userCredential = await createUserWithEmailAndPassword(
+        firebaseAuth,
+        formValues.email,
+        formValues.password
+      );
+      const user = userCredential.user;
+      const { password, ...rest } = formValues;
+      await setDoc(doc(firebaseFirestore, "users", user.uid), {
+        uid: user.uid,
+        ...rest,
+      });
+      // return { uid: user.uid, note: "redux/registerSlice", ...rest };
+    } catch (error) {
+      // console.log(error.code)
+      const errorMessage = getAuthErrorMessage(error.code);
+      return rejectWithValue(errorMessage);
+    }
   }
 );
 
@@ -43,7 +49,7 @@ export const loginUser = createAsyncThunk(
       if (!userDoc.exists()) {
         throw new Error("User data not found");
       }
-      return { user, ...userDoc.data() };
+      return { userId: user.uid, ...userDoc.data() };
     } catch (error) {
       // console.log(error.code)
       const errorMessage = getAuthErrorMessage(error.code);
@@ -79,9 +85,10 @@ export const listenForAuthChanges = createAsyncThunk(
             if (userDoc.exists()) {
               const userStructure = {
                 note: "New User Structure",
-                user,
+                userId: user.uid,
                 ...userDoc.data(),
               };
+              console.log("SOMEONE IS INSIDE WITH DETAILS", userStructure);
               dispatch(setUser(userStructure));
             }
           } else {
@@ -114,7 +121,7 @@ const usersSlice = createSlice({
       state.loading = false;
     },
     clearUser(state) {
-      state.user = null;
+      state.currentUser = null;
       state.loading = false;
     },
     clearError(state) {

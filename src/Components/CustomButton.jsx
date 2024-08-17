@@ -1,170 +1,139 @@
-// ButtonVariants.js
 import React from "react";
-import { Button, Container, Stack, IconButton } from "@mui/material";
-import HomeIcon from "@mui/icons-material/Home";
-import InfoIcon from "@mui/icons-material/Info";
-import SettingsIcon from "@mui/icons-material/Settings";
+import {
+  Button,
+  CircularProgress,
+  IconButton as MuiIconButton,
+  styled,
+} from "@mui/material";
+import PropTypes from "prop-types";
 
-// Define custom styles using `sx` prop
-const buttonStyles = {
-  primary: {
-    backgroundColor: (theme) => theme.palette.primary.main,
-    color: (theme) => theme.palette.primary.contrastText,
-    "&:hover": {
-      backgroundColor: (theme) => theme.palette.primary.dark,
-    },
+// Define button sizes
+const buttonSizes = {
+  small: {
+    padding: "4px 8px",
+    fontSize: "0.75rem",
   },
-  secondary: {
-    backgroundColor: (theme) => theme.palette.secondary.main,
-    textTransform:"capitalize",
-    fontWeight:500,
-    gap: 1,
-    color: (theme) => theme.palette.secondary.contrastText,
-    "&:hover": {
-      backgroundColor: (theme) => theme.palette.secondary.dark,
-    },
+  medium: {
+    padding: "6px 12px",
+    fontSize: "0.95rem",
   },
-  outlined: {
-    borderColor: (theme) => theme.palette.primary.main,
-    color: (theme) => theme.palette.primary.main,
-    borderWidth: 2,
-    "&:hover": {
-      borderColor: (theme) => theme.palette.primary.dark,
-      color: (theme) => theme.palette.primary.dark,
-    },
-  },
-  text: {
-    color: (theme) => theme.palette.primary.main,
-    "&:hover": {
-      backgroundColor: (theme) => theme.palette.action.hover,
-    },
-  },
-  iconButton: {
-    color: (theme) => theme.palette.primary.main,
-    "&:hover": {
-      backgroundColor: (theme) => theme.palette.action.hover,
-    },
-  },
-  iconAndText: {
-    display: "flex",
-    alignItems: "center",
+  large: {
+    padding: "8px 16px",
     fontSize: "1rem",
-    // justifyContent:"space-between",
-    gap: 1, // theme.spacing(1) equivalent
-    "&:hover": {
-      backgroundColor: (theme) => theme.palette.secondary.hover,
-      color: (theme) => theme.palette.secondary.subtitle,
-    },
   },
 };
 
-const CustomButton = ({
-  styleType,
-  variant,
+const StyledButton = styled(Button)(({ theme, variant, size }) => ({
+  // width:"2rem",
+  width:"100%",
+  backgroundColor:
+    variant === "primary"
+      ? theme.palette.primary.main
+      : variant === "secondary"
+      ? theme.palette.secondary.main
+      : variant === "minimal"
+      ? "transparent"
+      : theme.palette.background.paper,
+  color:
+    variant === "primary"
+      ? theme.palette.primary.white
+      : variant === "secondary"
+      ? theme.palette.primary.white
+      : theme.palette.secondary.main,
+  padding: buttonSizes[size]?.padding || buttonSizes.medium.padding,
+  fontSize: buttonSizes[size]?.fontSize || buttonSizes.medium.fontSize,
+
+  "&:hover": {
+    backgroundColor:
+      variant === "primary"
+        ? theme.palette.primary.dark600
+        : variant === "secondary"
+        ? "transparent"
+        : "rgba(0, 0, 0, 0.1)",
+    color:
+      variant === "secondary"
+        ? theme.palette.secondary.main
+        : theme.palette.primary.white,
+    border: variant === "secondary" ? "1px solid #000" : null,
+  },
+  "&:disabled": {
+    backgroundColor:
+      variant === "primary"
+        ? theme.palette.primary.light
+        : variant === "secondary"
+        ? theme.palette.secondary.light
+        : theme.palette.action.disabledBackground,
+  },
+}));
+
+const StyledIconButton = styled(MuiIconButton)(({ theme, variant, size }) => ({
+  color:
+    variant === "minimal"
+      ? theme.palette.primary.main
+      : theme.palette.text.primary,
+  fontSize: buttonSizes[size]?.fontSize || buttonSizes.medium.fontSize,
+}));
+
+function CustomButton({
+  variant = "primary",
+  size = "medium",
+  type = "label",
+  label,
+  submit,
+  leftIcon: LeftIcon,
+  rightIcon: RightIcon,
   children,
-  fullWidth,
-  type,
-  disabled,
-  customStyles,
+  sx, // For external styling
+  onClick,
   ...props
-}) => {
+}) {
+  const renderIcon = (icon) => {
+    if (icon) {
+      return React.cloneElement(icon, {
+        style: {
+          marginRight: type === "iconLeft" ? 8 : 0,
+          marginLeft: type === "iconRight" ? 8 : 0,
+        },
+      });
+    }
+    return null;
+  };
+
   return (
-    <Button
-      type={type}
-      startIcon={props.startIcon}
-      endIcon={props.endIcon}
-      sx={[buttonStyles[styleType], customStyles]}
-      fullWidth={fullWidth}
+    <StyledButton
       variant={variant}
-      disabled={disabled}
-      onClick={props.onClick}
+      size={size}
+      sx={sx} // Apply external styling
+      type={submit ? "submit" : "button"}
+      // type={props.type || "button"} // Default to 'button', use 'submit' if specified
+      onClick={onClick}
+      // fullWidth={false}
+      {...props}
     >
+      {type === "iconLeft" && renderIcon(<LeftIcon />)}
+      {type === "iconRight" && renderIcon(<RightIcon />)}
+      {type === "iconOnly" && (
+        <StyledIconButton variant={variant} size={size}>
+          {renderIcon(<LeftIcon />)}
+        </StyledIconButton>
+      )}
+      {type === "label" && label}
+
       {children}
-    </Button>
+    </StyledButton>
   );
+}
+
+CustomButton.propTypes = {
+  variant: PropTypes.oneOf(["primary", "secondary", "minimal"]),
+  size: PropTypes.oneOf(["small", "medium", "large"]),
+  type: PropTypes.oneOf(["label", "iconLeft", "iconRight", "iconOnly"]),
+  label: PropTypes.string,
+  leftIcon: PropTypes.elementType,
+  rightIcon: PropTypes.elementType,
+  children: PropTypes.node, // Allow children
+  sx: PropTypes.object, // For external styling
+  onClick: PropTypes.func, // Function to handle button clicks
 };
 
 export default CustomButton;
-
-// // ButtonVariants.js
-// import React from 'react';
-// import { Button, Container, Stack, IconButton } from '@mui/material';
-// import HomeIcon from '@mui/icons-material/Home';
-// import InfoIcon from '@mui/icons-material/Info';
-// import SettingsIcon from '@mui/icons-material/Settings';
-
-// // Define custom styles using `sx` prop
-// const buttonStyles = {
-//   primary: {
-//     backgroundColor: (theme) => theme.palette.primary.main,
-//     color: (theme) => theme.palette.primary.contrastText,
-//     '&:hover': {
-//       backgroundColor: (theme) => theme.palette.primary.dark,
-//     },
-//   },
-//   secondary: {
-//     backgroundColor: (theme) => theme.palette.secondary.main,
-//     color: (theme) => theme.palette.secondary.contrastText,
-//     '&:hover': {
-//       backgroundColor: (theme) => theme.palette.secondary.dark,
-//     },
-//   },
-//   outlined: {
-//     borderColor: (theme) => theme.palette.primary.main,
-//     color: (theme) => theme.palette.primary.main,
-//     borderWidth: 2,
-//     '&:hover': {
-//       borderColor: (theme) => theme.palette.primary.dark,
-//       color: (theme) => theme.palette.primary.dark,
-//     },
-//   },
-//   text: {
-//     color: (theme) => theme.palette.primary.main,
-//     '&:hover': {
-//       backgroundColor: (theme) => theme.palette.action.hover,
-//     },
-//   },
-//   iconButton: {
-//     color: (theme) => theme.palette.primary.main,
-//     '&:hover': {
-//       backgroundColor: (theme) => theme.palette.action.hover,
-//     },
-//   },
-//   iconAndText: {
-//     display: 'flex',
-//     alignItems: 'center',
-//     gap: 1, // theme.spacing(1) equivalent
-//   },
-// };
-
-// const ButtonVariants = () => {
-//   return (
-//     <Container>
-//       <Stack spacing={2} direction="column" alignItems="center">
-//         <Button sx={buttonStyles.primary} variant="contained">
-//           Primary Button
-//         </Button>
-//         <Button sx={buttonStyles.secondary} variant="contained">
-//           Secondary Button
-//         </Button>
-//         <Button sx={buttonStyles.outlined} variant="outlined">
-//           Outlined Button
-//         </Button>
-//         <Button sx={buttonStyles.text} variant="text">
-//           Text Button
-//         </Button>
-//         <IconButton sx={buttonStyles.iconButton} aria-label="home">
-//           <HomeIcon />
-//         </IconButton>
-//         <Button sx={buttonStyles.iconAndText} variant="contained" startIcon={<InfoIcon />}>
-//           Info Button
-//         </Button>
-//         <Button sx={buttonStyles.iconAndText} variant="contained" startIcon={<SettingsIcon />}>
-//           Settings
-//         </Button>
-//       </Stack>
-//     </Container>
-//   );
-// };
-
-// export default ButtonVariants;

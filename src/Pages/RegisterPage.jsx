@@ -20,9 +20,10 @@ import Quotes from "../Components/Quotes";
 import CustomSubtitle from "../Components/CustomSubtitle";
 import ButtonVariants from "../Components/CustomButton";
 import CustomButton from "../Components/CustomButton";
-import { Google, LoginOutlined } from "@mui/icons-material";
+import { ChevronLeft, Google, LoginOutlined } from "@mui/icons-material";
 import CustomFormInput from "../Components/CustomFormInput";
 import SideBySideLayout from "../Layouts/SideBySide";
+import { IoSettings } from "react-icons/io5";
 
 const RegisterPage = () => {
   const dispatch = useDispatch();
@@ -32,6 +33,8 @@ const RegisterPage = () => {
   const { currentUser, error, loading } = useSelector((state) => state.user);
   const registerBg = require("../Images/RegisterBg.jpg");
   const [snackBarOpen, setSnackBarOpen] = useState(false);
+
+  console.log(currentUser);
 
   const [formValues, setFormValues] = useState({
     firstName: "",
@@ -60,7 +63,6 @@ const RegisterPage = () => {
     setFormValues({ ...formValues, [name]: value });
   };
 
- 
   const validateEmail = (email) => {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return re.test(String(email).toLowerCase());
@@ -105,7 +107,6 @@ const RegisterPage = () => {
   const handleCloseSnackbar = () => {
     setSnackBarOpen(false);
   };
-
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -189,7 +190,7 @@ const RegisterPage = () => {
           display: "flex",
           flexDirection: "column",
           justifyContent: "flex-start",
-          py: 15,
+          py: 20,
           backgroundColor: theme.palette.background.paper,
           flex: 1,
           height: "100%",
@@ -235,7 +236,10 @@ const RegisterPage = () => {
         </CustomSubtitle>
 
         <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
-          <Stack spacing={2.3}>
+          <Stack
+            sx={{ alignItems: "center", justifyContent: "center" }}
+            spacing={2.3}
+          >
             <SideBySideLayout
               leftComponent={
                 <CustomFormInput
@@ -286,13 +290,14 @@ const RegisterPage = () => {
               error={errors.password}
               helperText={helperTexts.password}
             />
-
             <CustomButton
-              fullWidth
-              type="submit"
-              disabled={loading}
-              styleType={"secondary"}
-              color={theme.palette.secondary.main}
+              variant="primary"
+              size="medium"
+              // loading={loading}
+              leftIcon={IoSettings}
+              // type="iconLeft" // Submit button for the form
+              // label="Submit"
+              submit
             >
               {loading ? (
                 <CircularProgress sx={{ color: "#fff" }} size={24} />
@@ -302,8 +307,8 @@ const RegisterPage = () => {
             </CustomButton>
           </Stack>
 
-          <CustomButton
-            customStyles={{ mt: 3, textTransform: "capitalize" }}
+          {/* <CustomButton
+            customStyles={{ mt: 10, textTransform: "capitalize" }}
             variant={"contained"}
             startIcon={<Google color="#ff3" />}
             fullWidth
@@ -311,7 +316,7 @@ const RegisterPage = () => {
             onClick={() => console.log("Tuiii")}
           >
             Sign Up With Google
-          </CustomButton>
+          </CustomButton> */}
         </Box>
       </Box>
     </Container>
