@@ -45,18 +45,18 @@ const tasksSlice = createSlice({
   initialState: {
     tasks: [],
     status: "idle",
-    error: "",
+    taskError: "er",
   },
   reducers: {
     addTask: (state, action) => {
       state.tasks.push(action.payload);
-      state.error = null;
+      state.taskError = null;
     },
     setTaskError: (state, action) => {
-      state.error = action.payload;
+      state.taskError = action.payload;
     },
     clearTaskError: (state) => {
-      state.error = null;
+      state.taskError = null;
     },
   },
   extraReducers: (builder) => {
@@ -86,5 +86,5 @@ const tasksSlice = createSlice({
 });
 
 export const { addTask, setTaskError, clearTaskError } = tasksSlice.actions;
-export const selectTaskState = (state) => state.tasks.status;
+export const selectTaskState = (state) => state.tasks.taskError;
 export default tasksSlice.reducer;

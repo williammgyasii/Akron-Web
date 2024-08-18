@@ -10,7 +10,7 @@ import AssignToMember from "./AssignToMember";
 import dayjs from "dayjs";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { addDays } from "date-fns";
+import { addDays, formatDate } from "date-fns";
 import { useDispatch, useSelector } from "react-redux";
 import { selectGroupID } from "../Redux/Slices/Groups/groupsSlice";
 import { selectCurrentUser } from "../Redux/Slices/Users/UsersSlice";
@@ -40,6 +40,8 @@ const TaskForm = ({ groupId, handleClose }) => {
   const taskState = useSelector(selectTaskState);
   const selectedGroup = useSelector(selectGroupID);
   const currentUser = useSelector(selectCurrentUser);
+
+  console.log(taskState);
 
   // Handle input changes
   const handleChange = (field, value) => {
@@ -99,12 +101,14 @@ const TaskForm = ({ groupId, handleClose }) => {
           taskData: {
             taskTitle: formState.taskTitle.value,
             taskDescription: formState.taskDescription.value,
-            startDate: formatTimestamp(formState.startDate.value),
+            startDate: formatDate(formState.startDate.value, "yyyy/dd/MM"),
             assignedTo: currentUser.userId,
           },
         })
       );
-      console.log("Form submitted successfully", formState);
+      // console.log("Form submitted successfully", {
+      //   formState: formatDate(formState.startDate.value, "yyyy/dd/MM"),
+      // });
     }
   };
 
@@ -183,7 +187,7 @@ const TaskForm = ({ groupId, handleClose }) => {
         </Box>
 
         <Box sx={{ marginTop: 1, display: "flex" }}>
-          {taskState === "loading" && (
+          {taskState === "idle" && (
             <CustomButton
               sx={{
                 backgroundColor: theme.palette.error.main,
