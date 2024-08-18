@@ -15,7 +15,9 @@ import storage from "redux-persist/lib/storage"; // defaults to localStorage for
 import groupsReducer from "./Slices/Groups/groupsSlice";
 import taskReducer from "./Slices/Tasks/tasksSlice";
 import userReducer from "./Slices/Users/UsersSlice";
-import systemReducer from "./Slices/Misc/systemSlice";
+import notificationsReducer from './Slices/Users/notificationsSlice'
+import systemReducer from "./Slices/System/systemSlice";
+
 
 const persistConfig = {
   key: "root",
@@ -28,6 +30,7 @@ const rootReducer = combineReducers({
   tasks: taskReducer,
   user: userReducer,
   system:systemReducer,
+  notifications:notificationsReducer
 });
 
 const appReducer = (state,action)=>{

@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { persistor, resetState } from "../Redux/store";
 import { logoutUser } from "../Redux/Slices/Users/UsersSlice";
 import { useNavigate } from "react-router-dom";
+import AppBarComponent from "../Components/AppBarComponent";
+import Logo from "../Components/Logo";
 
 function DashboardPage() {
   const dispatch = useDispatch();
@@ -22,20 +24,12 @@ function DashboardPage() {
   };
 
   return (
-    <Container disableGutters maxWidth={false} >
-      <Button
-        onClick={handleLogout}
-        type="submit"
-        variant="contained"
-        color="primary"
-        fullWidth
-        sx={{ mt: 2 }}
-      >
-        Log Out
-      </Button>
-      <div>
-        WELCOME TO THE DASBOARD MADAAME <span>{currentUser.lastname}</span>{" "}
-      </div>
+    <Container disableGutters maxWidth={false} sx={{ backgroundColor: "#fff" }}>
+      <AppBarComponent
+        title={`Welcome Back! ${currentUser.firstName}`}
+        showOthers
+      />
+      {/* <Logo size="medium" /> */}
     </Container>
   );
 }

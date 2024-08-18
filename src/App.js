@@ -4,6 +4,7 @@ import {
   Route,
   createBrowserRouter,
   createRoutesFromElements,
+  Routes,
 } from "react-router-dom";
 import RootLayout from "./Routes/RootLayout";
 import LoginPage from "./Pages/LoginPage";
@@ -15,17 +16,27 @@ import DashboardPage from "./Pages/DashboardPage";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { listenForAuthChanges } from "./Redux/Slices/Users/UsersSlice";
+import LandingPageNew from "./Pages/LandingPageNew";
+import { AccountBox } from "@mui/icons-material";
+import { DASHBOARD_ROUTES } from "./Routes/dashboardRoutes";
 
 function App() {
   const router = createBrowserRouter(
     createRoutesFromElements(
       <Route path="/" element={<RootLayout />}>
-        <Route element={<LandingPage />} />
-        <Route element={<LoginPage />} index path="login" />
+        <Route element={<LandingPageNew />} index />
+        <Route element={<LoginPage />} path="login" />
         <Route element={<RegisterPage />} path="join" />
         <Route path="dashboard" element={<ProtectedRoute />}>
-          <Route element={<DashboardPage />} index />
-          <Route element={<ProfilePage />} path="profile" />
+          {DASHBOARD_ROUTES.map((section, index) => (
+            <Route
+              key={index}
+              path={section.path}
+              element={section.component}
+              index={section.index}
+            />
+          ))}
+          
         </Route>
       </Route>
     )

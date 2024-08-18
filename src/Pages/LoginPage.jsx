@@ -17,12 +17,13 @@ import { loginUser } from "../Redux/Slices/Users/UsersSlice";
 import CustomHeader from "../Components/CustomTitles";
 import { generateRandomQuote } from "../Utils/generateRandomQuote";
 import Quotes from "../Components/Quotes";
-import Subtitle from "../Components/Subtitle";
-import ButtonVariants from "../Components/CustomButton";
+import CustomSubtitle from "../Components/CustomSubtitle";
 import CustomButton from "../Components/CustomButton";
 import { Google, LoginOutlined } from "@mui/icons-material";
 import CustomFormInput from "../Components/CustomFormInput";
-import CustomSnackBar from "../Components/CustomSnackbar";
+import CustomSnackBar from "../Components/SnackbarComponent";
+import SnackbarComponent from "../Components/SnackbarComponent";
+import { IoLogIn } from "react-icons/io5";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -31,11 +32,13 @@ const Login = () => {
   const theme = useTheme();
   const { currentUser, error, loading } = useSelector((state) => state.user);
   const loginBackgroundImage = require("../Images/loginBG.jpg");
-  const [snackBarOpen, setSnackBarOpen] = useState(false);
+  const [snackbar, setSnackbar] = useState({ open: false, message: "" });
 
   const [formValues, setFormValues] = useState({ email: "", password: "" });
   const [errors, setErrors] = useState({ email: false, password: false });
   const [helperTexts, setHelperTexts] = useState({ email: "", password: "" });
+
+  // console.log(currentUser);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -78,15 +81,20 @@ const Login = () => {
     return valid;
   };
 
-  const handleCloseSnackbar = () => {
-    setSnackBarOpen(false);
+  const handleError = (message) => {
+    setSnackbar({ open: true, message });
   };
+
+  const handleClose = () => {
+    setSnackbar((prev) => ({ ...prev, open: false }));
+  };
+
+  // Example error simulation
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     if (validateForm()) {
-      setSnackBarOpen(false);
       // Submit form data
       dispatch(
         loginUser({ email: formValues.email, password: formValues.password })
@@ -96,13 +104,10 @@ const Login = () => {
           navigate("/dashboard", { replace: true }); // Redirect to dashboard on successful login
         })
         .catch((error) => {
-          console.log("Erro logging in", error);
+          handleError(error);
         });
-      console.log("Form submitted:", formValues);
-      console.log(error);
     } else {
       console.log("invalid");
-      setSnackBarOpen(true);
     }
   };
 
@@ -131,12 +136,12 @@ const Login = () => {
           justifyContent: "center",
           alignItems: "center",
           // backgroundColor: "blue",
-          flexBasis: "40%",
+          flexBasis: "50%",
           height: "100%",
           padding: 5,
           backgroundImage: `
           linear-gradient(
-            rgba(0, 0, 0, 0.6), 
+           rgba(159, 132, 253, 0.6), 
             rgba(0, 0, 0, 0.75)
           ),
           url(${loginBackgroundImage})`, // Replace with your image URL
@@ -151,19 +156,20 @@ const Login = () => {
       >
         <CustomHeader
           customStyles={{
-            
+            lineHeight: "40px",
             [theme.breakpoints.down("tablets_port")]: {
               mt: 10,
-              fontSize: "2rem",
             },
           }}
-          styledText
-          color={"#fff"}
+          weightFont={"bold"}
+          color={theme.palette.primary.white}
+          variant="text_3xl"
+          capitalize
         >
           Life Begins when you start living
         </CustomHeader>
         <Quotes />
-        <Subtitle
+        <CustomSubtitle
           customStyles={{
             [theme.breakpoints.down("tablets_port")]: {
               fontSize: ".8rem",
@@ -176,7 +182,7 @@ const Login = () => {
           Boost your productivity and achieve Your Goals: <br />
           Turn Everyday Tasks into Triumphs with Smart Planning and Organized
           Efficiency
-        </Subtitle>
+        </CustomSubtitle>
       </Box>
 
       {/* //FORM COMPONENT */}
@@ -190,7 +196,7 @@ const Login = () => {
           backgroundColor: theme.palette.background.paper,
           flex: 1,
           height: "100%",
-          px: 20,
+          px: 2,
           [theme.breakpoints.down("tablets_landscape")]: {
             px: 8,
           },
@@ -199,33 +205,42 @@ const Login = () => {
             width: "100%",
           },
           [theme.breakpoints.up("desktop")]: {
-            px: 25, // Styles for min-width of 'md' breakpoint
+            px: 5, // Styles for min-width of 'md' breakpoint
           },
         }}
       >
-        <CustomSnackBar
-          message={"Invalid Email Password"}
-          snackBarOpen={snackBarOpen}
-          vertical={"top"}
-          horizontal={"right"}
-          handleCloseSnackbar={handleCloseSnackbar}
+        <SnackbarComponent
+          open={snackbar.open}
+          onClose={handleClose}
+          message={snackbar.message}
         />
         {/* APP LOGO GOES HERE */}
-        <CustomHeader variant="h5">Log in</CustomHeader>
-        <Subtitle subtitleStyle={"small_black"}>
-          New To Akron? <Link to={"/join"}>Join us</Link>{" "}
-        </Subtitle>
-
-        <CustomButton
-          customStyles={{ mt: 3, textTransform: "capitalize" }}
-          variant={"contained"}
-          startIcon={<Google color="#ff3" />}
-          fullWidth
-          styleType={"iconAndText"}
-          onClick={() => console.log("Tuiii")}
+        <CustomHeader
+          weightFont={"bold"}
+          color={theme.palette.secondary.main}
+          variant="text_3xl"
+          capitalize
         >
-          Sign In With Google
-        </CustomButton>
+          Log In
+        </CustomHeader>
+        <CustomSubtitle
+          customStyles={{
+            marginTop: "-10px",
+            textDecoration: "none",
+          }}
+          variant={"text_base"}
+        >
+          New To Akron?{" "}
+          <Link
+            style={{
+              textDecoration: "none",
+              color: theme.palette.primary.dark900,
+            }}
+            to={"/join"}
+          >
+            Join us
+          </Link>{" "}
+        </CustomSubtitle>
 
         <Box component="form" onSubmit={handleSubmit} sx={{ mt: 5 }}>
           <Stack spacing={2}>
@@ -247,12 +262,13 @@ const Login = () => {
               helperText={helperTexts.password}
             />
             <CustomButton
-              fullWidth
-              startIcon={<LoginOutlined />}
-              type="submit"
-              disabled={loading}
-              styleType={"secondary"}
-              color="primary"
+              variant="primary"
+              size="medium"
+              // loading={loading}
+              leftIcon={IoLogIn}
+              // type="iconLeft" // Submit button for the form
+              // label="Submit"
+              submit
             >
               {loading ? (
                 <CircularProgress sx={{ color: "#fff" }} size={24} />
