@@ -33,6 +33,7 @@ const DrawerLayout = ({ children }) => {
           flexGrow: 1,
           position: "relative",
           height: "100vh",
+          px:2,
           backgroundColor: "#fff",
         }}
       >

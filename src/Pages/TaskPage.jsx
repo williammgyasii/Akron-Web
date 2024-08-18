@@ -4,7 +4,7 @@ import AppBarComponent from "../Components/AppBarComponent";
 
 function TaskPage() {
   return (
-    <Container>
+    <Container disableGutters>
       <AppBarComponent pageHeader showOthers title={"Task"} />
     </Container>
   );
