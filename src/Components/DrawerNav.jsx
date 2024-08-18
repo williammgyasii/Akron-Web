@@ -24,6 +24,7 @@ import {
   toggleDrawerIsOpened,
 } from "../Redux/Slices/System/systemSlice";
 import { Link } from "react-router-dom";
+import { IoMenuOutline } from "react-icons/io5";
 
 const drawerWidth = 200;
 const drawerWidthCollapsed = 60;
@@ -37,7 +38,11 @@ const AppDrawer = () => {
   };
 
   return (
-    <Box sx={{ display: "flex" }}>
+    <Box
+      sx={{
+        display: "flex",
+      }}
+    >
       {/* Side Drawer */}
       <Drawer
         variant="permanent"
@@ -48,26 +53,44 @@ const AppDrawer = () => {
           flexShrink: 0,
           "& .MuiDrawer-paper": {
             width: isDrawerOpen ? drawerWidth : drawerWidthCollapsed,
+            alignContent: "center",
             boxSizing: "border-box",
             overflowX: "hidden",
-            // backgroundColor:"yellow",
-            padding: isDrawerOpen ? "10px 15px" : null,
+            padding: isDrawerOpen ? "10px 15px" : "4px 3px",
             transition: "width 0.3s ease",
           },
         }}
       >
         {/* Logo Section */}
+        <IconButton
+          sx={{
+            height: "40px",
+            width: "auto",
+            marginLeft: isDrawerOpen ? "auto" : null,
+          }}
+          onClick={handleDrawerToggle}
+        >
+          {isDrawerOpen ? <ChevronLeftIcon /> : <IoMenuOutline />}
+        </IconButton>
 
         <Box
           sx={{
             display: "flex",
-            alignItems: "center",
-            justifyContent: isDrawerOpen ? "space-between" : "center",
             width: "100%",
-            //   backgroundColor: "red",
+            marginTop: isDrawerOpen ? "-5px" : "10px",
           }}
         >
-          <Box component={Link} sx={{ display: "flex", alignItems: "center" }}>
+          <Box
+            component={Link}
+            to={"/dashboard"}
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              width: "100%",
+              //   justifyContent: isDrawerOpen ? "space-between" : "center",
+            }}
+          >
             <img
               src={require("../Images/logo-main.png")}
               alt="App Logo"
@@ -79,12 +102,7 @@ const AppDrawer = () => {
               </Typography>
             )}
           </Box>
-          <IconButton onClick={handleDrawerToggle}>
-            {isDrawerOpen ? <ChevronLeftIcon /> : <ChevronRightIcon />}
-          </IconButton>
         </Box>
-
-        <Divider />
 
         {/* Navigation Sections */}
         <List>

@@ -29,7 +29,7 @@ function DashboardPage() {
         title={`Welcome Back! ${currentUser.firstName}`}
         showOthers
       />
-      <Logo size="medium" />
+      {/* <Logo size="medium" /> */}
     </Container>
   );
 }

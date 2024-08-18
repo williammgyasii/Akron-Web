@@ -25,7 +25,7 @@ const DrawerLayout = ({ children }) => {
 
       <Box
         component="main"
-        sx={{ flexGrow: 1, backgroundColor: "red", position: "relative" }}
+        sx={{ flexGrow: 1, position: "relative" }}
       >
         <CreateTaskFAB />
         <Box>{children}</Box>
