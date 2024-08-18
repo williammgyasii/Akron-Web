@@ -19,7 +19,7 @@ import UserAvatarMenu from "./UserAvatarMenu";
 import { IoMenu } from "react-icons/io5";
 import { toggleDrawerIsOpened } from "../Redux/Slices/System/systemSlice";
 
-const AppBarComponent = ({ title, showOthers, pageHeader }) => {
+const AppBarComponent = ({ title, showOthers, pageHeader, customStyles }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const currentUser = useSelector(selectCurrentUser);
   const randomImage = Math.floor(Math.random() * 100);
@@ -29,8 +29,8 @@ const AppBarComponent = ({ title, showOthers, pageHeader }) => {
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("tablets_port"));
 
   return (
-    <AppBar  position="static" color="transparent" elevation={0}>
-      <Toolbar sx={{px:2}} disableGutters >
+    <AppBar position="static" color="transparent" elevation={0}>
+      <Toolbar sx={[customStyles]} disableGutters>
         {isSmallScreen && showOthers && (
           <IconButton onClick={() => dispatch(toggleDrawerIsOpened())}>
             <IoMenu />

@@ -1,12 +1,23 @@
 // src/components/TaskForm.js
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { TextField, Button, Container, Typography, Grid } from "@mui/material";
+import {
+  TextField,
+  Button,
+  Container,
+  Typography,
+  Grid,
+  useTheme,
+  Box,
+} from "@mui/material";
 import { addTask } from "../Redux/Slices/Tasks/tasksSlice";
 import { selectCurrentUser } from "../Redux/Slices/Users/UsersSlice";
 import GroupSelector from "./GroupSelector";
 import { openSnackbar } from "../Redux/Slices/System/systemSlice";
 import CustomTitles from "./CustomTitles";
+import CustomFormInput from "./CustomFormInput";
+import SideBySideLayout from "../Layouts/SideBySide";
+import CustomButton from "./CustomButton";
 
 const TaskForm = ({ groupId, handleClose }) => {
   const dispatch = useDispatch();
@@ -14,6 +25,7 @@ const TaskForm = ({ groupId, handleClose }) => {
   const selectPrefferedGroupId = useSelector(
     (state) => state.groups.selectedGroupId
   );
+  const theme = useTheme();
   const showError = () => {
     dispatch(
       openSnackbar({ message: "This is an error!", severity: "success" })
@@ -53,68 +65,35 @@ const TaskForm = ({ groupId, handleClose }) => {
     <Container
       sx={{
         display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
+        // justifyContent: "center",
+        // alignItems: "center",
         flexDirection: "column",
       }}
       disableGutters
     >
-      <CustomTitles weightFont={"regular"} variant="text_lg" gutterBottom>
+      <CustomTitles
+        customStyles={{ textTransform: "none", marginBottom: 2 }}
+        weightFont={"regular"}
+        variant="text_base"
+        gutterBottom
+        color={theme.palette.secondary.main}
+      >
         Add New Task
       </CustomTitles>
-      <form onSubmit={handleSubmit}>
-        <Grid container spacing={2}>
-          <Grid item xs={12}>
-            <TextField
-              fullWidth
-              label="Task Name"
-              name="name"
-              value={taskData.name}
-              onChange={handleChange}
-              required
-            />
-          </Grid>
-
-          <Grid item xs={12}>
-            <TextField
-              fullWidth
-              label="Description"
-              name="description"
-              value={taskData.description}
-              onChange={handleChange}
-              multiline
-              rows={4}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              fullWidth
-              label="Due Date"
-              name="dueDate"
-              type="date"
-              value={taskData.dueDate}
-              onChange={handleChange}
-              InputLabelProps={{
-                shrink: true,
-              }}
-            />
-          </Grid>
-
-          <Grid item xs={12}>
-            <Button
-              onClick={showError}
-              variant="contained"
-              color="primary"
-              type="submit"
-            >
-              Add Task
-            </Button>
-          </Grid>
-        </Grid>
-      </form>
-      <Button onClick={handleClose} variant="contained">
-        Close
-      </Button>
+      <Box component="form" onSubmit={handleSubmit}>
+        <CustomFormInput
+          label="Password (min of 8 characters)"
+          name="password"
+          type="password"
+          // value={formValues.password}
+          // onChange={handleInputChange}
+          // error={errors.password}
+          // helperText={helperTexts.password}
+        />
+        <CustomButton onClick={handleClose} variant="primary">
+          Create Task
+        </CustomButton>
+      </Box>
     </Container>
   );
 };

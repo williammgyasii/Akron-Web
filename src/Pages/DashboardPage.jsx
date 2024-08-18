@@ -29,17 +29,28 @@ function DashboardPage() {
       <AppBarComponent
         title={`Welcome Back! ${currentUser.firstName}`}
         showOthers
+        customStyles={{ px: 5 }}
       />
       {/* <Logo size="medium" /> */}
-      <Box sx={{ p: 5 }} display={"flex"}>
-        <Box flexGrow={1}>I am the other side</Box>
+      <Box sx={{ p: 1.5, backgroundColor: "#F0F0F0" }} display={"flex"}>
+        <Box
+          sx={{
+            backgroundColor: theme.palette.background.paper,
+            borderRadius: 2,
+          }}
+          flexGrow={1}
+        >
+          I am the other side
+        </Box>
         <Box
           sx={{
             px: 2,
             height: "100vh",
             // backgroundColor: "red",
-            width: 250,
-            borderLeft: "1px solid #ccc",
+            width: 300,
+            marginLeft: "10px",
+            backgroundColor: theme.palette.background.paper,
+            borderRadius: 2,
             [theme.breakpoints.down("tablets_port")]: {
               display: "none",
             },

@@ -1,19 +1,22 @@
 import React from "react";
 import { Grid, Box, useTheme, useMediaQuery } from "@mui/material";
 
-const SideBySideLayout = ({ leftComponent, rightComponent }) => {
+const SideBySideLayout = ({ leftComponent, rightComponent, customStyles }) => {
   const theme = useTheme();
   const isPhone = useMediaQuery(theme.breakpoints.down("tablets_port"));
   return (
     <Grid
-      sx={{
-        display: "flex",
-        flexDirection: "row",
-        justifyContent: "space-between",
-        [theme.breakpoints.down("tablets_port")]: {
-          flexDirection: "column",
+      sx={[
+        {
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-between",
+          [theme.breakpoints.down("tablets_port")]: {
+            flexDirection: "column",
+          },
         },
-      }}
+        customStyles,
+      ]}
       // spacing={isPhone ? 3 : 0}
       container
     >
