@@ -57,10 +57,16 @@ export const fetchUserGroups = createAsyncThunk(
         where("members", "array-contains", userId)
       );
       const querySnapshot = await getDocs(groupsQuery);
-      const userGroups = querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-      console.log(userGroups)
-      // return querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+      // const createdAt = data.createdAt?.toDate();
+      const userGroups = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        createdAt: doc.data()?.createdAt.toDate(),
+        ...doc.data(),
+      }));
+      // console.log(userGroups);
+      return userGroups;
     } catch (error) {
+      console.log("groups/fetchUserGroups", error);
       return rejectWithValue(error.message);
     }
   }
