@@ -42,6 +42,7 @@ const groupsSlice = createSlice({
     groups: [],
     status: "idle",
     selectedGroupId: "",
+    selectedGroupInfo: null,
   },
   reducers: {
     setGroups: (state, action) => {
@@ -49,6 +50,9 @@ const groupsSlice = createSlice({
     },
     setSelectedGroupID: (state, action) => {
       state.selectedGroupId = action.payload;
+    },
+    setSelectedGroupInfo: (state, action) => {
+      state.selectedGroupInfo = action.payload;
     },
   },
   extraReducers: (builder) => {
