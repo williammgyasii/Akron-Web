@@ -7,10 +7,11 @@ import {
   ListItemIcon,
   ListItemText,
   IconButton,
-  Toolbar,
-  Typography,
   Divider,
   Box,
+  useTheme,
+  Typography,
+  useMediaQuery,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
@@ -20,11 +21,16 @@ import TaskIcon from "@mui/icons-material/Assignment";
 import GroupIcon from "@mui/icons-material/Group";
 import SettingsIcon from "@mui/icons-material/Settings";
 import {
+  closeDrawer,
   selectIsDrawerOpened,
   toggleDrawerIsOpened,
 } from "../Redux/Slices/System/systemSlice";
-import { Link } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import { IoMenuOutline } from "react-icons/io5";
+import CustomTitles from "./CustomTitles";
+import VariableSizeIconButton from "./CustomIconButton";
+import { AddSharp } from "@mui/icons-material";
+import { DASHBOARD_ROUTES } from "../Routes/dashboardRoutes";
 
 const drawerWidth = 200;
 const drawerWidthCollapsed = 60;
@@ -32,9 +38,14 @@ const drawerWidthCollapsed = 60;
 const AppDrawer = () => {
   const dispatch = useDispatch();
   const isDrawerOpen = useSelector(selectIsDrawerOpened);
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("tablets_port"));
 
   const handleDrawerToggle = () => {
     dispatch(toggleDrawerIsOpened());
+  };
+  const handleDrawerClose = () => {
+    dispatch(closeDrawer());
   };
 
   return (
@@ -45,9 +56,10 @@ const AppDrawer = () => {
     >
       {/* Side Drawer */}
       <Drawer
-        variant="permanent"
+        variant={isSmallScreen ? "temporary" : "permanent"}
         anchor="left"
         open={isDrawerOpen}
+        onClose={handleDrawerClose}
         sx={{
           width: isDrawerOpen ? drawerWidth : drawerWidthCollapsed,
           flexShrink: 0,
@@ -56,9 +68,12 @@ const AppDrawer = () => {
             alignContent: "center",
             boxSizing: "border-box",
             overflowX: "hidden",
-            padding: isDrawerOpen ? "10px 15px" : "4px 3px",
+            padding: isDrawerOpen ? "10px 15px" : "4px 2px",
             transition: "width 0.3s ease",
           },
+        }}
+        ModalProps={{
+          keepMounted: true, // Better open performance on mobile.
         }}
       >
         {/* Logo Section */}
@@ -88,7 +103,7 @@ const AppDrawer = () => {
               alignItems: "center",
               justifyContent: "center",
               width: "100%",
-              //   justifyContent: isDrawerOpen ? "space-between" : "center",
+              textDecoration: "none",
             }}
           >
             <img
@@ -97,46 +112,77 @@ const AppDrawer = () => {
               style={{ maxHeight: "40px" }}
             />
             {isDrawerOpen && (
-              <Typography variant="text_base" noWrap sx={{ marginLeft: 2 }}>
+              <CustomTitles
+                color={theme.palette.secondary.main}
+                variant="text_lg"
+                weightFont={"medium"}
+                noWrap
+                customStyles={{ marginLeft: 1 }}
+              >
                 AKRON
-              </Typography>
+              </CustomTitles>
             )}
           </Box>
         </Box>
 
-        {/* Navigation Sections */}
-        <List>
-          {/* First Section */}
-          <ListItem button>
-            <ListItemIcon>
-              <DashboardIcon />
-            </ListItemIcon>
-            {isDrawerOpen && <ListItemText primary="Dashboard" />}
-          </ListItem>
-          <ListItem button>
-            <ListItemIcon>
-              <TaskIcon />
-            </ListItemIcon>
-            {isDrawerOpen && <ListItemText primary="Tasks" />}
-          </ListItem>
-          <Divider />
-
-          {/* Second Section */}
-          <ListItem button>
-            <ListItemIcon>
-              <GroupIcon />
-            </ListItemIcon>
-            {isDrawerOpen && <ListItemText primary="Groups" />}
-          </ListItem>
-          <Divider />
-
-          {/* Third Section */}
-          <ListItem button>
-            <ListItemIcon>
-              <SettingsIcon />
-            </ListItemIcon>
-            {isDrawerOpen && <ListItemText primary="Settings" />}
-          </ListItem>
+        <List sx={{ marginTop: 2 }}>
+          {/* {isDrawerOpen && (
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                color: "#9896A3",
+                mb: 1,
+              }}
+            >
+              <CustomTitles variant={"text_base"}>PROJECTS</CustomTitles>
+              <VariableSizeIconButton
+                onClick={() => console.log("ac")}
+                size="tiny"
+              >
+                <AddSharp />
+              </VariableSizeIconButton>
+            </Box>
+          )} */}
+          {DASHBOARD_ROUTES.map((section, index, isActive) => (
+            <NavLink
+              key={section.title}
+              to={section.path}
+              style={{ textDecoration: "none", color: "#9896A3" }}
+            >
+              <ListItem
+                sx={{
+                  color: theme.palette.secondary.main,
+                  borderRadius: 2,
+                  //   marginBottom:".4rem",
+                  "&:hover": {
+                    backgroundColor: theme.palette.primary.main,
+                    color: "white",
+                    "& .MuiListItemIcon-root": {
+                      color: "white",
+                    },
+                  },
+                }}
+              >
+                <ListItemIcon
+                  sx={{
+                    minWidth: isDrawerOpen ? 10 : 3,
+                    width: isDrawerOpen ? 35 : null,
+                    color: theme.palette.secondary.main,
+                  }}
+                >
+                  {section.icon}
+                </ListItemIcon>
+                {isDrawerOpen && (
+                  <ListItemText
+                    sx={{ fontSize: ".8rem" }}
+                    primary={section.title}
+                  />
+                )}
+              </ListItem>
+            </NavLink>
+          ))}
         </List>
       </Drawer>
     </Box>

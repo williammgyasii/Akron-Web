@@ -14,6 +14,9 @@ const systemSlice = createSlice({
     toggleDrawerIsOpened: (state, action) => {
       state.isDrawerOpened = !state.isDrawerOpened;
     },
+    closeDrawer: (state, action) => {
+      state.isDrawerOpened = false;
+    },
     showGlobalLoading: (state) => {
       state.isAppLoading = true;
     },
@@ -28,6 +31,7 @@ export const {
   toggleDrawerIsOpened,
   showGlobalLoading,
   hideGlobalLoading,
+  closeDrawer
 } = systemSlice.actions;
 
 export const selectIsDrawerOpened = (state) => state.system.isDrawerOpened;

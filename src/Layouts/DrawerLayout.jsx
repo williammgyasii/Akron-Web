@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, CssBaseline, Typography } from "@mui/material";
+import { Box, CssBaseline, Typography, useTheme } from "@mui/material";
 import SidebarNav from "../Components/SideBarNav";
 import { Route, Routes, useLocation } from "react-router-dom";
 import ProfilePage from "../Pages/ProfilePage";
@@ -14,28 +14,37 @@ import { selectCurrentUser } from "../Redux/Slices/Users/UsersSlice";
 import AppDrawer from "../Components/DrawerNav";
 
 const DrawerLayout = ({ children }) => {
-  const location = useLocation();
-  const TO_DO_WIDTH = 200;
-  //   console.log(location.pathname);
-  const currentUser = useSelector(selectCurrentUser);
+  const theme = useTheme();
 
   return (
-    <Box sx={{ display: "flex" }}>
+    <Box
+      sx={{
+        display: "flex",
+        [theme.breakpoints.down("tablets_port")]: {
+          flexDirection: "column",
+        },
+      }}
+    >
       <AppDrawer />
 
-      <Box
-        component="main"
-        sx={{ flexGrow: 1, position: "relative" }}
-      >
+      <Box component="main" sx={{ flexGrow: 1, position: "relative",height:"100vh" }}>
         <CreateTaskFAB />
         <Box>{children}</Box>
       </Box>
 
       {/* RIGHT VIEW */}
       <Box
-        sx={{ p: 1, height: "100vh", width: 300, borderLeft: "1px solid #ccc" }}
+        sx={{
+          p: 1,
+          height: "100vh",
+          width: 300,
+          borderLeft: "1px solid #ccc",
+          [theme.breakpoints.down("tablets_port")]: {
+            display: "none",
+          },
+        }}
       >
-        <AppBarComponent title={"Task"} showOters />
+        <AppBarComponent title={"Task"} />
       </Box>
     </Box>
   );

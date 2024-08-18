@@ -2,16 +2,16 @@ import { AccountBox, Dashboard, Settings } from "@mui/icons-material";
 import DashboardPage from "../Pages/DashboardPage";
 import ProfilePage from "../Pages/ProfilePage";
 import SettingsPage from "../Pages/SettingsPage";
-import { IoNotifications } from "react-icons/io5";
+import { IoGridOutline, IoMenu, IoNotifications } from "react-icons/io5";
 import NotificationsPage from "../Pages/NotificationsPage";
 
 export const DASHBOARD_ROUTES = [
   {
     title: "Dashboard",
     path: "/dashboard",
-    icon: <Dashboard />,
+    icon: <IoGridOutline />,
     component: <DashboardPage />,
-    index:true
+    index: true,
   },
   {
     title: "Profile",
@@ -31,8 +31,4 @@ export const DASHBOARD_ROUTES = [
     icon: <IoNotifications />,
     component: <NotificationsPage />,
   },
-
-
 ];
-
-
