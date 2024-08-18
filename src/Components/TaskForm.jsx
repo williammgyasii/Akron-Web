@@ -8,7 +8,6 @@ import CustomButton from "./CustomButton";
 import { MdFormatListBulletedAdd } from "react-icons/md";
 import AssignToMember from "./AssignToMember";
 import dayjs from "dayjs";
-import { DatePicker } from "@mui/lab";
 
 const TaskForm = ({ groupId, handleClose }) => {
   const theme = useTheme();
@@ -128,13 +127,7 @@ const TaskForm = ({ groupId, handleClose }) => {
           alignItems={"center"}
           justifyContent={"space-between"}
         >
-          <DatePicker
-            label="Start Date"
-            value={startDate}
-            onChange={(newDate) => setStartDate(newDate)}
-            minDate={today} // Restrict to future dates only
-            renderInput={(params) => <TextField {...params} />}
-          />
+          <GroupSelector />
           {/* <CustomFormInput
             label="Start Date"
             type="date"
@@ -148,19 +141,9 @@ const TaskForm = ({ groupId, handleClose }) => {
             error={formState.startDate.error}
             helperText={formState.startDate.helperText}
           /> */}
-
-          <GroupSelector />
         </Box>
 
-        {/* <CustomDropdown
-          label="Category"
-          options={categories}
-          value={category}
-          onChange={handleCategoryChange}
-          error={categoryError}
-          helperText={categoryError ? "Please select a category" : ""}
-        /> */}
-
+  
         <Box sx={{ marginTop: 1, display: "flex" }}>
           <CustomButton
             sx={{
