@@ -20,7 +20,7 @@ function CustomDropdown({
 }) {
   return (
     <FormControl
-      sx={{ mt: 1 }}
+     
       size="small"
       fullWidth={fullWidth}
       error={error}

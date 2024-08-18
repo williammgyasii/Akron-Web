@@ -1,39 +1,15 @@
 // src/components/TaskForm.js
 import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  TextField,
-  Button,
-  Container,
-  Typography,
-  Grid,
-  useTheme,
-  Box,
-} from "@mui/material";
-import {
-  addTask,
-  addTaskToDatabase,
-  setTaskError,
-} from "../Redux/Slices/Tasks/tasksSlice";
-import { selectCurrentUser } from "../Redux/Slices/Users/UsersSlice";
+import { Container, useTheme, Box } from "@mui/material";
 import GroupSelector from "./GroupSelector";
-import { openSnackbar } from "../Redux/Slices/System/systemSlice";
 import CustomTitles from "./CustomTitles";
 import CustomFormInput from "./CustomFormInput";
-import SideBySideLayout from "../Layouts/SideBySide";
 import CustomButton from "./CustomButton";
 import { MdFormatListBulletedAdd } from "react-icons/md";
 import AssignToMember from "./AssignToMember";
-import CustomDropdown from "./CustomDropdown";
 
 const TaskForm = ({ groupId, handleClose }) => {
-  const dispatch = useDispatch();
-  const users = useSelector(selectCurrentUser); // Assuming currentUser contains user info
-  const selectPrefferedGroupId = useSelector(
-    (state) => state.groups.selectedGroupId
-  );
   const theme = useTheme();
-  const taskError = useSelector((state) => state.tasks.error);
 
   const [formState, setFormState] = useState({
     taskTitle: { value: "", error: false, helperText: "" },
@@ -41,9 +17,6 @@ const TaskForm = ({ groupId, handleClose }) => {
     startDate: { value: "", error: false, helperText: "" },
     dueDate: { value: "", error: false, helperText: "" },
   });
-
-  const [category, setCategory] = useState("");
-  const [categoryError, setCategoryError] = useState(false);
 
   // Handle input changes
   const handleChange = (field, value) => {
@@ -56,12 +29,6 @@ const TaskForm = ({ groupId, handleClose }) => {
         helperText: "",
       },
     }));
-  };
-
-  const showError = () => {
-    dispatch(
-      openSnackbar({ message: "This is an error!", severity: "success" })
-    );
   };
 
   // Validate the form
@@ -105,7 +72,6 @@ const TaskForm = ({ groupId, handleClose }) => {
       console.log("Form submitted successfully", formState);
     }
   };
-
 
   return (
     <Container
@@ -151,12 +117,17 @@ const TaskForm = ({ groupId, handleClose }) => {
           helperText={formState.taskDescription.helperText}
         />
 
-        <Box>
+        <Box
+          mt={2}
+          display={"flex"}
+          alignItems={"center"}
+          justifyContent={"space-between"}
+        >
           <CustomFormInput
             label="Start Date"
             type="date"
             fullWidth
-            customStyles={{ mt: 2.5, fontSize: ".5rem" }}
+            customStyles={{ fontSize: ".5rem",flexBasis:"35%" }}
             InputLabelProps={{
               shrink: true,
             }}
@@ -166,22 +137,8 @@ const TaskForm = ({ groupId, handleClose }) => {
             helperText={formState.startDate.helperText}
           />
 
-          {/* DUE DATE */}
-          {/* <CustomFormInput
-            label="Start Date"
-            type="date"
-            fullWidth
-            InputLabelProps={{
-              shrink: true,
-            }}
-            value={formState.startDate.value}
-            onChange={(e) => handleChange("startDate", e.target.value)}
-            error={formState.startDate.error}
-            helperText={formState.startDate.helperText}
-          /> */}
+          <GroupSelector />
         </Box>
-
-        <GroupSelector customStyles={{ mt: 2 }} />
 
         {/* <CustomDropdown
           label="Category"

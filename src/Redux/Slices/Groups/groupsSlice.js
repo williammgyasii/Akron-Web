@@ -1,6 +1,14 @@
 // src/features/groups/groupsSlice.js
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { collection, addDoc, getDocs, query, where } from "firebase/firestore";
+import {
+  collection,
+  addDoc,
+  getDocs,
+  query,
+  where,
+  doc,
+  getDoc,
+} from "firebase/firestore";
 import { firebaseFirestore } from "../../../Firebase/getFirebase";
 import firebase from "firebase/compat/app";
 
@@ -8,6 +16,26 @@ export const fetchGroups = createAsyncThunk("groups/fetchGroups", async () => {
   const querySnapshot = await getDocs(collection(firebaseFirestore, "groups"));
   return querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
 });
+
+// Fetch group details thunk
+export const fetchSelectedGroupDetails = createAsyncThunk(
+  "group/fetchGroupDetails",
+  async (groupId, { rejectWithValue }) => {
+    try {
+      const groupDoc = doc(firebaseFirestore, "groups", groupId);
+      const groupSnapshot = await getDoc(groupDoc);
+
+      if (!groupSnapshot.exists()) {
+        throw new Error("Group not found");
+      }
+
+      return groupSnapshot.data();
+    } catch (error) {
+      console.log("group/fetchGroupDetails", error);
+      return rejectWithValue(error.message);
+    }
+  }
+);
 
 export const addGroup = createAsyncThunk(
   "groups/addGroup",
@@ -29,7 +57,9 @@ export const fetchUserGroups = createAsyncThunk(
         where("members", "array-contains", userId)
       );
       const querySnapshot = await getDocs(groupsQuery);
-      return querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+      const userGroups = querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+      console.log(userGroups)
+      // return querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
     } catch (error) {
       return rejectWithValue(error.message);
     }
@@ -42,7 +72,8 @@ const groupsSlice = createSlice({
     groups: [],
     status: "idle",
     selectedGroupId: "",
-    selectedGroupInfo: null,
+    selectedGroupDetails: null,
+    groupsError: null,
   },
   reducers: {
     setGroups: (state, action) => {
@@ -53,6 +84,10 @@ const groupsSlice = createSlice({
     },
     setSelectedGroupInfo: (state, action) => {
       state.selectedGroupInfo = action.payload;
+    },
+    clearGroupDetails(state) {
+      state.selectedGroupDetails = null;
+      state.groupsError = null;
     },
   },
   extraReducers: (builder) => {
@@ -81,11 +116,26 @@ const groupsSlice = createSlice({
       .addCase(fetchUserGroups.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload;
+      })
+
+      //FETCH SINGLE GROUP DETAILS
+      .addCase(fetchSelectedGroupDetails.pending, (state) => {
+        state.status = "loading";
+        state.error = null;
+      })
+      .addCase(fetchSelectedGroupDetails.fulfilled, (state, action) => {
+        state.selectedGroupDetails = action.payload;
+        state.status = "succeeded";
+      })
+      .addCase(fetchSelectedGroupDetails.rejected, (state, action) => {
+        state.error = action.payload;
+        state.status = "failed";
       });
   },
 });
 
-export const { setGroups, setSelectedGroupID } = groupsSlice.actions;
+export const { setGroups, setSelectedGroupID, clearGroupDetails } =
+  groupsSlice.actions;
 export const selectGroups = (state) => state.groups.groups;
 export const selectGroupID = (state) => state.groups.selectedGroupId;
 export default groupsSlice.reducer;

@@ -12,8 +12,11 @@ import {
   CircularProgress,
   FormControl,
   InputLabel,
+  Box,
 } from "@mui/material";
 import {
+  clearGroupDetails,
+  fetchSelectedGroupDetails,
   selectGroupID,
   selectGroups,
   setPrefferedGroup,
@@ -32,12 +35,23 @@ const GroupSelector = ({ onSelectGroup, customStyles }) => {
 
   const handleGroupChange = (event) => {
     dispatch(setSelectedGroupID(event.target.value));
-    setGroupError(event.target.value === "");
+    if (selectGroupID) {
+      dispatch(fetchSelectedGroupDetails(event.target.value));
+    } else {
+      dispatch(clearGroupDetails());
+    }
   };
 
   return (
-    <>
-      {groupsStatus === "loading" && <CircularProgress />}
+    <Box
+      display={"flex"}
+      width={"60%"}
+      alignItems={"center"}
+      justifyContent={"center"}
+    >
+      {groupsStatus === "loading" && (
+        <CircularProgress size={15}  sx={{ marginTop: 2, color: "red" }} />
+      )}
       {groupsStatus === "failed" && (
         <Typography color="error">Failed to load groups</Typography>
       )}
@@ -51,7 +65,7 @@ const GroupSelector = ({ onSelectGroup, customStyles }) => {
           helperText={groupError ? "Please select a category" : ""}
         />
       )}
-    </>
+    </Box>
   );
 };
 
