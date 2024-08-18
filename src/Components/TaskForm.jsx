@@ -11,6 +11,14 @@ import dayjs from "dayjs";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { addDays } from "date-fns";
+import { useDispatch, useSelector } from "react-redux";
+import { selectGroupID } from "../Redux/Slices/Groups/groupsSlice";
+import { selectCurrentUser } from "../Redux/Slices/Users/UsersSlice";
+import {
+  addTaskToGroup,
+  selectTaskState,
+} from "../Redux/Slices/Tasks/tasksSlice";
+import { formatTimestamp } from "../Utils/dateFunctions";
 
 const DatePickerContainer = styled(DatePicker)(({ theme, variant, size }) => ({
   width: "100%",
@@ -21,15 +29,17 @@ const DatePickerContainer = styled(DatePicker)(({ theme, variant, size }) => ({
 }));
 
 const TaskForm = ({ groupId, handleClose }) => {
-  const theme = useTheme();
-  const today = new Date();
   const [formState, setFormState] = useState({
     taskTitle: { value: "", error: false, helperText: "" },
     taskDescription: { value: "", error: false, helperText: "" },
     startDate: { value: null, error: false, helperText: "" },
   });
-  // const [startDate, setStartDate] = useState(null);
-  const [dueDate, setDueDate] = useState(null);
+  const theme = useTheme();
+  const today = new Date();
+  const dispatch = useDispatch();
+  const taskState = useSelector(selectTaskState);
+  const selectedGroup = useSelector(selectGroupID);
+  const currentUser = useSelector(selectCurrentUser);
 
   // Handle input changes
   const handleChange = (field, value) => {
@@ -83,6 +93,17 @@ const TaskForm = ({ groupId, handleClose }) => {
     console.log("Ac");
     if (validateForm()) {
       // Handle valid form submission
+      dispatch(
+        addTaskToGroup({
+          selectedGroup,
+          taskData: {
+            taskTitle: formState.taskTitle.value,
+            taskDescription: formState.taskDescription.value,
+            startDate: formatTimestamp(formState.startDate.value),
+            assignedTo: currentUser.userId,
+          },
+        })
+      );
       console.log("Form submitted successfully", formState);
     }
   };
@@ -162,17 +183,19 @@ const TaskForm = ({ groupId, handleClose }) => {
         </Box>
 
         <Box sx={{ marginTop: 1, display: "flex" }}>
-          <CustomButton
-            sx={{
-              backgroundColor: theme.palette.error.main,
-              flexBasis: "30%",
-              marginRight: "10px",
-            }}
-            onClick={handleClose}
-            variant="minimal"
-          >
-            Close
-          </CustomButton>
+          {taskState === "loading" && (
+            <CustomButton
+              sx={{
+                backgroundColor: theme.palette.error.main,
+                flexBasis: "30%",
+                marginRight: "10px",
+              }}
+              onClick={handleClose}
+              variant="minimal"
+            >
+              Close
+            </CustomButton>
+          )}
 
           <CustomButton
             // type="iconOnly"
