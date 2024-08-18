@@ -4,6 +4,8 @@ import ProfilePage from "../Pages/ProfilePage";
 import SettingsPage from "../Pages/SettingsPage";
 import { IoGridOutline, IoMenu, IoNotifications } from "react-icons/io5";
 import NotificationsPage from "../Pages/NotificationsPage";
+import { MdTask } from "react-icons/md";
+import TaskPage from "../Pages/TaskPage";
 
 export const DASHBOARD_ROUTES = [
   {
@@ -14,10 +16,10 @@ export const DASHBOARD_ROUTES = [
     index: true,
   },
   {
-    title: "Profile",
-    path: "profile",
-    icon: <AccountBox />,
-    component: <ProfilePage />,
+    title: "Task",
+    path: "task",
+    icon: <MdTask />,
+    component: <TaskPage />,
   },
   {
     title: "Settings",

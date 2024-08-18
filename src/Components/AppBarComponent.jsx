@@ -37,10 +37,9 @@ const AppBarComponent = ({ title, showOthers }) => {
           </IconButton>
         )}
         <Typography
-          variant="text_base"
+          variant={isSmallScreen ? "text_xs" : "text_base"}
           sx={{
             flexGrow: 1,
-            fontSize: "1rem",
             color: theme.palette.secondary.main,
           }}
         >
