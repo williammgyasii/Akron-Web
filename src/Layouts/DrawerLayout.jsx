@@ -11,6 +11,7 @@ import CreateTaskFAB from "../Components/CreateTaskFAB";
 import AppBarComponent from "../Components/AppBarComponent";
 import { useSelector } from "react-redux";
 import { selectCurrentUser } from "../Redux/Slices/Users/UsersSlice";
+import AppDrawer from "../Components/DrawerNav";
 
 const DrawerLayout = ({ children }) => {
   const location = useLocation();
@@ -20,13 +21,13 @@ const DrawerLayout = ({ children }) => {
 
   return (
     <Box sx={{ display: "flex" }}>
-      <SidebarNav />
-      {/* //RIGHT VIEW FOR THE  */}
+      <AppDrawer />
 
-      {/* MIDDLE VIEW */}
-      <Box component="main" sx={{ flexGrow: 1, position: "relative" }}>
+      <Box
+        component="main"
+        sx={{ flexGrow: 1, backgroundColor: "red", position: "relative" }}
+      >
         <CreateTaskFAB />
-
         <Box>{children}</Box>
       </Box>
 
@@ -34,10 +35,7 @@ const DrawerLayout = ({ children }) => {
       <Box
         sx={{ p: 1, height: "100vh", width: 300, borderLeft: "1px solid #ccc" }}
       >
-        <AppBarComponent
-          title={"Task"}
-          showOters
-        />
+        <AppBarComponent title={"Task"} showOters />
       </Box>
     </Box>
   );
