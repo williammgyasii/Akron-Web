@@ -6,7 +6,7 @@ import { addTask } from "../Redux/Slices/Tasks/tasksSlice";
 import { selectCurrentUser } from "../Redux/Slices/Users/UsersSlice";
 import GroupSelector from "./GroupSelector";
 
-const TaskForm = ({ groupId }) => {
+const TaskForm = ({ groupId,handleClose }) => {
   const dispatch = useDispatch();
   const users = useSelector(selectCurrentUser); // Assuming currentUser contains user info
   const selectPrefferedGroupId = useSelector(
@@ -92,6 +92,9 @@ const TaskForm = ({ groupId }) => {
           </Grid>
         </Grid>
       </form>
+      <Button onClick={handleClose} variant="contained">
+        Close
+      </Button>
     </Container>
   );
 };

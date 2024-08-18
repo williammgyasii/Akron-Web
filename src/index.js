@@ -10,6 +10,7 @@ import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
 import theme from "./Utils/getTheme";
 import { listenForAuthChanges } from "./Redux/Slices/Users/UsersSlice";
 import GlobalLoading from "./Components/GlobalLoading";
+import GlobalSnackbar from "./Components/GlobalSnackbar";
 
 const AuthListener = () => {
   const dispatch = useDispatch();
@@ -28,6 +29,7 @@ root.render(
         <ThemeProvider theme={theme}>
           <CssBaseline />
           <AuthListener />
+          <GlobalSnackbar />
           {/* <GlobalLoading/> */}
           <App />
         </ThemeProvider>

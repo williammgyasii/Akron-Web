@@ -51,10 +51,8 @@ const CreateTaskFAB = () => {
             borderRadius: 2,
           }}
         >
-          <TaskForm />
-          <Button onClick={handleClose} variant="contained">
-            Close
-          </Button>
+          <TaskForm handleClose={handleClose} />
+          
         </Box>
       </Modal>
     </>

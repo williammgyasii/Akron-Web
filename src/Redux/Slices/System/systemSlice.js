@@ -6,6 +6,9 @@ const systemSlice = createSlice({
     loginQuote: "",
     isDrawerOpened: false,
     isAppLoading: false,
+    isSnackBarOpened: false,
+    snackbarMessage: "",
+    snackbarState: "info", //'success', 'warning', 'error'
   },
   reducers: {
     setLoginQuote: (state, action) => {
@@ -23,6 +26,16 @@ const systemSlice = createSlice({
     hideGlobalLoading: (state) => {
       state.isAppLoading = false;
     },
+    openSnackbar: (state, action) => {
+      state.isSnackBarOpened = true;
+      state.snackbarMessage = action.payload.message;
+      state.snackbarState = action.payload.severity || "info";
+    },
+    closeSnackbar: (state) => {
+      state.isSnackBarOpened = false;
+      state.snackbarMessage = "";
+      state.snackbarState = "info";
+    },
   },
 });
 
@@ -31,11 +44,14 @@ export const {
   toggleDrawerIsOpened,
   showGlobalLoading,
   hideGlobalLoading,
-  closeDrawer
+  closeDrawer,
+  openSnackbar,
+  closeSnackbar
 } = systemSlice.actions;
 
 export const selectIsDrawerOpened = (state) => state.system.isDrawerOpened;
 export const selectIsAppLoading = (state) => state.system.isAppLoading;
+export const selectIsSnackBarOpened = (state) => state.system.isSnackBarOpened;
 export const selectAppInit = (state) => state.system.appInit;
 
 export default systemSlice.reducer;
