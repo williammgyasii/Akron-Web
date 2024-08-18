@@ -31,7 +31,7 @@ const GroupSelector = ({ onSelectGroup, customStyles }) => {
   const selectedGroup = useSelector(selectGroupID);
   const [groupError, setGroupError] = useState(false);
 
-  console.log(groups, selectedGroup);
+  // console.log(groups, selectedGroup);
 
   const handleGroupChange = (event) => {
     dispatch(setSelectedGroupID(event.target.value));
@@ -45,7 +45,7 @@ const GroupSelector = ({ onSelectGroup, customStyles }) => {
   return (
     <Box
       display={"flex"}
-      width={"60%"}
+      width={"50%"}
       alignItems={"center"}
       justifyContent={"center"}
     >

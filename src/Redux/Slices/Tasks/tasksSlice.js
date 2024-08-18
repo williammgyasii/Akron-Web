@@ -55,6 +55,9 @@ const tasksSlice = createSlice({
       .addCase(fetchTasks.rejected, (state) => {
         state.status = "failed";
       })
+      .addCase(addTaskToDatabase.pending, (state, action) => {
+        state.status = "loading";
+      })
       .addCase(addTaskToDatabase.fulfilled, (state, action) => {
         state.tasks.push(action.payload);
       });

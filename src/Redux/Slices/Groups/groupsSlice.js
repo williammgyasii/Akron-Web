@@ -11,6 +11,7 @@ import {
 } from "firebase/firestore";
 import { firebaseFirestore } from "../../../Firebase/getFirebase";
 import firebase from "firebase/compat/app";
+import { formatTimestamp } from "../../../Utils/dateFunctions";
 
 export const fetchGroups = createAsyncThunk("groups/fetchGroups", async () => {
   const querySnapshot = await getDocs(collection(firebaseFirestore, "groups"));
@@ -29,7 +30,14 @@ export const fetchSelectedGroupDetails = createAsyncThunk(
         throw new Error("Group not found");
       }
 
-      return groupSnapshot.data();
+      const { createdAt, ...dataExtract } = groupSnapshot.data();
+
+      const groupDetails = {
+        createdAt: formatTimestamp(groupSnapshot.data().createdAt),
+        ...dataExtract,
+      };
+
+      return groupDetails;
     } catch (error) {
       console.log("group/fetchGroupDetails", error);
       return rejectWithValue(error.message);
@@ -58,11 +66,14 @@ export const fetchUserGroups = createAsyncThunk(
       );
       const querySnapshot = await getDocs(groupsQuery);
       // const createdAt = data.createdAt?.toDate();
-      const userGroups = querySnapshot.docs.map((doc) => ({
-        id: doc.id,
-        createdAt: doc.data()?.createdAt.toDate(),
-        ...doc.data(),
-      }));
+      const userGroups = querySnapshot.docs.map((doc) => {
+        const { createdAt, ...restofData } = doc.data();
+        return {
+          id: doc.id,
+          createdAt: formatTimestamp(doc.data().createdAt),
+          ...restofData,
+        };
+      });
       // console.log(userGroups);
       return userGroups;
     } catch (error) {

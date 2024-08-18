@@ -1,6 +1,6 @@
 // src/components/TaskForm.js
 import React, { useState } from "react";
-import { Container, useTheme, Box, TextField } from "@mui/material";
+import { Container, useTheme, Box, TextField, styled } from "@mui/material";
 import GroupSelector from "./GroupSelector";
 import CustomTitles from "./CustomTitles";
 import CustomFormInput from "./CustomFormInput";
@@ -8,19 +8,28 @@ import CustomButton from "./CustomButton";
 import { MdFormatListBulletedAdd } from "react-icons/md";
 import AssignToMember from "./AssignToMember";
 import dayjs from "dayjs";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { addDays } from "date-fns";
+
+const DatePickerContainer = styled(DatePicker)(({ theme, variant, size }) => ({
+  width: "100%",
+  padding: "10px",
+  border: "1px solid #ccc",
+  borderRadius: "4px",
+  fontSize: "16px",
+}));
 
 const TaskForm = ({ groupId, handleClose }) => {
   const theme = useTheme();
+  const today = new Date();
   const [formState, setFormState] = useState({
     taskTitle: { value: "", error: false, helperText: "" },
     taskDescription: { value: "", error: false, helperText: "" },
-    startDate: { value: "", error: false, helperText: "" },
-    dueDate: { value: "", error: false, helperText: "" },
+    startDate: { value: null, error: false, helperText: "" },
   });
-  const [startDate, setStartDate] = useState(null);
+  // const [startDate, setStartDate] = useState(null);
   const [dueDate, setDueDate] = useState(null);
-
-  const today = dayjs(); // Get the current date
 
   // Handle input changes
   const handleChange = (field, value) => {
@@ -58,11 +67,11 @@ const TaskForm = ({ groupId, handleClose }) => {
       valid = false;
     }
 
-    if (!formState.dueDate.value) {
-      newState.dueDate.error = true;
-      newState.dueDate.helperText = "Due date is required";
-      valid = false;
-    }
+    // if (!formState.dueDate.value) {
+    //   newState.dueDate.error = true;
+    //   newState.dueDate.helperText = "Due date is required";
+    //   valid = false;
+    // }
 
     setFormState(newState);
     return valid;
@@ -71,6 +80,7 @@ const TaskForm = ({ groupId, handleClose }) => {
   // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log("Ac");
     if (validateForm()) {
       // Handle valid form submission
       console.log("Form submitted successfully", formState);
@@ -128,6 +138,14 @@ const TaskForm = ({ groupId, handleClose }) => {
           justifyContent={"space-between"}
         >
           <GroupSelector />
+          <DatePickerContainer
+            selected={formState.startDate.value}
+            onChange={(date) => handleChange("startDate", date)}
+            minDate={today} // Restrict to future dates
+            placeholderText="Select a start date"
+            dateFormat="yyyy/MM/dd"
+            className="date-picker" // Custom class for styling
+          />
           {/* <CustomFormInput
             label="Start Date"
             type="date"
@@ -143,7 +161,6 @@ const TaskForm = ({ groupId, handleClose }) => {
           /> */}
         </Box>
 
-  
         <Box sx={{ marginTop: 1, display: "flex" }}>
           <CustomButton
             sx={{
