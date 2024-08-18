@@ -1,22 +1,27 @@
 // src/components/TaskForm.js
 import React, { useState } from "react";
-import { Container, useTheme, Box } from "@mui/material";
+import { Container, useTheme, Box, TextField } from "@mui/material";
 import GroupSelector from "./GroupSelector";
 import CustomTitles from "./CustomTitles";
 import CustomFormInput from "./CustomFormInput";
 import CustomButton from "./CustomButton";
 import { MdFormatListBulletedAdd } from "react-icons/md";
 import AssignToMember from "./AssignToMember";
+import dayjs from "dayjs";
+import { DatePicker } from "@mui/lab";
 
 const TaskForm = ({ groupId, handleClose }) => {
   const theme = useTheme();
-
   const [formState, setFormState] = useState({
     taskTitle: { value: "", error: false, helperText: "" },
     taskDescription: { value: "", error: false, helperText: "" },
     startDate: { value: "", error: false, helperText: "" },
     dueDate: { value: "", error: false, helperText: "" },
   });
+  const [startDate, setStartDate] = useState(null);
+  const [dueDate, setDueDate] = useState(null);
+
+  const today = dayjs(); // Get the current date
 
   // Handle input changes
   const handleChange = (field, value) => {
@@ -123,11 +128,18 @@ const TaskForm = ({ groupId, handleClose }) => {
           alignItems={"center"}
           justifyContent={"space-between"}
         >
-          <CustomFormInput
+          <DatePicker
+            label="Start Date"
+            value={startDate}
+            onChange={(newDate) => setStartDate(newDate)}
+            minDate={today} // Restrict to future dates only
+            renderInput={(params) => <TextField {...params} />}
+          />
+          {/* <CustomFormInput
             label="Start Date"
             type="date"
             fullWidth
-            customStyles={{ fontSize: ".5rem",flexBasis:"35%" }}
+            customStyles={{ fontSize: ".5rem", flexBasis: "35%" }}
             InputLabelProps={{
               shrink: true,
             }}
@@ -135,7 +147,7 @@ const TaskForm = ({ groupId, handleClose }) => {
             onChange={(e) => handleChange("startDate", e.target.value)}
             error={formState.startDate.error}
             helperText={formState.startDate.helperText}
-          />
+          /> */}
 
           <GroupSelector />
         </Box>
