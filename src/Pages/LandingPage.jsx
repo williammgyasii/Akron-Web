@@ -14,11 +14,7 @@ import {
   logoutUser,
   selectCurrentUser,
 } from "../Redux/Slices/Users/UsersSlice";
-import {
-  fetchUserGroups,
-  selectGroups,
-  setPrefferedGroup,
-} from "../Redux/Slices/Groups/groupsSlice";
+
 import GroupSelector from "../Components/GroupSelector";
 import { fetchTasks } from "../Redux/Slices/Tasks/tasksSlice";
 import { persistor, resetState } from "../Redux/store";
@@ -32,13 +28,13 @@ function LandingPage() {
   const [selectedGroup, setSelectedGroup] = useState(null);
   const navigate = useNavigate();
 
-  const handleSelectGroup = (groupId) => {
-    setSelectedGroup(groupId);
-    dispatch(setPrefferedGroup(groupId));
-    if (selectedGroup) {
-      dispatch(fetchTasks(groupId));
-    }
-  };
+  // const handleSelectGroup = (groupId) => {
+  //   setSelectedGroup(groupId);
+  //   dispatch(setPrefferedGroup(groupId));
+  //   if (selectedGroup) {
+  //     dispatch(fetchTasks(groupId));
+  //   }
+  // };
 
   return (
     <Container component={"main"} sx={{ backgroundColor: "red" }}>

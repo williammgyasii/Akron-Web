@@ -24,6 +24,7 @@ import SideBySideLayout from "../Layouts/SideBySide";
 import CustomButton from "./CustomButton";
 import { MdFormatListBulletedAdd } from "react-icons/md";
 import AssignToMember from "./AssignToMember";
+import CustomDropdown from "./CustomDropdown";
 
 const TaskForm = ({ groupId, handleClose }) => {
   const dispatch = useDispatch();
@@ -40,6 +41,9 @@ const TaskForm = ({ groupId, handleClose }) => {
     startDate: { value: "", error: false, helperText: "" },
     dueDate: { value: "", error: false, helperText: "" },
   });
+
+  const [category, setCategory] = useState("");
+  const [categoryError, setCategoryError] = useState(false);
 
   // Handle input changes
   const handleChange = (field, value) => {
@@ -102,6 +106,7 @@ const TaskForm = ({ groupId, handleClose }) => {
     }
   };
 
+
   return (
     <Container
       sx={{
@@ -151,7 +156,7 @@ const TaskForm = ({ groupId, handleClose }) => {
             label="Start Date"
             type="date"
             fullWidth
-            customStyles={{ mt: 2.5 }}
+            customStyles={{ mt: 2.5, fontSize: ".5rem" }}
             InputLabelProps={{
               shrink: true,
             }}
@@ -176,7 +181,16 @@ const TaskForm = ({ groupId, handleClose }) => {
           /> */}
         </Box>
 
-        <GroupSelector />
+        <GroupSelector customStyles={{ mt: 2 }} />
+
+        {/* <CustomDropdown
+          label="Category"
+          options={categories}
+          value={category}
+          onChange={handleCategoryChange}
+          error={categoryError}
+          helperText={categoryError ? "Please select a category" : ""}
+        /> */}
 
         <Box sx={{ marginTop: 1, display: "flex" }}>
           <CustomButton

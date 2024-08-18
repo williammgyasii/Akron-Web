@@ -6,6 +6,8 @@ import { IoGridOutline, IoMenu, IoNotifications } from "react-icons/io5";
 import NotificationsPage from "../Pages/NotificationsPage";
 import { MdTask } from "react-icons/md";
 import TaskPage from "../Pages/TaskPage";
+import GroupsPage from "../Pages/GroupsPage";
+import { FaPeopleGroup } from "react-icons/fa6";
 
 export const DASHBOARD_ROUTES = [
   {
@@ -22,10 +24,10 @@ export const DASHBOARD_ROUTES = [
     component: <TaskPage />,
   },
   {
-    title: "Settings",
-    path: "settings",
-    icon: <Settings />,
-    component: <SettingsPage />,
+    title: "Groups",
+    path: "groups",
+    icon: <FaPeopleGroup />,
+    component: <GroupsPage />,
   },
   {
     title: "Notifications",

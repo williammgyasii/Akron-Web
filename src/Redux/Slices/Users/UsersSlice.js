@@ -10,6 +10,7 @@ import {
 import { doc, setDoc, getDoc } from "firebase/firestore";
 import { firebaseAuth, firebaseFirestore } from "../../../Firebase/getFirebase";
 import { getAuthErrorMessage } from "../../../Utils/authErrors";
+import { fetchUserGroups } from "../Groups/groupsSlice";
 
 export const registerUser = createAsyncThunk(
   "users/registerUser",
@@ -89,6 +90,7 @@ export const listenForAuthChanges = createAsyncThunk(
                 ...userDoc.data(),
               };
               console.log("SOMEONE IS INSIDE WITH DETAILS", userStructure);
+              dispatch(fetchUserGroups(user.uid));
               dispatch(setUser(userStructure));
             }
           } else {

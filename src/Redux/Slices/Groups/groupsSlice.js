@@ -47,7 +47,7 @@ const groupsSlice = createSlice({
     setGroups: (state, action) => {
       state.groups = action.payload;
     },
-    setPrefferedGroup: (state, action) => {
+    setSelectedGroupID: (state, action) => {
       state.selectedGroupId = action.payload;
     },
   },
@@ -81,6 +81,7 @@ const groupsSlice = createSlice({
   },
 });
 
-export const { setGroups, setPrefferedGroup } = groupsSlice.actions;
+export const { setGroups, setSelectedGroupID } = groupsSlice.actions;
 export const selectGroups = (state) => state.groups.groups;
+export const selectGroupID = (state) => state.groups.selectedGroupId;
 export default groupsSlice.reducer;

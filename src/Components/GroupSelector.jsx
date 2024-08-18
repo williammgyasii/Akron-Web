@@ -1,5 +1,5 @@
 // src/components/GroupSelector.js
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import {
@@ -13,40 +13,45 @@ import {
   FormControl,
   InputLabel,
 } from "@mui/material";
-import { selectGroups } from "../Redux/Slices/Groups/groupsSlice";
+import {
+  selectGroupID,
+  selectGroups,
+  setPrefferedGroup,
+  setSelectedGroupID,
+} from "../Redux/Slices/Groups/groupsSlice";
+import CustomDropdown from "./CustomDropdown";
 
-const GroupSelector = ({ onSelectGroup }) => {
+const GroupSelector = ({ onSelectGroup, customStyles }) => {
   const dispatch = useDispatch();
   const groups = useSelector(selectGroups);
   const groupsStatus = useSelector((state) => state.groups.status);
+  const selectedGroup = useSelector(selectGroupID);
+  const [groupError, setGroupError] = useState(false);
+
+  console.log(groups, selectedGroup);
+
+  const handleGroupChange = (event) => {
+    dispatch(setSelectedGroupID(event.target.value));
+    setGroupError(event.target.value === "");
+  };
 
   return (
-    <Container>
-      <Typography variant="h4" gutterBottom>
-        Select Group
-      </Typography>
+    <>
       {groupsStatus === "loading" && <CircularProgress />}
       {groupsStatus === "failed" && (
         <Typography color="error">Failed to load groups</Typography>
       )}
       {groupsStatus === "succeeded" && (
-        <FormControl fullWidth>
-          <InputLabel id="group-select-label">Group</InputLabel>
-          <Select
-            labelId="group-select-label"
-            id="group-select"
-            onChange={(e) => onSelectGroup(e.target.value)}
-            defaultValue=""
-          >
-            {groups.map((group) => (
-              <MenuItem key={group.id} value={group.id}>
-                {group.groupName}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+        <CustomDropdown
+          label="Select Group"
+          options={groups}
+          value={selectedGroup}
+          onChange={handleGroupChange}
+          error={groupError}
+          helperText={groupError ? "Please select a category" : ""}
+        />
       )}
-    </Container>
+    </>
   );
 };
 
