@@ -10,7 +10,11 @@ import {
   useTheme,
   Box,
 } from "@mui/material";
-import { addTask } from "../Redux/Slices/Tasks/tasksSlice";
+import {
+  addTask,
+  addTaskToDatabase,
+  setTaskError,
+} from "../Redux/Slices/Tasks/tasksSlice";
 import { selectCurrentUser } from "../Redux/Slices/Users/UsersSlice";
 import GroupSelector from "./GroupSelector";
 import { openSnackbar } from "../Redux/Slices/System/systemSlice";
@@ -27,52 +31,80 @@ const TaskForm = ({ groupId, handleClose }) => {
     (state) => state.groups.selectedGroupId
   );
   const theme = useTheme();
-  const error = useSelector((state) => state.tasks.error);
-  const [taskTitle, setTaskTitle] = useState('');
-  const [taskDescription, setTaskDescription] = useState('');
-  const [taskStart, setTaskStart] = useState(null);
-  const [taskDue, setTaskDue] = useState(null);
+  const taskError = useSelector((state) => state.tasks.error);
+
+  const [formState, setFormState] = useState({
+    taskTitle: { value: "", error: false, helperText: "" },
+    taskDescription: { value: "", error: false, helperText: "" },
+    startDate: { value: "", error: false, helperText: "" },
+    dueDate: { value: "", error: false, helperText: "" },
+  });
+
+  // Handle input changes
+  const handleChange = (field, value) => {
+    setFormState((prevState) => ({
+      ...prevState,
+      [field]: {
+        ...prevState[field],
+        value,
+        error: false,
+        helperText: "",
+      },
+    }));
+  };
+
   const showError = () => {
     dispatch(
       openSnackbar({ message: "This is an error!", severity: "success" })
     );
   };
 
-  const [taskData, setTaskData] = useState({
-    name: "",
-    description: "",
-    dueDate: "",
-    assignedTo: users.uid,
-  });
+  // Validate the form
+  const validateForm = () => {
+    let valid = true;
+    const newState = { ...formState };
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setTaskData({
-      ...taskData,
-      [name]: value,
-    });
+    if (!formState.taskTitle.value) {
+      newState.taskTitle.error = true;
+      newState.taskTitle.helperText = "Task title is required";
+      valid = false;
+    }
+
+    if (!formState.taskDescription.value) {
+      newState.taskDescription.error = true;
+      newState.taskDescription.helperText = "Task Description is required";
+      valid = false;
+    }
+
+    if (!formState.startDate.value) {
+      newState.startDate.error = true;
+      newState.startDate.helperText = "Start date is required";
+      valid = false;
+    }
+
+    if (!formState.dueDate.value) {
+      newState.dueDate.error = true;
+      newState.dueDate.helperText = "Due date is required";
+      valid = false;
+    }
+
+    setFormState(newState);
+    return valid;
   };
 
+  // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    // setTaskData({
-    //   name: "",
-    //   description: "",
-    //   dueDate: "",
-    //   assignedTo: users.uid,
-    // });
-    // //UPLOADING TO THE CLOUD
-    // console.log(taskData);
-    // dispatch(addTask({ groupId: selectPrefferedGroupId, taskData }));
+    if (validateForm()) {
+      // Handle valid form submission
+      console.log("Form submitted successfully", formState);
+    }
   };
 
   return (
     <Container
       sx={{
         display: "flex",
-        // justifyContent: "center",
-        // alignItems: "center",
         flexDirection: "column",
       }}
       disableGutters
@@ -86,39 +118,53 @@ const TaskForm = ({ groupId, handleClose }) => {
       >
         Add New Task
       </CustomTitles>
+
       <Box component="form" onSubmit={handleSubmit}>
         <CustomFormInput
           label="Task Title"
-          name="taskTitle"
-          // value={formValues.password}
-          // onChange={handleInputChange}
-          // error={errors.password}
-          // helperText={helperTexts.password}
+          fullWidth
+          value={formState.taskTitle.value}
+          onChange={(e) => handleChange("taskTitle", e.target.value)}
+          error={formState.taskTitle.error}
+          helperText={formState.taskTitle.helperText}
         />
-        <SideBySideLayout
-          customStyles={{ marginTop: 5 }}
-          largerLeft
-          leftComponent={
-            <CustomButton
-              sx={{ backgroundColor: theme.palette.error.main }}
-              onClick={handleClose}
-              variant="minimal"
-            >
-              Close
-            </CustomButton>
-          }
-          rightComponent={
-            <CustomButton
-              type="iconOnly"
-              leftIcon={MdFormatListBulletedAdd}
-              submit
-              sx={{ color: "#fff" }}
-              variant="primary"
-            >
-              Create Task
-            </CustomButton>
-          }
+
+        <CustomFormInput
+          label="Task Description"
+          fullWidth
+          multiline
+          rows={2}
+          placeholder="Something small about the task"
+          customStyles={{ mt: 2 }}
+          value={formState.taskDescription.value}
+          onChange={(e) => handleChange("taskDescription", e.target.value)}
+          error={formState.taskDescription.error}
+          helperText={formState.taskDescription.helperText}
         />
+
+        <Box sx={{ marginTop: 1, display: "flex" }}>
+          <CustomButton
+            sx={{
+              backgroundColor: theme.palette.error.main,
+              flexBasis: "30%",
+              marginRight: "10px",
+            }}
+            onClick={handleClose}
+            variant="minimal"
+          >
+            Close
+          </CustomButton>
+
+          <CustomButton
+            // type="iconOnly"
+            leftIcon={MdFormatListBulletedAdd}
+            submit
+            sx={{ color: "#fff" }}
+            variant="primary"
+          >
+            Create Task
+          </CustomButton>
+        </Box>
       </Box>
     </Container>
   );
