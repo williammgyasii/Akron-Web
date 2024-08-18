@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
-import { Fab, Modal, Box, Button, Tooltip } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
-import { useDispatch } from 'react-redux';
+import React, { useState } from "react";
+import { Fab, Modal, Box, Button, Tooltip } from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
+import { useDispatch } from "react-redux";
+import TaskForm from "./TaskForm";
 
 const CreateTaskFAB = () => {
   const [open, setOpen] = useState(false);
-  const dispatch=useDispatch()
+  const dispatch = useDispatch();
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -19,7 +20,7 @@ const CreateTaskFAB = () => {
           onClick={handleOpen}
           size="medium"
           style={{
-            position: 'absolute',
+            position: "absolute",
             bottom: 16,
             right: 16,
           }}
@@ -33,26 +34,24 @@ const CreateTaskFAB = () => {
         aria-labelledby="modal-title"
         aria-describedby="modal-description"
         BackdropProps={{
-          style: { backgroundColor: 'rgba(0, 0, 0, 0.7)' },
+          style: { backgroundColor: "rgba(0, 0, 0, 0.5)" },
+          onClick: (e) => e.stopPropagation(),
         }}
       >
         <Box
           sx={{
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            width: 400,
-            bgcolor: 'background.paper',
-            border: '2px solid #000',
-            boxShadow: 24,
-            p: 4,
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: 500,
+            height: "auto",
+            bgcolor: "background.paper",
+            p: 2,
             borderRadius: 2,
           }}
         >
-          <h2 id="modal-title">Add New Task</h2>
-          <p id="modal-description">Fill in the details for the new task.</p>
-          {/* Add your form inputs here */}
+          <TaskForm />
           <Button onClick={handleClose} variant="contained">
             Close
           </Button>

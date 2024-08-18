@@ -26,11 +26,12 @@ import {
   toggleDrawerIsOpened,
 } from "../Redux/Slices/System/systemSlice";
 import { Link, NavLink, useLocation } from "react-router-dom";
-import { IoMenuOutline } from "react-icons/io5";
+import { IoLogOut, IoMenuOutline, IoSettings } from "react-icons/io5";
 import CustomTitles from "./CustomTitles";
 import VariableSizeIconButton from "./CustomIconButton";
 import { AddSharp } from "@mui/icons-material";
 import { DASHBOARD_ROUTES } from "../Routes/dashboardRoutes";
+import CustomButton from "./CustomButton";
 
 const drawerWidth = 200;
 const drawerWidthCollapsed = 60;
@@ -187,6 +188,19 @@ const AppDrawer = () => {
             </NavLink>
           ))}
         </List>
+
+        <CustomButton
+          variant="secondary"
+          size="large"
+          // loading={loading}
+          leftIcon={IoLogOut}
+          sx={{ marginTop: "auto", marginBottom: "4rem",backgroundColor:theme.palette.error.main }}
+          type="iconLeft" // Submit button for the form
+          // label="Submit"
+          submit
+        >
+          {isDrawerOpen && "Logout"}
+        </CustomButton>
       </Drawer>
     </Box>
   );
