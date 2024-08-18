@@ -23,6 +23,7 @@ import CustomFormInput from "./CustomFormInput";
 import SideBySideLayout from "../Layouts/SideBySide";
 import CustomButton from "./CustomButton";
 import { MdFormatListBulletedAdd } from "react-icons/md";
+import AssignToMember from "./AssignToMember";
 
 const TaskForm = ({ groupId, handleClose }) => {
   const dispatch = useDispatch();
@@ -109,15 +110,18 @@ const TaskForm = ({ groupId, handleClose }) => {
       }}
       disableGutters
     >
-      <CustomTitles
-        customStyles={{ textTransform: "none", marginBottom: 2 }}
-        weightFont={"regular"}
-        variant="text_base"
-        gutterBottom
-        color={theme.palette.secondary.main}
-      >
-        Add New Task
-      </CustomTitles>
+      <Box display={"flex"} justifyContent={"space-between"}>
+        <CustomTitles
+          customStyles={{ textTransform: "none", marginBottom: 2 }}
+          weightFont={"regular"}
+          variant="text_base"
+          gutterBottom
+          color={theme.palette.secondary.main}
+        >
+          Add New Task
+        </CustomTitles>
+        <AssignToMember />
+      </Box>
 
       <Box component="form" onSubmit={handleSubmit}>
         <CustomFormInput
@@ -135,12 +139,44 @@ const TaskForm = ({ groupId, handleClose }) => {
           multiline
           rows={2}
           placeholder="Something small about the task"
-          customStyles={{ mt: 2 }}
+          customStyles={{ mt: 1.5 }}
           value={formState.taskDescription.value}
           onChange={(e) => handleChange("taskDescription", e.target.value)}
           error={formState.taskDescription.error}
           helperText={formState.taskDescription.helperText}
         />
+
+        <Box>
+          <CustomFormInput
+            label="Start Date"
+            type="date"
+            fullWidth
+            customStyles={{ mt: 2.5 }}
+            InputLabelProps={{
+              shrink: true,
+            }}
+            value={formState.startDate.value}
+            onChange={(e) => handleChange("startDate", e.target.value)}
+            error={formState.startDate.error}
+            helperText={formState.startDate.helperText}
+          />
+
+          {/* DUE DATE */}
+          {/* <CustomFormInput
+            label="Start Date"
+            type="date"
+            fullWidth
+            InputLabelProps={{
+              shrink: true,
+            }}
+            value={formState.startDate.value}
+            onChange={(e) => handleChange("startDate", e.target.value)}
+            error={formState.startDate.error}
+            helperText={formState.startDate.helperText}
+          /> */}
+        </Box>
+
+        <GroupSelector />
 
         <Box sx={{ marginTop: 1, display: "flex" }}>
           <CustomButton
