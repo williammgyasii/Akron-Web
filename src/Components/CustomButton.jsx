@@ -25,7 +25,7 @@ const buttonSizes = {
 
 const StyledButton = styled(Button)(({ theme, variant, size }) => ({
   // width:"2rem",
-  width:"100%",
+  width: "100%",
   backgroundColor:
     variant === "primary"
       ? theme.palette.primary.main
@@ -85,6 +85,8 @@ function CustomButton({
   children,
   sx, // For external styling
   onClick,
+  iconColor,
+  loadingButton = false,
   ...props
 }) {
   const renderIcon = (icon) => {
@@ -93,6 +95,7 @@ function CustomButton({
         style: {
           marginRight: type === "iconLeft" ? 8 : 0,
           marginLeft: type === "iconRight" ? 8 : 0,
+          color: iconColor || "#fff",
         },
       });
     }
@@ -103,6 +106,7 @@ function CustomButton({
     <StyledButton
       variant={variant}
       size={size}
+      disabled={loadingButton}
       sx={sx} // Apply external styling
       type={submit ? "submit" : "button"}
       // type={props.type || "button"} // Default to 'button', use 'submit' if specified
@@ -110,16 +114,21 @@ function CustomButton({
       // fullWidth={false}
       {...props}
     >
-      {type === "iconLeft" && renderIcon(<LeftIcon />)}
-      {type === "iconRight" && renderIcon(<RightIcon />)}
-      {type === "iconOnly" && (
-        <StyledIconButton variant={variant} size={size}>
-          {renderIcon(<LeftIcon />)}
-        </StyledIconButton>
+      {loadingButton ? (
+        <CircularProgress size={20} color="inherit" />
+      ) : (
+        <>
+          {type === "iconLeft" && renderIcon(<LeftIcon />)}
+          {type === "iconRight" && renderIcon(<RightIcon />)}
+          {type === "iconOnly" && (
+            <StyledIconButton variant={variant} size={size}>
+              {renderIcon(<LeftIcon />)}
+            </StyledIconButton>
+          )}
+          {type === "label" && label}
+          {children}
+        </>
       )}
-      {type === "label" && label}
-
-      {children}
     </StyledButton>
   );
 }

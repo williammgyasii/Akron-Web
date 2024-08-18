@@ -1,7 +1,12 @@
 import React from "react";
 import { Grid, Box, useTheme, useMediaQuery } from "@mui/material";
 
-const SideBySideLayout = ({ leftComponent, rightComponent, customStyles }) => {
+const SideBySideLayout = ({
+  leftComponent,
+  rightComponent,
+  customStyles,
+  largerLeft,
+}) => {
   const theme = useTheme();
   const isPhone = useMediaQuery(theme.breakpoints.down("tablets_port"));
   return (
@@ -22,7 +27,7 @@ const SideBySideLayout = ({ leftComponent, rightComponent, customStyles }) => {
     >
       <Grid
         sx={{
-          flexBasis: "50%",
+          flexBasis: largerLeft ? "20%" : "50%",
           paddingRight: 1,
           [theme.breakpoints.down("tablets_port")]: {
             paddingRight: 0,
@@ -34,8 +39,9 @@ const SideBySideLayout = ({ leftComponent, rightComponent, customStyles }) => {
         <Box>{leftComponent}</Box>
       </Grid>
       <Grid
+  
         sx={{
-          flexBasis: "50%",
+          flexBasis: largerLeft ? "80%" : "50%",
           paddingLeft: 1,
           [theme.breakpoints.down("tablets_port")]: {
             paddingLeft: 0,

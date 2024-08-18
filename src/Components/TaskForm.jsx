@@ -18,6 +18,7 @@ import CustomTitles from "./CustomTitles";
 import CustomFormInput from "./CustomFormInput";
 import SideBySideLayout from "../Layouts/SideBySide";
 import CustomButton from "./CustomButton";
+import { MdFormatListBulletedAdd } from "react-icons/md";
 
 const TaskForm = ({ groupId, handleClose }) => {
   const dispatch = useDispatch();
@@ -26,6 +27,11 @@ const TaskForm = ({ groupId, handleClose }) => {
     (state) => state.groups.selectedGroupId
   );
   const theme = useTheme();
+  const error = useSelector((state) => state.tasks.error);
+  const [taskTitle, setTaskTitle] = useState('');
+  const [taskDescription, setTaskDescription] = useState('');
+  const [taskStart, setTaskStart] = useState(null);
+  const [taskDue, setTaskDue] = useState(null);
   const showError = () => {
     dispatch(
       openSnackbar({ message: "This is an error!", severity: "success" })
@@ -50,15 +56,15 @@ const TaskForm = ({ groupId, handleClose }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    setTaskData({
-      name: "",
-      description: "",
-      dueDate: "",
-      assignedTo: users.uid,
-    });
-    //UPLOADING TO THE CLOUD
-    console.log(taskData);
-    dispatch(addTask({ groupId: selectPrefferedGroupId, taskData }));
+    // setTaskData({
+    //   name: "",
+    //   description: "",
+    //   dueDate: "",
+    //   assignedTo: users.uid,
+    // });
+    // //UPLOADING TO THE CLOUD
+    // console.log(taskData);
+    // dispatch(addTask({ groupId: selectPrefferedGroupId, taskData }));
   };
 
   return (
@@ -82,17 +88,37 @@ const TaskForm = ({ groupId, handleClose }) => {
       </CustomTitles>
       <Box component="form" onSubmit={handleSubmit}>
         <CustomFormInput
-          label="Password (min of 8 characters)"
-          name="password"
-          type="password"
+          label="Task Title"
+          name="taskTitle"
           // value={formValues.password}
           // onChange={handleInputChange}
           // error={errors.password}
           // helperText={helperTexts.password}
         />
-        <CustomButton onClick={handleClose} variant="primary">
-          Create Task
-        </CustomButton>
+        <SideBySideLayout
+          customStyles={{ marginTop: 5 }}
+          largerLeft
+          leftComponent={
+            <CustomButton
+              sx={{ backgroundColor: theme.palette.error.main }}
+              onClick={handleClose}
+              variant="minimal"
+            >
+              Close
+            </CustomButton>
+          }
+          rightComponent={
+            <CustomButton
+              type="iconOnly"
+              leftIcon={MdFormatListBulletedAdd}
+              submit
+              sx={{ color: "#fff" }}
+              variant="primary"
+            >
+              Create Task
+            </CustomButton>
+          }
+        />
       </Box>
     </Container>
   );
