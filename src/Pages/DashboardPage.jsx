@@ -1,4 +1,4 @@
-import { Button, Container } from "@mui/material";
+import { Box, Button, Container, useTheme } from "@mui/material";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { persistor, resetState } from "../Redux/store";
@@ -13,6 +13,7 @@ function DashboardPage() {
   const { currentUser, loading, status, error } = useSelector(
     (state) => state.user
   );
+  const theme = useTheme();
 
   const handleLogout = () => {
     dispatch(resetState());
@@ -30,6 +31,23 @@ function DashboardPage() {
         showOthers
       />
       {/* <Logo size="medium" /> */}
+      <Box sx={{ p: 5 }} display={"flex"}>
+        <Box flexGrow={1}>I am the other side</Box>
+        <Box
+          sx={{
+            px: 2,
+            height: "100vh",
+            // backgroundColor: "red",
+            width: 250,
+            borderLeft: "1px solid #ccc",
+            [theme.breakpoints.down("tablets_port")]: {
+              display: "none",
+            },
+          }}
+        >
+          <AppBarComponent title={"Task"} />
+        </Box>
+      </Box>
     </Container>
   );
 }

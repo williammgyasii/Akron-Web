@@ -5,13 +5,20 @@ import { TextField, Button, Container, Typography, Grid } from "@mui/material";
 import { addTask } from "../Redux/Slices/Tasks/tasksSlice";
 import { selectCurrentUser } from "../Redux/Slices/Users/UsersSlice";
 import GroupSelector from "./GroupSelector";
+import { openSnackbar } from "../Redux/Slices/System/systemSlice";
+import CustomTitles from "./CustomTitles";
 
-const TaskForm = ({ groupId,handleClose }) => {
+const TaskForm = ({ groupId, handleClose }) => {
   const dispatch = useDispatch();
   const users = useSelector(selectCurrentUser); // Assuming currentUser contains user info
   const selectPrefferedGroupId = useSelector(
     (state) => state.groups.selectedGroupId
   );
+  const showError = () => {
+    dispatch(
+      openSnackbar({ message: "This is an error!", severity: "success" })
+    );
+  };
 
   const [taskData, setTaskData] = useState({
     name: "",
@@ -43,10 +50,18 @@ const TaskForm = ({ groupId,handleClose }) => {
   };
 
   return (
-    <Container>
-      <Typography variant="h4" gutterBottom>
+    <Container
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        flexDirection: "column",
+      }}
+      disableGutters
+    >
+      <CustomTitles weightFont={"regular"} variant="text_lg" gutterBottom>
         Add New Task
-      </Typography>
+      </CustomTitles>
       <form onSubmit={handleSubmit}>
         <Grid container spacing={2}>
           <Grid item xs={12}>
@@ -86,7 +101,12 @@ const TaskForm = ({ groupId,handleClose }) => {
           </Grid>
 
           <Grid item xs={12}>
-            <Button variant="contained" color="primary" type="submit">
+            <Button
+              onClick={showError}
+              variant="contained"
+              color="primary"
+              type="submit"
+            >
               Add Task
             </Button>
           </Grid>

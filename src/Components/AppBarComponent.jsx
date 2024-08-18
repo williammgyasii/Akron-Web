@@ -30,7 +30,7 @@ const AppBarComponent = ({ title, showOthers, pageHeader }) => {
 
   return (
     <AppBar  position="static" color="transparent" elevation={0}>
-      <Toolbar disableGutters >
+      <Toolbar sx={{px:2}} disableGutters >
         {isSmallScreen && showOthers && (
           <IconButton onClick={() => dispatch(toggleDrawerIsOpened())}>
             <IoMenu />

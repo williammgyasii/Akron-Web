@@ -36,7 +36,7 @@ import CustomButton from "./CustomButton";
 const drawerWidth = 200;
 const drawerWidthCollapsed = 60;
 
-const AppDrawer = () => {
+const DrawerNav = () => {
   const dispatch = useDispatch();
   const isDrawerOpen = useSelector(selectIsDrawerOpened);
   const theme = useTheme();
@@ -206,4 +206,4 @@ const AppDrawer = () => {
   );
 };
 
-export default AppDrawer;
+export default DrawerNav;

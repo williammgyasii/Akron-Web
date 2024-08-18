@@ -26,6 +26,7 @@ const CustomTitles = ({
       variant={variant}
       align={align}
       color={color}
+      
       textTransform={capitalize ? "uppercase" : "lowercase"}
       fontWeight={weight[weightFont ? weightFont : "regular"]}
       sx={[customStyles]}

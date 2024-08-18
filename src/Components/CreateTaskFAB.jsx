@@ -21,8 +21,8 @@ const CreateTaskFAB = () => {
           size="medium"
           style={{
             position: "absolute",
-            bottom: 16,
-            right: 16,
+            bottom: 20,
+            right: 20,
           }}
         >
           <AddIcon />
