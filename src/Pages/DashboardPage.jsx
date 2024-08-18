@@ -5,6 +5,7 @@ import { persistor, resetState } from "../Redux/store";
 import { logoutUser } from "../Redux/Slices/Users/UsersSlice";
 import { useNavigate } from "react-router-dom";
 import AppBarComponent from "../Components/AppBarComponent";
+import Logo from "../Components/Logo";
 
 function DashboardPage() {
   const dispatch = useDispatch();
@@ -28,6 +29,7 @@ function DashboardPage() {
         title={`Welcome Back! ${currentUser.firstName}`}
         showOthers
       />
+      <Logo size="medium" />
     </Container>
   );
 }

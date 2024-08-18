@@ -52,7 +52,7 @@ const drawerWidth = DRAWER_WIDTH;
 
 const openedMixin = (theme) => ({
   width: drawerWidth,
-  padding: 8,
+  padding: "10px 20px",
   transition: theme.transitions.create("width", {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.enteringScreen,
@@ -79,6 +79,7 @@ const DrawerHeader = styled("div", {
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
+  width: "100%",
   ...theme.mixins.toolbar,
 }));
 
@@ -89,7 +90,6 @@ const Drawer = styled(MuiDrawer, {
   flexShrink: 0,
   whiteSpace: "nowrap",
   boxSizing: "border-box",
-  // backgroundColor:"red",
   ...(open && {
     ...openedMixin(theme),
     "& .MuiDrawer-paper": openedMixin(theme),
@@ -109,8 +109,8 @@ const SidebarNav = ({ sections }) => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    dispatch(resetState());
     dispatch(logoutUser());
+    dispatch(resetState());
     persistor.purge(); // Clear persisted state
     // Perform other logout logic, like redirecting to the login page
     navigate("/login", { replace: true });
@@ -120,7 +120,7 @@ const SidebarNav = ({ sections }) => {
     <Drawer variant="permanent" open={open}>
       {/* drawer header */}
       <DrawerHeader sx={{ minHeight: 10 }}>
-        <Logo size="medium"/>
+        <Logo size="medium" />
         <IconButton onClick={() => dispatch(toggleDrawerIsOpened())}>
           {open ? <ChevronRightIcon /> : <MenuIcon />}
         </IconButton>
@@ -168,7 +168,6 @@ const SidebarNav = ({ sections }) => {
           </NavLink>
         ))}
       </List>
-      <Divider sx={{ mt: 3 }} />
 
       <List>
         {open && (
@@ -238,8 +237,7 @@ const SidebarNav = ({ sections }) => {
         ))}
       </List>
 
-
-        {/* CHANGE TO THE NEED HELP SOLUTIONS */}
+      {/* CHANGE TO THE NEED HELP SOLUTIONS */}
       <ProfileComponent
         role="Software Engineer"
         avatarUrl="https://via.placeholder.com/150"
@@ -256,7 +254,7 @@ const SidebarNav = ({ sections }) => {
           justifyContent: "center",
           backgroundColor: "red",
           borderRadius: 1,
-          padding: .5,
+          padding: 0.5,
           color: "#fff",
           gap: 1,
           "&:hover": {
@@ -265,7 +263,7 @@ const SidebarNav = ({ sections }) => {
         }}
       >
         {open && <Typography sx={{ fontSize: 11 }}>Logout</Typography>}
-        <Logout  />
+        <Logout />
       </Button>
     </Drawer>
   );
