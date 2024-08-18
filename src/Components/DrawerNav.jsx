@@ -170,6 +170,9 @@ const AppDrawer = () => {
                     minWidth: isDrawerOpen ? 10 : 3,
                     width: isDrawerOpen ? 35 : null,
                     color: theme.palette.secondary.main,
+                    "& svg": {
+                      fontSize: 18, // Adjust the font size of the icon (default is 24)
+                    },
                   }}
                 >
                   {section.icon}

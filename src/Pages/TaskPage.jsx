@@ -1,9 +1,13 @@
-import React from 'react'
+import { Container } from "@mui/material";
+import React from "react";
+import AppBarComponent from "../Components/AppBarComponent";
 
 function TaskPage() {
   return (
-    <div>Welcome to the task page sh!</div>
-  )
+    <Container>
+      <AppBarComponent pageHeader showOthers title={"Task"} />
+    </Container>
+  );
 }
 
-export default TaskPage
+export default TaskPage;

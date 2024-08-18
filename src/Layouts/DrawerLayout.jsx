@@ -27,7 +27,15 @@ const DrawerLayout = ({ children }) => {
     >
       <AppDrawer />
 
-      <Box component="main" sx={{ flexGrow: 1, position: "relative",height:"100vh" }}>
+      <Box
+        component="main"
+        sx={{
+          flexGrow: 1,
+          position: "relative",
+          height: "100vh",
+          backgroundColor: "#fff",
+        }}
+      >
         <CreateTaskFAB />
         <Box>{children}</Box>
       </Box>

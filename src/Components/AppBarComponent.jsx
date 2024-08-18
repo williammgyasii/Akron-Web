@@ -19,7 +19,7 @@ import UserAvatarMenu from "./UserAvatarMenu";
 import { IoMenu } from "react-icons/io5";
 import { toggleDrawerIsOpened } from "../Redux/Slices/System/systemSlice";
 
-const AppBarComponent = ({ title, showOthers }) => {
+const AppBarComponent = ({ title, showOthers, pageHeader }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const currentUser = useSelector(selectCurrentUser);
   const randomImage = Math.floor(Math.random() * 100);
@@ -36,15 +36,27 @@ const AppBarComponent = ({ title, showOthers }) => {
             <IoMenu />
           </IconButton>
         )}
-        <Typography
-          variant={isSmallScreen ? "text_xs" : "text_base"}
-          sx={{
-            flexGrow: 1,
-            color: theme.palette.secondary.main,
-          }}
-        >
-          {title}
-        </Typography>
+        {pageHeader ? (
+          <Typography
+            variant={isSmallScreen ? "text_xs" : "text_xl"}
+            sx={{
+              flexGrow: 1,
+              color: theme.palette.secondary.main,
+            }}
+          >
+            {title}
+          </Typography>
+        ) : (
+          <Typography
+            variant={isSmallScreen ? "text_xs" : "text_base"}
+            sx={{
+              flexGrow: 1,
+              color: theme.palette.secondary.main,
+            }}
+          >
+            {title}
+          </Typography>
+        )}
         {showOthers && <NotifcationsManager />}
         {showOthers && <UserAvatarMenu />}
       </Toolbar>
