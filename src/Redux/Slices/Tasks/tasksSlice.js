@@ -7,17 +7,38 @@ import {
   doc,
   updateDoc,
   arrayUnion,
+  query,
+  where,
+  onSnapshot,
 } from "firebase/firestore";
 import { firebaseFirestore } from "../../../Firebase/getFirebase";
 import { hideModal, openSnackbar } from "../System/systemSlice";
 
-export const fetchTasks = createAsyncThunk(
-  "tasks/fetchTasks",
-  async (groupId) => {
-    const querySnapshot = await getDocs(
-      collection(firebaseFirestore, "groups", groupId, "tasks")
-    );
-    return querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+// Async thunk for fetching tasks by user in a specific group
+export const fetchTasksByUserInGroup = createAsyncThunk(
+  "tasks/fetchTasksByUserInGroup",
+  async ({ groupId, userId }, { rejectWithValue }) => {
+    return new Promise((resolve, reject) => {
+      const q = query(
+        collection(firebaseFirestore, `groups/${groupId}/tasks`),
+        where("assignedTo", "==", userId)
+      );
+
+      const unsubscribe = onSnapshot(
+        q,
+        (querySnapshot) => {
+          const tasks = [];
+          querySnapshot.forEach((doc) => {
+            tasks.push({ id: doc.id, ...doc.data() });
+          });
+          resolve(tasks);
+        },
+        (error) => reject(rejectWithValue(error.message))
+      );
+
+      // Clean up function
+      return () => unsubscribe();
+    });
   }
 );
 
@@ -55,6 +76,7 @@ const tasksSlice = createSlice({
     tasks: [],
     status: "idle",
     taskError: "er",
+    taskLoading: false,
   },
   reducers: {
     addTask: (state, action) => {
@@ -67,18 +89,23 @@ const tasksSlice = createSlice({
     clearTaskError: (state) => {
       state.taskError = null;
     },
+    setTaskLoading: (state, action) => {
+      state.taskLoading = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchTasks.pending, (state) => {
-        state.status = "loading";
+      .addCase(fetchTasksByUserInGroup.pending, (state) => {
+        state.taskLoading = true;
+        state.taskError = null;
       })
-      .addCase(fetchTasks.fulfilled, (state, action) => {
-        state.status = "succeeded";
+      .addCase(fetchTasksByUserInGroup.fulfilled, (state, action) => {
         state.tasks = action.payload;
+        state.taskLoading = false;
       })
-      .addCase(fetchTasks.rejected, (state) => {
-        state.status = "failed";
+      .addCase(fetchTasksByUserInGroup.rejected, (state, action) => {
+        state.taskError = action.payload;
+        state.taskLoading = false;
       })
       .addCase(addTaskToGroup.pending, (state, action) => {
         state.status = "loading";
@@ -94,6 +121,8 @@ const tasksSlice = createSlice({
   },
 });
 
-export const { addTask, setTaskError, clearTaskError } = tasksSlice.actions;
+export const { addTask, setTaskError, clearTaskError, setTaskLoading } =
+  tasksSlice.actions;
 export const selectTaskState = (state) => state.tasks.status;
+export const selectTaskLoading = (state) => state.tasks.taskLoading;
 export default tasksSlice.reducer;

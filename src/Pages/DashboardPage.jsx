@@ -6,6 +6,7 @@ import { logoutUser } from "../Redux/Slices/Users/UsersSlice";
 import { useNavigate } from "react-router-dom";
 import AppBarComponent from "../Components/AppBarComponent";
 import Logo from "../Components/Logo";
+import GroupTaskList from "../Components/TaskLists";
 
 function DashboardPage() {
   const dispatch = useDispatch();
@@ -57,6 +58,7 @@ function DashboardPage() {
           }}
         >
           <AppBarComponent title={"Task"} />
+          <GroupTaskList />
         </Box>
       </Box>
     </Container>

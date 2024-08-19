@@ -32,7 +32,7 @@ const DatePickerContainer = styled(DatePicker)(({ theme, variant, size }) => ({
   fontSize: "16px",
 }));
 
-const TaskForm = ({ groupId, handleClose }) => {
+const AddTaskForm = ({ groupId, handleClose }) => {
   const [formState, setFormState] = useState({
     taskTitle: { value: "", error: false, helperText: "" },
     taskDescription: { value: "", error: false, helperText: "" },
@@ -134,7 +134,11 @@ const TaskForm = ({ groupId, handleClose }) => {
         <AssignToMember />
       </Box>
 
-      <Box sx={{display:"flex",flexDirection:"column",alignItems:"center"}} component="form" onSubmit={handleSubmit}>
+      <Box
+        sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}
+        component="form"
+        onSubmit={handleSubmit}
+      >
         <CustomFormInput
           label="Task Title"
           fullWidth
@@ -229,4 +233,4 @@ const TaskForm = ({ groupId, handleClose }) => {
   );
 };
 
-export default TaskForm;
+export default AddTaskForm;

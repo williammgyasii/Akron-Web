@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Fab, Modal, Box, Button, Tooltip } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import { useDispatch, useSelector } from "react-redux";
-import TaskForm from "./TaskForm";
+import AddTaskForm from "./AddTaskForm";
 import {
   hideModal,
   selectIsModalOpened,
@@ -57,7 +57,7 @@ const CreateTaskFAB = () => {
             borderRadius: 2,
           }}
         >
-          <TaskForm />
+          <AddTaskForm />
         </Box>
       </Modal>
     </>
