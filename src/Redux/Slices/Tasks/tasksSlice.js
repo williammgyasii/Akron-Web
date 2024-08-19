@@ -28,12 +28,16 @@ export const fetchTasksByUserInGroup = createAsyncThunk(
         q,
         (querySnapshot) => {
           const tasks = [];
+          // console.log("")
           querySnapshot.forEach((doc) => {
             tasks.push({ id: doc.id, ...doc.data() });
           });
           resolve(tasks);
         },
-        (error) => reject(rejectWithValue(error.message))
+        (error) => {
+          console.log("fetchTasksByUserInGroup", error);
+          reject(rejectWithValue(error.message));
+        }
       );
 
       // Clean up function
@@ -77,10 +81,20 @@ const tasksSlice = createSlice({
     status: "idle",
     taskError: "er",
     taskLoading: false,
+    unsubscribe: null,
   },
   reducers: {
+    setUnsubscribe(state, action) {
+      state.unsubscribe = action.payload;
+    },
+    clearUnsubscribe(state) {
+      if (state.unsubscribe) {
+        state.unsubscribe();
+        state.unsubscribe = null;
+      }
+    },
     addTask: (state, action) => {
-      state.tasks.push(action.payload);
+      state.tasks.push(action.payload.tasks);
       state.taskError = null;
     },
     setTaskError: (state, action) => {
@@ -121,8 +135,14 @@ const tasksSlice = createSlice({
   },
 });
 
-export const { addTask, setTaskError, clearTaskError, setTaskLoading } =
-  tasksSlice.actions;
+export const {
+  addTask,
+  setTaskError,
+  clearTaskError,
+  setTaskLoading,
+  setUnsubscribe,
+  clearUnsubscribe,
+} = tasksSlice.actions;
 export const selectTaskState = (state) => state.tasks.status;
 export const selectTaskLoading = (state) => state.tasks.taskLoading;
 export default tasksSlice.reducer;

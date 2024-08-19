@@ -168,7 +168,7 @@ const AddTaskForm = ({ groupId, handleClose }) => {
           alignItems={"center"}
           justifyContent={"space-between"}
         >
-          <GroupSelector />
+          <GroupSelector formState />
           <DatePickerContainer
             selected={formState.startDate.value}
             onChange={(date) => handleChange("startDate", date)}

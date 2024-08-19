@@ -6,7 +6,9 @@ import { logoutUser } from "../Redux/Slices/Users/UsersSlice";
 import { useNavigate } from "react-router-dom";
 import AppBarComponent from "../Components/AppBarComponent";
 import Logo from "../Components/Logo";
-import GroupTaskList from "../Components/TaskLists";
+import GroupTaskList from "../Components/GroupTaskList";
+import { selectGroupID } from "../Redux/Slices/Groups/groupsSlice";
+import CustomTitles from "../Components/CustomTitles";
 
 function DashboardPage() {
   const dispatch = useDispatch();
@@ -15,6 +17,7 @@ function DashboardPage() {
     (state) => state.user
   );
   const theme = useTheme();
+  const selectedGroup = useSelector(selectGroupID);
 
   const handleLogout = () => {
     dispatch(resetState());
@@ -30,7 +33,7 @@ function DashboardPage() {
       <AppBarComponent
         title={`Welcome Back! ${currentUser.firstName}`}
         showOthers
-        customStyles={{ px: 5 }}
+        customStyles={{ px: 5,py:1 }}
       />
       {/* <Logo size="medium" /> */}
       <Box sx={{ p: 1.5, backgroundColor: "#F0F0F0" }} display={"flex"}>
@@ -45,7 +48,8 @@ function DashboardPage() {
         </Box>
         <Box
           sx={{
-            px: 2,
+            px: 1,
+            py: 2,
             height: "100vh",
             // backgroundColor: "red",
             width: 300,
@@ -57,8 +61,29 @@ function DashboardPage() {
             },
           }}
         >
-          <AppBarComponent title={"Task"} />
-          <GroupTaskList />
+          <CustomTitles
+            color={theme.palette.secondary.main}
+            variant="text_base"
+            // capitalize="none"
+            weightFont={"medium"}
+            customStyles={{
+              textTransform: "none",
+              textAlign: "center",
+              display: "block",
+            }}
+          >
+            Tasks
+          </CustomTitles>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "flex-start",
+              backgroundColor:"yellow"
+            }}
+          >
+            <GroupTaskList  groupId={selectedGroup} />
+          </Box>
         </Box>
       </Box>
     </Container>

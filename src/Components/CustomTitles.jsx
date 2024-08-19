@@ -13,6 +13,7 @@ const CustomTitles = ({
   customStyles,
   upperCase,
   weightFont,
+  ...props
 }) => {
   const theme = useTheme();
   const weight = {
@@ -29,6 +30,7 @@ const CustomTitles = ({
       textTransform={capitalize ? "uppercase" : "lowercase"}
       fontWeight={weight[weightFont ? weightFont : "regular"]}
       sx={[customStyles]}
+      {...props}
     >
       {children}
     </Typography>

@@ -24,7 +24,7 @@ import {
 } from "../Redux/Slices/Groups/groupsSlice";
 import CustomDropdown from "./CustomDropdown";
 
-const GroupSelector = ({ onSelectGroup, customStyles }) => {
+const GroupSelector = ({ onSelectGroup, customStyles, ...props }) => {
   const dispatch = useDispatch();
   const groups = useSelector(selectGroups);
   const groupsStatus = useSelector((state) => state.groups.status);
@@ -45,18 +45,19 @@ const GroupSelector = ({ onSelectGroup, customStyles }) => {
   return (
     <Box
       display={"flex"}
-      width={"50%"}
+      width={props.size === "small" ? "20%" : "50%"}
       alignItems={"center"}
       justifyContent={"center"}
     >
       {groupsStatus === "loading" && (
-        <CircularProgress size={15}  sx={{ marginTop: 2, color: "red" }} />
+        <CircularProgress size={15} sx={{ marginTop: 2, color: "red" }} />
       )}
       {groupsStatus === "failed" && (
         <Typography color="error">Failed to load groups</Typography>
       )}
       {groupsStatus === "succeeded" && (
         <CustomDropdown
+          disabled={props.formState}
           label="Select Group"
           options={groups}
           value={selectedGroup}

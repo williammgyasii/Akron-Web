@@ -18,6 +18,7 @@ import NotifcationsManager from "./NotificationsMenu";
 import UserAvatarMenu from "./UserAvatarMenu";
 import { IoMenu } from "react-icons/io5";
 import { toggleDrawerIsOpened } from "../Redux/Slices/System/systemSlice";
+import GroupSelector from "./GroupSelector";
 
 const AppBarComponent = ({ title, showOthers, pageHeader, customStyles }) => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -57,6 +58,7 @@ const AppBarComponent = ({ title, showOthers, pageHeader, customStyles }) => {
             {title}
           </Typography>
         )}
+        <GroupSelector size="small" />
         {showOthers && <NotifcationsManager />}
         {showOthers && <UserAvatarMenu />}
       </Toolbar>
