@@ -127,30 +127,15 @@ const DrawerNav = () => {
         </Box>
 
         <List sx={{ marginTop: 2 }}>
-          {/* {isDrawerOpen && (
-            <Box
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                color: "#9896A3",
-                mb: 1,
-              }}
-            >
-              <CustomTitles variant={"text_base"}>PROJECTS</CustomTitles>
-              <VariableSizeIconButton
-                onClick={() => console.log("ac")}
-                size="tiny"
-              >
-                <AddSharp />
-              </VariableSizeIconButton>
-            </Box>
-          )} */}
           {DASHBOARD_ROUTES.map((section, index, isActive) => (
             <NavLink
               key={section.title}
               to={section.path}
-              style={{ textDecoration: "none", color: "#9896A3" }}
+              style={{
+                textDecoration: "none",
+                color: "#9896A3",
+                display: section.subRoute ? "none" : "block",
+              }}
             >
               <ListItem
                 sx={{
@@ -194,7 +179,11 @@ const DrawerNav = () => {
           size="large"
           // loading={loading}
           leftIcon={IoLogOut}
-          sx={{ marginTop: "auto", marginBottom: "4rem",backgroundColor:theme.palette.error.main }}
+          sx={{
+            marginTop: "auto",
+            marginBottom: "4rem",
+            backgroundColor: theme.palette.error.main,
+          }}
           type="iconLeft" // Submit button for the form
           // label="Submit"
           submit

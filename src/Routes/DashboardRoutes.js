@@ -30,9 +30,10 @@ export const DASHBOARD_ROUTES = [
     component: <GroupsPage />,
   },
   {
-    title: "Notifications",
-    path: "notifications",
-    icon: <IoNotifications />,
-    component: <NotificationsPage />,
+    title: "Profile",
+    path: "profile",
+    // icon: < P/>,
+    component: <ProfilePage />,
+    subRoute: true,
   },
 ];
