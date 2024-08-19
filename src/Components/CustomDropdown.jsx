@@ -22,7 +22,7 @@ function CustomDropdown({
 }) {
   const theme = useTheme();
   return (
-    <FormControl size="small" fullWidth={fullWidth} error={error}>
+    <FormControl fullWidth error={error}>
       <InputLabel sx={{ color: theme.palette.primary.main }}>
         {label}
       </InputLabel>
@@ -31,6 +31,7 @@ function CustomDropdown({
         value={value}
         onChange={onChange}
         label={label}
+        size="small"
         {...props}
       >
         {options.map((option) => (

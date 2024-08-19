@@ -34,7 +34,7 @@ const GroupTaskList = ({ groupId, userId }) => {
   // );
 
   return (
-    <ul style={{ width: "100%", backgroundColor: "red" }}>
+    <ul style={{ width: "100%",marginTop:"-2px" }}>
       {tasks.map((task) => (
         <li key={task.id}>
           <h3>{task.taskTitle}</h3>

@@ -29,14 +29,14 @@ function DashboardPage() {
   };
 
   return (
-    <Container disableGutters maxWidth={false} sx={{ backgroundColor: "#fff" }}>
+    <Container disableGutters maxWidth={false} >
       <AppBarComponent
         title={`Welcome Back! ${currentUser.firstName}`}
         showOthers
-        customStyles={{ px: 5,py:1 }}
+        customStyles={{ px: 5, py: 1, }}
       />
       {/* <Logo size="medium" /> */}
-      <Box sx={{ p: 1.5, backgroundColor: "#F0F0F0" }} display={"flex"}>
+      <Box sx={{ p:1.5, display: 'flex', height: '100vh', }}>
         <Box
           sx={{
             backgroundColor: theme.palette.background.paper,
@@ -50,8 +50,8 @@ function DashboardPage() {
           sx={{
             px: 1,
             py: 2,
-            height: "100vh",
-            // backgroundColor: "red",
+            overflowY:"auto",
+            position:"relative",
             width: 300,
             marginLeft: "10px",
             backgroundColor: theme.palette.background.paper,
@@ -70,6 +70,9 @@ function DashboardPage() {
               textTransform: "none",
               textAlign: "center",
               display: "block",
+              zIndex: 1,
+              // padding: "16px",
+              borderBottom: "1px solid #ccc",
             }}
           >
             Tasks
@@ -79,10 +82,10 @@ function DashboardPage() {
               display: "flex",
               justifyContent: "center",
               alignItems: "flex-start",
-              backgroundColor:"yellow"
+              flex:1
             }}
           >
-            <GroupTaskList  groupId={selectedGroup} />
+            <GroupTaskList groupId={selectedGroup} />
           </Box>
         </Box>
       </Box>
