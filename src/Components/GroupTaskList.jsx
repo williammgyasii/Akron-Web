@@ -15,6 +15,8 @@ const GroupTaskList = ({ groupId, userId }) => {
   const dispatch = useDispatch();
   const { tasks, taskLoading, taskError } = useSelector((state) => state.tasks);
   const currentUser = useSelector(selectCurrentUser);
+  console.log(tasks)
+
 
   useEffect(() => {
     dispatch(fetchTasksByUserInGroup({ groupId, userId: currentUser.userId }));
@@ -29,19 +31,19 @@ const GroupTaskList = ({ groupId, userId }) => {
   if (taskError) return <Alert severity="error">{taskError}</Alert>;
   if (tasks.length <= 0) return <Typography>No Task In Group</Typography>;
 
-  // const sortedTasks = [...tasks].sort(
-  //   (a, b) => b.createdAt.seconds - a.createdAt.seconds
-  // );
+  const sortedTasks = [...tasks].sort(
+    (a, b) => b.startDate - a.startDate
+  );
 
   return (
     <ul style={{ width: "100%",marginTop:"-2px" }}>
-      {tasks.map((task) => (
+      {sortedTasks.map((task) => (
         <li key={task.id}>
           <h3>{task.taskTitle}</h3>
           <p>{task.taskDescription}</p>
           <p>
             Due Date:{" "}
-            {new Date(task.startDate.seconds * 1000).toLocaleDateString()}
+            {new Date(task.startDate?.seconds * 1000).toLocaleDateString()}
           </p>
         </li>
       ))}

@@ -18,7 +18,7 @@ function DashboardPage() {
   );
   const theme = useTheme();
   const selectedGroup = useSelector(selectGroupID);
-
+  
   const handleLogout = () => {
     dispatch(resetState());
     dispatch(logoutUser());
@@ -71,7 +71,7 @@ function DashboardPage() {
               textAlign: "center",
               display: "block",
               zIndex: 1,
-              // padding: "16px",
+              p:1,
               borderBottom: "1px solid #ccc",
             }}
           >

@@ -66,7 +66,7 @@ export const addTaskToGroup = createAsyncThunk(
           severity: "success",
         })
       );
-      return { id: docRef.id, ...taskData }; // Include the generated ID in the payload
+      return { id: docRef.id, ...taskData,note:"justtotest" }; // Include the generated ID in the payload
     } catch (error) {
       console.log("tasks/addTaskToGroup", error);
       return rejectWithValue(error.message);

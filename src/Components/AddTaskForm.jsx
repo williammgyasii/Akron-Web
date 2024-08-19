@@ -23,6 +23,7 @@ import {
   formatTimestamp,
 } from "../Utils/dateFunctions";
 import { hideModal } from "../Redux/Slices/System/systemSlice";
+import { serverTimestamp } from "firebase/firestore";
 
 const DatePickerContainer = styled(DatePicker)(({ theme, variant, size }) => ({
   width: "100%",
@@ -105,7 +106,7 @@ const AddTaskForm = ({ groupId, handleClose }) => {
           taskData: {
             taskTitle: formState.taskTitle.value,
             taskDescription: formState.taskDescription.value,
-            startDate: formatDateToCustomFormat(formState.startDate.value),
+            startDate: formState.startDate.value,
             assignedTo: currentUser.userId,
           },
         })
