@@ -9,6 +9,7 @@ import {
   arrayUnion,
 } from "firebase/firestore";
 import { firebaseFirestore } from "../../../Firebase/getFirebase";
+import { openSnackbar } from "../System/systemSlice";
 
 export const fetchTasks = createAsyncThunk(
   "tasks/fetchTasks",
@@ -22,9 +23,9 @@ export const fetchTasks = createAsyncThunk(
 
 export const addTaskToGroup = createAsyncThunk(
   "tasks/addTaskToGroup",
-  async ( {selectedGroup, taskData} , { rejectWithValue }) => {
+  async ({ selectedGroup, taskData }, { rejectWithValue, dispatch }) => {
     try {
-      console.log("tasks/addTaskToGroup",taskData)
+      console.log("tasks/addTaskToGroup", taskData);
       const tasksRef = collection(
         firebaseFirestore,
         "groups",
@@ -32,6 +33,12 @@ export const addTaskToGroup = createAsyncThunk(
         "tasks"
       );
       const docRef = await addDoc(tasksRef, taskData); // Auto-generate ID
+      dispatch(
+        openSnackbar({
+          message: "Task Added",
+          severity: "success",
+        })
+      );
       return { id: docRef.id, ...taskData }; // Include the generated ID in the payload
     } catch (error) {
       console.log("tasks/addTaskToGroup", error);
@@ -86,5 +93,5 @@ const tasksSlice = createSlice({
 });
 
 export const { addTask, setTaskError, clearTaskError } = tasksSlice.actions;
-export const selectTaskState = (state) => state.tasks.taskError;
+export const selectTaskState = (state) => state.tasks.status;
 export default tasksSlice.reducer;

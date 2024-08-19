@@ -18,40 +18,20 @@ export const formatTimestampToWords = (timestamp) => {
   return date.toLocaleDateString("en-US", options);
 };
 
-const formatDate = (date) => {
-  const d = new Date(date);
-  return format(d, "yy/dd/MM"); // Custom format
-};
-
-const formatDateToWords = (date) => {
-  const d = new Date(date);
-
-  // Extract year, day, and month
-  const year = d.getFullYear().toString().slice(-2); // Last 2 digits of the year
-  const day = d.getDate(); // Day of the month
-  const month = d.getMonth(); // Month (0-indexed)
-
-  // Month names
-  const monthNames = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-  ];
-
-  // Convert to words
-  return `${monthNames[month]} ${day}, ${year}`;
-};
-
-// Example usage
-const selectedDate = new Date(); // Replace with your date picker value
-const formattedDate = formatDateToWords(selectedDate);
-console.log("Formatted Date in Words:", formattedDate);
+export const formatDateToCustomFormat = (date) => {
+    const d = new Date(date);
+  
+    // Extract components
+    const day = String(d.getDate()).padStart(2, '0'); // Ensure 2-digit day
+    const monthIndex = d.getMonth(); // Month (0-indexed)
+    const year = d.getFullYear(); // Full year
+  
+    // Array of month abbreviations
+    const monthAbbreviations = [
+      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+    ];
+  
+    // Convert to formatted string
+    return `${day}-${monthAbbreviations[monthIndex]}-${year}`;
+  };

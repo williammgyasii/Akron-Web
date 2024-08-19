@@ -115,7 +115,11 @@ function CustomButton({
       {...props}
     >
       {loadingButton ? (
-        <CircularProgress size={20} color="inherit" />
+        <CircularProgress
+          sx={{p:1, color: "#fff" }}
+          // size={40}
+          // color={"#fff"}
+        />
       ) : (
         <>
           {type === "iconLeft" && renderIcon(<LeftIcon />)}

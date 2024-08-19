@@ -18,7 +18,10 @@ import {
   addTaskToGroup,
   selectTaskState,
 } from "../Redux/Slices/Tasks/tasksSlice";
-import { formatTimestamp } from "../Utils/dateFunctions";
+import {
+  formatDateToCustomFormat,
+  formatTimestamp,
+} from "../Utils/dateFunctions";
 
 const DatePickerContainer = styled(DatePicker)(({ theme, variant, size }) => ({
   width: "100%",
@@ -41,7 +44,7 @@ const TaskForm = ({ groupId, handleClose }) => {
   const selectedGroup = useSelector(selectGroupID);
   const currentUser = useSelector(selectCurrentUser);
 
-  console.log(taskState);
+  // console.log(taskState);
 
   // Handle input changes
   const handleChange = (field, value) => {
@@ -101,14 +104,11 @@ const TaskForm = ({ groupId, handleClose }) => {
           taskData: {
             taskTitle: formState.taskTitle.value,
             taskDescription: formState.taskDescription.value,
-            startDate: formatDate(formState.startDate.value, "yyyy/dd/MM"),
+            startDate: formatDateToCustomFormat(formState.startDate.value),
             assignedTo: currentUser.userId,
           },
         })
       );
-      // console.log("Form submitted successfully", {
-      //   formState: formatDate(formState.startDate.value, "yyyy/dd/MM"),
-      // });
     }
   };
 
@@ -187,24 +187,27 @@ const TaskForm = ({ groupId, handleClose }) => {
         </Box>
 
         <Box sx={{ marginTop: 1, display: "flex" }}>
-          {taskState === "idle" && (
-            <CustomButton
-              sx={{
-                backgroundColor: theme.palette.error.main,
-                flexBasis: "30%",
-                marginRight: "10px",
-              }}
-              onClick={handleClose}
-              variant="minimal"
-            >
-              Close
-            </CustomButton>
-          )}
+          {taskState === "idle" ||
+            (taskState === "succeeded" && (
+              <CustomButton
+                sx={{
+                  backgroundColor: theme.palette.error.main,
+                  flexBasis: "30%",
+                  marginRight: "10px",
+                }}
+                onClick={handleClose}
+                variant="minimal"
+              >
+                Close
+              </CustomButton>
+            ))}
 
           <CustomButton
             // type="iconOnly"
+            loadingButton={taskState === "loading"}
             leftIcon={MdFormatListBulletedAdd}
             submit
+            size="medium"
             sx={{ color: "#fff" }}
             variant="primary"
           >
