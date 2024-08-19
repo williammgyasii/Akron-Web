@@ -190,7 +190,7 @@ const TaskForm = ({ groupId, handleClose }) => {
 
         <Box
           sx={{
-            marginTop: 1,
+            marginTop: 2,
             display: "flex",
             width: "50%",
             justifyContent: "center",
