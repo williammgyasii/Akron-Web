@@ -9,7 +9,7 @@ import {
   arrayUnion,
 } from "firebase/firestore";
 import { firebaseFirestore } from "../../../Firebase/getFirebase";
-import { openSnackbar } from "../System/systemSlice";
+import { hideModal, openSnackbar } from "../System/systemSlice";
 
 export const fetchTasks = createAsyncThunk(
   "tasks/fetchTasks",
@@ -33,6 +33,8 @@ export const addTaskToGroup = createAsyncThunk(
         "tasks"
       );
       const docRef = await addDoc(tasksRef, taskData); // Auto-generate ID
+      //CLOSEMODAL
+      dispatch(hideModal());
       dispatch(
         openSnackbar({
           message: "Task Added",

@@ -22,6 +22,7 @@ import {
   formatDateToCustomFormat,
   formatTimestamp,
 } from "../Utils/dateFunctions";
+import { hideModal } from "../Redux/Slices/System/systemSlice";
 
 const DatePickerContainer = styled(DatePicker)(({ theme, variant, size }) => ({
   width: "100%",
@@ -133,7 +134,7 @@ const TaskForm = ({ groupId, handleClose }) => {
         <AssignToMember />
       </Box>
 
-      <Box component="form" onSubmit={handleSubmit}>
+      <Box sx={{display:"flex",flexDirection:"column",alignItems:"center"}} component="form" onSubmit={handleSubmit}>
         <CustomFormInput
           label="Task Title"
           fullWidth
@@ -159,6 +160,7 @@ const TaskForm = ({ groupId, handleClose }) => {
         <Box
           mt={2}
           display={"flex"}
+          width={"100%"}
           alignItems={"center"}
           justifyContent={"space-between"}
         >
@@ -186,19 +188,27 @@ const TaskForm = ({ groupId, handleClose }) => {
           /> */}
         </Box>
 
-        <Box sx={{ marginTop: 1, display: "flex" }}>
+        <Box
+          sx={{
+            marginTop: 1,
+            display: "flex",
+            width: "50%",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
           {taskState === "idle" ||
             (taskState === "succeeded" && (
               <CustomButton
                 sx={{
-                  backgroundColor: theme.palette.error.main,
+                  // backgroundColor: theme.palette.error.main,
                   flexBasis: "30%",
                   marginRight: "10px",
                 }}
-                onClick={handleClose}
-                variant="minimal"
+                onClick={() => dispatch(hideModal())}
+                variant="secondary"
               >
-                Close
+                Cancel
               </CustomButton>
             ))}
 

@@ -1,15 +1,21 @@
 import React, { useState } from "react";
 import { Fab, Modal, Box, Button, Tooltip } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import TaskForm from "./TaskForm";
+import {
+  hideModal,
+  selectIsModalOpened,
+  showModal,
+} from "../Redux/Slices/System/systemSlice";
 
 const CreateTaskFAB = () => {
   const [open, setOpen] = useState(false);
+  const modalOpened = useSelector(selectIsModalOpened);
   const dispatch = useDispatch();
 
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleOpen = () => dispatch(showModal());
+  const handleClose = () => dispatch(hideModal());
 
   return (
     <>
@@ -29,8 +35,8 @@ const CreateTaskFAB = () => {
         </Fab>
       </Tooltip>
       <Modal
-        open={open}
-        onClose={handleClose}
+        open={modalOpened}
+        onClose={() => dispatch(hideModal())}
         aria-labelledby="modal-title"
         aria-describedby="modal-description"
         BackdropProps={{
@@ -51,8 +57,7 @@ const CreateTaskFAB = () => {
             borderRadius: 2,
           }}
         >
-          <TaskForm handleClose={handleClose} />
-          
+          <TaskForm />
         </Box>
       </Modal>
     </>
