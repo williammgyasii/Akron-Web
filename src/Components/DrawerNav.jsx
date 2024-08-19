@@ -32,6 +32,7 @@ import VariableSizeIconButton from "./CustomIconButton";
 import { AddSharp } from "@mui/icons-material";
 import { DASHBOARD_ROUTES } from "../Routes/dashboardRoutes";
 import CustomButton from "./CustomButton";
+import GroupSelector from "./GroupSelector";
 
 const drawerWidth = 200;
 const drawerWidthCollapsed = 60;
@@ -71,6 +72,8 @@ const DrawerNav = () => {
             overflowX: "hidden",
             padding: isDrawerOpen ? "10px 15px" : "4px 2px",
             transition: "width 0.3s ease",
+            // backgroundColor: "red",
+            // borderRadius:4,
           },
         }}
         ModalProps={{
@@ -105,6 +108,7 @@ const DrawerNav = () => {
               justifyContent: "center",
               width: "100%",
               textDecoration: "none",
+              marginBottom: 2,
             }}
           >
             <img
@@ -125,8 +129,9 @@ const DrawerNav = () => {
             )}
           </Box>
         </Box>
+        {isDrawerOpen && <GroupSelector size="fullWidth" />}
 
-        <List sx={{ marginTop: 2 }}>
+        <List sx={{ marginTop: 1 }}>
           {DASHBOARD_ROUTES.map((section, index, isActive) => (
             <NavLink
               key={section.title}

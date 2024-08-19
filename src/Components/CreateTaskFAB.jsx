@@ -51,6 +51,7 @@ const CreateTaskFAB = () => {
             left: "50%",
             transform: "translate(-50%, -50%)",
             width: 500,
+            
             height: "auto",
             bgcolor: "background.paper",
             p: 2,

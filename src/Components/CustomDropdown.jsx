@@ -32,6 +32,7 @@ function CustomDropdown({
         onChange={onChange}
         label={label}
         size="small"
+        sx={{ fontSize: theme.typography.text_sm }}
         {...props}
       >
         {options.map((option) => (

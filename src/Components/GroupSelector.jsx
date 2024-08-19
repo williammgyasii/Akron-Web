@@ -45,9 +45,10 @@ const GroupSelector = ({ onSelectGroup, customStyles, ...props }) => {
   return (
     <Box
       display={"flex"}
-      width={props.size === "small" ? "20%" : "50%"}
+      width={props.size === "small" ? "20%" : props.size==="fullWidth" ? "100" : "50%"}
       alignItems={"center"}
       justifyContent={"center"}
+      // fullWidth={props.fullWidth}
     >
       {groupsStatus === "loading" && (
         <CircularProgress size={15} sx={{ marginTop: 2, color: "red" }} />

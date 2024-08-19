@@ -13,6 +13,7 @@ const DrawerLayout = ({ children }) => {
     <Box
       sx={{
         display: "flex",
+
         [theme.breakpoints.down("tablets_port")]: {
           flexDirection: "column",
         },
@@ -27,6 +28,7 @@ const DrawerLayout = ({ children }) => {
           position: "relative",
           height: "100vh",
           width: "100%",
+          
           // backgroundColor: "YELLOW",
         }}
       >

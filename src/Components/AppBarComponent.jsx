@@ -58,7 +58,7 @@ const AppBarComponent = ({ title, showOthers, pageHeader, customStyles }) => {
             {title}
           </Typography>
         )}
-        <GroupSelector size="small" />
+        {/* <GroupSelector size="fullWidth" /> */}
         {showOthers && <NotifcationsManager />}
         {showOthers && <UserAvatarMenu />}
       </Toolbar>

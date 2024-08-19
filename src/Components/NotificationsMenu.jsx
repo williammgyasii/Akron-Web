@@ -10,6 +10,7 @@ import {
   Divider,
   Box,
   Button,
+  useTheme
 } from "@mui/material";
 import { IoNotificationsOutline } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
@@ -38,6 +39,8 @@ const NotificationsMenu = () => {
     handleClose();
   };
 
+  const theme = useTheme()
+
   return (
     <>
       <IconButton
@@ -58,7 +61,7 @@ const NotificationsMenu = () => {
             },
           }}
         >
-          <IoNotificationsOutline />
+          <IoNotificationsOutline size={20} color={theme.palette.secondary.main} />
         </Badge>
       </IconButton>
 

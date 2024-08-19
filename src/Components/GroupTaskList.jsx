@@ -15,7 +15,7 @@ const GroupTaskList = ({ groupId, userId }) => {
   const dispatch = useDispatch();
   const { tasks, taskLoading, taskError } = useSelector((state) => state.tasks);
   const currentUser = useSelector(selectCurrentUser);
-  console.log(tasks)
+  // console.log(tasks)
 
 
   useEffect(() => {
