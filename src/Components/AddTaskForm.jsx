@@ -190,21 +190,19 @@ const AddTaskForm = ({ groupId, handleClose }) => {
             alignItems: "center",
           }}
         >
-          {taskState === "idle" ||
-            (taskState === "succeeded" && (
-              <CustomButton
-                sx={{
-                  // backgroundColor: theme.palette.error.main,
-                  flexBasis: "30%",
-                  marginRight: "10px",
-                }}
-                onClick={() => dispatch(hideModal())}
-                variant="secondary"
-                size="small"
-              >
-                Cancel
-              </CustomButton>
-            ))}
+          {taskState === "idle" || taskState === "succeeded" ? (
+            <CustomButton
+              sx={{
+                flexBasis: "30%",
+                marginRight: "10px",
+              }}
+              onClick={() => dispatch(hideModal())}
+              variant="secondary"
+              size="small"
+            >
+              Cancel
+            </CustomButton>
+          ) : null}
 
           <CustomButton
             // type="iconOnly"

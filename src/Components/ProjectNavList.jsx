@@ -23,7 +23,10 @@ import {
 import CustomButton from "./CustomButton";
 import { IoAddSharp } from "react-icons/io5";
 import CustomTitles from "./CustomTitles";
-import { selectIsDrawerOpened } from "../Redux/Slices/System/systemSlice";
+import {
+  selectIsDrawerOpened,
+  showModal,
+} from "../Redux/Slices/System/systemSlice";
 import { getRandomAvatarColor } from "../Utils/randomAvatarColors";
 
 const StyledListItemButton = styled(ListItemButton)(({ theme, selected }) => ({
@@ -58,6 +61,8 @@ const ProjectNavList = ({ selectedProject, onSelectProject }) => {
     navigate(`projects/${projectId}`); // Adjust the path to your project details page
   };
 
+  const handleOpen = () => dispatch(showModal("createProject"));
+
   if (projects.length === 0) {
     return (
       <Box p={2} textAlign="center">
@@ -90,7 +95,7 @@ const ProjectNavList = ({ selectedProject, onSelectProject }) => {
           Projects
         </CustomTitles>
         <IconButton
-          onClick={() => console.log("show Projects")}
+          onClick={handleOpen}
           sx={{
             backgroundColor: theme.palette.primary.main,
             color: "white",
@@ -106,7 +111,7 @@ const ProjectNavList = ({ selectedProject, onSelectProject }) => {
       </Box>
       <List sx={{ mt: "-10px" }}>
         {displayProjects.map((project) => {
-          console.log(project?.id);
+          // console.log(project?.id);
           const projectInitial = project.projectName.charAt(0).toUpperCase();
           return (
             <StyledListItemButton

@@ -139,7 +139,7 @@ const DrawerNav = () => {
               style={{
                 textDecoration: "none",
                 color: "#9896A3",
-                display: section.subRoute ? "none" : "block",
+                display: section.noView ? "none" : "block",
               }}
             >
               <ListItem

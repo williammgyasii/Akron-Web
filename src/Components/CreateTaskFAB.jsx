@@ -25,7 +25,7 @@ const CreateTaskFAB = () => {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("tablets_port"));
 
-  const handleOpen = () => dispatch(showModal());
+  const handleOpen = () => dispatch(showModal("createTask"));
   const handleClose = () => dispatch(hideModal());
 
   return (

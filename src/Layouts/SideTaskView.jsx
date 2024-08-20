@@ -10,6 +10,7 @@ const SideTaskView = ({}) => {
   const theme = useTheme();
   const dispatch = useDispatch();
   const selectedGroup = useSelector(selectGroupID);
+  const handleOpen = () => console.log("acc");
 
   return (
     <Box
@@ -46,10 +47,10 @@ const SideTaskView = ({}) => {
             p: 1,
           }}
         >
-          Tasks
+          Taskss
         </CustomTitles>
         <IconButton
-          onClick={() => dispatch(showModal("createTask"))}
+          onClick={handleOpen}
           sx={{
             backgroundColor: theme.palette.primary.main,
             color: "white",
