@@ -76,7 +76,7 @@ const DrawerNav = () => {
             alignContent: "center",
             boxSizing: "border-box",
             overflowX: "hidden",
-            mt:5,
+            mt:isSmallScreen?0:5,
             padding: isDrawerOpen ? "5px 9px" : "4px 2px",
             transition: "width 0.3s ease",
             backgroundColor: theme.palette.secondary.main,
@@ -152,7 +152,7 @@ const DrawerNav = () => {
 
         <CustomButton
           variant="secondary"
-          size="large"
+          size="small"
           // loading={loading}
           leftIcon={IoLogOut}
           sx={{

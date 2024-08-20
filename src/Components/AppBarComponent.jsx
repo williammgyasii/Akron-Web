@@ -65,7 +65,7 @@ const AppBarComponent = ({ title, showOthers, pageHeader, customStyles }) => {
       >
         {isSmallScreen && showOthers && (
           <IconButton onClick={() => dispatch(toggleDrawerIsOpened())}>
-            <IoMenu />
+            <IoMenu color="#fff" />
           </IconButton>
         )}
         <Box
@@ -83,7 +83,7 @@ const AppBarComponent = ({ title, showOthers, pageHeader, customStyles }) => {
             alt="App Logo"
             style={{ maxHeight: "30px" }}
           />
-          {isDrawerOpen && (
+          {/* {isDrawerOpen && isSmallScreen && (
             <CustomTitles
               color={theme.palette.primary.white}
               variant="text_lg"
@@ -93,7 +93,7 @@ const AppBarComponent = ({ title, showOthers, pageHeader, customStyles }) => {
             >
               AKRON
             </CustomTitles>
-          )}
+          )} */}
         </Box>
         {pageHeader ? (
           <Typography
@@ -111,7 +111,7 @@ const AppBarComponent = ({ title, showOthers, pageHeader, customStyles }) => {
             sx={{
               flexGrow: 1,
               color: "#fff",
-              marginLeft:10
+              marginLeft: 10,
             }}
           >
             {title}
