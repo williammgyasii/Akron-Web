@@ -61,7 +61,7 @@ export const DASHBOARD_ROUTES = [
     subRoute: true,
   },
   {
-    title: "Projects",
+    title: "Single Project",
     path: "projects/:id",
     // icon: < P/>,
     component: <SingleProjectPage />,

@@ -26,7 +26,7 @@ import {
   selectIsDrawerOpened,
   toggleDrawerIsOpened,
 } from "../Redux/Slices/System/systemSlice";
-import { Link, NavLink, useLocation } from "react-router-dom";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import {
   IoAddSharp,
   IoLogOut,
@@ -46,6 +46,8 @@ import {
 } from "react-icons/tb";
 import { selectGroupProjects } from "../Redux/Slices/Groups/groupsSlice";
 import ProjectNavList from "./ProjectNavList";
+import { logoutUser } from "../Redux/Slices/Users/UsersSlice";
+import { persistor, resetState } from "../Redux/store";
 
 const StyledListItemText = styled(ListItemText)({
   "& .MuiTypography-root": {
@@ -59,13 +61,22 @@ const DrawerNav = () => {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("tablets_port"));
   const groupProjects = useSelector(selectGroupProjects);
-  console.log(groupProjects);
+  const navigate = useNavigate();
+  // console.log(groupProjects);
 
   const handleDrawerToggle = () => {
     dispatch(toggleDrawerIsOpened());
   };
   const handleDrawerClose = () => {
     dispatch(closeDrawer());
+  };
+  const handleLogout = () => {
+    dispatch(logoutUser());
+    dispatch(resetState());
+    persistor.purge(); // Clear persisted state
+    // Perform other logout logic, like redirecting to the login page
+    navigate("/login", { replace: true });
+    window.location.reload();
   };
 
   return (
@@ -170,43 +181,7 @@ const DrawerNav = () => {
         />
 
         <List>
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-          >
-            <CustomTitles
-              color={theme.palette.primary.white}
-              variant="text_xs"
-              // capitalize="none"
-              weightFont={"medium"}
-              customStyles={{
-                textTransform: "none",
-                display: "block",
-                zIndex: 1,
-                p: 1,
-              }}
-            >
-              Projects
-            </CustomTitles>
-            <IconButton
-              onClick={() => console.log("show Projects")}
-              sx={{
-                backgroundColor: theme.palette.primary.main,
-                color: "white",
-                borderRadius: 1,
-                p: 0.5,
-                "&:hover": {
-                  backgroundColor: theme.palette.primary.dark800, // Slightly lighter black on hover
-                },
-              }}
-            >
-              <IoAddSharp size={10} />
-            </IconButton>
-          </Box>
-
+          {" "}
           <ProjectNavList />
         </List>
 
@@ -214,6 +189,7 @@ const DrawerNav = () => {
           variant="secondary"
           size="small"
           // loading={loading}
+          onClick={handleLogout}
           leftIcon={IoLogOut}
           sx={{
             marginTop: "auto",
@@ -222,7 +198,6 @@ const DrawerNav = () => {
           }}
           type="iconLeft" // Submit button for the form
           // label="Submit"
-          submit
         >
           {isDrawerOpen && "Logout"}
         </CustomButton>

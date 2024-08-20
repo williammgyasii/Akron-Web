@@ -1,5 +1,5 @@
 export const getRandomQuotes = async () => {
-  const quoteResult = fetch("https://type.fit/api/quotes")
+  const quoteResult = fetch("https://type.fit/api/quotes", { mode: "no-cors" })
     .then((response) => response.json())
     .then((data) => {
       const randomFormula = data[Math.floor(Math.random() * (data.length - 2))];
