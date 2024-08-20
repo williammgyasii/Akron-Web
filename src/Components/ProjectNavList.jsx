@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Avatar,
   Box,
@@ -14,12 +14,16 @@ import {
   useTheme,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { selectGroupProjects } from "../Redux/Slices/Groups/groupsSlice";
 import CustomButton from "./CustomButton";
 import { IoAddSharp } from "react-icons/io5";
 import CustomTitles from "./CustomTitles";
-import { selectIsDrawerOpened } from "../Redux/Slices/System/systemSlice";
+import {
+  selectIsActiveProject,
+  selectIsDrawerOpened,
+  setActiveProject,
+} from "../Redux/Slices/System/systemSlice";
 import { getRandomAvatarColor } from "../Utils/randomAvatarColors";
 
 // const projects = [
@@ -29,31 +33,35 @@ import { getRandomAvatarColor } from "../Utils/randomAvatarColors";
 //   { projectName: "Cassava", id: "11ccac3141" },
 // ];
 
-const StyledListItemButton = styled(ListItemButton)(({ theme, isActive }) => ({
+const StyledListItemButton = styled(ListItemButton)(({ theme, selected }) => ({
   padding: "8px 10px",
   borderRadius: theme.shape.borderRadius,
   transition: "background-color 0.3s, box-shadow 0.3s",
-  backgroundColor: isActive ? "red" : "transparent",
+  backgroundColor: selected ? "red" : "transparent",
+  color: selected ? "white" : "#fff",
   "&:hover": {
     backgroundColor: theme.palette.primary.main,
   },
-  "&:active": {
-    // backgroundColor: "red",
-    boxShadow: theme.shadows[1],
-  },
 }));
 
-const ProjectNavList = ({}) => {
+const ProjectNavList = ({ selectedProject, onSelectProject }) => {
   const navigate = useNavigate();
+  const [selected, setSelected] = useState(null);
   const projects = useSelector(selectGroupProjects);
   const isDrawerOpen = useSelector(selectIsDrawerOpened);
   const displayProjects = projects.slice(0, 3); // Limit to first 3 projects
   const randomColor = getRandomAvatarColor();
+  const activeProject = useSelector(selectIsActiveProject);
   const theme = useTheme();
+  const dispatch = useDispatch();
+
+  console.log(activeProject);
+
   const handleViewAllClick = () => {
     navigate("projects"); // Adjust the path to your projects page
   };
   const handleProjectClick = (projectId) => {
+    dispatch(setActiveProject(projectId));
     navigate(`projects/${projectId}`); // Adjust the path to your project details page
   };
 
@@ -108,9 +116,10 @@ const ProjectNavList = ({}) => {
           const projectInitial = project.projectName.charAt(0).toUpperCase();
           return (
             <StyledListItemButton
-              isActive={true}
+              selected={selectedProject === project.id}
               key={project.projectName}
-              onClick={() => handleProjectClick(project.projectName)}
+              // onClick={() => onSelectProject(project.id)}
+              onClick={() => handleProjectClick(project.id)}
             >
               <Avatar
                 sx={{
