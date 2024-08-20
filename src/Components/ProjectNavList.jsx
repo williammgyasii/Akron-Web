@@ -29,15 +29,16 @@ import { getRandomAvatarColor } from "../Utils/randomAvatarColors";
 //   { projectName: "Cassava", id: "11ccac3141" },
 // ];
 
-const StyledListItemButton = styled(ListItemButton)(({ theme }) => ({
+const StyledListItemButton = styled(ListItemButton)(({ theme, isActive }) => ({
   padding: "8px 10px",
   borderRadius: theme.shape.borderRadius,
   transition: "background-color 0.3s, box-shadow 0.3s",
+  backgroundColor: isActive ? "red" : "transparent",
   "&:hover": {
     backgroundColor: theme.palette.primary.main,
   },
   "&:active": {
-    backgroundColor: "red",
+    // backgroundColor: "red",
     boxShadow: theme.shadows[1],
   },
 }));
@@ -107,6 +108,7 @@ const ProjectNavList = ({}) => {
           const projectInitial = project.projectName.charAt(0).toUpperCase();
           return (
             <StyledListItemButton
+              isActive={true}
               key={project.projectName}
               onClick={() => handleProjectClick(project.projectName)}
             >

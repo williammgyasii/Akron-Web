@@ -11,7 +11,7 @@ import { FaPeopleGroup } from "react-icons/fa6";
 import { BiMessageSquare } from "react-icons/bi";
 import MessagesPage from "../Pages/MessagesPage";
 import ProjectsPage from "../Pages/ProjectsPage";
-import SingleProjectPage from "../Pages/SingleProjectPage";
+import ProjectDetailsPage from "../Pages/ProjectDetailsPage";
 
 export const DASHBOARD_ROUTES = [
   {
@@ -64,7 +64,7 @@ export const DASHBOARD_ROUTES = [
     title: "Single Project",
     path: "projects/:id",
     // icon: < P/>,
-    component: <SingleProjectPage />,
+    component: <ProjectDetailsPage />,
     subRoute: true,
   },
 ];
