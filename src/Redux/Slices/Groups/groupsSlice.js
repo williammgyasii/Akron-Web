@@ -87,7 +87,7 @@ const groupsSlice = createSlice({
   name: "groups",
   initialState: {
     groups: [],
-    groupProjects: [
+    projects: [
       { projectName: "Cell Ministry" },
       { projectName: "Banku" },
       { projectName: "ShiSha" },
@@ -111,6 +111,9 @@ const groupsSlice = createSlice({
     clearGroupDetails(state) {
       state.selectedGroupDetails = null;
       state.groupsError = null;
+    },
+    addProject: (state, action) => {
+      state.projects.push(action.payload);
     },
   },
   extraReducers: (builder) => {
@@ -157,9 +160,9 @@ const groupsSlice = createSlice({
   },
 });
 
-export const { setGroups, setSelectedGroupID, clearGroupDetails } =
+export const { setGroups, setSelectedGroupID, clearGroupDetails, addProject } =
   groupsSlice.actions;
 export const selectGroups = (state) => state.groups.groups;
 export const selectGroupID = (state) => state.groups.selectedGroupId;
-export const selectGroupProjects = (state) => state.groups.groupProjects;
+export const selectGroupProjects = (state) => state.groups.projects;
 export default groupsSlice.reducer;

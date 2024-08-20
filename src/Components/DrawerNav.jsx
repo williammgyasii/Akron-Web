@@ -45,6 +45,7 @@ import {
   TbLayoutSidebarLeftExpand,
 } from "react-icons/tb";
 import { selectGroupProjects } from "../Redux/Slices/Groups/groupsSlice";
+import ProjectNavList from "./ProjectNavList";
 
 const StyledListItemText = styled(ListItemText)({
   "& .MuiTypography-root": {
@@ -167,6 +168,7 @@ const DrawerNav = () => {
         <Divider
           sx={{ backgroundColor: theme.palette.primary.white, marginTop: 1.5 }}
         />
+
         <List>
           <Box
             sx={{
@@ -204,6 +206,8 @@ const DrawerNav = () => {
               <IoAddSharp size={10} />
             </IconButton>
           </Box>
+
+          <ProjectNavList />
         </List>
 
         <CustomButton
