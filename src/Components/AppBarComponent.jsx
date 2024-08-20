@@ -20,6 +20,7 @@ import UserAvatarMenu from "./UserAvatarMenu";
 import { IoAddSharp, IoMenu } from "react-icons/io5";
 import {
   selectIsDrawerOpened,
+  showModal,
   toggleDrawerIsOpened,
 } from "../Redux/Slices/System/systemSlice";
 import GroupSelector from "./GroupSelector";
@@ -33,6 +34,8 @@ const AppBarComponent = ({ title, showOthers, pageHeader, customStyles }) => {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("tablets_port"));
   const isDrawerOpen = useSelector(selectIsDrawerOpened);
+
+  const handleOpen = () => dispatch(showModal("createGroup"));
 
   return (
     <AppBar
@@ -112,6 +115,7 @@ const AppBarComponent = ({ title, showOthers, pageHeader, customStyles }) => {
           size="small"
           // loading={loading}
           leftIcon={IoAddSharp}
+          onClick={handleOpen}
           sx={{ width: "170px" }}
           type="iconLeft" // Submit button for the form
           // label="Submit"

@@ -49,7 +49,7 @@ const SideTaskView = ({}) => {
           Tasks
         </CustomTitles>
         <IconButton
-          onClick={() => dispatch(showModal())}
+          onClick={() => dispatch(showModal("createTask"))}
           sx={{
             backgroundColor: theme.palette.primary.main,
             color: "white",

@@ -23,7 +23,7 @@ export const DASHBOARD_ROUTES = [
   },
   {
     title: "Task",
-    path: "task",
+    path: "tasks",
     icon: <MdTask />,
     component: <TaskPage />,
   },

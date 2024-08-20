@@ -31,7 +31,7 @@ const DatePickerContainer = styled(DatePicker)(({ theme, variant, size }) => ({
   border: "1px solid #ccc",
   borderRadius: "4px",
   fontSize: "16px",
-  marginTop: "15px",
+  marginTop: "16px",
 }));
 
 const AddTaskForm = ({ groupId, handleClose }) => {
@@ -47,7 +47,7 @@ const AddTaskForm = ({ groupId, handleClose }) => {
   const selectedGroup = useSelector(selectGroupID);
   const currentUser = useSelector(selectCurrentUser);
 
-  // console.log(taskState);
+  console.log(taskState);
 
   // Handle input changes
   const handleChange = (field, value) => {
