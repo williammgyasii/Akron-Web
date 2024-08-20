@@ -38,7 +38,7 @@ const MenuItemWithIcon = ({
           minWidth: "30px!important",
         }}
       >
-        <Icon size={15} />
+        <Icon size={17} />
       </ListItemIcon>
       <StyledListItemText primary={text} />
     </MenuItem>

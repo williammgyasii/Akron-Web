@@ -8,6 +8,8 @@ import { MdTask } from "react-icons/md";
 import TaskPage from "../Pages/TaskPage";
 import GroupsPage from "../Pages/GroupsPage";
 import { FaPeopleGroup } from "react-icons/fa6";
+import { BiMessageSquare } from "react-icons/bi";
+import MessagesPage from "../Pages/MessagesPage";
 
 export const DASHBOARD_ROUTES = [
   {
@@ -28,6 +30,12 @@ export const DASHBOARD_ROUTES = [
     path: "groups",
     icon: <FaPeopleGroup />,
     component: <GroupsPage />,
+  },
+  {
+    title: "Messages",
+    path: "messages",
+    icon: <BiMessageSquare />,
+    component: <MessagesPage />,
   },
   {
     title: "Profile",
