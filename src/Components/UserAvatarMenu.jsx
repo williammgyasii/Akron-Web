@@ -16,6 +16,7 @@ import {
   IoPersonOutline,
   IoSettingsOutline,
   IoLogOutOutline,
+  IoSwapHorizontalSharp,
 } from "react-icons/io5"; // Ionicons
 import MenuItemWithIcon from "./MenuItemWithIcon";
 import ProfileCard from "./ProfileCard";
@@ -85,14 +86,22 @@ const UserAvatarMenu = ({ imageUrl = "https://i.pravatar.cc/150?img=3" }) => {
         <Box sx={{ padding: "8px 10px" }}>
           <MenuItemWithIcon
             hoverColor={theme.palette.primary.main}
-            handleClick={() => console.log("Pca")}
+            handleClick={()=>handleMenuItemClick("profile")}
             text={"Profile"}
             icon={IoPersonOutline}
           />
-          <MenuItem onClick={() => console.log("Random Action 1")}>
-            <IoSettingsOutline style={{ marginRight: "8px" }} />
-            Preferences
-          </MenuItem>
+          <MenuItemWithIcon
+            hoverColor={theme.palette.primary.main}
+            handleClick={()=>handleMenuItemClick("settings")}
+            text={"Settings"}
+            icon={IoSettingsOutline}
+          />
+          <MenuItemWithIcon
+            hoverColor={theme.palette.primary.main}
+            handleClick={()=>handleMenuItemClick("Refferals")}
+            text={"Refferals"}
+            icon={IoSwapHorizontalSharp}
+          />
         </Box>
         <Divider />
 

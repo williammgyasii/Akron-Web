@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 const StyledListItemText = styled(ListItemText)({
   "& .MuiTypography-root": {
-    fontSize: "0.855rem", // Adjust font size here
+    fontSize: "0.900rem", // Adjust font size here
   },
 });
 
@@ -25,6 +25,9 @@ const MenuItemWithIcon = ({
     <MenuItem
       onClick={handleClick}
       sx={{
+        padding: "5px 15px",
+        minHeight:"30px",
+        borderRadius:2,
         "&:hover": {
           backgroundColor: hoverColor,
           color: "white",
@@ -34,8 +37,8 @@ const MenuItemWithIcon = ({
       <ListItemIcon
         sx={{
           color: "inherit",
-          width: 20,
-          minWidth: "30px!important",
+          minWidth: "25px!important",
+          
         }}
       >
         <Icon size={17} />

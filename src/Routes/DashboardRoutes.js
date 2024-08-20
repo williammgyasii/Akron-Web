@@ -44,4 +44,11 @@ export const DASHBOARD_ROUTES = [
     component: <ProfilePage />,
     subRoute: true,
   },
+  {
+    title: "Settings",
+    path: "settings",
+    // icon: < P/>,
+    component: <SettingsPage />,
+    subRoute: true,
+  },
 ];
