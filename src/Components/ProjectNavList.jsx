@@ -27,7 +27,7 @@ import { selectIsDrawerOpened } from "../Redux/Slices/System/systemSlice";
 import { getRandomAvatarColor } from "../Utils/randomAvatarColors";
 
 const StyledListItemButton = styled(ListItemButton)(({ theme, selected }) => ({
-  padding: "8px 10px",
+  padding: "5px 10px",
   borderRadius: theme.shape.borderRadius,
   transition: "background-color 0.3s, box-shadow 0.3s",
   "&.Mui-selected": {
