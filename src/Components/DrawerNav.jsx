@@ -35,7 +35,10 @@ import { DASHBOARD_ROUTES } from "../Routes/dashboardRoutes";
 import CustomButton from "./CustomButton";
 import GroupSelector from "./GroupSelector";
 import { drawerWidth, drawerWidthCollapsed } from "../Utils/Constants";
-import { TbLayoutSidebarLeftCollapseFilled, TbLayoutSidebarLeftExpand } from "react-icons/tb";
+import {
+  TbLayoutSidebarLeftCollapseFilled,
+  TbLayoutSidebarLeftExpand,
+} from "react-icons/tb";
 
 const StyledListItemText = styled(ListItemText)({
   "& .MuiTypography-root": {
@@ -76,7 +79,7 @@ const DrawerNav = () => {
             alignContent: "center",
             boxSizing: "border-box",
             overflowX: "hidden",
-            mt:isSmallScreen?0:5,
+            mt: isSmallScreen ? 0 : 5,
             padding: isDrawerOpen ? "5px 9px" : "4px 2px",
             transition: "width 0.3s ease",
             backgroundColor: theme.palette.secondary.main,
@@ -99,13 +102,65 @@ const DrawerNav = () => {
           }}
           onClick={handleDrawerToggle}
         >
-          {isDrawerOpen ? <TbLayoutSidebarLeftExpand  /> : <TbLayoutSidebarLeftCollapseFilled />}
+          {isDrawerOpen ? (
+            <TbLayoutSidebarLeftExpand />
+          ) : (
+            <TbLayoutSidebarLeftCollapseFilled />
+          )}
         </IconButton>
 
-       
-        {isDrawerOpen && <GroupSelector  size="fullWidth" />}
+        {isDrawerOpen && <GroupSelector size="fullWidth" />}
 
         <List>
+          {DASHBOARD_ROUTES.map((section, index, isActive) => (
+            <NavLink
+              key={section.title}
+              to={section.path}
+              style={{
+                textDecoration: "none",
+                color: "#9896A3",
+                display: section.subRoute ? "none" : "block",
+              }}
+            >
+              <ListItem
+                sx={{
+                  color: theme.palette.primary.white,
+                  borderRadius: 1,
+                  padding: "3px 15px",
+                  marginBottom: isDrawerOpen ? 0 : 2,
+                  "&:hover": {
+                    backgroundColor: theme.palette.primary.main,
+                    color: "white",
+                    "& .MuiListItemIcon-root": {
+                      color: "white",
+                    },
+                  },
+                }}
+              >
+                <ListItemIcon
+                  sx={{
+                    minWidth: isDrawerOpen ? 13 : 3,
+                    width: isDrawerOpen ? 25 : 20,
+                    textAlign: "center",
+                    color: theme.palette.primary.white,
+                    "& svg": {
+                      fontSize: isDrawerOpen ? 13 : 18, // Adjust the font size of the icon (default is 24)
+                    },
+                  }}
+                >
+                  {section.icon}
+                </ListItemIcon>
+                {isDrawerOpen && <StyledListItemText primary={section.title} />}
+              </ListItem>
+            </NavLink>
+          ))}
+        </List>
+
+        <Divider
+          sx={{ backgroundColor: theme.palette.primary.white, marginTop: 1.5 }}
+        />
+        <List>
+          
           {DASHBOARD_ROUTES.map((section, index, isActive) => (
             <NavLink
               key={section.title}

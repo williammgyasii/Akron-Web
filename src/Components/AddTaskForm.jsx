@@ -31,7 +31,7 @@ const DatePickerContainer = styled(DatePicker)(({ theme, variant, size }) => ({
   border: "1px solid #ccc",
   borderRadius: "4px",
   fontSize: "16px",
-  marginTop:"15px"
+  marginTop: "15px",
 }));
 
 const AddTaskForm = ({ groupId, handleClose }) => {
@@ -177,22 +177,8 @@ const AddTaskForm = ({ groupId, handleClose }) => {
             minDate={today} // Restrict to future dates
             placeholderText="Select a start date"
             dateFormat="yyyy/MM/dd"
-            
             className="date-picker" // Custom class for styling
           />
-          {/* <CustomFormInput
-            label="Start Date"
-            type="date"
-            fullWidth
-            customStyles={{ fontSize: ".5rem", flexBasis: "35%" }}
-            InputLabelProps={{
-              shrink: true,
-            }}
-            value={formState.startDate.value}
-            onChange={(e) => handleChange("startDate", e.target.value)}
-            error={formState.startDate.error}
-            helperText={formState.startDate.helperText}
-          /> */}
         </Box>
 
         <Box
@@ -214,6 +200,7 @@ const AddTaskForm = ({ groupId, handleClose }) => {
                 }}
                 onClick={() => dispatch(hideModal())}
                 variant="secondary"
+                size="small"
               >
                 Cancel
               </CustomButton>
@@ -224,7 +211,7 @@ const AddTaskForm = ({ groupId, handleClose }) => {
             loadingButton={taskState === "loading"}
             leftIcon={MdFormatListBulletedAdd}
             submit
-            size="medium"
+            size="small"
             sx={{ color: "#fff" }}
             variant="primary"
           >

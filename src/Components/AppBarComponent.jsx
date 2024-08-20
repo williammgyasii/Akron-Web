@@ -17,7 +17,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectCurrentUser } from "../Redux/Slices/Users/UsersSlice";
 import NotifcationsManager from "./NotificationsMenu";
 import UserAvatarMenu from "./UserAvatarMenu";
-import { IoMenu } from "react-icons/io5";
+import { IoAddSharp, IoMenu } from "react-icons/io5";
 import {
   selectIsDrawerOpened,
   toggleDrawerIsOpened,
@@ -26,12 +26,9 @@ import GroupSelector from "./GroupSelector";
 import { drawerWidth, drawerWidthCollapsed } from "../Utils/Constants";
 import CustomTitles from "./CustomTitles";
 import { Link } from "react-router-dom";
+import CustomButton from "./CustomButton";
 
 const AppBarComponent = ({ title, showOthers, pageHeader, customStyles }) => {
-  const [anchorEl, setAnchorEl] = useState(null);
-  const currentUser = useSelector(selectCurrentUser);
-  const randomImage = Math.floor(Math.random() * 100);
-  const notificationCount = 4;
   const dispatch = useDispatch();
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("tablets_port"));
@@ -95,28 +92,32 @@ const AppBarComponent = ({ title, showOthers, pageHeader, customStyles }) => {
             </CustomTitles>
           )} */}
         </Box>
-        {pageHeader ? (
-          <Typography
-            variant={isSmallScreen ? "text_xs" : "text_xl"}
-            sx={{
-              flexGrow: 1,
-              color: theme.palette.secondary.main,
-            }}
-          >
-            {title}
-          </Typography>
-        ) : (
-          <Typography
-            variant={isSmallScreen ? "text_xs" : "text_sm"}
-            sx={{
-              flexGrow: 1,
-              color: "#fff",
-              marginLeft: 10,
-            }}
-          >
-            {title}
-          </Typography>
-        )}
+        <CustomTitles
+          variant={isSmallScreen ? "text_xs" : "text_sm"}
+          sx={{
+            flexGrow: 1,
+            color: "#fff",
+            display: "inline-block",
+            // width: "300px",
+            textAlign: "left",
+            marginLeft: 10,
+            textTransform: "none",
+          }}
+        >
+          {title}
+        </CustomTitles>
+
+        <CustomButton
+          variant="primary"
+          size="small"
+          // loading={loading}
+          leftIcon={IoAddSharp}
+          sx={{ width: "170px" }}
+          type="iconLeft" // Submit button for the form
+          // label="Submit"
+        >
+          Create Group
+        </CustomButton>
 
         {/* <GroupSelector size="fullWidth" /> */}
         {showOthers && <NotifcationsManager />}
