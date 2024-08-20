@@ -7,7 +7,7 @@ import MenuItemWithIcon from './MenuItemWithIcon';
 const UserAvatarMenu = ({ imageUrl="https://i.pravatar.cc/150?img=3" }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const navigate = useNavigate();
-  const AVATAR_SIZE = 40
+  const AVATAR_SIZE = 30
 
   const handleAvatarClick = (event) => {
     setAnchorEl(event.currentTarget);

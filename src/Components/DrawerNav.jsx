@@ -35,6 +35,7 @@ import { DASHBOARD_ROUTES } from "../Routes/dashboardRoutes";
 import CustomButton from "./CustomButton";
 import GroupSelector from "./GroupSelector";
 import { drawerWidth, drawerWidthCollapsed } from "../Utils/Constants";
+import { TbLayoutSidebarLeftCollapseFilled, TbLayoutSidebarLeftExpand } from "react-icons/tb";
 
 const StyledListItemText = styled(ListItemText)({
   "& .MuiTypography-root": {
@@ -75,6 +76,7 @@ const DrawerNav = () => {
             alignContent: "center",
             boxSizing: "border-box",
             overflowX: "hidden",
+            mt:5,
             padding: isDrawerOpen ? "5px 9px" : "4px 2px",
             transition: "width 0.3s ease",
             backgroundColor: theme.palette.secondary.main,
@@ -97,47 +99,11 @@ const DrawerNav = () => {
           }}
           onClick={handleDrawerToggle}
         >
-          {isDrawerOpen ? <ChevronLeftIcon /> : <IoMenuOutline />}
+          {isDrawerOpen ? <TbLayoutSidebarLeftExpand  /> : <TbLayoutSidebarLeftCollapseFilled />}
         </IconButton>
 
-        <Box
-          sx={{
-            display: "flex",
-            width: "100%",
-            marginTop: isDrawerOpen ? "-5px" : "10px",
-          }}
-        >
-          <Box
-            component={Link}
-            to={"/dashboard"}
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              width: "100%",
-              textDecoration: "none",
-              marginBottom: 2,
-            }}
-          >
-            <img
-              src={require("../Images/logo-main.png")}
-              alt="App Logo"
-              style={{ maxHeight: "30px" }}
-            />
-            {isDrawerOpen && (
-              <CustomTitles
-                color={theme.palette.primary.white}
-                variant="text_lg"
-                weightFont={"medium"}
-                noWrap
-                customStyles={{ marginLeft: 1 }}
-              >
-                AKRON
-              </CustomTitles>
-            )}
-          </Box>
-        </Box>
-        {isDrawerOpen && <GroupSelector size="fullWidth" />}
+       
+        {isDrawerOpen && <GroupSelector  size="fullWidth" />}
 
         <List>
           {DASHBOARD_ROUTES.map((section, index, isActive) => (

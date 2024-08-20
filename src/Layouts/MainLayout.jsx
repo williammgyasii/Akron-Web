@@ -38,7 +38,7 @@ const MainLayout = ({ children }) => {
           showOthers
           // Enable vertical scrolling }}
         />
-        <Box sx={{ mt: 8 }}>{children}</Box>
+        <Box sx={{ mt:"4%" }}>{children}</Box>
 
         <CreateTaskFAB />
       </Box>

@@ -54,9 +54,7 @@ const GroupSelector = ({ onSelectGroup, customStyles, ...props }) => {
           ? "100"
           : "50%"
       }
-      borderBottom={"1px solid #ccc"}
-      // minWidth={"100%"}
-      paddingBottom={1}
+      // paddingBottom={1}
       alignItems={"center"}
       justifyContent={"center"}
       // fullWidth={props.fullWidth}
@@ -70,8 +68,12 @@ const GroupSelector = ({ onSelectGroup, customStyles, ...props }) => {
       {groupsStatus === "succeeded" && (
         <CustomDropdown
           disabled={props.formState}
-          label="Select Group"
-          labelColor={theme.palette.primary.white}
+          label="Group"
+          labelColor={
+            props.darkLabel
+              ? theme.palette.secondary.main
+              : theme.palette.primary.white
+          }
           options={groups}
           value={selectedGroup}
           onChange={handleGroupChange}

@@ -31,6 +31,7 @@ const DatePickerContainer = styled(DatePicker)(({ theme, variant, size }) => ({
   border: "1px solid #ccc",
   borderRadius: "4px",
   fontSize: "16px",
+  marginTop:"15px"
 }));
 
 const AddTaskForm = ({ groupId, handleClose }) => {
@@ -169,13 +170,14 @@ const AddTaskForm = ({ groupId, handleClose }) => {
           alignItems={"center"}
           justifyContent={"space-between"}
         >
-          <GroupSelector formState />
+          <GroupSelector darkLabel formState />
           <DatePickerContainer
             selected={formState.startDate.value}
             onChange={(date) => handleChange("startDate", date)}
             minDate={today} // Restrict to future dates
             placeholderText="Select a start date"
             dateFormat="yyyy/MM/dd"
+            
             className="date-picker" // Custom class for styling
           />
           {/* <CustomFormInput

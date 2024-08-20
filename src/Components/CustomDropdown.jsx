@@ -16,7 +16,7 @@ const StyledFormControl = styled(FormControl)({
   "& .MuiInputLabel-root": {
     position: "static",
     transform: "none",
-    marginBottom: "8px",
+    // marginBottom: "8px",
   },
 });
 
@@ -46,8 +46,9 @@ function CustomDropdown({
     <StyledFormControl fullWidth error={error}>
       <InputLabel
         sx={{
-          color: props.labelColor ||" #fff",
+          color: labelColor,
           fontSize: theme.typography.text_xs,
+          marginBottom: 0,
         }}
       >
         {label}
@@ -67,7 +68,7 @@ function CustomDropdown({
         ) : (
           options.map((option) => (
             <MenuItem
-            sx={{fontSize:"14px"}}
+              sx={{ fontSize: "14px" }}
               key={option.value || option.id}
               value={option.value || option.id}
             >

@@ -54,14 +54,14 @@ const NotificationsMenu = () => {
             "& .MuiBadge-badge": {
               top: "4px",
               right: "4px",
-              height: "16px",
-              minWidth: "16px",
+              height: "14px",
+              minWidth: "14px",
               padding: "0 4px",
               fontSize: "0.75rem",
             },
           }}
         >
-          <IoNotificationsOutline size={20} color={theme.palette.secondary.main} />
+          <IoNotificationsOutline size={20} color={"#fff"} />
         </Badge>
       </IconButton>
 

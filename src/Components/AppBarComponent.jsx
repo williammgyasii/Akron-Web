@@ -10,6 +10,7 @@ import {
   Badge,
   useTheme,
   useMediaQuery,
+  Box,
 } from "@mui/material";
 import { deepPurple } from "@mui/material/colors";
 import { useDispatch, useSelector } from "react-redux";
@@ -23,6 +24,8 @@ import {
 } from "../Redux/Slices/System/systemSlice";
 import GroupSelector from "./GroupSelector";
 import { drawerWidth, drawerWidthCollapsed } from "../Utils/Constants";
+import CustomTitles from "./CustomTitles";
+import { Link } from "react-router-dom";
 
 const AppBarComponent = ({ title, showOthers, pageHeader, customStyles }) => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -40,7 +43,7 @@ const AppBarComponent = ({ title, showOthers, pageHeader, customStyles }) => {
       color="transparent"
       elevation={0}
       sx={{
-        width: isDrawerOpen ? `calc(100% - 200px)` : `calc(100% - 60px)`, // Adjust width based on drawer state
+        width: "100%", // Adjust width based on drawer state
         ml: isDrawerOpen
           ? `calc(100% - ${drawerWidth})`
           : `calc(100% - ${drawerWidth})`, // Adjust margin-left based on drawer state
@@ -50,7 +53,13 @@ const AppBarComponent = ({ title, showOthers, pageHeader, customStyles }) => {
       <Toolbar
         sx={[
           customStyles,
-          { backgroundColor: theme.palette.secondary.main, px: 2 },
+          {
+            backgroundColor: theme.palette.secondary.main,
+            px: 2,
+            minHeight: "20px",
+            display: "flex",
+            justifyContent: "space-between",
+          },
         ]}
         disableGutters
       >
@@ -59,6 +68,33 @@ const AppBarComponent = ({ title, showOthers, pageHeader, customStyles }) => {
             <IoMenu />
           </IconButton>
         )}
+        <Box
+          component={Link}
+          to={"/dashboard"}
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            textDecoration: "none",
+          }}
+        >
+          <img
+            src={require("../Images/logo-main.png")}
+            alt="App Logo"
+            style={{ maxHeight: "30px" }}
+          />
+          {isDrawerOpen && (
+            <CustomTitles
+              color={theme.palette.primary.white}
+              variant="text_lg"
+              weightFont={"medium"}
+              noWrap
+              customStyles={{ marginLeft: 1 }}
+            >
+              AKRON
+            </CustomTitles>
+          )}
+        </Box>
         {pageHeader ? (
           <Typography
             variant={isSmallScreen ? "text_xs" : "text_xl"}
@@ -71,15 +107,17 @@ const AppBarComponent = ({ title, showOthers, pageHeader, customStyles }) => {
           </Typography>
         ) : (
           <Typography
-            variant={isSmallScreen ? "text_xs" : "text_base"}
+            variant={isSmallScreen ? "text_xs" : "text_sm"}
             sx={{
               flexGrow: 1,
-              color: theme.palette.secondary.main,
+              color: "#fff",
+              marginLeft:10
             }}
           >
             {title}
           </Typography>
         )}
+
         {/* <GroupSelector size="fullWidth" /> */}
         {showOthers && <NotifcationsManager />}
         {showOthers && <UserAvatarMenu />}
