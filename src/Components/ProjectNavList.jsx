@@ -16,6 +16,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  selectCurrentProject,
   selectGroupProjects,
   setSelectedProject,
 } from "../Redux/Slices/Groups/groupsSlice";
@@ -25,19 +26,14 @@ import CustomTitles from "./CustomTitles";
 import { selectIsDrawerOpened } from "../Redux/Slices/System/systemSlice";
 import { getRandomAvatarColor } from "../Utils/randomAvatarColors";
 
-// const projects = [
-//   { projectName: "Cell Ministry", id: "113141" },
-//   { projectName: "Banku", id: "113fac141" },
-//   { projectName: "ShiSha", id: "113141cac" },
-//   { projectName: "Cassava", id: "11ccac3141" },
-// ];
-
 const StyledListItemButton = styled(ListItemButton)(({ theme, selected }) => ({
   padding: "8px 10px",
   borderRadius: theme.shape.borderRadius,
   transition: "background-color 0.3s, box-shadow 0.3s",
-  backgroundColor: selected ? "red" : "transparent",
-  color: selected ? "white" : "#fff",
+  "&.Mui-selected": {
+    backgroundColor: theme.palette.primary.main,
+    color: "white",
+  },
   "&:hover": {
     backgroundColor: theme.palette.primary.main,
   },
@@ -48,8 +44,8 @@ const ProjectNavList = ({ selectedProject, onSelectProject }) => {
   const [selected, setSelected] = useState(null);
   const projects = useSelector(selectGroupProjects);
   const isDrawerOpen = useSelector(selectIsDrawerOpened);
-  const displayProjects = projects.slice(0, 3); // Limit to first 3 projects
-  const randomColor = getRandomAvatarColor();
+  const displayProjects = projects.slice(0, 4); // Limit to first 3 projects
+  const currentProject = useSelector(selectCurrentProject);
   const theme = useTheme();
   const dispatch = useDispatch();
 
@@ -110,10 +106,11 @@ const ProjectNavList = ({ selectedProject, onSelectProject }) => {
       </Box>
       <List sx={{ mt: "-10px" }}>
         {displayProjects.map((project) => {
+          console.log(project?.id);
           const projectInitial = project.projectName.charAt(0).toUpperCase();
           return (
             <StyledListItemButton
-              selected={selectedProject === project.id}
+              selected={currentProject?.id === project.id}
               key={project.projectName}
               // onClick={() => onSelectProject(project.id)}
               onClick={() => handleProjectClick(project.id, project)}
