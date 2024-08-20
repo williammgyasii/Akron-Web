@@ -10,7 +10,6 @@ const systemSlice = createSlice({
     snackbarMessage: "",
     snackbarState: "info", //'success', 'warning', 'error'
     isModalOpened: false,
-    
   },
   reducers: {
     setLoginQuote: (state, action) => {
@@ -44,9 +43,7 @@ const systemSlice = createSlice({
     hideModal: (state) => {
       state.isModalOpened = false;
     },
-    setActiveProject: (state, action) => {
-      state.isActiveProject = action.payload;
-    },
+  
   },
 });
 
@@ -60,7 +57,6 @@ export const {
   closeSnackbar,
   showModal,
   hideModal,
-  setActiveProject
 } = systemSlice.actions;
 
 export const selectIsDrawerOpened = (state) => state.system.isDrawerOpened;
@@ -68,6 +64,4 @@ export const selectIsAppLoading = (state) => state.system.isAppLoading;
 export const selectIsSnackBarOpened = (state) => state.system.isSnackBarOpened;
 export const selectIsModalOpened = (state) => state.system.isModalOpened;
 export const selectAppInit = (state) => state.system.appInit;
-export const selectIsActiveProject = (state) => state.system.isActiveProject;
-
 export default systemSlice.reducer;

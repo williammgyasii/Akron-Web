@@ -15,15 +15,14 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { selectGroupProjects } from "../Redux/Slices/Groups/groupsSlice";
+import {
+  selectGroupProjects,
+  setSelectedProject,
+} from "../Redux/Slices/Groups/groupsSlice";
 import CustomButton from "./CustomButton";
 import { IoAddSharp } from "react-icons/io5";
 import CustomTitles from "./CustomTitles";
-import {
-  selectIsActiveProject,
-  selectIsDrawerOpened,
-  setActiveProject,
-} from "../Redux/Slices/System/systemSlice";
+import { selectIsDrawerOpened } from "../Redux/Slices/System/systemSlice";
 import { getRandomAvatarColor } from "../Utils/randomAvatarColors";
 
 // const projects = [
@@ -51,17 +50,15 @@ const ProjectNavList = ({ selectedProject, onSelectProject }) => {
   const isDrawerOpen = useSelector(selectIsDrawerOpened);
   const displayProjects = projects.slice(0, 3); // Limit to first 3 projects
   const randomColor = getRandomAvatarColor();
-  const activeProject = useSelector(selectIsActiveProject);
   const theme = useTheme();
   const dispatch = useDispatch();
-
-  console.log(activeProject);
 
   const handleViewAllClick = () => {
     navigate("projects"); // Adjust the path to your projects page
   };
-  const handleProjectClick = (projectId) => {
-    dispatch(setActiveProject(projectId));
+  const handleProjectClick = (projectId, project) => {
+    // dispatch(setActiveProject(projectId));
+    dispatch(setSelectedProject(project));
     navigate(`projects/${projectId}`); // Adjust the path to your project details page
   };
 
@@ -119,7 +116,7 @@ const ProjectNavList = ({ selectedProject, onSelectProject }) => {
               selected={selectedProject === project.id}
               key={project.projectName}
               // onClick={() => onSelectProject(project.id)}
-              onClick={() => handleProjectClick(project.id)}
+              onClick={() => handleProjectClick(project.id, project)}
             >
               <Avatar
                 sx={{

@@ -174,4 +174,5 @@ export const {
 export const selectGroups = (state) => state.groups.groups;
 export const selectGroupID = (state) => state.groups.selectedGroupId;
 export const selectGroupProjects = (state) => state.groups.groupProjects;
+export const selectCurrentProject = (state) => state.groups.selectedProject;
 export default groupsSlice.reducer;
