@@ -34,9 +34,7 @@ import { AddSharp } from "@mui/icons-material";
 import { DASHBOARD_ROUTES } from "../Routes/dashboardRoutes";
 import CustomButton from "./CustomButton";
 import GroupSelector from "./GroupSelector";
-
-const drawerWidth = 200;
-const drawerWidthCollapsed = 60;
+import { drawerWidth, drawerWidthCollapsed } from "../Utils/Constants";
 
 const StyledListItemText = styled(ListItemText)({
   "& .MuiTypography-root": {
@@ -81,6 +79,7 @@ const DrawerNav = () => {
             transition: "width 0.3s ease",
             backgroundColor: theme.palette.secondary.main,
             color: "#fff",
+            zIndex: 1100,
             // borderRadius:4,
           },
         }}

@@ -29,8 +29,8 @@ function DashboardPage() {
   };
 
   return (
-    <Container disableGutters maxWidth={false}  sx={{ position: "relative" }}>
-      <Box sx={{ p: 1.5, display: "flex", height: "100vh" }}>
+    <Container disableGutters maxWidth={false} sx={{ position: "relative" }}>
+      <Box sx={{ p: 1.5, display: "flex", height: "100vh", }}>
         <Box
           sx={{
             backgroundColor: theme.palette.background.paper,

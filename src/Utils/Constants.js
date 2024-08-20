@@ -1,2 +1,2 @@
-export const DRAWER_WIDTH = 200;
-export const DRAWER_CLOSED_WIDTH =60;
+export const drawerWidth = 200;
+export const drawerWidthCollapsed = 60;

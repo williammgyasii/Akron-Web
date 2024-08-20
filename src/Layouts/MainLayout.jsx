@@ -22,24 +22,23 @@ const MainLayout = ({ children }) => {
         },
       }}
     >
-      <AppBarComponent
-        title={`Welcome Back! ${currentUser.firstName}`}
-        showOthers
-        customStyles={{ px: 5, py: 1,zIndex:100 }}
-      />
       <DrawerNav />
 
       <Box
         component="main"
         sx={{
+          flexGrow: 1,
           position: "relative",
           height: "100vh",
-          width: "100%",
-          overflowY: "auto", // Ensure content is scrollable
-          // backgroundColor: "YELLOW",
+          // Adjust this margin-top to ensure content goes under the AppBar
         }}
       >
-        <Box>{children}</Box>
+        <AppBarComponent
+          title={`Welcome Back! ${currentUser.firstName}`}
+          showOthers
+          customStyles={{ px: 5, py: 1, zIndex: 100, overflowY: "auto" }} // Enable vertical scrolling }}
+        />
+        <Box sx={{ mt: 8 }}>{children}</Box>
 
         <CreateTaskFAB />
       </Box>
