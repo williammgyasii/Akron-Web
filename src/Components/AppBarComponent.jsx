@@ -30,8 +30,12 @@ const AppBarComponent = ({ title, showOthers, pageHeader, customStyles }) => {
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("tablets_port"));
 
   return (
-    <AppBar position="static" color="transparent" elevation={0}>
-      <Toolbar sx={[customStyles,{backgroundColor:"#fff"}]} disableGutters>
+    <AppBar
+      position="fixed"
+      color="transparent"
+      elevation={0}
+    >
+      <Toolbar sx={[customStyles, { backgroundColor: "#fff" }]} disableGutters>
         {isSmallScreen && showOthers && (
           <IconButton onClick={() => dispatch(toggleDrawerIsOpened())}>
             <IoMenu />

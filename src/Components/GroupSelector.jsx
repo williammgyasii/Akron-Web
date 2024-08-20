@@ -13,6 +13,7 @@ import {
   FormControl,
   InputLabel,
   Box,
+  useTheme,
 } from "@mui/material";
 import {
   clearGroupDetails,
@@ -30,6 +31,7 @@ const GroupSelector = ({ onSelectGroup, customStyles, ...props }) => {
   const groupsStatus = useSelector((state) => state.groups.status);
   const selectedGroup = useSelector(selectGroupID);
   const [groupError, setGroupError] = useState(false);
+  const theme = useTheme();
 
   // console.log(groups, selectedGroup);
 
@@ -45,7 +47,16 @@ const GroupSelector = ({ onSelectGroup, customStyles, ...props }) => {
   return (
     <Box
       display={"flex"}
-      width={props.size === "small" ? "20%" : props.size==="fullWidth" ? "100" : "50%"}
+      width={
+        props.size === "small"
+          ? "20%"
+          : props.size === "fullWidth"
+          ? "100"
+          : "50%"
+      }
+      borderBottom={"1px solid #ccc"}
+      // minWidth={"100%"}
+      paddingBottom={1}
       alignItems={"center"}
       justifyContent={"center"}
       // fullWidth={props.fullWidth}
@@ -60,6 +71,7 @@ const GroupSelector = ({ onSelectGroup, customStyles, ...props }) => {
         <CustomDropdown
           disabled={props.formState}
           label="Select Group"
+          labelColor={theme.palette.primary.white}
           options={groups}
           value={selectedGroup}
           onChange={handleGroupChange}

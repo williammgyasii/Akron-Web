@@ -12,6 +12,7 @@ import {
   useTheme,
   Typography,
   useMediaQuery,
+  styled,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
@@ -36,6 +37,12 @@ import GroupSelector from "./GroupSelector";
 
 const drawerWidth = 200;
 const drawerWidthCollapsed = 60;
+
+const StyledListItemText = styled(ListItemText)({
+  "& .MuiTypography-root": {
+    fontSize: "0.855rem", // Adjust font size here
+  },
+});
 
 const DrawerNav = () => {
   const dispatch = useDispatch();
@@ -70,9 +77,10 @@ const DrawerNav = () => {
             alignContent: "center",
             boxSizing: "border-box",
             overflowX: "hidden",
-            padding: isDrawerOpen ? "10px 15px" : "4px 2px",
+            padding: isDrawerOpen ? "5px 9px" : "4px 2px",
             transition: "width 0.3s ease",
-            // backgroundColor: "red",
+            backgroundColor: theme.palette.secondary.main,
+            color: "#fff",
             // borderRadius:4,
           },
         }}
@@ -85,6 +93,7 @@ const DrawerNav = () => {
           sx={{
             height: "40px",
             width: "auto",
+            color: "#fff",
             marginLeft: isDrawerOpen ? "auto" : null,
           }}
           onClick={handleDrawerToggle}
@@ -114,11 +123,11 @@ const DrawerNav = () => {
             <img
               src={require("../Images/logo-main.png")}
               alt="App Logo"
-              style={{ maxHeight: "40px" }}
+              style={{ maxHeight: "30px" }}
             />
             {isDrawerOpen && (
               <CustomTitles
-                color={theme.palette.secondary.main}
+                color={theme.palette.primary.white}
                 variant="text_lg"
                 weightFont={"medium"}
                 noWrap
@@ -131,7 +140,7 @@ const DrawerNav = () => {
         </Box>
         {isDrawerOpen && <GroupSelector size="fullWidth" />}
 
-        <List sx={{ marginTop: 1 }}>
+        <List>
           {DASHBOARD_ROUTES.map((section, index, isActive) => (
             <NavLink
               key={section.title}
@@ -144,9 +153,10 @@ const DrawerNav = () => {
             >
               <ListItem
                 sx={{
-                  color: theme.palette.secondary.main,
-                  borderRadius: 2,
-                  //   marginBottom:".4rem",
+                  color: theme.palette.primary.white,
+                  borderRadius: 1,
+                  padding: "3px 15px",
+                  marginBottom: isDrawerOpen ? 0 : 2,
                   "&:hover": {
                     backgroundColor: theme.palette.primary.main,
                     color: "white",
@@ -158,22 +168,18 @@ const DrawerNav = () => {
               >
                 <ListItemIcon
                   sx={{
-                    minWidth: isDrawerOpen ? 10 : 3,
-                    width: isDrawerOpen ? 35 : null,
-                    color: theme.palette.secondary.main,
+                    minWidth: isDrawerOpen ? 13 : 3,
+                    width: isDrawerOpen ? 25 : 20,
+                    textAlign: "center",
+                    color: theme.palette.primary.white,
                     "& svg": {
-                      fontSize: 18, // Adjust the font size of the icon (default is 24)
+                      fontSize: isDrawerOpen ? 13 : 18, // Adjust the font size of the icon (default is 24)
                     },
                   }}
                 >
                   {section.icon}
                 </ListItemIcon>
-                {isDrawerOpen && (
-                  <ListItemText
-                    sx={{ fontSize: ".8rem" }}
-                    primary={section.title}
-                  />
-                )}
+                {isDrawerOpen && <StyledListItemText primary={section.title} />}
               </ListItem>
             </NavLink>
           ))}

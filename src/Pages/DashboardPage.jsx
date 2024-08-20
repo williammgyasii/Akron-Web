@@ -18,7 +18,7 @@ function DashboardPage() {
   );
   const theme = useTheme();
   const selectedGroup = useSelector(selectGroupID);
-  
+
   const handleLogout = () => {
     dispatch(resetState());
     dispatch(logoutUser());
@@ -29,14 +29,8 @@ function DashboardPage() {
   };
 
   return (
-    <Container disableGutters maxWidth={false} >
-      <AppBarComponent
-        title={`Welcome Back! ${currentUser.firstName}`}
-        showOthers
-        customStyles={{ px: 5, py: 1, }}
-      />
-      {/* <Logo size="medium" /> */}
-      <Box sx={{ p:1.5, display: 'flex', height: '100vh', }}>
+    <Container disableGutters maxWidth={false}  sx={{ position: "relative" }}>
+      <Box sx={{ p: 1.5, display: "flex", height: "100vh" }}>
         <Box
           sx={{
             backgroundColor: theme.palette.background.paper,
@@ -50,8 +44,8 @@ function DashboardPage() {
           sx={{
             px: 1,
             py: 2,
-            overflowY:"auto",
-            position:"relative",
+            overflowY: "auto",
+            position: "relative",
             width: 300,
             marginLeft: "10px",
             backgroundColor: theme.palette.background.paper,
@@ -71,7 +65,7 @@ function DashboardPage() {
               textAlign: "center",
               display: "block",
               zIndex: 1,
-              p:1,
+              p: 1,
               borderBottom: "1px solid #ccc",
             }}
           >
@@ -82,7 +76,7 @@ function DashboardPage() {
               display: "flex",
               justifyContent: "center",
               alignItems: "flex-start",
-              flex:1
+              flex: 1,
             }}
           >
             <GroupTaskList groupId={selectedGroup} />
