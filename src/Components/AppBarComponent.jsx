@@ -40,16 +40,20 @@ const AppBarComponent = ({ title, showOthers, pageHeader, customStyles }) => {
       color="transparent"
       elevation={0}
       sx={{
-        width: isDrawerOpen
-          ? `calc(100% - 200px)`
-          : `calc(100% - 60px)`, // Adjust width based on drawer state
+        width: isDrawerOpen ? `calc(100% - 200px)` : `calc(100% - 60px)`, // Adjust width based on drawer state
         ml: isDrawerOpen
           ? `calc(100% - ${drawerWidth})`
           : `calc(100% - ${drawerWidth})`, // Adjust margin-left based on drawer state
         zIndex: 1200,
       }}
     >
-      <Toolbar sx={[customStyles, { backgroundColor: "#fff" }]} disableGutters>
+      <Toolbar
+        sx={[
+          customStyles,
+          { backgroundColor: theme.palette.secondary.main, px: 2 },
+        ]}
+        disableGutters
+      >
         {isSmallScreen && showOthers && (
           <IconButton onClick={() => dispatch(toggleDrawerIsOpened())}>
             <IoMenu />

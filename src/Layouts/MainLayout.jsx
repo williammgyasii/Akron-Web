@@ -36,7 +36,7 @@ const MainLayout = ({ children }) => {
         <AppBarComponent
           title={`Welcome Back! ${currentUser.firstName}`}
           showOthers
-          customStyles={{ px: 5, py: 1, zIndex: 100, overflowY: "auto" }} // Enable vertical scrolling }}
+          // Enable vertical scrolling }}
         />
         <Box sx={{ mt: 8 }}>{children}</Box>
 
