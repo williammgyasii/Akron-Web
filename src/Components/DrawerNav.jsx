@@ -27,7 +27,12 @@ import {
   toggleDrawerIsOpened,
 } from "../Redux/Slices/System/systemSlice";
 import { Link, NavLink, useLocation } from "react-router-dom";
-import { IoLogOut, IoMenuOutline, IoSettings } from "react-icons/io5";
+import {
+  IoAddSharp,
+  IoLogOut,
+  IoMenuOutline,
+  IoSettings,
+} from "react-icons/io5";
 import CustomTitles from "./CustomTitles";
 import VariableSizeIconButton from "./CustomIconButton";
 import { AddSharp } from "@mui/icons-material";
@@ -39,6 +44,7 @@ import {
   TbLayoutSidebarLeftCollapseFilled,
   TbLayoutSidebarLeftExpand,
 } from "react-icons/tb";
+import { selectGroupProjects } from "../Redux/Slices/Groups/groupsSlice";
 
 const StyledListItemText = styled(ListItemText)({
   "& .MuiTypography-root": {
@@ -51,6 +57,8 @@ const DrawerNav = () => {
   const isDrawerOpen = useSelector(selectIsDrawerOpened);
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("tablets_port"));
+  const groupProjects = useSelector(selectGroupProjects);
+  console.log(groupProjects);
 
   const handleDrawerToggle = () => {
     dispatch(toggleDrawerIsOpened());
@@ -160,49 +168,42 @@ const DrawerNav = () => {
           sx={{ backgroundColor: theme.palette.primary.white, marginTop: 1.5 }}
         />
         <List>
-          
-          {DASHBOARD_ROUTES.map((section, index, isActive) => (
-            <NavLink
-              key={section.title}
-              to={section.path}
-              style={{
-                textDecoration: "none",
-                color: "#9896A3",
-                display: section.subRoute ? "none" : "block",
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <CustomTitles
+              color={theme.palette.primary.white}
+              variant="text_xs"
+              // capitalize="none"
+              weightFont={"medium"}
+              customStyles={{
+                textTransform: "none",
+                display: "block",
+                zIndex: 1,
+                p: 1,
               }}
             >
-              <ListItem
-                sx={{
-                  color: theme.palette.primary.white,
-                  borderRadius: 1,
-                  padding: "3px 15px",
-                  marginBottom: isDrawerOpen ? 0 : 2,
-                  "&:hover": {
-                    backgroundColor: theme.palette.primary.main,
-                    color: "white",
-                    "& .MuiListItemIcon-root": {
-                      color: "white",
-                    },
-                  },
-                }}
-              >
-                <ListItemIcon
-                  sx={{
-                    minWidth: isDrawerOpen ? 13 : 3,
-                    width: isDrawerOpen ? 25 : 20,
-                    textAlign: "center",
-                    color: theme.palette.primary.white,
-                    "& svg": {
-                      fontSize: isDrawerOpen ? 13 : 18, // Adjust the font size of the icon (default is 24)
-                    },
-                  }}
-                >
-                  {section.icon}
-                </ListItemIcon>
-                {isDrawerOpen && <StyledListItemText primary={section.title} />}
-              </ListItem>
-            </NavLink>
-          ))}
+              Projects
+            </CustomTitles>
+            <IconButton
+              onClick={() => console.log("show Projects")}
+              sx={{
+                backgroundColor: theme.palette.primary.main,
+                color: "white",
+                borderRadius: 1,
+                p: 0.5,
+                "&:hover": {
+                  backgroundColor: theme.palette.primary.dark800, // Slightly lighter black on hover
+                },
+              }}
+            >
+              <IoAddSharp size={10} />
+            </IconButton>
+          </Box>
         </List>
 
         <CustomButton
