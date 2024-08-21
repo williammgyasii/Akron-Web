@@ -25,6 +25,7 @@ import {
 } from "../Redux/Slices/Tasks/tasksSlice";
 import { hideModal } from "../Redux/Slices/System/systemSlice";
 import ColorPicker from "./DropdownColorPicker";
+import ProjectPicker from "./ProjectPicker";
 
 const DatePickerContainer = styled(DatePicker)(({ theme, variant, size }) => ({
   width: "100%",
@@ -131,7 +132,7 @@ const AddTaskForm = ({ groupId, handleClose }) => {
       }}
       disableGutters
     >
-      
+      <Box display={"flex"} alignItems={"center"} justifyContent={"space-between"}>
         <CustomTitles
           customStyles={{ textTransform: "none", marginBottom: 2 }}
           weightFont={"regular"}
@@ -141,7 +142,8 @@ const AddTaskForm = ({ groupId, handleClose }) => {
         >
           Add New Task
         </CustomTitles>
-   
+        <ProjectPicker />
+      </Box>
 
       <Box
         sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}
@@ -176,7 +178,7 @@ const AddTaskForm = ({ groupId, handleClose }) => {
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
-            width:"100%"
+            width: "100%",
           }}
         >
           <AssignToMember />
