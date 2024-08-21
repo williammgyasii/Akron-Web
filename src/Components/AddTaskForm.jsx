@@ -1,16 +1,21 @@
 // src/components/TaskForm.js
 import React, { useState } from "react";
-import { Container, useTheme, Box, TextField, styled } from "@mui/material";
+import {
+  Container,
+  useTheme,
+  Box,
+  TextField,
+  styled,
+  Typography,
+} from "@mui/material";
 import GroupSelector from "./GroupSelector";
 import CustomTitles from "./CustomTitles";
 import CustomFormInput from "./CustomFormInput";
 import CustomButton from "./CustomButton";
 import { MdFormatListBulletedAdd } from "react-icons/md";
 import AssignToMember from "./AssignToMember";
-import dayjs from "dayjs";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { addDays, formatDate } from "date-fns";
 import { useDispatch, useSelector } from "react-redux";
 import { selectGroupID } from "../Redux/Slices/Groups/groupsSlice";
 import { selectCurrentUser } from "../Redux/Slices/Users/UsersSlice";
@@ -18,12 +23,8 @@ import {
   addTaskToGroup,
   selectTaskState,
 } from "../Redux/Slices/Tasks/tasksSlice";
-import {
-  formatDateToCustomFormat,
-  formatTimestamp,
-} from "../Utils/dateFunctions";
 import { hideModal } from "../Redux/Slices/System/systemSlice";
-import { serverTimestamp } from "firebase/firestore";
+import ColorPicker from "./DropdownColorPicker";
 
 const DatePickerContainer = styled(DatePicker)(({ theme, variant, size }) => ({
   width: "100%",
@@ -39,6 +40,7 @@ const AddTaskForm = ({ groupId, handleClose }) => {
     taskTitle: { value: "", error: false, helperText: "" },
     taskDescription: { value: "", error: false, helperText: "" },
     startDate: { value: null, error: false, helperText: "" },
+    taskColor: "",
   });
   const theme = useTheme();
   const today = new Date();
@@ -46,8 +48,6 @@ const AddTaskForm = ({ groupId, handleClose }) => {
   const taskState = useSelector(selectTaskState);
   const selectedGroup = useSelector(selectGroupID);
   const currentUser = useSelector(selectCurrentUser);
-
-  console.log(taskState);
 
   // Handle input changes
   const handleChange = (field, value) => {
@@ -109,10 +109,18 @@ const AddTaskForm = ({ groupId, handleClose }) => {
             taskDescription: formState.taskDescription.value,
             startDate: formState.startDate.value,
             assignedTo: currentUser.userId,
+            taskColor: formState.taskColor,
           },
         })
       );
     }
+  };
+
+  const handleColorSelect = (color) => {
+    setFormState((prevState) => ({
+      ...prevState,
+      taskColor: color,
+    }));
   };
 
   return (
@@ -123,7 +131,7 @@ const AddTaskForm = ({ groupId, handleClose }) => {
       }}
       disableGutters
     >
-      <Box display={"flex"} justifyContent={"space-between"}>
+      
         <CustomTitles
           customStyles={{ textTransform: "none", marginBottom: 2 }}
           weightFont={"regular"}
@@ -133,8 +141,7 @@ const AddTaskForm = ({ groupId, handleClose }) => {
         >
           Add New Task
         </CustomTitles>
-        <AssignToMember />
-      </Box>
+   
 
       <Box
         sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}
@@ -163,8 +170,24 @@ const AddTaskForm = ({ groupId, handleClose }) => {
           helperText={formState.taskDescription.helperText}
         />
 
+        {/* <Typography>ac</Typography> */}
         <Box
-          mt={2}
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            width:"100%"
+          }}
+        >
+          <AssignToMember />
+          <ColorPicker
+            label={"Task Color"}
+            selectedColor={formState.taskColor}
+            onSelectColor={handleColorSelect}
+          />
+        </Box>
+
+        <Box
           display={"flex"}
           width={"100%"}
           alignItems={"center"}
