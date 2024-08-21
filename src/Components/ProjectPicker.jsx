@@ -22,8 +22,10 @@ import {
   selectGroups,
   setPrefferedGroup,
   setSelectedGroupID,
+  setSelectedProject,
 } from "../Redux/Slices/Groups/groupsSlice";
 import CustomDropdown from "./CustomDropdown";
+import { useNavigate } from "react-router-dom";
 
 const ProjectPicker = ({ onSelectGroup, customStyles, ...props }) => {
   const dispatch = useDispatch();
@@ -32,6 +34,7 @@ const ProjectPicker = ({ onSelectGroup, customStyles, ...props }) => {
   const selectedGroup = useSelector(selectGroupID);
   const [groupError, setGroupError] = useState(false);
   const theme = useTheme();
+  const navigate = useNavigate();
 
   // console.log(groups, selectedGroup);
 
@@ -44,9 +47,16 @@ const ProjectPicker = ({ onSelectGroup, customStyles, ...props }) => {
     }
   };
 
+  const handleProjectClick = (projectId, project) => {
+    // dispatch(setActiveProject(projectId));
+    dispatch(setSelectedProject(project));
+    // navigate(`projects/${projectId}`); // Adjust the path to your project details page
+  };
+
   return (
     <Box
       display={"flex"}
+      flexDirection={"row"}
       width={
         props.size === "small"
           ? "20%"

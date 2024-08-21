@@ -134,7 +134,7 @@ const AddTaskForm = ({ groupId, handleClose }) => {
     >
       <Box display={"flex"} alignItems={"center"} justifyContent={"space-between"}>
         <CustomTitles
-          customStyles={{ textTransform: "none", marginBottom: 2 }}
+          customStyles={{ textTransform: "none", }}
           weightFont={"regular"}
           variant="text_base"
           gutterBottom
@@ -142,7 +142,7 @@ const AddTaskForm = ({ groupId, handleClose }) => {
         >
           Add New Task
         </CustomTitles>
-        <ProjectPicker />
+        <ProjectPicker size={"small"} />
       </Box>
 
       <Box
