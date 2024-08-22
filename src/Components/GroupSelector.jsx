@@ -17,6 +17,7 @@ import {
 } from "@mui/material";
 import {
   clearGroupDetails,
+  fetchGroupMembers,
   fetchSelectedGroupDetails,
   selectGroupID,
   selectGroups,
@@ -37,6 +38,7 @@ const GroupSelector = ({ onSelectGroup, customStyles, ...props }) => {
 
   const handleGroupChange = (event) => {
     dispatch(setSelectedGroupID(event.target.value));
+    dispatch(fetchGroupMembers(event.target.value));
     if (selectGroupID) {
       dispatch(fetchSelectedGroupDetails(event.target.value));
     } else {

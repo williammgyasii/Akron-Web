@@ -30,7 +30,7 @@ const rootReducer = combineReducers({
   tasks: taskReducer,
   user: userReducer,
   system:systemReducer,
-  notifications:notificationsReducer
+  notifications:notificationsReducer,
 });
 
 const appReducer = (state,action)=>{

@@ -17,7 +17,7 @@ const ProjectPicker = ({
   const groupsStatus = useSelector((state) => state.groups.status);
   const [groupError, setGroupError] = useState(false);
 
-  console.log(projects);
+  // console.log(projects);
 
   return (
     <Box

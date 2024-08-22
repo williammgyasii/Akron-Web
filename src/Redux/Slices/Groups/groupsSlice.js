@@ -81,6 +81,37 @@ export const fetchUserGroups = createAsyncThunk(
     }
   }
 );
+export const fetchGroupMembers = createAsyncThunk(
+  "groups/fetchGroupMembers",
+  async (groupId) => {
+    try {
+      const membersRef = collection(
+        firebaseFirestore,
+        "groups",
+        groupId,
+        "members"
+      );
+      const memberQuerySnapshot = await getDocs(query(membersRef));
+      const memberIds = memberQuerySnapshot.docs.map((doc) => doc.id);
+
+      if (memberIds.length === 0) {
+        return [];
+      }
+
+      const memberDetailsPromises = memberIds.map((id) =>
+        getDoc(doc(firebaseFirestore, "users", id)).then((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }))
+      );
+
+      const members = await Promise.all(memberDetailsPromises);
+      return members;
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  }
+);
 
 const groupsSlice = createSlice({
   name: "groups",
@@ -99,6 +130,7 @@ const groupsSlice = createSlice({
       { projectName: "Baby Fived.x", id: "Rtx204" },
     ],
     selectedProject: null,
+    groupMembers: [],
   },
   reducers: {
     setGroups: (state, action) => {
@@ -123,6 +155,17 @@ const groupsSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      .addCase(fetchGroupMembers.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(fetchGroupMembers.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.groupMembers = action.payload;
+      })
+      .addCase(fetchGroupMembers.rejected, (state, action) => {
+        state.status = "failed";
+        state.groupsError = action.error.message;
+      })
       .addCase(fetchGroups.pending, (state) => {
         state.status = "loading";
       })
@@ -176,4 +219,5 @@ export const selectGroups = (state) => state.groups.groups;
 export const selectGroupID = (state) => state.groups.selectedGroupId;
 export const selectGroupProjects = (state) => state.groups.groupProjects;
 export const selectCurrentProject = (state) => state.groups.selectedProject;
+export const selectGroupMembers = (state) => state.groups.groupMembers;
 export default groupsSlice.reducer;
