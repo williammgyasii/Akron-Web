@@ -78,11 +78,11 @@ const ProjectPicker = ({ onSelectGroup, customStyles, ...props }) => {
         <Typography color="error">Failed to load Projects</Typography>
       )}
       {groupsStatus === "succeeded" && (
-        <Box display={"flex"}>
-          <span>Select Project</span>
+        <Box display={"flex"} alignItems={"center"}>
+          {/* <span style={{fontSize:"13px",}}>Project</span> */}
           <CustomDropdown
             disabled={props.formState}
-            // label="Group"
+            label="Project"
             options={groups}
             value={selectedGroup}
             onChange={handleGroupChange}

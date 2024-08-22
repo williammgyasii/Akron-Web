@@ -135,18 +135,16 @@ const AddTaskForm = ({ groupId, handleClose }) => {
       <Box
         display={"flex"}
         alignItems={"center"}
-        mb={2}
         justifyContent={"space-between"}
       >
         <CustomTitles
-          customStyles={{ textTransform: "none" }}
+          customStyles={{ textTransform: "none", textAlign: "center",width:"100%" }}
           weightFont={"regular"}
           variant="text_base"
           color={theme.palette.secondary.main}
         >
           Add New Task
         </CustomTitles>
-        
       </Box>
 
       <Box
@@ -183,14 +181,11 @@ const AddTaskForm = ({ groupId, handleClose }) => {
             alignItems: "center",
             justifyContent: "space-between",
             width: "100%",
+            marginTop:2
           }}
         >
           <AssignToMember />
-          <ColorPicker
-            label={"Task Color"}
-            selectedColor={formState.taskColor}
-            onSelectColor={handleColorSelect}
-          />
+          <ProjectPicker darkLabel size={"medium"} />
         </Box>
 
         <Box
