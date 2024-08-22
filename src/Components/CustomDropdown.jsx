@@ -62,6 +62,7 @@ function CustomDropdown({
           color: labelColor,
           fontSize: theme.typography.text_xs,
           marginBottom: 0,
+          marginLeft:1
         }}
       >
         {label}
