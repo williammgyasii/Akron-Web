@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   selectCurrentProject,
   selectGroupID,
+  selectGroupMembers,
 } from "../Redux/Slices/Groups/groupsSlice";
 import { selectCurrentUser } from "../Redux/Slices/Users/UsersSlice";
 import {
@@ -39,6 +40,9 @@ const AddTaskForm = ({ groupId, handleClose }) => {
   const selectedGroup = useSelector(selectGroupID);
   const currentUser = useSelector(selectCurrentUser);
   const project = useSelector(selectCurrentProject);
+  const groupMembers = useSelector(selectGroupMembers);
+
+  console.log(groupMembers);
 
   const [formState, setFormState] = useState({
     taskTitle: { value: "", error: false, helperText: "" },

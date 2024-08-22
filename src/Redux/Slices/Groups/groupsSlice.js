@@ -85,28 +85,33 @@ export const fetchGroupMembers = createAsyncThunk(
   "groups/fetchGroupMembers",
   async (groupId) => {
     try {
-      const membersRef = collection(
-        firebaseFirestore,
-        "groups",
-        groupId,
-        "members"
-      );
-      const memberQuerySnapshot = await getDocs(query(membersRef));
-      const memberIds = memberQuerySnapshot.docs.map((doc) => doc.id);
+      const groupDoc = doc(firebaseFirestore, "groups", groupId);
+      const groupSnapshot = await getDoc(groupDoc);
+
+      if (!groupSnapshot.exists()) {
+        throw new Error("Group not found");
+      }
+
+      const groupData = groupSnapshot.data();
+      const memberIds = groupData.members; // Array of user IDs
+
+      console.log(memberIds);
 
       if (memberIds.length === 0) {
         return [];
       }
 
-      const memberDetailsPromises = memberIds.map((id) =>
-        getDoc(doc(firebaseFirestore, "users", id)).then((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }))
-      );
+      // Fetch user details for each member ID
+      const usersRef = collection(firebaseFirestore, "users");
+      const userPromises = memberIds.map((id) => getDoc(doc(usersRef, id)));
+      const userSnapshots = await Promise.all(userPromises);
 
-      const members = await Promise.all(memberDetailsPromises);
-      return members;
+      const users = userSnapshots.map((snapshot) => ({
+        id: snapshot.id,
+        ...snapshot.data(),
+      }));
+      return users;
+      
     } catch (error) {
       throw new Error(error.message);
     }
