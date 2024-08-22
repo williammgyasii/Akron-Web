@@ -27,7 +27,12 @@ import {
 import CustomDropdown from "./CustomDropdown";
 import { useNavigate } from "react-router-dom";
 
-const ProjectPicker = ({ onSelectGroup, customStyles, ...props }) => {
+const ProjectPicker = ({
+  onSelectGroup,
+  customStyles,
+  pickerWidth,
+  ...props
+}) => {
   const dispatch = useDispatch();
   const groups = useSelector(selectGroups);
   const groupsStatus = useSelector((state) => state.groups.status);
@@ -66,10 +71,8 @@ const ProjectPicker = ({ onSelectGroup, customStyles, ...props }) => {
           ? "100"
           : "50%"
       }
-      // paddingBottom={1}
       alignItems={"center"}
       justifyContent={"center"}
-      // fullWidth={props.fullWidth}
     >
       {groupsStatus === "loading" && (
         <CircularProgress size={15} sx={{ marginTop: 2, color: "red" }} />
@@ -83,6 +86,7 @@ const ProjectPicker = ({ onSelectGroup, customStyles, ...props }) => {
           <CustomDropdown
             disabled={props.formState}
             label="Project"
+            pickerWidth={pickerWidth}
             options={groups}
             value={selectedGroup}
             onChange={handleGroupChange}

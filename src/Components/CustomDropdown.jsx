@@ -51,7 +51,7 @@ function CustomDropdown({
 }) {
   const theme = useTheme();
   return (
-    <StyledFormControl fullWidth error={error}>
+    <StyledFormControl  fullWidth error={error}>
       <InputLabel
         sx={{
           color: labelColor,

@@ -138,7 +138,11 @@ const AddTaskForm = ({ groupId, handleClose }) => {
         justifyContent={"space-between"}
       >
         <CustomTitles
-          customStyles={{ textTransform: "none", textAlign: "center",width:"100%" }}
+          customStyles={{
+            textTransform: "none",
+            textAlign: "center",
+            width: "100%",
+          }}
           weightFont={"regular"}
           variant="text_base"
           color={theme.palette.secondary.main}
@@ -181,11 +185,11 @@ const AddTaskForm = ({ groupId, handleClose }) => {
             alignItems: "center",
             justifyContent: "space-between",
             width: "100%",
-            marginTop:2
+            marginTop: 2,
           }}
         >
           <AssignToMember />
-          <ProjectPicker  darkLabel size={"medium"} />
+          <ProjectPicker pickerWidth="200px" darkLabel size={"fullWidth"} />
         </Box>
 
         <Box
