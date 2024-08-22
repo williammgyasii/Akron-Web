@@ -185,7 +185,7 @@ const AddTaskForm = ({ groupId, handleClose }) => {
           }}
         >
           <AssignToMember />
-          <ProjectPicker darkLabel size={"medium"} />
+          <ProjectPicker  darkLabel size={"medium"} />
         </Box>
 
         <Box

@@ -61,7 +61,7 @@ const ProjectPicker = ({ onSelectGroup, customStyles, ...props }) => {
         props.size === "small"
           ? "20%"
           : props.size === "medium"
-          ? "30"
+          ? "30%"
           : props.size === "fullWidth"
           ? "100"
           : "50%"
