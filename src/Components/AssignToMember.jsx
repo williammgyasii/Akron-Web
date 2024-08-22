@@ -1,10 +1,26 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { selectGroupMembers } from "../Redux/Slices/Groups/groupsSlice";
+import {
+  selectGroupMembers,
+  selectGroupStatus,
+} from "../Redux/Slices/Groups/groupsSlice";
+import MemberDropdown from "./MemberDropdown";
+import CustomDropdown from "./CustomDropdown";
 
-function AssignToMember() {
+function AssignToMember({ onChange, value, error }) {
   const groupMembers = useSelector(selectGroupMembers);
-  return <div>AssignToMember{groupMembers.length}</div>;
+  const status = useSelector(selectGroupStatus);
+
+  return (
+    <CustomDropdown
+      label={"Assign To "}
+      options={groupMembers}
+      value={value}
+      onChange={onChange}
+      loading={status === "loading"}
+      error={error}
+    />
+  );
 }
 
 export default AssignToMember;

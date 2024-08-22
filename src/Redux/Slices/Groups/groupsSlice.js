@@ -111,7 +111,6 @@ export const fetchGroupMembers = createAsyncThunk(
         ...snapshot.data(),
       }));
       return users;
-      
     } catch (error) {
       throw new Error(error.message);
     }
@@ -225,4 +224,5 @@ export const selectGroupID = (state) => state.groups.selectedGroupId;
 export const selectGroupProjects = (state) => state.groups.groupProjects;
 export const selectCurrentProject = (state) => state.groups.selectedProject;
 export const selectGroupMembers = (state) => state.groups.groupMembers;
+export const selectGroupStatus = (state) => state.groups.status;
 export default groupsSlice.reducer;

@@ -50,6 +50,7 @@ const AddTaskForm = ({ groupId, handleClose }) => {
     startDate: { value: null, error: false, helperText: "" },
     taskColor: "",
     groupProject: { value: project?.id, error: false, helperText: "" },
+    // assignTo:{value}
   });
 
   // Handle input changes
@@ -183,7 +184,7 @@ const AddTaskForm = ({ groupId, handleClose }) => {
             marginTop: 2,
           }}
         >
-          <AssignToMember />
+          <AssignToMember onChange={(e) => console.log(e)} />
           <ProjectPicker
             value={formState.groupProject.value}
             onChange={(e) => handleChange("groupProject", e.target.value)}
