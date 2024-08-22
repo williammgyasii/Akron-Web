@@ -10,7 +10,6 @@ import {
   getDoc,
 } from "firebase/firestore";
 import { firebaseFirestore } from "../../../Firebase/getFirebase";
-import firebase from "firebase/compat/app";
 import { formatTimestamp } from "../../../Utils/dateFunctions";
 
 export const fetchGroups = createAsyncThunk("groups/fetchGroups", async () => {
@@ -96,6 +95,7 @@ const groupsSlice = createSlice({
       { projectName: "Banku", id: "ac" },
       { projectName: "ShiSha", id: "tcyc" },
       { projectName: "Cassava", id: "oiiac" },
+      { projectName: "Baby Nayoka", id: "123cac" },
     ],
     selectedProject: null,
   },

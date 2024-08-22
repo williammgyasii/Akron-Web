@@ -1,13 +1,6 @@
 // src/components/TaskForm.js
 import React, { useState } from "react";
-import {
-  Container,
-  useTheme,
-  Box,
-  TextField,
-  styled,
-  Typography,
-} from "@mui/material";
+import { Container, useTheme, Box, styled } from "@mui/material";
 import GroupSelector from "./GroupSelector";
 import CustomTitles from "./CustomTitles";
 import CustomFormInput from "./CustomFormInput";
@@ -17,14 +10,16 @@ import AssignToMember from "./AssignToMember";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useDispatch, useSelector } from "react-redux";
-import { selectGroupID } from "../Redux/Slices/Groups/groupsSlice";
+import {
+  selectCurrentProject,
+  selectGroupID,
+} from "../Redux/Slices/Groups/groupsSlice";
 import { selectCurrentUser } from "../Redux/Slices/Users/UsersSlice";
 import {
   addTaskToGroup,
   selectTaskState,
 } from "../Redux/Slices/Tasks/tasksSlice";
 import { hideModal } from "../Redux/Slices/System/systemSlice";
-import ColorPicker from "./DropdownColorPicker";
 import ProjectPicker from "./ProjectPicker";
 
 const DatePickerContainer = styled(DatePicker)(({ theme, variant, size }) => ({
@@ -37,18 +32,21 @@ const DatePickerContainer = styled(DatePicker)(({ theme, variant, size }) => ({
 }));
 
 const AddTaskForm = ({ groupId, handleClose }) => {
-  const [formState, setFormState] = useState({
-    taskTitle: { value: "", error: false, helperText: "" },
-    taskDescription: { value: "", error: false, helperText: "" },
-    startDate: { value: null, error: false, helperText: "" },
-    taskColor: "",
-  });
   const theme = useTheme();
   const today = new Date();
   const dispatch = useDispatch();
   const taskState = useSelector(selectTaskState);
   const selectedGroup = useSelector(selectGroupID);
   const currentUser = useSelector(selectCurrentUser);
+  const project = useSelector(selectCurrentProject);
+
+  const [formState, setFormState] = useState({
+    taskTitle: { value: "", error: false, helperText: "" },
+    taskDescription: { value: "", error: false, helperText: "" },
+    startDate: { value: null, error: false, helperText: "" },
+    taskColor: "",
+    groupProject: { value: project.id, error: false, helperText: "" },
+  });
 
   // Handle input changes
   const handleChange = (field, value) => {
@@ -110,18 +108,11 @@ const AddTaskForm = ({ groupId, handleClose }) => {
             taskDescription: formState.taskDescription.value,
             startDate: formState.startDate.value,
             assignedTo: currentUser.userId,
-            taskColor: formState.taskColor,
+            groupProject: formState.groupProject.value,
           },
         })
       );
     }
-  };
-
-  const handleColorSelect = (color) => {
-    setFormState((prevState) => ({
-      ...prevState,
-      taskColor: color,
-    }));
   };
 
   return (
@@ -189,7 +180,13 @@ const AddTaskForm = ({ groupId, handleClose }) => {
           }}
         >
           <AssignToMember />
-          <ProjectPicker pickerWidth="200px" darkLabel size={"fullWidth"} />
+          <ProjectPicker
+            value={formState.groupProject.value}
+            onChange={(e) => handleChange("groupProject", e.target.value)}
+            pickerWidth="200px"
+            darkLabel
+            size={"fullWidth"}
+          />
         </Box>
 
         <Box

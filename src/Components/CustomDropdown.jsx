@@ -9,29 +9,33 @@ import {
   CircularProgress,
   styled,
 } from "@mui/material";
-import PropTypes from "prop-types";
 
-const StyledFormControl = styled(FormControl)({
+const StyledFormControl = styled(FormControl)(({ theme, value, size }) => ({
   position: "relative",
   display: "flex",
   flexDirection: "column",
+  width: size === "small" ? "200px" : "100%",
   "& .MuiInputLabel-root": {
     position: "static",
     transform: "none",
     // fontSize: "1px",
     // marginBottom: "8px",
   },
-});
+}));
 
 const StyledSelect = styled(Select)(({ theme, value }) => ({
   backgroundColor: value ? "#fff" : theme.palette.background.paper,
-  fontSize: "14px", 
+  fontSize: "14px",
   padding: "4px 8px", // Reduced the padding to make it thinner
   "& .MuiSelect-select": {
     padding: "4px 8px", // Ensure the internal padding is also reduced
   },
   "&:focus": {
     backgroundColor: theme.palette.primary.white,
+  },
+  "& .MuiPaper-root": {
+    maxHeight: "20px", // Max height to show only 4 items (adjust as needed)
+    overflowY: "auto", // Enable scrolling if more items are present
   },
 }));
 
@@ -45,13 +49,14 @@ function CustomDropdown({
   error,
   labelColor,
   row,
+  pickerWidth,
   helperText,
   fullWidth = true,
   ...props
 }) {
   const theme = useTheme();
   return (
-    <StyledFormControl  fullWidth error={error}>
+    <StyledFormControl size={pickerWidth} fullWidth error={error}>
       <InputLabel
         sx={{
           color: labelColor,
@@ -67,6 +72,13 @@ function CustomDropdown({
         onChange={onChange}
         label={label}
         size="small"
+        MenuProps={{
+          PaperProps: {
+            style: {
+              maxHeight: 200, // Max height for 4 items
+            },
+          },
+        }}
         {...props}
       >
         {loading ? (
@@ -80,7 +92,7 @@ function CustomDropdown({
               key={option.value || option.id}
               value={option.value || option.id}
             >
-              {option.label || option.groupName}
+              {option.label || option.groupName || option.projectName}
             </MenuItem>
           ))
         )}

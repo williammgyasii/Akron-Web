@@ -10,32 +10,18 @@ import {
   Divider,
   Box,
   useTheme,
-  Typography,
   useMediaQuery,
   styled,
 } from "@mui/material";
-import MenuIcon from "@mui/icons-material/Menu";
-import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import DashboardIcon from "@mui/icons-material/Dashboard";
-import TaskIcon from "@mui/icons-material/Assignment";
-import GroupIcon from "@mui/icons-material/Group";
-import SettingsIcon from "@mui/icons-material/Settings";
 import {
   closeDrawer,
   selectIsDrawerOpened,
   toggleDrawerIsOpened,
 } from "../Redux/Slices/System/systemSlice";
-import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import {
-  IoAddSharp,
   IoLogOut,
-  IoMenuOutline,
-  IoSettings,
 } from "react-icons/io5";
-import CustomTitles from "./CustomTitles";
-import VariableSizeIconButton from "./CustomIconButton";
-import { AddSharp } from "@mui/icons-material";
 import { DASHBOARD_ROUTES } from "../Routes/dashboardRoutes";
 import CustomButton from "./CustomButton";
 import GroupSelector from "./GroupSelector";
@@ -44,7 +30,6 @@ import {
   TbLayoutSidebarLeftCollapseFilled,
   TbLayoutSidebarLeftExpand,
 } from "react-icons/tb";
-import { selectGroupProjects } from "../Redux/Slices/Groups/groupsSlice";
 import ProjectNavList from "./ProjectNavList";
 import { logoutUser } from "../Redux/Slices/Users/UsersSlice";
 import { persistor, resetState } from "../Redux/store";
@@ -60,7 +45,6 @@ const DrawerNav = () => {
   const isDrawerOpen = useSelector(selectIsDrawerOpened);
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("tablets_port"));
-  const groupProjects = useSelector(selectGroupProjects);
   const navigate = useNavigate();
   // console.log(groupProjects);
 
@@ -132,7 +116,7 @@ const DrawerNav = () => {
         {isDrawerOpen && <GroupSelector size="fullWidth" />}
 
         <List>
-          {DASHBOARD_ROUTES.map((section, index, isActive) => (
+          {DASHBOARD_ROUTES.map((section) => (
             <NavLink
               key={section.title}
               to={section.path}
