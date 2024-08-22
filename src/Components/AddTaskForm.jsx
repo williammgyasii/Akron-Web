@@ -45,7 +45,7 @@ const AddTaskForm = ({ groupId, handleClose }) => {
     taskDescription: { value: "", error: false, helperText: "" },
     startDate: { value: null, error: false, helperText: "" },
     taskColor: "",
-    groupProject: { value: project.id, error: false, helperText: "" },
+    groupProject: { value: project?.id, error: false, helperText: "" },
   });
 
   // Handle input changes
