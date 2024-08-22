@@ -132,17 +132,21 @@ const AddTaskForm = ({ groupId, handleClose }) => {
       }}
       disableGutters
     >
-      <Box display={"flex"} alignItems={"center"} justifyContent={"space-between"}>
+      <Box
+        display={"flex"}
+        alignItems={"center"}
+        mb={2}
+        justifyContent={"space-between"}
+      >
         <CustomTitles
-          customStyles={{ textTransform: "none", }}
+          customStyles={{ textTransform: "none" }}
           weightFont={"regular"}
           variant="text_base"
-          gutterBottom
           color={theme.palette.secondary.main}
         >
           Add New Task
         </CustomTitles>
-        <ProjectPicker size={"small"} />
+        
       </Box>
 
       <Box

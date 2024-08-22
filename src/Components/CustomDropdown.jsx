@@ -13,16 +13,23 @@ import PropTypes from "prop-types";
 
 const StyledFormControl = styled(FormControl)({
   position: "relative",
+  display: "flex",
+  flexDirection: "column",
   "& .MuiInputLabel-root": {
     position: "static",
     transform: "none",
+    // fontSize: "1px",
     // marginBottom: "8px",
   },
 });
 
 const StyledSelect = styled(Select)(({ theme, value }) => ({
   backgroundColor: value ? "#fff" : theme.palette.background.paper,
-  fontSize: "14px",
+  fontSize: "14px", 
+  padding: "4px 8px", // Reduced the padding to make it thinner
+  "& .MuiSelect-select": {
+    padding: "4px 8px", // Ensure the internal padding is also reduced
+  },
   "&:focus": {
     backgroundColor: theme.palette.primary.white,
   },
@@ -37,6 +44,7 @@ function CustomDropdown({
   loading,
   error,
   labelColor,
+  row,
   helperText,
   fullWidth = true,
   ...props

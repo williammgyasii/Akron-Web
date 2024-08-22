@@ -60,6 +60,8 @@ const ProjectPicker = ({ onSelectGroup, customStyles, ...props }) => {
       width={
         props.size === "small"
           ? "20%"
+          : props.size === "medium"
+          ? "30"
           : props.size === "fullWidth"
           ? "100"
           : "50%"
@@ -73,23 +75,20 @@ const ProjectPicker = ({ onSelectGroup, customStyles, ...props }) => {
         <CircularProgress size={15} sx={{ marginTop: 2, color: "red" }} />
       )}
       {groupsStatus === "failed" && (
-        <Typography color="error">Failed to load groups</Typography>
+        <Typography color="error">Failed to load Projects</Typography>
       )}
       {groupsStatus === "succeeded" && (
-        <CustomDropdown
-          disabled={props.formState}
-          label="Group"
-          labelColor={
-            props.darkLabel
-              ? theme.palette.secondary.main
-              : theme.palette.primary.white
-          }
-          options={groups}
-          value={selectedGroup}
-          onChange={handleGroupChange}
-          error={groupError}
-          helperText={groupError ? "Please select a category" : ""}
-        />
+        <Box display={"flex"}>
+          <span>Select Project</span>
+          <CustomDropdown
+            disabled={props.formState}
+            // label="Group"
+            options={groups}
+            value={selectedGroup}
+            onChange={handleGroupChange}
+            error={groupError}
+          />
+        </Box>
       )}
     </Box>
   );
