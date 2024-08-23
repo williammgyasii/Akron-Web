@@ -12,6 +12,9 @@
         ],
         "dev-site": [
           "test-akron"
+        ],
+        "production": [
+          "akron-server"
         ]
       }
     }

@@ -36,7 +36,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "deploy-test":"firebase deploy --only hosting:dev-site",
-    "deploy-production":"firebase deploy --only hosting"
+    "deploy-production":"firebase deploy --only hosting:production"
   },
   "eslintConfig": {
     "extends": [
