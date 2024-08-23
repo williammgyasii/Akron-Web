@@ -184,7 +184,10 @@ const AddTaskForm = ({ groupId, handleClose }) => {
             marginTop: 2,
           }}
         >
-          <AssignToMember onChange={(e) => console.log(e)} />
+          <AssignToMember
+            customStyles={{ width: "90%", marginRight: "20px" }}
+            onChange={(e) => console.log(e)}
+          />
           <ProjectPicker
             value={formState.groupProject.value}
             onChange={(e) => handleChange("groupProject", e.target.value)}
