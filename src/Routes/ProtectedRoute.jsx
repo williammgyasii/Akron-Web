@@ -2,7 +2,7 @@ import React from "react";
 import { Navigate, Outlet } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { CircularProgress } from "@mui/material";
-import DrawerLayout from "../Layouts/DrawerLayout";
+import MainLayout from "../Layouts/MainLayout";
 
 const PrivateRoute = ({ element }) => {
   const { currentUser, loading, status, error } = useSelector(
@@ -16,9 +16,9 @@ const PrivateRoute = ({ element }) => {
 
   return currentUser ? (
     <>
-      <DrawerLayout>
+      <MainLayout>
         <Outlet />
-      </DrawerLayout>
+      </MainLayout>
     </>
   ) : (
     <Navigate to="/login" />

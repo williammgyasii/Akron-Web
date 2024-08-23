@@ -1,29 +1,27 @@
 // src/components/TaskForm.js
 import React, { useState } from "react";
-import { Container, useTheme, Box, TextField, styled } from "@mui/material";
+import { Container, useTheme, Box, styled } from "@mui/material";
 import GroupSelector from "./GroupSelector";
 import CustomTitles from "./CustomTitles";
 import CustomFormInput from "./CustomFormInput";
 import CustomButton from "./CustomButton";
 import { MdFormatListBulletedAdd } from "react-icons/md";
 import AssignToMember from "./AssignToMember";
-import dayjs from "dayjs";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { addDays, formatDate } from "date-fns";
 import { useDispatch, useSelector } from "react-redux";
-import { selectGroupID } from "../Redux/Slices/Groups/groupsSlice";
+import {
+  selectCurrentProject,
+  selectGroupID,
+  selectGroupMembers,
+} from "../Redux/Slices/Groups/groupsSlice";
 import { selectCurrentUser } from "../Redux/Slices/Users/UsersSlice";
 import {
   addTaskToGroup,
   selectTaskState,
 } from "../Redux/Slices/Tasks/tasksSlice";
-import {
-  formatDateToCustomFormat,
-  formatTimestamp,
-} from "../Utils/dateFunctions";
 import { hideModal } from "../Redux/Slices/System/systemSlice";
-import { serverTimestamp } from "firebase/firestore";
+import ProjectPicker from "./ProjectPicker";
 
 const DatePickerContainer = styled(DatePicker)(({ theme, variant, size }) => ({
   width: "100%",
@@ -31,22 +29,29 @@ const DatePickerContainer = styled(DatePicker)(({ theme, variant, size }) => ({
   border: "1px solid #ccc",
   borderRadius: "4px",
   fontSize: "16px",
+  marginTop: "16px",
 }));
 
 const AddTaskForm = ({ groupId, handleClose }) => {
-  const [formState, setFormState] = useState({
-    taskTitle: { value: "", error: false, helperText: "" },
-    taskDescription: { value: "", error: false, helperText: "" },
-    startDate: { value: null, error: false, helperText: "" },
-  });
   const theme = useTheme();
   const today = new Date();
   const dispatch = useDispatch();
   const taskState = useSelector(selectTaskState);
   const selectedGroup = useSelector(selectGroupID);
   const currentUser = useSelector(selectCurrentUser);
+  const project = useSelector(selectCurrentProject);
+  const groupMembers = useSelector(selectGroupMembers);
 
-  // console.log(taskState);
+  console.log(groupMembers);
+
+  const [formState, setFormState] = useState({
+    taskTitle: { value: "", error: false, helperText: "" },
+    taskDescription: { value: "", error: false, helperText: "" },
+    startDate: { value: null, error: false, helperText: "" },
+    taskColor: "",
+    groupProject: { value: project?.id, error: false, helperText: "" },
+    // assignTo:{value}
+  });
 
   // Handle input changes
   const handleChange = (field, value) => {
@@ -108,6 +113,7 @@ const AddTaskForm = ({ groupId, handleClose }) => {
             taskDescription: formState.taskDescription.value,
             startDate: formState.startDate.value,
             assignedTo: currentUser.userId,
+            groupProject: formState.groupProject.value,
           },
         })
       );
@@ -122,17 +128,23 @@ const AddTaskForm = ({ groupId, handleClose }) => {
       }}
       disableGutters
     >
-      <Box display={"flex"} justifyContent={"space-between"}>
+      <Box
+        display={"flex"}
+        alignItems={"center"}
+        justifyContent={"space-between"}
+      >
         <CustomTitles
-          customStyles={{ textTransform: "none", marginBottom: 2 }}
+          customStyles={{
+            textTransform: "none",
+            textAlign: "center",
+            width: "100%",
+          }}
           weightFont={"regular"}
           variant="text_base"
-          gutterBottom
           color={theme.palette.secondary.main}
         >
           Add New Task
         </CustomTitles>
-        <AssignToMember />
       </Box>
 
       <Box
@@ -162,14 +174,36 @@ const AddTaskForm = ({ groupId, handleClose }) => {
           helperText={formState.taskDescription.helperText}
         />
 
+        {/* <Typography>ac</Typography> */}
         <Box
-          mt={2}
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            width: "100%",
+            marginTop: 2,
+          }}
+        >
+          <AssignToMember
+            customStyles={{ width: "90%", marginRight: "20px" }}
+            onChange={(e) => console.log(e)}
+          />
+          <ProjectPicker
+            value={formState.groupProject.value}
+            onChange={(e) => handleChange("groupProject", e.target.value)}
+            pickerWidth="200px"
+            darkLabel
+            size={"fullWidth"}
+          />
+        </Box>
+
+        <Box
           display={"flex"}
           width={"100%"}
           alignItems={"center"}
           justifyContent={"space-between"}
         >
-          <GroupSelector formState />
+          <GroupSelector darkLabel formState />
           <DatePickerContainer
             selected={formState.startDate.value}
             onChange={(date) => handleChange("startDate", date)}
@@ -178,19 +212,6 @@ const AddTaskForm = ({ groupId, handleClose }) => {
             dateFormat="yyyy/MM/dd"
             className="date-picker" // Custom class for styling
           />
-          {/* <CustomFormInput
-            label="Start Date"
-            type="date"
-            fullWidth
-            customStyles={{ fontSize: ".5rem", flexBasis: "35%" }}
-            InputLabelProps={{
-              shrink: true,
-            }}
-            value={formState.startDate.value}
-            onChange={(e) => handleChange("startDate", e.target.value)}
-            error={formState.startDate.error}
-            helperText={formState.startDate.helperText}
-          /> */}
         </Box>
 
         <Box
@@ -202,27 +223,26 @@ const AddTaskForm = ({ groupId, handleClose }) => {
             alignItems: "center",
           }}
         >
-          {taskState === "idle" ||
-            (taskState === "succeeded" && (
-              <CustomButton
-                sx={{
-                  // backgroundColor: theme.palette.error.main,
-                  flexBasis: "30%",
-                  marginRight: "10px",
-                }}
-                onClick={() => dispatch(hideModal())}
-                variant="secondary"
-              >
-                Cancel
-              </CustomButton>
-            ))}
+          {taskState === "idle" || taskState === "succeeded" ? (
+            <CustomButton
+              sx={{
+                flexBasis: "30%",
+                marginRight: "10px",
+              }}
+              onClick={() => dispatch(hideModal())}
+              variant="secondary"
+              size="small"
+            >
+              Cancel
+            </CustomButton>
+          ) : null}
 
           <CustomButton
             // type="iconOnly"
             loadingButton={taskState === "loading"}
             leftIcon={MdFormatListBulletedAdd}
             submit
-            size="medium"
+            size="small"
             sx={{ color: "#fff" }}
             variant="primary"
           >

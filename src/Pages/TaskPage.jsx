@@ -3,11 +3,7 @@ import React from "react";
 import AppBarComponent from "../Components/AppBarComponent";
 
 function TaskPage() {
-  return (
-    <Container disableGutters>
-      <AppBarComponent pageHeader showOthers title={"Task"} />
-    </Container>
-  );
+  return <Container disableGutters></Container>;
 }
 
 export default TaskPage;

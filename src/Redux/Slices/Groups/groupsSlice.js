@@ -10,7 +10,6 @@ import {
   getDoc,
 } from "firebase/firestore";
 import { firebaseFirestore } from "../../../Firebase/getFirebase";
-import firebase from "firebase/compat/app";
 import { formatTimestamp } from "../../../Utils/dateFunctions";
 
 export const fetchGroups = createAsyncThunk("groups/fetchGroups", async () => {
@@ -82,6 +81,41 @@ export const fetchUserGroups = createAsyncThunk(
     }
   }
 );
+export const fetchGroupMembers = createAsyncThunk(
+  "groups/fetchGroupMembers",
+  async (groupId) => {
+    try {
+      const groupDoc = doc(firebaseFirestore, "groups", groupId);
+      const groupSnapshot = await getDoc(groupDoc);
+
+      if (!groupSnapshot.exists()) {
+        throw new Error("Group not found");
+      }
+
+      const groupData = groupSnapshot.data();
+      const memberIds = groupData.members; // Array of user IDs
+
+      console.log(memberIds);
+
+      if (memberIds.length === 0) {
+        return [];
+      }
+
+      // Fetch user details for each member ID
+      const usersRef = collection(firebaseFirestore, "users");
+      const userPromises = memberIds.map((id) => getDoc(doc(usersRef, id)));
+      const userSnapshots = await Promise.all(userPromises);
+
+      const users = userSnapshots.map((snapshot) => ({
+        id: snapshot.id,
+        ...snapshot.data(),
+      }));
+      return users;
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  }
+);
 
 const groupsSlice = createSlice({
   name: "groups",
@@ -91,6 +125,16 @@ const groupsSlice = createSlice({
     selectedGroupId: "",
     selectedGroupDetails: null,
     groupsError: null,
+    groupProjects: [
+      { projectName: "Roland", id: "ctyc" },
+      { projectName: "Banku", id: "ac" },
+      { projectName: "ShiSha", id: "tcyc" },
+      { projectName: "Cassava", id: "oiiac" },
+      { projectName: "Baby Nayoka", id: "123cac" },
+      { projectName: "Baby Fived.x", id: "Rtx204" },
+    ],
+    selectedProject: null,
+    groupMembers: [],
   },
   reducers: {
     setGroups: (state, action) => {
@@ -106,9 +150,26 @@ const groupsSlice = createSlice({
       state.selectedGroupDetails = null;
       state.groupsError = null;
     },
+    addProject: (state, action) => {
+      state.projects.push(action.payload);
+    },
+    setSelectedProject: (state, action) => {
+      state.selectedProject = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
+      .addCase(fetchGroupMembers.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(fetchGroupMembers.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.groupMembers = action.payload;
+      })
+      .addCase(fetchGroupMembers.rejected, (state, action) => {
+        state.status = "failed";
+        state.groupsError = action.error.message;
+      })
       .addCase(fetchGroups.pending, (state) => {
         state.status = "loading";
       })
@@ -151,8 +212,17 @@ const groupsSlice = createSlice({
   },
 });
 
-export const { setGroups, setSelectedGroupID, clearGroupDetails } =
-  groupsSlice.actions;
+export const {
+  setGroups,
+  setSelectedGroupID,
+  clearGroupDetails,
+  addProject,
+  setSelectedProject,
+} = groupsSlice.actions;
 export const selectGroups = (state) => state.groups.groups;
 export const selectGroupID = (state) => state.groups.selectedGroupId;
+export const selectGroupProjects = (state) => state.groups.groupProjects;
+export const selectCurrentProject = (state) => state.groups.selectedProject;
+export const selectGroupMembers = (state) => state.groups.groupMembers;
+export const selectGroupStatus = (state) => state.groups.status;
 export default groupsSlice.reducer;

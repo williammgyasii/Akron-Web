@@ -13,9 +13,11 @@ import {
   FormControl,
   InputLabel,
   Box,
+  useTheme,
 } from "@mui/material";
 import {
   clearGroupDetails,
+  fetchGroupMembers,
   fetchSelectedGroupDetails,
   selectGroupID,
   selectGroups,
@@ -30,11 +32,13 @@ const GroupSelector = ({ onSelectGroup, customStyles, ...props }) => {
   const groupsStatus = useSelector((state) => state.groups.status);
   const selectedGroup = useSelector(selectGroupID);
   const [groupError, setGroupError] = useState(false);
+  const theme = useTheme();
 
   // console.log(groups, selectedGroup);
 
   const handleGroupChange = (event) => {
     dispatch(setSelectedGroupID(event.target.value));
+    dispatch(fetchGroupMembers(event.target.value));
     if (selectGroupID) {
       dispatch(fetchSelectedGroupDetails(event.target.value));
     } else {
@@ -45,9 +49,17 @@ const GroupSelector = ({ onSelectGroup, customStyles, ...props }) => {
   return (
     <Box
       display={"flex"}
-      width={props.size === "small" ? "20%" : "50%"}
+      width={
+        props.size === "small"
+          ? "20%"
+          : props.size === "fullWidth"
+          ? "100"
+          : "50%"
+      }
+      // paddingBottom={1}
       alignItems={"center"}
       justifyContent={"center"}
+      // fullWidth={props.fullWidth}
     >
       {groupsStatus === "loading" && (
         <CircularProgress size={15} sx={{ marginTop: 2, color: "red" }} />
@@ -58,7 +70,12 @@ const GroupSelector = ({ onSelectGroup, customStyles, ...props }) => {
       {groupsStatus === "succeeded" && (
         <CustomDropdown
           disabled={props.formState}
-          label="Select Group"
+          label="Group"
+          labelColor={
+            props.darkLabel
+              ? theme.palette.secondary.main
+              : theme.palette.primary.white
+          }
           options={groups}
           value={selectedGroup}
           onChange={handleGroupChange}

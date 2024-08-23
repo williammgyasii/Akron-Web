@@ -1,4 +1,4 @@
-import { Box, Button, Container, useTheme } from "@mui/material";
+import { Box, Button, Container, IconButton, useTheme } from "@mui/material";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { persistor, resetState } from "../Redux/store";
@@ -9,6 +9,8 @@ import Logo from "../Components/Logo";
 import GroupTaskList from "../Components/GroupTaskList";
 import { selectGroupID } from "../Redux/Slices/Groups/groupsSlice";
 import CustomTitles from "../Components/CustomTitles";
+import { IoAddSharp } from "react-icons/io5";
+import { showModal } from "../Redux/Slices/System/systemSlice";
 
 function DashboardPage() {
   const dispatch = useDispatch();
@@ -18,7 +20,7 @@ function DashboardPage() {
   );
   const theme = useTheme();
   const selectedGroup = useSelector(selectGroupID);
-  
+
   const handleLogout = () => {
     dispatch(resetState());
     dispatch(logoutUser());
@@ -29,14 +31,8 @@ function DashboardPage() {
   };
 
   return (
-    <Container disableGutters maxWidth={false} >
-      <AppBarComponent
-        title={`Welcome Back! ${currentUser.firstName}`}
-        showOthers
-        customStyles={{ px: 5, py: 1, }}
-      />
-      {/* <Logo size="medium" /> */}
-      <Box sx={{ p:1.5, display: 'flex', height: '100vh', }}>
+    <Container disableGutters maxWidth={false} sx={{ position: "relative" }}>
+      <Box sx={{ p: 1.5, display: "flex", height: "100vh" }}>
         <Box
           sx={{
             backgroundColor: theme.palette.background.paper,
@@ -49,9 +45,8 @@ function DashboardPage() {
         <Box
           sx={{
             px: 1,
-            py: 2,
-            overflowY:"auto",
-            position:"relative",
+            overflowY: "auto",
+            position: "relative",
             width: 300,
             marginLeft: "10px",
             backgroundColor: theme.palette.background.paper,
@@ -61,28 +56,48 @@ function DashboardPage() {
             },
           }}
         >
-          <CustomTitles
-            color={theme.palette.secondary.main}
-            variant="text_base"
-            // capitalize="none"
-            weightFont={"medium"}
-            customStyles={{
-              textTransform: "none",
-              textAlign: "center",
-              display: "block",
-              zIndex: 1,
-              p:1,
-              borderBottom: "1px solid #ccc",
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
             }}
           >
-            Tasks
-          </CustomTitles>
+            <CustomTitles
+              color={theme.palette.secondary.main}
+              variant="text_base"
+              // capitalize="none"
+              weightFont={"medium"}
+              customStyles={{
+                textTransform: "none",
+
+                display: "block",
+                zIndex: 1,
+                p: 1,
+              }}
+            >
+              Tasks
+            </CustomTitles>
+            <IconButton
+              onClick={() => dispatch(showModal("createTask"))}
+              sx={{
+                backgroundColor: theme.palette.primary.main,
+                color: "white",
+                borderRadius: 1,
+                "&:hover": {
+                  backgroundColor: theme.palette.primary.dark800, // Slightly lighter black on hover
+                },
+              }}
+            >
+              <IoAddSharp size={10} />
+            </IconButton>
+          </Box>
           <Box
             sx={{
               display: "flex",
               justifyContent: "center",
               alignItems: "flex-start",
-              flex:1
+              flex: 1,
             }}
           >
             <GroupTaskList groupId={selectedGroup} />

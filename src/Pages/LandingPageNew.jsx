@@ -1,4 +1,5 @@
 import { Box, Container } from "@mui/material";
+import { Button } from "antd";
 import React from "react";
 
 function LandingPageNew() {
@@ -12,7 +13,9 @@ function LandingPageNew() {
         fontSize: 30,
       }}
     >
-      <Box>I am the new landing page</Box>
+      <div className="App">
+        <Button type="primary">Button</Button>
+      </div>
     </Container>
   );
 }

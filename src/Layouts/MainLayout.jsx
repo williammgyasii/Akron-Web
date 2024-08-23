@@ -5,10 +5,14 @@ import CreateTaskFAB from "../Components/CreateTaskFAB";
 import AppBarComponent from "../Components/AppBarComponent";
 
 import DrawerNav from "../Components/DrawerNav";
+import { useSelector } from "react-redux";
+import zIndex from "@mui/material/styles/zIndex";
 
-const DrawerLayout = ({ children }) => {
+const MainLayout = ({ children }) => {
+  const { currentUser, loading, status, error } = useSelector(
+    (state) => state.user
+  );
   const theme = useTheme();
-
   return (
     <Box
       sx={{
@@ -18,19 +22,22 @@ const DrawerLayout = ({ children }) => {
         },
       }}
     >
-      {/* LEFTSIDE */}
       <DrawerNav />
 
       <Box
         component="main"
         sx={{
+          flexGrow: 1,
           position: "relative",
           height: "100vh",
-          width: "100%",
-          // backgroundColor: "YELLOW",
+          // Adjust this margin-top to ensure content goes under the AppBar
         }}
       >
-        <Box >{children}</Box>
+        <AppBarComponent
+          title={`Welcome Back! ${currentUser.firstName}`}
+          showOthers
+        />
+        <Box sx={{ mt:"4%" }}>{children}</Box>
 
         <CreateTaskFAB />
       </Box>
@@ -38,4 +45,4 @@ const DrawerLayout = ({ children }) => {
   );
 };
 
-export default DrawerLayout;
+export default MainLayout;
