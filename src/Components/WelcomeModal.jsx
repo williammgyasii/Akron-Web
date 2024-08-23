@@ -1,22 +1,42 @@
-import React, { useState } from 'react';
-import { Modal, Box, Button, Typography, Stepper, Step, StepLabel, TextField } from '@mui/material';
+import React, { useState } from "react";
+import {
+  Modal,
+  Box,
+  Button,
+  Typography,
+  Stepper,
+  Step,
+  StepLabel,
+  TextField,
+} from "@mui/material";
+import { useDispatch, useSelector } from "react-redux";
+import { selectCurrentUser } from "../Redux/Slices/Users/UsersSlice";
+import {
+  selectWelcomeModalOpened,
+  setWelcomeModalClose,
+} from "../Redux/Slices/System/systemSlice";
 
 // Styles for the modal and stepper
 const modalStyle = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
   width: 400,
-  bgcolor: 'background.paper',
+  bgcolor: "background.paper",
   borderRadius: 2,
   boxShadow: 24,
   p: 4,
 };
 
-const steps = ['Welcome', 'Create Group', 'Create Your First Project'];
+const steps = ["Welcome", "Create Group", "Create Your First Project"];
 
 const WelcomeModal = ({ open, onClose }) => {
+  const currentUser = useSelector(selectCurrentUser);
+  const welcomeModal = useSelector(selectWelcomeModalOpened);
+  const dispatch = useDispatch();
+  console.log(welcomeModal);
+
   const [activeStep, setActiveStep] = useState(0);
 
   const handleNext = () => {
@@ -24,7 +44,7 @@ const WelcomeModal = ({ open, onClose }) => {
   };
 
   const handleClose = () => {
-    onClose(); // Close the modal when done
+    dispatch(setWelcomeModalClose()); // Close the modal when done
   };
 
   const getStepContent = (step) => {
@@ -48,12 +68,19 @@ const WelcomeModal = ({ open, onClose }) => {
           </Box>
         );
       default:
-        return 'Unknown step';
+        return "Unknown step";
     }
   };
 
   return (
-    <Modal open={open} onClose={handleClose}>
+    <Modal
+      BackdropProps={{
+        style: { backgroundColor: "rgba(0, 0, 0, 0.5)" },
+        onClick: (e) => e.stopPropagation(),
+      }}
+      open={welcomeModal}
+      onClose={handleClose}
+    >
       <Box sx={modalStyle}>
         <Stepper activeStep={activeStep} alternativeLabel>
           {steps.map((label) => (
@@ -64,7 +91,7 @@ const WelcomeModal = ({ open, onClose }) => {
         </Stepper>
         <Box sx={{ mt: 2 }}>
           {getStepContent(activeStep)}
-          <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 2 }}>
+          <Box sx={{ display: "flex", justifyContent: "space-between", mt: 2 }}>
             <Button
               variant="contained"
               color="primary"
@@ -74,7 +101,11 @@ const WelcomeModal = ({ open, onClose }) => {
               Next
             </Button>
             {activeStep === steps.length - 1 && (
-              <Button variant="contained" color="secondary" onClick={handleClose}>
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={handleClose}
+              >
                 Done
               </Button>
             )}

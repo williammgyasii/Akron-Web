@@ -1,5 +1,5 @@
 import { Box, Button, Container, IconButton, useTheme } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { persistor, resetState } from "../Redux/store";
 import { logoutUser } from "../Redux/Slices/Users/UsersSlice";
@@ -10,7 +10,10 @@ import GroupTaskList from "../Components/GroupTaskList";
 import { selectGroupID } from "../Redux/Slices/Groups/groupsSlice";
 import CustomTitles from "../Components/CustomTitles";
 import { IoAddSharp } from "react-icons/io5";
-import { showModal } from "../Redux/Slices/System/systemSlice";
+import {
+  setWelcomeModalOpen,
+  showModal,
+} from "../Redux/Slices/System/systemSlice";
 
 function DashboardPage() {
   const dispatch = useDispatch();
@@ -20,6 +23,12 @@ function DashboardPage() {
   );
   const theme = useTheme();
   const selectedGroup = useSelector(selectGroupID);
+
+  useEffect(() => {
+    dispatch(setWelcomeModalOpen());
+
+    return () => {};
+  }, []);
 
   const handleLogout = () => {
     dispatch(resetState());

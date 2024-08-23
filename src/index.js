@@ -15,11 +15,11 @@ import {
 import GlobalLoading from "./Components/GlobalLoading";
 import GlobalSnackbar from "./Components/GlobalSnackbar";
 import { fetchUserGroups } from "./Redux/Slices/Groups/groupsSlice";
+import WelcomeModal from "./Components/WelcomeModal";
+import { selectWelcomeModalOpened } from "./Redux/Slices/System/systemSlice";
 
 const AuthListener = () => {
   const dispatch = useDispatch();
-  const currentUser = useSelector(selectCurrentUser);
-
   useEffect(() => {
     dispatch(listenForAuthChanges());
     // dispatch(fetchUserGroups());
@@ -36,6 +36,7 @@ root.render(
           <CssBaseline />
           <AuthListener />
           <GlobalSnackbar />
+          <WelcomeModal />
           {/* <GlobalLoading/> */}
           <App />
         </ThemeProvider>
