@@ -120,7 +120,7 @@ const AppBarComponent = ({ title, showOthers, pageHeader, customStyles }) => {
           type="iconLeft" // Submit button for the form
           // label="Submit"
         >
-          Create Group
+          Create Groupp
         </CustomButton>
 
         {/* <GroupSelector size="fullWidth" /> */}
