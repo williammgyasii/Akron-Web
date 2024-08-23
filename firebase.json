@@ -1,7 +1,7 @@
 {
   "hosting": [
     {
-      "target": "default",
+      "target": "production",
       "public": "build",
       "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
       "rewrites": [
@@ -12,7 +12,7 @@
       ]
     },
     {
-      "target": "test-akron",
+      "target": "dev-site",
       "public": "build",
       "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
       "rewrites": [
