@@ -1,5 +1,21 @@
 {
   "projects": {
-    "default": "akron-server"
-  }
+    "default": "akron-server",
+    "hosting": "akron-server",
+    "test-akron": "test-akron-server"
+  },
+  "targets": {
+    "akron-server": {
+      "hosting": {
+        "test-akron": [
+          "akron-test"
+        ],
+        "dev-site": [
+          "test-akron"
+        ]
+      }
+    }
+  },
+  "etags": {},
+  "dataconnectEmulatorConfig": {}
 }
