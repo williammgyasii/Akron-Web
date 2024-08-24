@@ -52,13 +52,15 @@ const DrawerNav = () => {
     dispatch(closeDrawer());
   };
   const handleLogout = () => {
-    dispatch(logoutUser()).then(() => {
-      dispatch(resetState());
-      persistor.purge(); // Clear persisted state
-      // Perform other logout logic, like redirecting to the login page
-      navigate("/login", { replace: true });
-      window.location.reload();
-    });
+    dispatch(logoutUser())
+      .unwrap()
+      .then(() => {
+        dispatch(resetState());
+        persistor.purge(); // Clear persisted state
+        // Perform other logout logic, like redirecting to the login page
+        navigate("/login", { replace: true });
+        window.location.reload();
+      });
   };
 
   return (

@@ -28,6 +28,7 @@ import { selectCurrentUser } from "../Redux/Slices/Users/UsersSlice";
 import {
   createGroup,
   fetchUserGroups,
+  setSelectedGroupID,
 } from "../Redux/Slices/Groups/groupsSlice";
 import CustomTitles from "./CustomTitles";
 import CreateProjectForm from "./CreateProjectForm";
@@ -171,8 +172,10 @@ const WelcomeModal = ({}) => {
     // console.log("Project Name", projectValues);
     dispatch(createGroup({ groupName, groupIcon, members, projectValues }))
       .unwrap()
-      .then(() => {
+      .then((result) => {
+        console.log("handlefinish",result)
         dispatch(setAppUserState("currentUser"));
+        dispatch(setSelectedGroupID(result.id));
         handleClose(); // Close the modal after finishing
       });
   };
