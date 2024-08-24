@@ -15,18 +15,19 @@ import {
   selectWelcomeModalOpened,
   setWelcomeModalClose,
 } from "../Redux/Slices/System/systemSlice";
+import { IoAtCircle, IoCheckmarkCircle } from "react-icons/io5";
 
 const ModalContainer = styled(Box)(({ theme }) => ({
   position: "absolute",
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 400,
+  width: 500,
   backgroundColor: theme.palette.background.paper,
   borderRadius: theme.shape.borderRadius,
   // boxShadow: theme.shadows[5],
   border: "0",
-  padding: theme.spacing(4),
+  padding: theme.spacing(2),
   outline: "none",
   "&:focus": {
     outline: "none", // Remove the focus outline if it appears
@@ -42,6 +43,45 @@ const ButtonContainer = styled(Box)(({ theme }) => ({
   justifyContent: "flex-end",
   marginTop: theme.spacing(4),
 }));
+
+const CustomStepLabel = styled(StepLabel)({
+  "& .MuiStepLabel-label": {
+    fontSize: "0.675rem", // Adjust the font size here (e.g., 14px equivalent)
+  },
+});
+
+const CustomStepIcon = styled("div")(({ theme, ownerState }) => ({
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  width: 24,
+  height: 24,
+  borderRadius: "50%",
+  backgroundColor:
+    ownerState.completed || ownerState.active
+      ? "transparent"
+      : theme.palette.grey[400],
+  color: ownerState.active
+    ? theme.palette.error.main // Red dot for the active step
+    : ownerState.completed
+    ? theme.palette.success.main // Green tick for completed steps
+    : theme.palette.grey[400], // Grey dot for other steps
+  ...(ownerState.active && {
+    border: `2px solid ${theme.palette.error.main}`,
+  }),
+}));
+
+function StepIcon(props) {
+  const { active, completed } = props;
+
+  return completed ? (
+    <IoCheckmarkCircle color="success" />
+  ) : (
+    <CustomStepIcon ownerState={{ active, completed }}>
+      <IoAtCircle fontSize="small" />
+    </CustomStepIcon>
+  );
+}
 
 const WelcomeModal = ({}) => {
   const [activeStep, setActiveStep] = useState(0);
@@ -119,10 +159,12 @@ const WelcomeModal = ({}) => {
       onClose={handleClose}
     >
       <ModalContainer>
-        <Stepper activeStep={activeStep} alternativeLabel>
+        <Stepper activeStep={activeStep} nonLinear>
           {steps.map((label) => (
             <Step key={label}>
-              <StepLabel>{label}</StepLabel>
+              <CustomStepLabel StepIconComponent={StepIcon}>
+                {label}
+              </CustomStepLabel>
             </Step>
           ))}
         </Stepper>

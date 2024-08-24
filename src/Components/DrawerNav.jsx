@@ -165,7 +165,6 @@ const DrawerNav = () => {
         />
 
         <List>
-          {" "}
           <ProjectNavList />
         </List>
 
