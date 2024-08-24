@@ -102,26 +102,29 @@ export const createGroup = createAsyncThunk(
   }
 );
 
-export const querySearchMember = createAsyncThunk(
-  "groups/querySearchMember",
-  async (currentUser, searchEmail, { rejectWithValue }) => {
-    try {
-      const userRef = collection(firebaseFirestore, "users");
-      const q = query(userRef, where("email", "==", searchEmail.trim()));
-      const querySnapshot = await getDocs(q);
-      if (querySnapshot.empty) {
-        return rejectWithValue("This email is not registered.");
-      } else {
-        const userDoc = querySnapshot.docs[0].data();
-        if (searchEmail.trim() === currentUser.id) {
-          return rejectWithValue("You can't add your own email to the group.");
-        } else {
-          return { uid: userDoc.uid, email: searchEmail.trim() };
-        }
-      }
-    } catch (error) {}
-  }
-);
+// export const querySearchMember = createAsyncThunk(
+//   "groups/querySearchMember",
+//   async (currentUser, searchEmail, { rejectWithValue }) => {
+//     try {
+//       const userRef = collection(firebaseFirestore, "users");
+//       const q = query(userRef, where("email", "==", searchEmail.trim()));
+//       const querySnapshot = await getDocs(q);
+//       if (querySnapshot.empty) {
+//         return rejectWithValue("This email is not registered.");
+//       } else {
+//         const userDoc = querySnapshot.docs[0].data();
+//         if (searchEmail.trim() === currentUser.id) {
+//           return rejectWithValue("You can't add your own email to the group.");
+//         } else {
+//           return { uid: userDoc.uid, email: searchEmail.trim() };
+//         }
+//       }
+//     } catch (error) {
+//       console.error("Error querying user by email: ", error);
+//       return rejectWithValue("An error occurred while adding the user.");
+//     }
+//   }
+// );
 
 export const fetchUserGroups = createAsyncThunk(
   "groups/fetchUserGroups",

@@ -116,15 +116,6 @@ const WelcomeModal = ({}) => {
   // console.log(currentUser)
 
   const handleNext = () => {
-    if (activeStep >= 1) {
-      if (!groupName || !groupIcon) {
-        setButtonNext(false);
-        return;
-      }
-    }
-    console.log("Group Name:", groupName);
-    console.log("Group Icon:", groupIcon);
-    console.log("Members:", members);
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
 
@@ -294,9 +285,7 @@ const WelcomeModal = ({}) => {
           ) : (
             <CustomButton
               onClick={handleNext}
-              disabled={activeStep === 1 && !groupName.trim() && !groupIcon}
-              // type="iconOnly"
-              // loadingButton={taskState === "loading"}
+              disabled={buttonNext}
               leftIcon={MdFormatListBulletedAdd}
               submit
               size="medium"

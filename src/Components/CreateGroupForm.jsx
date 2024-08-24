@@ -27,6 +27,7 @@ import CustomButton from "./CustomButton";
 import { useSelector } from "react-redux";
 import { selectCurrentUser } from "../Redux/Slices/Users/UsersSlice";
 import GroupMemberListView from "./GroupMemberListView";
+import { queryUserByEmail } from "../Firebase/firebaseFunctions";
 
 const FormContainer = styled("div")({
   display: "flex",
@@ -84,7 +85,6 @@ function CreateGroupForm({
   setGroupIcon,
   setGroupName,
   userEmail,
-
   searchEmail,
   setSearchEmail,
 }) {
@@ -95,19 +95,38 @@ function CreateGroupForm({
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-  const handleAddMember = () => {
+  const handleAddMember = async () => {
     if (searchEmail.trim() === "") {
       setErrorMessage("Email cannot be empty.");
     } else if (searchEmail === currentUser?.email) {
       setErrorMessage("You can't add your own email to the group.");
     } else if (!emailRegex.test(searchEmail)) {
       setErrorMessage("Please enter a valid email address.");
-    } else if (members.includes(searchEmail)) {
+    } else if (members.some((member) => member.email === searchEmail)) {
       setErrorMessage("This email has already been added.");
     } else {
-      addMember(searchEmail);
-      setSearchEmail("");
-      setErrorMessage("");
+      try {
+        setMemberLoading(true);
+        console.log("Bankue");
+        const uid = await queryUserByEmail(searchEmail)
+          .then((result) => {
+            console.log(result);
+            //   if (result) {
+            //     addMember((prevMembers) => [
+            //       ...prevMembers,
+            //       { email: searchEmail, uid, status: "PENDING" },
+            //     ]);
+            //     setSearchEmail("");
+            //     setErrorMessage("");
+            //   } else {
+            //     setErrorMessage("No user found with this email.");
+            //   }
+          })
+          .catch((error) => {
+            setErrorMessage("Email isnt registered.");
+            setMemberLoading(false);
+          });
+      } catch (error) {}
     }
   };
 
@@ -166,8 +185,8 @@ function CreateGroupForm({
           onChange={(e) => setGroupName(e.target.value)}
           fullWidth
           required
-          //   helperText={errors.groupName}
-          //   error={!!errors.groupName}
+          //   helperText={errorMessage}
+          //   error={!!errorMessage}
         />
 
         <GroupIconContainer>
