@@ -61,6 +61,8 @@ function CreateGroupForm({
   groupName,
   onChangeGroupName,
   onChangeSearchEmail,
+  onAddMember,
+  removeMember,
 }) {
   const [members, setMembers] = useState([]);
   const [searchEmail, setSearchEmail] = useState("");
@@ -69,30 +71,15 @@ function CreateGroupForm({
   const [errors, setErrors] = useState({});
   const theme = useTheme();
 
-  const handleAddMember = () => {
-    if (searchEmail && !members.includes(searchEmail)) {
-      setMembers([...members, searchEmail]);
-      setSearchEmail("");
-    }
-  };
-
-  const handleRemoveMember = (email) => {
-    setMembers(members.filter((member) => member !== email));
-  };
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    setLoading(true);
-
-    // Form submission logic here
-    setTimeout(() => {
-      setLoading(false);
-      // Handle success or error
-    }, 2000);
-  };
+  //     // Form submission logic here
+  //     setTimeout(() => {
+  //       setLoading(false);
+  //       // Handle success or error
+  //     }, 2000);
+  //   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form>
       <FormContainer>
         <Box
           sx={{
@@ -157,7 +144,7 @@ function CreateGroupForm({
           fullWidth
           InputProps={{
             endAdornment: (
-              <IconButton onClick={handleAddMember}>
+              <IconButton onClick={onAddMember}>
                 <PersonAdd sx={{ color: theme.palette.primary.main }} />
               </IconButton>
             ),
@@ -168,7 +155,7 @@ function CreateGroupForm({
             <Chip
               key={email}
               label={email}
-              onDelete={() => handleRemoveMember(email)}
+              onDelete={() => removeMember(email)}
             />
           ))}
         </MembersList>

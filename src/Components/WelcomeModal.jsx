@@ -149,6 +149,8 @@ const WelcomeModal = ({}) => {
               groupName={groupName}
               searchEmail={searchEmail}
               onChangeSearchEmail={(e) => setSearchEmail(e.target.value)}
+              removeMember={handleRemoveMember}
+              onAddMember={handleAddMember}
             />
           </StepContent>
         );
