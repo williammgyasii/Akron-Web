@@ -61,10 +61,12 @@ function CreateGroupForm({
   groupName,
   onChangeGroupName,
   onChangeSearchEmail,
-  onAddMember,
+  addMember,
   removeMember,
   groupIcon,
   members,
+  setGroupIcon,
+  setGroupName,
   userEmail,
   loading,
 }) {
@@ -73,16 +75,16 @@ function CreateGroupForm({
   const theme = useTheme();
 
   const handleAddMember = () => {
-    if (searchEmail === userEmail) {
+    if (searchEmail.trim() === "") {
+      setErrorMessage("Email cannot be empty.");
+    } else if (searchEmail === userEmail) {
       setErrorMessage("You can't add your own email to the group.");
     } else {
-      onAddMember(searchEmail);
+      addMember(searchEmail);
       setSearchEmail("");
       setErrorMessage("");
     }
   };
-
-  
 
   return (
     <form>
@@ -120,7 +122,7 @@ function CreateGroupForm({
             <Avatar
               src={groupIcon ? URL.createObjectURL(groupIcon) : null}
               alt="Group Icon"
-              sx={{ width: 60, height: 60, marginBottom: "10px" }}
+              sx={{ width: 70, height: 70, marginBottom: "10px" }}
             />
           ) : (
             <FiUpload size={30} color={theme.palette.secondary.main} />
@@ -146,11 +148,11 @@ function CreateGroupForm({
         <CustomFormInput
           label="Add team members by emails"
           value={searchEmail}
-          onChange={onChangeSearchEmail}
+          onChange={(e) => setSearchEmail(e.target.value)}
           fullWidth
           InputProps={{
             endAdornment: (
-              <IconButton onClick={onAddMember}>
+              <IconButton onClick={handleAddMember}>
                 <PersonAdd sx={{ color: theme.palette.primary.main }} />
               </IconButton>
             ),
@@ -159,16 +161,12 @@ function CreateGroupForm({
         <MembersList>
           {members.map((email) => (
             <Chip
-              key={email}
+              key={email.toString()}
               label={email}
               onDelete={() => removeMember(email)}
             />
           ))}
         </MembersList>
-
-        <CustomButton variant="primary" fullWidth disabled={loading}>
-          {loading ? <CircularProgress size={24} /> : "Create Group"}
-        </CustomButton>
       </FormContainer>
     </form>
   );

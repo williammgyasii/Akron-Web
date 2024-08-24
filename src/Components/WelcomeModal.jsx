@@ -108,9 +108,12 @@ const WelcomeModal = ({}) => {
   const steps = ["Welcome", "Create Group", "Create Your First Project"];
   const welcomeModal = useSelector(selectWelcomeModalOpened);
 
-  console.log(currentUser)
+  // console.log(currentUser)
 
   const handleNext = () => {
+    console.log("Group Name:", groupName);
+    console.log("Group Icon:", groupIcon);
+    console.log("Members:", members);
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
 
@@ -138,8 +141,6 @@ const WelcomeModal = ({}) => {
       prevMembers.filter((member) => member !== email)
     );
   };
-
- 
 
   // Handle icon upload
   const handleIconUpload = (icon) => {
@@ -181,7 +182,7 @@ const WelcomeModal = ({}) => {
               loading={groupLoading}
               onChangeSearchEmail={(e) => setSearchEmail(e.target.value)}
               removeMember={handleRemoveMember}
-              onAddMember={handleAddMember}
+              addMember={handleAddMember}
             />
           </StepContent>
         );
