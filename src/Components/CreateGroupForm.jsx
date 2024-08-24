@@ -76,6 +76,7 @@ const UploadText = styled(Typography)({
 
 function CreateGroupForm({
   groupName,
+  errors,
   onChangeGroupName,
   onChangeSearchEmail,
   addMember,
@@ -107,10 +108,10 @@ function CreateGroupForm({
     } else {
       try {
         setMemberLoading(true);
-        console.log("Bankue");
+        // console.log("Bankue");
         const uid = await queryUserByEmail(searchEmail)
           .then((result) => {
-            console.log(result);
+            // console.log(result);
             if (result) {
               addMember(result);
               setSearchEmail("");
@@ -154,6 +155,8 @@ function CreateGroupForm({
     ));
   };
 
+  console.log(errors);
+
   return (
     <form>
       <FormContainer>
@@ -181,8 +184,8 @@ function CreateGroupForm({
           onChange={(e) => setGroupName(e.target.value)}
           fullWidth
           required
-          //   helperText={errorMessage}
-          //   error={!!errorMessage}
+          helperText={errors.groupNameError}
+          error={Boolean(errors.groupNameError)}
         />
 
         <GroupIconContainer>
@@ -212,7 +215,11 @@ function CreateGroupForm({
             hidden
             onChange={(e) => setGroupIcon(e.target.files[0])}
           />
+          
         </GroupIconContainer>
+        {Boolean(errors.groupIconError) && (
+            <span style={{ color: "red",marginTop:"-10px",fontSize:"10px" }}>{errors.groupIconError}</span>
+          )}
 
         {/* <StepTitle variant="text_base">Add Members</StepTitle> */}
         <CustomFormInput

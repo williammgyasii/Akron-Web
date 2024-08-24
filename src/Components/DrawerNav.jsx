@@ -19,9 +19,7 @@ import {
   toggleDrawerIsOpened,
 } from "../Redux/Slices/System/systemSlice";
 import { NavLink, useNavigate } from "react-router-dom";
-import {
-  IoLogOut,
-} from "react-icons/io5";
+import { IoLogOut } from "react-icons/io5";
 import { DASHBOARD_ROUTES } from "../Routes/dashboardRoutes";
 import CustomButton from "./CustomButton";
 import GroupSelector from "./GroupSelector";
@@ -55,12 +53,13 @@ const DrawerNav = () => {
     dispatch(closeDrawer());
   };
   const handleLogout = () => {
-    dispatch(logoutUser());
-    dispatch(resetState());
-    persistor.purge(); // Clear persisted state
-    // Perform other logout logic, like redirecting to the login page
-    navigate("/login", { replace: true });
-    window.location.reload();
+    dispatch(logoutUser()).then(() => {
+      dispatch(resetState());
+      persistor.purge(); // Clear persisted state
+      // Perform other logout logic, like redirecting to the login page
+      navigate("/login", { replace: true });
+      window.location.reload();
+    });
   };
 
   return (

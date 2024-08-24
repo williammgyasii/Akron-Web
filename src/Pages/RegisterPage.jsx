@@ -104,9 +104,6 @@ const RegisterPage = () => {
     return valid;
   };
 
-  const handleCloseSnackbar = () => {
-    setSnackBarOpen(false);
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();

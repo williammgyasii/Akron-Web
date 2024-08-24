@@ -75,7 +75,6 @@ export const createGroup = createAsyncThunk(
 
       // Ensure members array only contains emails
       const memberId = members.map((member) => member.userid);
-      console.log(memberId);
 
       // Add group data to Firestore
       const groupData = {

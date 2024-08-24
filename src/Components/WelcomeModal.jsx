@@ -100,13 +100,16 @@ const WelcomeModal = ({}) => {
   const [searchEmail, setSearchEmail] = useState("");
   const [groupIcon, setGroupIcon] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState({
+    groupNameError: "",
+    groupIconError: "",
+  });
   const [projectName, setProjectName] = useState("");
   const [members, setMembers] = useState([]);
   const [groupLoading, setGroupLoading] = useState(true);
   const dispatch = useDispatch();
   const currentUser = useSelector(selectCurrentUser);
-  console.log(currentUser)
+  // console.log(currentUser)
   const groupUploading = useSelector(
     (state) => state.groups.createGroupLoading
   );
@@ -117,7 +120,22 @@ const WelcomeModal = ({}) => {
   // console.log(currentUser)
 
   const handleNext = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    if (activeStep < 1) {
+      setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    } else if (activeStep >= 1 && groupName && groupIcon) {
+      setErrors({
+        groupNameError: "",
+        groupIconError: "",
+      });
+      setActiveStep((prevActiveStep) => prevActiveStep + 1);
+      // console.log("ready");
+    } else {
+      console.log("error found");
+      setErrors({
+        groupNameError: "Group name is required",
+        groupIconError: "Group icon is required",
+      });
+    }
   };
 
   const handleBack = () => {
@@ -204,6 +222,7 @@ const WelcomeModal = ({}) => {
               loading={groupLoading}
               removeMember={handleRemoveMember}
               addMember={handleAddMember}
+              errors={errors}
             />
           </StepContent>
         );
@@ -290,6 +309,7 @@ const WelcomeModal = ({}) => {
               onClick={handleNext}
               disabled={buttonNext}
               leftIcon={MdFormatListBulletedAdd}
+              // loadingButton={true}
               submit
               size="medium"
               sx={{ color: "#fff" }}
