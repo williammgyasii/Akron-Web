@@ -20,11 +20,6 @@ import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { getAuth } from "firebase/auth";
 import { addProjectToGroup } from "../../../Firebase/firebaseFunctions";
 
-export const fetchGroups = createAsyncThunk("groups/fetchGroups", async () => {
-  const querySnapshot = await getDocs(collection(firebaseFirestore, "groups"));
-  return querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-});
-
 // Fetch group details thunk
 export const fetchSelectedGroupDetails = createAsyncThunk(
   "group/fetchGroupDetails",
@@ -62,8 +57,6 @@ export const createGroup = createAsyncThunk(
     try {
       const auth = getAuth();
       const currentUser = auth.currentUser;
-      let projectNewData = {};
-
       // Upload group icon to Firebase Storage if it exists
       let groupIconUrl = "";
       if (groupIcon) {
@@ -97,15 +90,10 @@ export const createGroup = createAsyncThunk(
         collection(firebaseFirestore, "groups"),
         groupData
       );
-
-      // console.log(groupDocRef.id);
-
       const newProjectStructure = await addProjectToGroup(
         projectData,
         groupDocRef.id
       );
-      // console.log(newProjectStructure);
-
       return {
         id: groupDocRef.id,
         ...newProjectStructure,
@@ -117,30 +105,6 @@ export const createGroup = createAsyncThunk(
     }
   }
 );
-
-// export const querySearchMember = createAsyncThunk(
-//   "groups/querySearchMember",
-//   async (currentUser, searchEmail, { rejectWithValue }) => {
-//     try {
-//       const userRef = collection(firebaseFirestore, "users");
-//       const q = query(userRef, where("email", "==", searchEmail.trim()));
-//       const querySnapshot = await getDocs(q);
-//       if (querySnapshot.empty) {
-//         return rejectWithValue("This email is not registered.");
-//       } else {
-//         const userDoc = querySnapshot.docs[0].data();
-//         if (searchEmail.trim() === currentUser.id) {
-//           return rejectWithValue("You can't add your own email to the group.");
-//         } else {
-//           return { uid: userDoc.uid, email: searchEmail.trim() };
-//         }
-//       }
-//     } catch (error) {
-//       console.error("Error querying user by email: ", error);
-//       return rejectWithValue("An error occurred while adding the user.");
-//     }
-//   }
-// );
 
 export const fetchUserGroups = createAsyncThunk(
   "groups/fetchUserGroups",
@@ -180,7 +144,7 @@ export const fetchGroupMembers = createAsyncThunk(
       }
 
       const groupData = groupSnapshot.data();
-      const memberIds = groupData.members; // Array of user IDs
+      const memberIds = groupData.currentMembers; // Array of user IDs
 
       console.log(memberIds);
 
@@ -261,16 +225,6 @@ const groupsSlice = createSlice({
       .addCase(fetchGroupMembers.rejected, (state, action) => {
         state.status = "failed";
         state.groupsError = action.error.message;
-      })
-      .addCase(fetchGroups.pending, (state) => {
-        state.status = "loading";
-      })
-      .addCase(fetchGroups.fulfilled, (state, action) => {
-        state.status = "succeeded";
-        state.groups = action.payload;
-      })
-      .addCase(fetchGroups.rejected, (state) => {
-        state.status = "failed";
       })
       //FETEHC USER GROUPS
       .addCase(fetchUserGroups.pending, (state) => {

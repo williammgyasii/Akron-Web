@@ -5,20 +5,15 @@ import {
   Stepper,
   Step,
   StepLabel,
-  Button,
   Typography,
-  TextField,
   Box,
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  selectFirstLogin,
   selectWelcomeModalOpened,
   setAppUserState,
   setWelcomeModalClose,
 } from "../Redux/Slices/System/systemSlice";
-import { IoAtCircle, IoCheckmarkCircle } from "react-icons/io5";
-import { Circle } from "@mui/icons-material";
 import { GoDotFill } from "react-icons/go";
 import { IoMdCheckmarkCircleOutline } from "react-icons/io";
 import { MdFormatListBulletedAdd } from "react-icons/md";
@@ -27,12 +22,10 @@ import CreateGroupForm from "./CreateGroupForm";
 import { selectCurrentUser } from "../Redux/Slices/Users/UsersSlice";
 import {
   createGroup,
-  fetchUserGroups,
+  fetchGroupMembers,
   setSelectedGroupID,
 } from "../Redux/Slices/Groups/groupsSlice";
-import CustomTitles from "./CustomTitles";
 import CreateProjectForm from "./CreateProjectForm";
-
 const ModalContainer = styled(Box)(({ theme }) => ({
   position: "absolute",
   top: "50%",
@@ -117,7 +110,6 @@ const WelcomeModal = ({}) => {
   const [groupLoading, setGroupLoading] = useState(true);
   const dispatch = useDispatch();
   const currentUser = useSelector(selectCurrentUser);
-  const firstLogin = useSelector(selectFirstLogin);
   const groupUploading = useSelector(
     (state) => state.groups.createGroupLoading
   );
@@ -173,9 +165,10 @@ const WelcomeModal = ({}) => {
     dispatch(createGroup({ groupName, groupIcon, members, projectValues }))
       .unwrap()
       .then((result) => {
-        console.log("handlefinish",result)
+        console.log("handlefinish", result);
         dispatch(setAppUserState("currentUser"));
         dispatch(setSelectedGroupID(result.id));
+        dispatch(fetchGroupMembers(result.id));
         handleClose(); // Close the modal after finishing
       });
   };

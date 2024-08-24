@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import AppBarComponent from "../Components/AppBarComponent";
 import Logo from "../Components/Logo";
 import GroupTaskList from "../Components/GroupTaskList";
-import { fetchUserGroups, selectGroupID } from "../Redux/Slices/Groups/groupsSlice";
+import { selectGroupID } from "../Redux/Slices/Groups/groupsSlice";
 import CustomTitles from "../Components/CustomTitles";
 import { IoAddSharp } from "react-icons/io5";
 import {
