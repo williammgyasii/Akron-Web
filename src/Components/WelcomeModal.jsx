@@ -19,6 +19,8 @@ import { IoAtCircle, IoCheckmarkCircle } from "react-icons/io5";
 import { Circle } from "@mui/icons-material";
 import { GoDotFill } from "react-icons/go";
 import { IoMdCheckmarkCircleOutline } from "react-icons/io";
+import { MdFormatListBulletedAdd } from "react-icons/md";
+import CustomButton from "./CustomButton";
 
 const ModalContainer = styled(Box)(({ theme }) => ({
   position: "absolute",
@@ -44,7 +46,9 @@ const StepContent = styled(Box)(({ theme }) => ({
 const ButtonContainer = styled(Box)(({ theme }) => ({
   display: "flex",
   justifyContent: "flex-end",
-  marginTop: theme.spacing(4),
+  marginTop: theme.spacing(1),
+  width:"220px",
+  marginLeft:"auto"
 }));
 
 const CustomStepLabel = styled(StepLabel)({
@@ -187,23 +191,46 @@ const WelcomeModal = ({}) => {
         {renderStepContent(activeStep)}
         <ButtonContainer>
           {activeStep !== 0 && (
-            <Button onClick={handleBack} sx={{ mr: 1 }}>
+            <CustomButton
+              sx={{
+                flexBasis: "50%",
+                marginRight: "10px",
+              }}
+              onClick={handleBack}
+              variant="minimal"
+              size="medium"
+            >
               Back
-            </Button>
+            </CustomButton>
           )}
           {activeStep === steps.length - 1 ? (
-            <Button variant="contained" color="primary" onClick={handleFinish}>
-              Finish
-            </Button>
+            <CustomButton
+              onClick={handleFinish}
+              // type="iconOnly"
+              // loadingButton={taskState === "loading"}
+              leftIcon={MdFormatListBulletedAdd}
+              submit
+              size="medium"
+              sx={{ color: "#fff" }}
+              variant="primary"
+            >
+              Create Task
+            </CustomButton>
           ) : (
-            <Button
-              variant="contained"
-              color="primary"
+            <CustomButton
               onClick={handleNext}
               disabled={activeStep === 1 && !groupName.trim()}
+              // type="iconOnly"
+              // loadingButton={taskState === "loading"}
+              leftIcon={MdFormatListBulletedAdd}
+              submit
+              size="medium"
+              sx={{ color: "#fff" }}
+              variant="primary"
+              color="primary"
             >
               Next
-            </Button>
+            </CustomButton>
           )}
         </ButtonContainer>
       </ModalContainer>

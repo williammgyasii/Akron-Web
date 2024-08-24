@@ -14,8 +14,8 @@ const buttonSizes = {
     fontSize: "0.75rem",
   },
   medium: {
-    padding: "6px 12px",
-    fontSize: "0.95rem",
+    padding: "5px 8px",
+    fontSize: "0.85rem",
   },
   large: {
     padding: "8px 16px",
@@ -34,12 +34,15 @@ const StyledButton = styled(Button)(({ theme, variant, size }) => ({
       : variant === "minimal"
       ? "transparent"
       : theme.palette.background.paper,
+  border: variant === "minimal" ? "1px solid #000 " : null,
   color:
     variant === "primary"
       ? theme.palette.primary.white
       : variant === "secondary"
       ? theme.palette.primary.white
-      : theme.palette.secondary.main,
+      : variant === "minimal"
+      ? "none"
+      : "#fff",
   padding: buttonSizes[size]?.padding || buttonSizes.medium.padding,
   fontSize: buttonSizes[size]?.fontSize || buttonSizes.medium.fontSize,
 
@@ -49,11 +52,13 @@ const StyledButton = styled(Button)(({ theme, variant, size }) => ({
         ? theme.palette.primary.dark600
         : variant === "secondary"
         ? "transparent"
-        : "rgba(0, 0, 0, 0.1)",
+        : variant === "minimal"
+        ? null
+        : "#f3f",
     color:
       variant === "secondary"
         ? theme.palette.secondary.main
-        : theme.palette.primary.white,
+        : theme.palette.secondary.white,
     border: variant === "secondary" ? "1px solid #000" : null,
   },
   "&:disabled": {
@@ -116,7 +121,7 @@ function CustomButton({
     >
       {loadingButton ? (
         <CircularProgress
-          sx={{p:1, color: "#fff" }}
+          sx={{ p: 1, color: "#fff" }}
           size={40}
           // color={"#fff"}
         />
