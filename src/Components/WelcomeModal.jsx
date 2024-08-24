@@ -166,11 +166,11 @@ const WelcomeModal = ({}) => {
       .unwrap()
       .then((result) => {
         console.log("handlefinish", result);
-        dispatch(setAppUserState("currentUser"));
-        dispatch(setSelectedGroupID(result.id));
-        dispatch(fetchGroupMembers(result.id));
-        dispatch(fetchGroupProjects(result.id));
-        handleClose(); // Close the modal after finishing
+        // dispatch(setAppUserState("currentUser"));
+        // dispatch(setSelectedGroupID(result.id));
+        // dispatch(fetchGroupMembers(result.id));
+        // // dispatch(fetchGroupProjects(result.id));
+        // handleClose(); // Close the modal after finishing
       });
   };
 

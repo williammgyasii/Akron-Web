@@ -19,13 +19,8 @@ export const queryUserByEmail = async (searchEmail) => {
 
 export const addProjectToGroup = async (projectData, groupid) => {
   try {
-    console.log(groupid)
-    const projectRef = collection(
-      firebaseFirestore,
-      "groups",
-      groupid,
-      "projects"
-    );
+    console.log(groupid);
+    const projectRef = collection(firebaseFirestore, "projects");
     const projectDocRef = await addDoc(projectRef, projectData);
     if (projectDocRef.id) {
       return {

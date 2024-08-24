@@ -81,15 +81,17 @@ export const createGroup = createAsyncThunk(
         groupAdmin: currentUser.uid,
       };
 
-      const projectData = {
-        projectTitle: projectValues.projectTitle.value,
-        projectDescription: projectValues.projectDescription.value,
-      };
-
       const groupDocRef = await addDoc(
         collection(firebaseFirestore, "groups"),
         groupData
       );
+
+      const projectData = {
+        projectTitle: projectValues.projectTitle.value,
+        projectDescription: projectValues.projectDescription.value,
+        groupId: groupDocRef.id,
+      };
+
       const newProjectStructure = await addProjectToGroup(
         projectData,
         groupDocRef.id

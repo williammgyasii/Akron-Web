@@ -39,10 +39,11 @@ const ModalComponent = ({ open, onClose, view }) => {
         return <Typography>Create Group Form</Typography>;
       case "createProject":
         return (
-          <CreateProjectForm
-            // projectValues={projectValues}
-            // handleProjectChange={handleProjectChange}
-          />
+          <Typography>Create Prokect Form</Typography>
+          // <CreateProjectForm
+          //   // projectValues={projectValues}
+          //   // handleProjectChange={handleProjectChange}
+          // />
         );
       default:
         return null;
