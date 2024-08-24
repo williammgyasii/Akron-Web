@@ -106,6 +106,9 @@ const WelcomeModal = ({}) => {
   const [groupLoading, setGroupLoading] = useState(true);
   const dispatch = useDispatch();
   const currentUser = useSelector(selectCurrentUser);
+  const groupUploading = useSelector(
+    (state) => state.groups.createGroupLoading
+  );
 
   const steps = ["Welcome", "Create Group", "Create Your First Project"];
   const welcomeModal = useSelector(selectWelcomeModalOpened);
@@ -135,8 +138,11 @@ const WelcomeModal = ({}) => {
     console.log("Group Icon:", groupIcon);
     console.log("Members:", members);
     console.log("Project Name", projectName);
-    dispatch(createGroup({ groupName, groupIcon, members, projectName }));
-    // handleClose(); // Close the modal after finishing
+    dispatch(createGroup({ groupName, groupIcon, members, projectName })).then(
+      () => {
+        handleClose(); // Close the modal after finishing
+      }
+    );
   };
 
   const handleGroupNameChange = (name) => {
@@ -276,7 +282,7 @@ const WelcomeModal = ({}) => {
             <CustomButton
               onClick={handleFinish}
               // type="iconOnly"
-              // loadingButton={taskState === "loading"}
+              loadingButton={groupUploading}
               leftIcon={MdFormatListBulletedAdd}
               submit
               size="medium"
@@ -287,7 +293,6 @@ const WelcomeModal = ({}) => {
             </CustomButton>
           ) : (
             <CustomButton
-            
               onClick={handleNext}
               disabled={activeStep === 1 && !groupName.trim() && !groupIcon}
               // type="iconOnly"
