@@ -24,6 +24,8 @@ import CustomButton from "./CustomButton";
 import CreateGroupForm from "./CreateGroupForm";
 import { selectCurrentUser } from "../Redux/Slices/Users/UsersSlice";
 import { createGroup } from "../Redux/Slices/Groups/groupsSlice";
+import CustomTitles from "./CustomTitles";
+import CreateProjectForm from "./CreateProjectForm";
 
 const ModalContainer = styled(Box)(({ theme }) => ({
   position: "absolute",
@@ -112,9 +114,25 @@ const WelcomeModal = ({}) => {
   const groupUploading = useSelector(
     (state) => state.groups.createGroupLoading
   );
+  const [projectValues, setProjectValues] = useState({
+    projectTitle: { value: "", error: false, helperText: "" },
+    projectDescription: { value: "", error: false, helperText: "" },
+  });
 
   const steps = ["Welcome", "Create Group", "Create Your First Project"];
   const welcomeModal = useSelector(selectWelcomeModalOpened);
+
+  const handleProjectChange = (field, value) => {
+    setProjectValues((prevState) => ({
+      ...prevState,
+      [field]: {
+        ...prevState[field],
+        value,
+        error: false,
+        helperText: "",
+      },
+    }));
+  };
 
   const handleNext = () => {
     if (activeStep < 1) {
@@ -144,12 +162,12 @@ const WelcomeModal = ({}) => {
     console.log("Group Name:", groupName);
     console.log("Group Icon:", groupIcon);
     console.log("Members:", members);
-    console.log("Project Name", projectName);
-    dispatch(createGroup({ groupName, groupIcon, members, projectName })).then(
-      () => {
-        handleClose(); // Close the modal after finishing
-      }
-    );
+    console.log("Project Name", projectValues);
+    // dispatch(createGroup({ groupName, groupIcon, members, projectValues })).then(
+    //   () => {
+    //     handleClose(); // Close the modal after finishing
+    //   }
+    // );
   };
 
   const handleGroupNameChange = (name) => {
@@ -226,13 +244,9 @@ const WelcomeModal = ({}) => {
       case 2:
         return (
           <StepContent>
-            <Typography variant="h6">Create Your First Project</Typography>
-            <TextField
-              label="Project Name"
-              value={projectName}
-              onChange={(e) => setProjectName(e.target.value)}
-              fullWidth
-              margin="normal"
+            <CreateProjectForm
+              projectValues={projectValues}
+              handleProjectChange={handleProjectChange}
             />
           </StepContent>
         );
@@ -299,7 +313,7 @@ const WelcomeModal = ({}) => {
               sx={{ color: "#fff" }}
               variant="primary"
             >
-              Create Task
+              Finish
             </CustomButton>
           ) : (
             <CustomButton

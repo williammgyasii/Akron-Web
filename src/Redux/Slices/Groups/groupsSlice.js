@@ -55,7 +55,7 @@ export const fetchSelectedGroupDetails = createAsyncThunk(
 export const createGroup = createAsyncThunk(
   "groups/createGroup",
   async (
-    { groupName, groupIcon, members, projectName },
+    { groupName, groupIcon, members, projectValues },
     { rejectWithValue }
   ) => {
     try {
@@ -82,19 +82,24 @@ export const createGroup = createAsyncThunk(
         groupIcon: groupIconUrl,
         pendingMembers: [...membersId],
         currentMembers: [currentUser.uid],
-        projectName: projectName,
         createdAt: Timestamp.now(),
         groupAdmin: currentUser.uid,
+      };
+
+      const projectData = {
+        projectTitle: projectValues.projectTitle.value,
       };
 
       const groupDocRef = await addDoc(
         collection(firebaseFirestore, "groups"),
         groupData
       );
+      const projectDocRef = await addDoc;
 
       return {
         id: groupDocRef.id,
         ...groupData,
+        ...projectData,
       };
       // return{true
     } catch (error) {
