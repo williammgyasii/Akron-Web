@@ -168,7 +168,7 @@ const Login = () => {
         >
           Life Begins when you start living
         </CustomHeader>
-        <Quotes />
+        {/* <Quotes /> */}
         <CustomSubtitle
           customStyles={{
             [theme.breakpoints.down("tablets_port")]: {

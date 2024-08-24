@@ -13,8 +13,23 @@ import ProtectedRoute from "./Routes/ProtectedRoute";
 import LandingPageNew from "./Pages/LandingPageNew";
 import { AccountBox } from "@mui/icons-material";
 import { DASHBOARD_ROUTES } from "./Routes/dashboardRoutes";
+import { useEffect } from "react";
+import { onAuthStateChanged, signOut } from "firebase/auth";
+import { firebaseAuth } from "./Firebase/getFirebase";
 
 function App() {
+  // useEffect(() => {
+  //   const unsubscribe = onAuthStateChanged(firebaseAuth, (user) => {
+  //     if (user) {
+  //       console.log("Current User", user);
+  //       // signOut(firebaseAuth);
+  //     } else {
+  //       console.log("No User"); // User is signed out
+  //     }
+  //   });
+
+  //   return () => unsubscribe(); // Cleanup listener on component unmount
+  // }, []);
   const router = createBrowserRouter(
     createRoutesFromElements(
       <Route path="/" element={<RootLayout />}>
@@ -30,7 +45,6 @@ function App() {
               index={section.index}
             />
           ))}
-          
         </Route>
       </Route>
     )

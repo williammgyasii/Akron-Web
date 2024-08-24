@@ -109,12 +109,15 @@ const SidebarNav = ({ sections }) => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    dispatch(logoutUser());
-    dispatch(resetState());
-    persistor.purge(); // Clear persisted state
-    // Perform other logout logic, like redirecting to the login page
-    navigate("/login", { replace: true });
-    window.location.reload();
+    dispatch(logoutUser())
+      .unwrap()
+      .then(() => {
+        dispatch(resetState());
+        persistor.purge(); // Clear persisted state
+        // // Perform other logout logic, like redirecting to the login page
+        // navigate("/login", { replace: true });
+        // window.location.reload();
+      });
   };
   return (
     <Drawer variant="permanent" open={open}>

@@ -63,8 +63,8 @@ export const logoutUser = createAsyncThunk(
   "auth/logout",
   async (_, { rejectWithValue, dispatch }) => {
     try {
-      const signOut =await signOut(firebaseAuth);
-      dispatch(clearUser());
+      signOut(firebaseAuth);
+      // dispatch(clearUser());
     } catch (error) {
       console.log(error);
       return rejectWithValue(error.message);

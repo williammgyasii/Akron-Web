@@ -30,14 +30,7 @@ function DashboardPage() {
     return () => {};
   }, []);
 
-  const handleLogout = () => {
-    dispatch(resetState());
-    dispatch(logoutUser());
-    persistor.purge(); // Clear persisted state
-    // Perform other logout logic, like redirecting to the login page
-    navigate("/login", { replace: true });
-    window.location.reload();
-  };
+
 
   return (
     <Container disableGutters maxWidth={false} sx={{ position: "relative" }}>
