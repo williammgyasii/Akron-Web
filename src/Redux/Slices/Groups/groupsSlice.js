@@ -8,9 +8,16 @@ import {
   where,
   doc,
   getDoc,
+  Timestamp,
 } from "firebase/firestore";
-import { firebaseFirestore } from "../../../Firebase/getFirebase";
+import {
+  firebaseAuth,
+  firebaseFirestore,
+  firebaseStorage,
+} from "../../../Firebase/getFirebase";
 import { formatTimestamp } from "../../../Utils/dateFunctions";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { getAuth } from "firebase/auth";
 
 export const fetchGroups = createAsyncThunk("groups/fetchGroups", async () => {
   const querySnapshot = await getDocs(collection(firebaseFirestore, "groups"));
@@ -44,14 +51,55 @@ export const fetchSelectedGroupDetails = createAsyncThunk(
   }
 );
 
-export const addGroup = createAsyncThunk(
-  "groups/addGroup",
-  async (groupData) => {
-    const docRef = await addDoc(
-      collection(firebaseFirestore, "groups"),
-      groupData
-    );
-    return { id: docRef.id, ...groupData };
+// AsyncThunk for creating a group
+export const createGroup = createAsyncThunk(
+  "groups/createGroup",
+  async (
+    { groupName, groupIcon, members, projectName },
+    { rejectWithValue }
+  ) => {
+    try {
+      const auth = getAuth();
+      const currentUser = auth.currentUser;
+
+      // Upload group icon to Firebase Storage if it exists
+      let groupIconUrl = "";
+      if (groupIcon) {
+        const iconRef = ref(
+          firebaseStorage,
+          `group_icons/${groupName}_${Date.now()}`
+        );
+        const snapshot = await uploadBytes(iconRef, groupIcon);
+        groupIconUrl = await getDownloadURL(snapshot.ref);
+      }
+
+      // Ensure members array only contains emails
+      const memberEmails = members.map(member => member.email);
+
+
+      // Add group data to Firestore
+      const groupData = {
+        name: groupName,
+        icon: groupIconUrl,
+        members: [currentUser.email, ...memberEmails],
+        projectName: projectName,
+        createdAt: Timestamp.now(),
+        createdBy: currentUser.uid,
+      };
+
+      const groupDocRef = await addDoc(
+        collection(firebaseFirestore, "groups"),
+        groupData
+      );
+
+      return {
+        id: groupDocRef.id,
+        ...groupData,
+      };
+    } catch (error) {
+      console.log("Error Creating group", error);
+      return rejectWithValue(error.message);
+    }
   }
 );
 
@@ -125,6 +173,7 @@ const groupsSlice = createSlice({
     selectedGroupId: "",
     selectedGroupDetails: null,
     groupsError: null,
+    createGroupLoading: false,
     groupProjects: [
       { projectName: "Roland", id: "ctyc" },
       { projectName: "Banku", id: "ac" },
@@ -159,6 +208,17 @@ const groupsSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      .addCase(createGroup.pending, (state) => {
+        state.createGroupLoading = true;
+      })
+      .addCase(createGroup.fulfilled, (state, action) => {
+        state.createGroupLoading = false;
+        state.groups.push(action.payload);
+      })
+      .addCase(createGroup.rejected, (state, action) => {
+        state.createGroupLoading = false;
+        state.error = action.payload;
+      })
       .addCase(fetchGroupMembers.pending, (state) => {
         state.status = "loading";
       })
@@ -179,9 +239,6 @@ const groupsSlice = createSlice({
       })
       .addCase(fetchGroups.rejected, (state) => {
         state.status = "failed";
-      })
-      .addCase(addGroup.fulfilled, (state, action) => {
-        state.groups.push(action.payload);
       })
       //FETEHC USER GROUPS
       .addCase(fetchUserGroups.pending, (state) => {

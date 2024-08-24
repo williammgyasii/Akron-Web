@@ -84,6 +84,7 @@ function CustomButton({
   size = "medium",
   type = "label",
   label,
+  disabled,
   submit,
   leftIcon: LeftIcon,
   rightIcon: RightIcon,
@@ -111,7 +112,7 @@ function CustomButton({
     <StyledButton
       variant={variant}
       size={size}
-      disabled={loadingButton}
+      disabled={loadingButton || disabled}
       sx={sx} // Apply external styling
       type={submit ? "submit" : "button"}
       // type={props.type || "button"} // Default to 'button', use 'submit' if specified

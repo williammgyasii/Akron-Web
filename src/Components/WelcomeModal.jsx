@@ -23,6 +23,7 @@ import { MdFormatListBulletedAdd } from "react-icons/md";
 import CustomButton from "./CustomButton";
 import CreateGroupForm from "./CreateGroupForm";
 import { selectCurrentUser } from "../Redux/Slices/Users/UsersSlice";
+import { createGroup } from "../Redux/Slices/Groups/groupsSlice";
 
 const ModalContainer = styled(Box)(({ theme }) => ({
   position: "absolute",
@@ -94,6 +95,7 @@ function StepIcon(props) {
 
 const WelcomeModal = ({}) => {
   const [activeStep, setActiveStep] = useState(0);
+  const [buttonNext, setButtonNext] = useState(false);
   const [groupName, setGroupName] = useState("");
   const [searchEmail, setSearchEmail] = useState("");
   const [groupIcon, setGroupIcon] = useState(null);
@@ -111,6 +113,12 @@ const WelcomeModal = ({}) => {
   // console.log(currentUser)
 
   const handleNext = () => {
+    if (activeStep >= 1) {
+      if (!groupName || !groupIcon) {
+        setButtonNext(false);
+        return;
+      }
+    }
     console.log("Group Name:", groupName);
     console.log("Group Icon:", groupIcon);
     console.log("Members:", members);
@@ -127,6 +135,7 @@ const WelcomeModal = ({}) => {
     console.log("Group Icon:", groupIcon);
     console.log("Members:", members);
     console.log("Project Name", projectName);
+    dispatch(createGroup({ groupName, groupIcon, members, projectName }));
     // handleClose(); // Close the modal after finishing
   };
 
@@ -167,6 +176,7 @@ const WelcomeModal = ({}) => {
     console.log("Group Name:", groupName);
     console.log("Group Icon:", groupIcon);
     console.log("Members:", members);
+    dispatch(createGroup({ groupName, groupIcon, members, projectName }));
   };
 
   const renderStepContent = (step) => {
@@ -277,8 +287,9 @@ const WelcomeModal = ({}) => {
             </CustomButton>
           ) : (
             <CustomButton
+            
               onClick={handleNext}
-              disabled={activeStep === 1 && !groupName.trim()}
+              disabled={activeStep === 1 && !groupName.trim() && !groupIcon}
               // type="iconOnly"
               // loadingButton={taskState === "loading"}
               leftIcon={MdFormatListBulletedAdd}
