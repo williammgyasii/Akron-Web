@@ -165,7 +165,7 @@ const WelcomeModal = ({}) => {
     console.log("Project Name", projectValues);
     dispatch(createGroup({ groupName, groupIcon, members, projectValues })).then(
       () => {
-        handleClose(); // Close the modal after finishing
+        // handleClose(); // Close the modal after finishing
       }
     );
   };

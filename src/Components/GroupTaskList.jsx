@@ -19,7 +19,7 @@ const GroupTaskList = ({ groupId, userId }) => {
 
 
   useEffect(() => {
-    dispatch(fetchTasksByUserInGroup({ groupId, userId: currentUser.userId }));
+    // dispatch(fetchTasksByUserInGroup({ groupId, userId: currentUser.userId }));
 
     // Clean up subscription on unmount
     return () => {

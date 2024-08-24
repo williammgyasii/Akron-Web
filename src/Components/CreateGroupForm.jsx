@@ -155,7 +155,7 @@ function CreateGroupForm({
     ));
   };
 
-  console.log(errors);
+//   console.log(errors);
 
   return (
     <form>

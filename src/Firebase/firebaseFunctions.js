@@ -19,20 +19,19 @@ export const queryUserByEmail = async (searchEmail) => {
 
 export const addProjectToGroup = async (projectData, groupid) => {
   try {
+    console.log(groupid)
     const projectRef = collection(
       firebaseFirestore,
       "groups",
-      groupid.id,
+      groupid,
       "projects"
     );
-    if (groupid.id) {
-      const projectDocRef = await addDoc(projectRef, projectData);
-      if (projectDocRef.id) {
-        return {
-          projectId: projectDocRef.id,
-          ...projectData,
-        };
-      }
+    const projectDocRef = await addDoc(projectRef, projectData);
+    if (projectDocRef.id) {
+      return {
+        projectId: projectDocRef.id,
+        ...projectData,
+      };
     } else {
       throw new Error("Error with document red");
     }

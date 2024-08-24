@@ -98,10 +98,13 @@ export const createGroup = createAsyncThunk(
         groupData
       );
 
+      // console.log(groupDocRef.id);
+
       const newProjectStructure = await addProjectToGroup(
         projectData,
         groupDocRef.id
       );
+      console.log(newProjectStructure);
 
       return {
         id: groupDocRef.id,
