@@ -13,10 +13,13 @@ import {
   Chip,
   Typography,
   Box,
+  useTheme,
 } from "@mui/material";
-import { PhotoCamera, PersonAdd } from "@mui/icons-material";
+import { PhotoCamera, PersonAdd, UploadFile } from "@mui/icons-material";
 import { styled } from "@mui/system";
 import CustomFormInput from "./CustomFormInput";
+import { FiUpload } from "react-icons/fi";
+import CustomButton from "./CustomButton";
 
 const FormContainer = styled("div")({
   display: "flex",
@@ -28,8 +31,12 @@ const FormContainer = styled("div")({
 
 const GroupIconContainer = styled("div")({
   display: "flex",
+  flexDirection: "column",
   alignItems: "center",
-  gap: "16px",
+  //   gap: "16px",
+  padding: "10px",
+  border: "1px dashed #10197A",
+  borderRadius: "10px",
 });
 
 const MembersList = styled(Box)({
@@ -43,13 +50,20 @@ const StepTitle = styled(Typography)({
   //   marginBottom: "8px",
 });
 
-function CreateGroupForm() {
-  const [groupName, setGroupName] = useState("");
+const UploadText = styled(Typography)({
+  cursor: "pointer",
+  marginBottom: "-10px",
+  color: "#007bff", // Blue color for link text
+  //   textDecoration: "underline", // Underline to indicate it's clickable
+});
+
+function CreateGroupForm({groupName,onChangeGroupName}) {
   const [members, setMembers] = useState([]);
   const [searchEmail, setSearchEmail] = useState("");
   const [groupIcon, setGroupIcon] = useState(null);
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
+  const theme = useTheme();
 
   const handleAddMember = () => {
     if (searchEmail && !members.includes(searchEmail)) {
@@ -103,15 +117,42 @@ function CreateGroupForm() {
           darkLabel
           label="Group Name or Alias"
           value={groupName}
-          onChange={(e) => setGroupName(e.target.value)}
+          onChange={onChangeGroupName}
           fullWidth
           required
           helperText={errors.groupName}
           error={!!errors.groupName}
         />
 
+        <GroupIconContainer>
+          {groupIcon ? (
+            <Avatar
+              src={groupIcon ? URL.createObjectURL(groupIcon) : null}
+              alt="Group Icon"
+              sx={{ width: 60, height: 60, marginBottom: "10px" }}
+            />
+          ) : (
+            <FiUpload size={30} color={theme.palette.secondary.main} />
+          )}
+          <label htmlFor="icon-upload">
+            <UploadText>Click to upload</UploadText>
+            <span
+              style={{ fontSize: "10px", color: "#ccc", marginTop: "-20px" }}
+            >
+              SVG,PNG,max(200mb)
+            </span>
+          </label>
+          <input
+            id="icon-upload"
+            type="file"
+            accept="image/*"
+            hidden
+            onChange={(e) => setGroupIcon(e.target.files[0])}
+          />
+        </GroupIconContainer>
+
         {/* <StepTitle variant="text_base">Add Members</StepTitle> */}
-        <TextField
+        <CustomFormInput
           label="Add team members by emails"
           value={searchEmail}
           onChange={(e) => setSearchEmail(e.target.value)}
@@ -119,7 +160,7 @@ function CreateGroupForm() {
           InputProps={{
             endAdornment: (
               <IconButton onClick={handleAddMember}>
-                <PersonAdd />
+                <PersonAdd sx={{ color: theme.palette.primary.main }} />
               </IconButton>
             ),
           }}
@@ -134,36 +175,15 @@ function CreateGroupForm() {
           ))}
         </MembersList>
 
-        <GroupIconContainer>
-          <Avatar
-            src={groupIcon ? URL.createObjectURL(groupIcon) : null}
-            alt="Group Icon"
-            sx={{ width: 56, height: 56 }}
-          />
-          <Button
-            variant="contained"
-            component="label"
-            startIcon={<PhotoCamera />}
-          >
-            Upload Icon
-            <input
-              type="file"
-              accept="image/*"
-              hidden
-              onChange={(e) => setGroupIcon(e.target.files[0])}
-            />
-          </Button>
-        </GroupIconContainer>
-
-        <Button
+        <CustomButton
           type="submit"
-          variant="contained"
-          color="primary"
+          variant="primary"
+        //   color="primary"
           fullWidth
           disabled={loading}
         >
           {loading ? <CircularProgress size={24} /> : "Create Group"}
-        </Button>
+        </CustomButton>
       </FormContainer>
     </form>
   );

@@ -129,7 +129,10 @@ const WelcomeModal = ({}) => {
       case 1:
         return (
           <StepContent>
-            <CreateGroupForm />
+            <CreateGroupForm
+              onChangeGroupName={(e) => setGroupName(e.target.value)}
+              groupName={groupName}
+            />
           </StepContent>
         );
       case 2:
