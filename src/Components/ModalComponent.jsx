@@ -9,6 +9,7 @@ import {
   selectModalView,
 } from "../Redux/Slices/System/systemSlice";
 import AddTaskForm from "./AddTaskForm";
+import CreateProjectForm from "./CreateProjectForm";
 
 const StyledModal = styled(Modal)(({ theme }) => ({
   display: "flex",
@@ -37,7 +38,12 @@ const ModalComponent = ({ open, onClose, view }) => {
       case "createGroup":
         return <Typography>Create Group Form</Typography>;
       case "createProject":
-        return <Typography>Create Project Form</Typography>;
+        return (
+          <CreateProjectForm
+            // projectValues={projectValues}
+            // handleProjectChange={handleProjectChange}
+          />
+        );
       default:
         return null;
     }

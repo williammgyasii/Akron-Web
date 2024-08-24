@@ -169,6 +169,7 @@ const WelcomeModal = ({}) => {
         dispatch(setAppUserState("currentUser"));
         dispatch(setSelectedGroupID(result.id));
         dispatch(fetchGroupMembers(result.id));
+        dispatch(fetchGroupProjects(result.id));
         handleClose(); // Close the modal after finishing
       });
   };
