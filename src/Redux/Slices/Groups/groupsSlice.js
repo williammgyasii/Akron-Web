@@ -104,7 +104,7 @@ export const createGroup = createAsyncThunk(
         projectData,
         groupDocRef.id
       );
-      console.log(newProjectStructure);
+      // console.log(newProjectStructure);
 
       return {
         id: groupDocRef.id,
@@ -148,7 +148,7 @@ export const fetchUserGroups = createAsyncThunk(
     try {
       const groupsQuery = query(
         collection(firebaseFirestore, "groups"),
-        where("members", "array-contains", userId)
+        where("currentMembers", "array-contains", userId)
       );
       const querySnapshot = await getDocs(groupsQuery);
       // const createdAt = data.createdAt?.toDate();

@@ -23,7 +23,10 @@ import { MdFormatListBulletedAdd } from "react-icons/md";
 import CustomButton from "./CustomButton";
 import CreateGroupForm from "./CreateGroupForm";
 import { selectCurrentUser } from "../Redux/Slices/Users/UsersSlice";
-import { createGroup } from "../Redux/Slices/Groups/groupsSlice";
+import {
+  createGroup,
+  fetchUserGroups,
+} from "../Redux/Slices/Groups/groupsSlice";
 import CustomTitles from "./CustomTitles";
 import CreateProjectForm from "./CreateProjectForm";
 
@@ -158,16 +161,17 @@ const WelcomeModal = ({}) => {
   };
 
   const handleFinish = () => {
-    // Handle form submission or other actions here
-    console.log("Group Name:", groupName);
-    console.log("Group Icon:", groupIcon);
-    console.log("Members:", members);
-    console.log("Project Name", projectValues);
-    dispatch(createGroup({ groupName, groupIcon, members, projectValues })).then(
-      () => {
-        // handleClose(); // Close the modal after finishing
-      }
-    );
+    // // Handle form submission or other actions here
+    // console.log("Group Name:", groupName);
+    // console.log("Group Icon:", groupIcon);
+    // console.log("Members:", members);
+    // console.log("Project Name", projectValues);
+    dispatch(createGroup({ groupName, groupIcon, members, projectValues }))
+      .unwrap()
+      .then(() => {
+        dispatch(fetchUserGroups());
+        handleClose(); // Close the modal after finishing
+      });
   };
 
   const handleGroupNameChange = (name) => {
