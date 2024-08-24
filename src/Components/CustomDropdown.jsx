@@ -129,10 +129,7 @@ function CustomDropdown({
                   {option?.firstName?.charAt(0)}
                 </StyledAvatar>
               )}
-              {option.label ||
-                option.groupName ||
-                option.projectName ||
-                option.firstName}
+              {option.label || option.groupName || option.firstName}
             </StyledMenuItem>
           ))
         )}

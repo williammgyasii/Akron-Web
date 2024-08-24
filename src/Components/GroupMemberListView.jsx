@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 
 const MemberName = styled(Typography)({
-//   fontWeight: "bold",
+  //   fontWeight: "bold",
   color: "#333",
 });
 
@@ -29,7 +29,12 @@ const GroupMemberListView = ({ member, index }) => {
         <MemberName>{member.name}</MemberName>
         <MemberEmail>{member.email}</MemberEmail>
       </Box>
-      <Chip sx={{fontSize:"12px"}}
+      <Chip
+        sx={{
+          fontSize: "10px",
+          borderRadius: "10px",
+          backgroundColor: index === 0 ? "green" : "none",
+        }}
         label={index === 0 ? "ADMIN" : member.status}
         color={index === 0 ? "primary" : "default"}
       />

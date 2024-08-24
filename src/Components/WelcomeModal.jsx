@@ -109,15 +109,12 @@ const WelcomeModal = ({}) => {
   const [groupLoading, setGroupLoading] = useState(true);
   const dispatch = useDispatch();
   const currentUser = useSelector(selectCurrentUser);
-  // console.log(currentUser)
   const groupUploading = useSelector(
     (state) => state.groups.createGroupLoading
   );
 
   const steps = ["Welcome", "Create Group", "Create Your First Project"];
   const welcomeModal = useSelector(selectWelcomeModalOpened);
-
-  // console.log(currentUser)
 
   const handleNext = () => {
     if (activeStep < 1) {

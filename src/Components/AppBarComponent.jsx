@@ -83,17 +83,7 @@ const AppBarComponent = ({ title, showOthers, pageHeader, customStyles }) => {
             alt="App Logo"
             style={{ maxHeight: "30px" }}
           />
-          {/* {isDrawerOpen && isSmallScreen && (
-            <CustomTitles
-              color={theme.palette.primary.white}
-              variant="text_lg"
-              weightFont={"medium"}
-              noWrap
-              customStyles={{ marginLeft: 1 }}
-            >
-              AKRON
-            </CustomTitles>
-          )} */}
+          
         </Box>
         <CustomTitles
           variant={isSmallScreen ? "text_xs" : "text_sm"}
