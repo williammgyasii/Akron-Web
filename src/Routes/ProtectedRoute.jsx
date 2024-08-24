@@ -3,20 +3,22 @@ import { Navigate, Outlet } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { CircularProgress } from "@mui/material";
 import MainLayout from "../Layouts/MainLayout";
-import { selectFirstLogin, selectWelcomeModalOpened } from "../Redux/Slices/System/systemSlice";
+import {
+  selectFirstLogin,
+  selectWelcomeModalOpened,
+  setWelcomeModalOpen,
+} from "../Redux/Slices/System/systemSlice";
 
 const CheckUserWelcomeState = ({ children }) => {
-  const welcomeStatus = useSelector((state) => state.system);
-  const dispatch=useDispatch()
+  const welcomeStatus = useSelector((state) => state.system.appUserState);
+  const dispatch = useDispatch();
   useEffect(() => {
-    if(welcomeStatus==="newUser"){
-      dispatch(selectWelcomeModalOpened())
+    if (welcomeStatus === "newUser") {
+      dispatch(setWelcomeModalOpen());
+    } else if (welcomeStatus === "currentUser") {
     }
-    else if(welcomeStatus==="currentUser"){
-      
-    }
-    
-    console.log("Shit");
+
+    console.log(welcomeStatus);
 
     return () => {};
   }, []);
@@ -28,8 +30,6 @@ const PrivateRoute = ({ element }) => {
   const { currentUser, loading, status, error } = useSelector(
     (state) => state.user
   );
-  // console.log(currentUser, loading, status, error);
-
   if (status === "loading") {
     if (loading) return <CircularProgress size={24} />; // or a spinner
   }

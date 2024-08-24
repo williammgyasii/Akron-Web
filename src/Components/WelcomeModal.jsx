@@ -14,6 +14,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   selectFirstLogin,
   selectWelcomeModalOpened,
+  setAppUserState,
   setWelcomeModalClose,
 } from "../Redux/Slices/System/systemSlice";
 import { IoAtCircle, IoCheckmarkCircle } from "react-icons/io5";
@@ -171,7 +172,7 @@ const WelcomeModal = ({}) => {
     dispatch(createGroup({ groupName, groupIcon, members, projectValues }))
       .unwrap()
       .then(() => {
-        dispatch(fetchUserGroups());
+        dispatch(setAppUserState("currentUser"));
         handleClose(); // Close the modal after finishing
       });
   };
@@ -208,14 +209,6 @@ const WelcomeModal = ({}) => {
 
   const handleClose = () => {
     dispatch(setWelcomeModalClose());
-  };
-
-  const handleFormSubmit = () => {
-    // Logic to submit the form data to the server or handle it as needed
-    console.log("Group Name:", groupName);
-    console.log("Group Icon:", groupIcon);
-    console.log("Members:", members);
-    dispatch(createGroup({ groupName, groupIcon, members, projectName }));
   };
 
   const renderStepContent = (step) => {

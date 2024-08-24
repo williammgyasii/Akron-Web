@@ -44,7 +44,6 @@ const DrawerNav = () => {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("tablets_port"));
   const navigate = useNavigate();
-  // console.log(groupProjects);
 
   const handleDrawerToggle = () => {
     dispatch(toggleDrawerIsOpened());
