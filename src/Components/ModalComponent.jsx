@@ -28,7 +28,7 @@ const ModalBox = styled(Box)(({ theme }) => ({
 const ModalComponent = ({ open, onClose, view }) => {
   const modalOpened = useSelector(selectIsModalOpened);
   const modalType = useSelector(selectModalView);
-  // console.log(modalType);
+  console.log(modalType);
   const dispatch = useDispatch();
   const renderContent = () => {
     switch (modalType) {

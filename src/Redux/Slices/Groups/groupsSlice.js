@@ -105,7 +105,7 @@ export const createGroup = createAsyncThunk(
     }
   }
 );
-
+// AsyncThunk for fetching groups of a user
 export const fetchUserGroups = createAsyncThunk(
   "groups/fetchUserGroups",
   async (userId, { rejectWithValue }) => {
@@ -132,6 +132,8 @@ export const fetchUserGroups = createAsyncThunk(
     }
   }
 );
+
+// AsyncThunk for fetching members of a group
 export const fetchGroupMembers = createAsyncThunk(
   "groups/fetchGroupMembers",
   async (groupId) => {

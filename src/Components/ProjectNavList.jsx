@@ -73,42 +73,7 @@ const ProjectNavList = ({ selectedProject, onSelectProject }) => {
 
   return (
     <Box sx={{}}>
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
-        <CustomTitles
-          color={theme.palette.primary.white}
-          variant="text_xs"
-          // capitalize="none"
-          weightFont={"medium"}
-          customStyles={{
-            textTransform: "none",
-            display: "block",
-            zIndex: 1,
-            p: 1,
-          }}
-        >
-          Projects
-        </CustomTitles>
-        <IconButton
-          onClick={handleOpen}
-          sx={{
-            backgroundColor: theme.palette.primary.main,
-            color: "white",
-            borderRadius: 1,
-            p: 0.5,
-            "&:hover": {
-              backgroundColor: theme.palette.primary.dark800, // Slightly lighter black on hover
-            },
-          }}
-        >
-          <IoAddSharp size={10} />
-        </IconButton>
-      </Box>
+      
       <List sx={{ mt: "-10px" }}>
         {displayProjects.map((project) => {
           // console.log(project?.id);

@@ -16,10 +16,11 @@ import {
 import {
   closeDrawer,
   selectIsDrawerOpened,
+  showModal,
   toggleDrawerIsOpened,
 } from "../Redux/Slices/System/systemSlice";
 import { NavLink, useNavigate } from "react-router-dom";
-import { IoLogOut } from "react-icons/io5";
+import { IoAddSharp, IoLogOut } from "react-icons/io5";
 import { DASHBOARD_ROUTES } from "../Routes/dashboardRoutes";
 import CustomButton from "./CustomButton";
 import GroupSelector from "./GroupSelector";
@@ -31,6 +32,7 @@ import {
 import ProjectNavList from "./ProjectNavList";
 import { logoutUser } from "../Redux/Slices/Users/UsersSlice";
 import { persistor, resetState } from "../Redux/store";
+import CustomTitles from "./CustomTitles";
 
 const StyledListItemText = styled(ListItemText)({
   "& .MuiTypography-root": {
@@ -165,6 +167,42 @@ const DrawerNav = () => {
         />
 
         <List>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <CustomTitles
+              color={theme.palette.primary.white}
+              variant="text_xs"
+              // capitalize="none"
+              weightFont={"medium"}
+              customStyles={{
+                textTransform: "none",
+                display: "block",
+                zIndex: 1,
+                p: 1,
+              }}
+            >
+              Projects
+            </CustomTitles>
+            <IconButton
+              onClick={() => dispatch(showModal("createProject"))}
+              sx={{
+                backgroundColor: theme.palette.primary.main,
+                color: "white",
+                borderRadius: 1,
+                p: 0.5,
+                "&:hover": {
+                  backgroundColor: theme.palette.primary.dark800, // Slightly lighter black on hover
+                },
+              }}
+            >
+              <IoAddSharp size={10} />
+            </IconButton>
+          </Box>
           <ProjectNavList />
         </List>
 
