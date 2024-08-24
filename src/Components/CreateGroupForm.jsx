@@ -63,20 +63,26 @@ function CreateGroupForm({
   onChangeSearchEmail,
   onAddMember,
   removeMember,
+  groupIcon,
+  members,
+  userEmail,
+  loading,
 }) {
-  const [members, setMembers] = useState([]);
   const [searchEmail, setSearchEmail] = useState("");
-  const [groupIcon, setGroupIcon] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [errors, setErrors] = useState({});
+  const [errorMessage, setErrorMessage] = useState("");
   const theme = useTheme();
 
-  //     // Form submission logic here
-  //     setTimeout(() => {
-  //       setLoading(false);
-  //       // Handle success or error
-  //     }, 2000);
-  //   };
+  const handleAddMember = () => {
+    if (searchEmail === userEmail) {
+      setErrorMessage("You can't add your own email to the group.");
+    } else {
+      onAddMember(searchEmail);
+      setSearchEmail("");
+      setErrorMessage("");
+    }
+  };
+
+  
 
   return (
     <form>
@@ -102,11 +108,11 @@ function CreateGroupForm({
         <CustomFormInput
           label="Group Name or Alias"
           value={groupName}
-          onChange={onChangeGroupName}
+          onChange={(e) => setGroupName(e.target.value)}
           fullWidth
           required
-          helperText={errors.groupName}
-          error={!!errors.groupName}
+          //   helperText={errors.groupName}
+          //   error={!!errors.groupName}
         />
 
         <GroupIconContainer>

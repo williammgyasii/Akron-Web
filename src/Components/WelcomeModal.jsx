@@ -22,6 +22,7 @@ import { IoMdCheckmarkCircleOutline } from "react-icons/io";
 import { MdFormatListBulletedAdd } from "react-icons/md";
 import CustomButton from "./CustomButton";
 import CreateGroupForm from "./CreateGroupForm";
+import { selectCurrentUser } from "../Redux/Slices/Users/UsersSlice";
 
 const ModalContainer = styled(Box)(({ theme }) => ({
   position: "absolute",
@@ -100,10 +101,14 @@ const WelcomeModal = ({}) => {
   const [errors, setErrors] = useState({});
   const [projectName, setProjectName] = useState("");
   const [members, setMembers] = useState([]);
+  const [groupLoading, setGroupLoading] = useState(true);
   const dispatch = useDispatch();
+  const currentUser = useSelector(selectCurrentUser);
 
   const steps = ["Welcome", "Create Group", "Create Your First Project"];
   const welcomeModal = useSelector(selectWelcomeModalOpened);
+
+  console.log(currentUser)
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -113,23 +118,43 @@ const WelcomeModal = ({}) => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
-  const handleRemoveMember = (email) => {
-    setMembers(members.filter((member) => member !== email));
-  };
-
   const handleFinish = () => {
     // Handle form submission or other actions here
     handleClose(); // Close the modal after finishing
   };
-  const handleAddMember = () => {
-    if (searchEmail && !members.includes(searchEmail)) {
-      setMembers([...members, searchEmail]);
-      setSearchEmail("");
-    }
+
+  const handleGroupNameChange = (name) => {
+    setGroupName(name);
+  };
+
+  // Handle adding a new member
+  const handleAddMember = (email) => {
+    setMembers((prevMembers) => [...prevMembers, email]);
+  };
+
+  // Handle removing a member
+  const handleRemoveMember = (email) => {
+    setMembers((prevMembers) =>
+      prevMembers.filter((member) => member !== email)
+    );
+  };
+
+ 
+
+  // Handle icon upload
+  const handleIconUpload = (icon) => {
+    setGroupIcon(icon);
   };
 
   const handleClose = () => {
     dispatch(setWelcomeModalClose());
+  };
+
+  const handleFormSubmit = () => {
+    // Logic to submit the form data to the server or handle it as needed
+    console.log("Group Name:", groupName);
+    console.log("Group Icon:", groupIcon);
+    console.log("Members:", members);
   };
 
   const renderStepContent = (step) => {
@@ -147,7 +172,13 @@ const WelcomeModal = ({}) => {
             <CreateGroupForm
               onChangeGroupName={(e) => setGroupName(e.target.value)}
               groupName={groupName}
+              userEmail={currentUser.email}
+              setGroupName={handleGroupNameChange}
+              members={members}
               searchEmail={searchEmail}
+              groupIcon={groupIcon}
+              setGroupIcon={handleIconUpload}
+              loading={groupLoading}
               onChangeSearchEmail={(e) => setSearchEmail(e.target.value)}
               removeMember={handleRemoveMember}
               onAddMember={handleAddMember}
