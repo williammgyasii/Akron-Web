@@ -5,6 +5,7 @@ import { TextField, useTheme } from "@mui/material";
 const CustomFormInput = ({
   label,
   error,
+  darkLabel,
   helperText,
   customStyles,
   ...props

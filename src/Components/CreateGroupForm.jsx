@@ -114,7 +114,7 @@ function CreateGroupForm({groupName,onChangeGroupName}) {
           </Box>
         </Box>
         <CustomFormInput
-          darkLabel
+          
           label="Group Name or Alias"
           value={groupName}
           onChange={onChangeGroupName}
@@ -176,7 +176,6 @@ function CreateGroupForm({groupName,onChangeGroupName}) {
         </MembersList>
 
         <CustomButton
-          type="submit"
           variant="primary"
         //   color="primary"
           fullWidth
