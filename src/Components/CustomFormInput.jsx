@@ -30,14 +30,14 @@ const CustomFormInput = ({
               borderColor: "primary.main",
             },
             "&.Mui-focused fieldset": {
-              borderColor: "secondary.main",
+              borderColor: "primary.main",
               borderWidth: 2,
             },
           },
         },
         customStyles,
       ]}
-      InputLabelProps={{ style: { color: theme.palette.secondary.main } }}
+      InputLabelProps={{ style: { color: theme.palette.secondary.main,fontSize:"14px" } }}
       {...props}
     />
   );

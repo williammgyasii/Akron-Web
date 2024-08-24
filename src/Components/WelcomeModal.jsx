@@ -21,6 +21,7 @@ import { GoDotFill } from "react-icons/go";
 import { IoMdCheckmarkCircleOutline } from "react-icons/io";
 import { MdFormatListBulletedAdd } from "react-icons/md";
 import CustomButton from "./CustomButton";
+import CreateGroupForm from "./CreateGroupForm";
 
 const ModalContainer = styled(Box)(({ theme }) => ({
   position: "absolute",
@@ -47,8 +48,8 @@ const ButtonContainer = styled(Box)(({ theme }) => ({
   display: "flex",
   justifyContent: "flex-end",
   marginTop: theme.spacing(1),
-  width:"220px",
-  marginLeft:"auto"
+  width: "220px",
+  marginLeft: "auto",
 }));
 
 const CustomStepLabel = styled(StepLabel)({
@@ -128,14 +129,7 @@ const WelcomeModal = ({}) => {
       case 1:
         return (
           <StepContent>
-            <Typography variant="h6">Create a Group</Typography>
-            <TextField
-              label="Group Name"
-              value={groupName}
-              onChange={(e) => setGroupName(e.target.value)}
-              fullWidth
-              margin="normal"
-            />
+            <CreateGroupForm />
           </StepContent>
         );
       case 2:
