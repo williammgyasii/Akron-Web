@@ -27,7 +27,7 @@ export const registerUser = createAsyncThunk(
         uid: user.uid,
         ...rest,
       });
-      // return { uid: user.uid, note: "redux/registerSlice", ...rest };
+      return { uid: user.uid, note: "redux/registerSlice", ...rest };
     } catch (error) {
       // console.log(error.code)
       const errorMessage = getAuthErrorMessage(error.code);

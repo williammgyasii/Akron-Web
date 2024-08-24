@@ -112,9 +112,14 @@ const RegisterPage = () => {
     e.preventDefault();
     if (validateForm()) {
       try {
-        await dispatch(registerUser(formValues));
-        navigate("/dashboard", { replace: true });
-      } catch (error) {}
+        dispatch(registerUser(formValues))
+          .unwrap()
+          .then(() => {
+            navigate("/dashboard", { replace: true });
+          });
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 
