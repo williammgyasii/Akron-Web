@@ -163,11 +163,11 @@ const WelcomeModal = ({}) => {
     console.log("Group Icon:", groupIcon);
     console.log("Members:", members);
     console.log("Project Name", projectValues);
-    // dispatch(createGroup({ groupName, groupIcon, members, projectValues })).then(
-    //   () => {
-    //     handleClose(); // Close the modal after finishing
-    //   }
-    // );
+    dispatch(createGroup({ groupName, groupIcon, members, projectValues })).then(
+      () => {
+        handleClose(); // Close the modal after finishing
+      }
+    );
   };
 
   const handleGroupNameChange = (name) => {

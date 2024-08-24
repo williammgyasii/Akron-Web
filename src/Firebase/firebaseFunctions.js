@@ -1,4 +1,4 @@
-import { collection, getDocs, query, where } from "firebase/firestore";
+import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
 import { firebaseFirestore } from "./getFirebase";
 
 export const queryUserByEmail = async (searchEmail) => {
@@ -14,5 +14,29 @@ export const queryUserByEmail = async (searchEmail) => {
     }
   } catch (error) {
     throw new Error(error);
+  }
+};
+
+export const addProjectToGroup = async (projectData, groupid) => {
+  try {
+    const projectRef = collection(
+      firebaseFirestore,
+      "groups",
+      groupid.id,
+      "projects"
+    );
+    if (groupid.id) {
+      const projectDocRef = await addDoc(projectRef, projectData);
+      if (projectDocRef.id) {
+        return {
+          projectId: projectDocRef.id,
+          ...projectData,
+        };
+      }
+    } else {
+      throw new Error("Error with document red");
+    }
+  } catch (error) {
+    console.log(error);
   }
 };

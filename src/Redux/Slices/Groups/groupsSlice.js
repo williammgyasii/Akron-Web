@@ -18,6 +18,7 @@ import {
 import { formatTimestamp } from "../../../Utils/dateFunctions";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { getAuth } from "firebase/auth";
+import { addProjectToGroup } from "../../../Firebase/firebaseFunctions";
 
 export const fetchGroups = createAsyncThunk("groups/fetchGroups", async () => {
   const querySnapshot = await getDocs(collection(firebaseFirestore, "groups"));
@@ -61,6 +62,7 @@ export const createGroup = createAsyncThunk(
     try {
       const auth = getAuth();
       const currentUser = auth.currentUser;
+      let projectNewData = {};
 
       // Upload group icon to Firebase Storage if it exists
       let groupIconUrl = "";
@@ -88,20 +90,24 @@ export const createGroup = createAsyncThunk(
 
       const projectData = {
         projectTitle: projectValues.projectTitle.value,
+        projectDescription: projectValues.projectDescription.value,
       };
 
       const groupDocRef = await addDoc(
         collection(firebaseFirestore, "groups"),
         groupData
       );
-      const projectDocRef = await addDoc;
+
+      const newProjectStructure = await addProjectToGroup(
+        projectData,
+        groupDocRef.id
+      );
 
       return {
         id: groupDocRef.id,
+        ...newProjectStructure,
         ...groupData,
-        ...projectData,
       };
-      // return{true
     } catch (error) {
       console.log("Error Creating group", error);
       return rejectWithValue(error.message);

@@ -7,10 +7,10 @@ function CreateProjectForm({ handleProjectChange, projectValues }) {
       <CustomFormInput
         label="Project Title"
         fullWidth
-        value={projectValues.taskTitle.value}
+        value={projectValues.projectTitle.value}
         onChange={(e) => handleProjectChange("projectTitle", e.target.value)}
-        error={projectValues.taskTitle.error}
-        helperText={projectValues.taskTitle.helperText}
+        error={projectValues.projectTitle.error}
+        helperText={projectValues.projectTitle.helperText}
       />
 
       <CustomFormInput
@@ -20,12 +20,12 @@ function CreateProjectForm({ handleProjectChange, projectValues }) {
         rows={2}
         placeholder="Something small about the task"
         customStyles={{ mt: 1.5 }}
-        value={projectValues.taskDescription.value}
+        value={projectValues.projectDescription.value}
         onChange={(e) =>
           handleProjectChange("projectDescription", e.target.value)
         }
-        error={projectValues.taskDescription.error}
-        helperText={projectValues.taskDescription.helperText}
+        error={projectValues.projectDescription.error}
+        helperText={projectValues.projectDescription.helperText}
       />
     </>
   );
