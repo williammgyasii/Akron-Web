@@ -123,7 +123,11 @@ const WelcomeModal = ({}) => {
 
   const handleFinish = () => {
     // Handle form submission or other actions here
-    handleClose(); // Close the modal after finishing
+    console.log("Group Name:", groupName);
+    console.log("Group Icon:", groupIcon);
+    console.log("Members:", members);
+    console.log("Project Name", projectName);
+    // handleClose(); // Close the modal after finishing
   };
 
   const handleGroupNameChange = (name) => {
@@ -132,7 +136,14 @@ const WelcomeModal = ({}) => {
 
   // Handle adding a new member
   const handleAddMember = (email) => {
-    setMembers((prevMembers) => [...prevMembers, email]);
+    setMembers([
+      ...members,
+      {
+        email: searchEmail,
+        name: searchEmail.split("@")[0], // This is a placeholder for the user's name
+        status: "Pending Invitation",
+      },
+    ]);
   };
 
   // Handle removing a member
@@ -177,10 +188,10 @@ const WelcomeModal = ({}) => {
               setGroupName={handleGroupNameChange}
               members={members}
               searchEmail={searchEmail}
+              setSearchEmail={(value) => setSearchEmail(value)}
               groupIcon={groupIcon}
               setGroupIcon={handleIconUpload}
               loading={groupLoading}
-              onChangeSearchEmail={(e) => setSearchEmail(e.target.value)}
               removeMember={handleRemoveMember}
               addMember={handleAddMember}
             />

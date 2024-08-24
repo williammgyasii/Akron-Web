@@ -14,12 +14,19 @@ import {
   Typography,
   Box,
   useTheme,
+  List,
+  ListItem,
+  ListItemAvatar,
+  ListItemText,
 } from "@mui/material";
 import { PhotoCamera, PersonAdd, UploadFile } from "@mui/icons-material";
 import { styled } from "@mui/system";
 import CustomFormInput from "./CustomFormInput";
 import { FiUpload } from "react-icons/fi";
 import CustomButton from "./CustomButton";
+import { useSelector } from "react-redux";
+import { selectCurrentUser } from "../Redux/Slices/Users/UsersSlice";
+import GroupMemberListView from "./GroupMemberListView";
 
 const FormContainer = styled("div")({
   display: "flex",
@@ -39,10 +46,19 @@ const GroupIconContainer = styled("div")({
   borderRadius: "10px",
 });
 
-const MembersList = styled(Box)({
-  display: "flex",
-  flexWrap: "wrap",
-  gap: "8px",
+// const MembersList = styled(Box)({
+//   display: "flex",
+//   flexWrap: "wrap",
+//   gap: "3px",
+// });
+
+const MembersList = styled(List)({
+//   marginTop: "16px",
+  maxHeight: "200px", // Adjust the height as needed
+  overflowY: "auto",
+  "& li": {
+    borderBottom: "1px solid #ddd", // Optional: adds a border between items
+  },
 });
 
 const StepTitle = styled(Typography)({
@@ -57,6 +73,8 @@ const UploadText = styled(Typography)({
   //   textDecoration: "underline", // Underline to indicate it's clickable
 });
 
+
+
 function CreateGroupForm({
   groupName,
   onChangeGroupName,
@@ -69,21 +87,57 @@ function CreateGroupForm({
   setGroupName,
   userEmail,
   loading,
+  searchEmail,
+  setSearchEmail,
 }) {
-  const [searchEmail, setSearchEmail] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const theme = useTheme();
+  const currentUser = useSelector(selectCurrentUser);
+
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   const handleAddMember = () => {
     if (searchEmail.trim() === "") {
       setErrorMessage("Email cannot be empty.");
-    } else if (searchEmail === userEmail) {
+    } else if (searchEmail === currentUser?.email) {
       setErrorMessage("You can't add your own email to the group.");
+    } else if (!emailRegex.test(searchEmail)) {
+      setErrorMessage("Please enter a valid email address.");
+    } else if (members.includes(searchEmail)) {
+      setErrorMessage("This email has already been added.");
     } else {
       addMember(searchEmail);
       setSearchEmail("");
       setErrorMessage("");
     }
+  };
+
+  const renderMemberList = () => {
+    const currentUser = {
+      email: userEmail,
+      name: userEmail.split("@")[0], // Placeholder for the user's name
+      status: "ADMIN",
+    };
+
+    return [currentUser, ...members].map((member, index) => (
+      <GroupMemberListView key={member.email} member={member} index={index} />
+      //   <ListItem key={member.email}>
+      //     <ListItemAvatar>
+      //       <Avatar>{member.name.charAt(0).toUpperCase()}</Avatar>
+      //     </ListItemAvatar>
+      //     <ListItemText
+      //       primary={member.name}
+      //       secondary={
+      //         <>
+      //           <Typography component="span" variant="body2" color="textPrimary">
+      //             {member.email}
+      //           </Typography>
+      //           {index === 0 ? " - ADMIN" : ` - ${member.status}`}
+      //         </>
+      //       }
+      //     />
+      //   </ListItem>
+    ));
   };
 
   return (
@@ -150,6 +204,8 @@ function CreateGroupForm({
           value={searchEmail}
           onChange={(e) => setSearchEmail(e.target.value)}
           fullWidth
+          error={!!errorMessage}
+          helperText={errorMessage}
           InputProps={{
             endAdornment: (
               <IconButton onClick={handleAddMember}>
@@ -158,15 +214,8 @@ function CreateGroupForm({
             ),
           }}
         />
-        <MembersList>
-          {members.map((email) => (
-            <Chip
-              key={email.toString()}
-              label={email}
-              onDelete={() => removeMember(email)}
-            />
-          ))}
-        </MembersList>
+
+        <MembersList>{renderMemberList()}</MembersList>
       </FormContainer>
     </form>
   );
