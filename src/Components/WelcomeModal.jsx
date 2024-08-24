@@ -16,6 +16,9 @@ import {
   setWelcomeModalClose,
 } from "../Redux/Slices/System/systemSlice";
 import { IoAtCircle, IoCheckmarkCircle } from "react-icons/io5";
+import { Circle } from "@mui/icons-material";
+import { GoDotFill } from "react-icons/go";
+import { IoMdCheckmarkCircleOutline } from "react-icons/io";
 
 const ModalContainer = styled(Box)(({ theme }) => ({
   position: "absolute",
@@ -60,14 +63,14 @@ const CustomStepIcon = styled("div")(({ theme, ownerState }) => ({
   backgroundColor:
     ownerState.completed || ownerState.active
       ? "transparent"
-      : theme.palette.grey[400],
+      : theme.palette.primary.main,
   color: ownerState.active
-    ? theme.palette.error.main // Red dot for the active step
+    ? theme.palette.primary.main // Red dot for the active step
     : ownerState.completed
     ? theme.palette.success.main // Green tick for completed steps
     : theme.palette.grey[400], // Grey dot for other steps
   ...(ownerState.active && {
-    border: `2px solid ${theme.palette.error.main}`,
+    border: `2px solid ${theme.palette.secondary.main}`,
   }),
 }));
 
@@ -75,10 +78,10 @@ function StepIcon(props) {
   const { active, completed } = props;
 
   return completed ? (
-    <IoCheckmarkCircle color="success" />
+    <IoMdCheckmarkCircleOutline color="green" />
   ) : (
     <CustomStepIcon ownerState={{ active, completed }}>
-      <IoAtCircle fontSize="small" />
+      <GoDotFill fontSize="small" />
     </CustomStepIcon>
   );
 }
@@ -149,6 +152,11 @@ const WelcomeModal = ({}) => {
     }
   };
 
+  // Function to mark a step as completed
+  const isCompleted = (step) => {
+    return step < activeStep; // Simple check: step is completed if it's before the active step
+  };
+
   return (
     <Modal
       BackdropProps={{
@@ -160,9 +168,17 @@ const WelcomeModal = ({}) => {
     >
       <ModalContainer>
         <Stepper activeStep={activeStep} nonLinear>
-          {steps.map((label) => (
+          {steps.map((label, index) => (
             <Step key={label}>
-              <CustomStepLabel StepIconComponent={StepIcon}>
+              <CustomStepLabel
+                StepIconComponent={(props) => (
+                  <StepIcon
+                    {...props}
+                    active={index === activeStep}
+                    completed={isCompleted(index)}
+                  />
+                )}
+              >
                 {label}
               </CustomStepLabel>
             </Step>
