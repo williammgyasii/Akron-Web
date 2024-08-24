@@ -25,10 +25,10 @@ function DashboardPage() {
   const selectedGroup = useSelector(selectGroupID);
 
   useEffect(() => {
-    dispatch(setWelcomeModalOpen());
-    if (!setWelcomeModalOpen) {
-      dispatch(fetchUserGroups());
-    }
+    // dispatch(setWelcomeModalOpen());
+    // if (!setWelcomeModalOpen) {
+    //   dispatch(fetchUserGroups());
+    // }
 
     return () => {};
   }, []);

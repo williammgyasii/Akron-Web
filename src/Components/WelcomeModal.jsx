@@ -12,6 +12,7 @@ import {
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  selectFirstLogin,
   selectWelcomeModalOpened,
   setWelcomeModalClose,
 } from "../Redux/Slices/System/systemSlice";
@@ -114,6 +115,7 @@ const WelcomeModal = ({}) => {
   const [groupLoading, setGroupLoading] = useState(true);
   const dispatch = useDispatch();
   const currentUser = useSelector(selectCurrentUser);
+  const firstLogin = useSelector(selectFirstLogin);
   const groupUploading = useSelector(
     (state) => state.groups.createGroupLoading
   );

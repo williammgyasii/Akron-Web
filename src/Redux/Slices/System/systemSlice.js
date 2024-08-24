@@ -12,8 +12,12 @@ const systemSlice = createSlice({
     isModalOpened: false,
     modalView: "",
     welcomeModalOpened: true,
+    firstLogin: 0,
   },
   reducers: {
+    setFirstLoginState: (state, action) => {
+      state.firstLogin = action.payload;
+    },
     setLoginQuote: (state, action) => {
       state.loginQuote = action.payload;
     },
@@ -67,6 +71,7 @@ export const {
   hideModal,
   setWelcomeModalOpen,
   setWelcomeModalClose,
+  setFirstLoginState,
 } = systemSlice.actions;
 
 export const selectIsDrawerOpened = (state) => state.system.isDrawerOpened;
@@ -77,4 +82,5 @@ export const selectAppInit = (state) => state.system.appInit;
 export const selectModalView = (state) => state.system.modalView;
 export const selectWelcomeModalOpened = (state) =>
   state.system.welcomeModalOpened;
+export const selectFirstLogin = (state) => state.system.firstLogin;
 export default systemSlice.reducer;
