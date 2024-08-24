@@ -57,7 +57,11 @@ const UploadText = styled(Typography)({
   //   textDecoration: "underline", // Underline to indicate it's clickable
 });
 
-function CreateGroupForm({groupName,onChangeGroupName}) {
+function CreateGroupForm({
+  groupName,
+  onChangeGroupName,
+  onChangeSearchEmail,
+}) {
   const [members, setMembers] = useState([]);
   const [searchEmail, setSearchEmail] = useState("");
   const [groupIcon, setGroupIcon] = useState(null);
@@ -97,11 +101,6 @@ function CreateGroupForm({groupName,onChangeGroupName}) {
             justifyContent: "center",
           }}
         >
-          {/* <Avatar
-            src={groupIcon ? URL.createObjectURL(groupIcon) : null}
-            alt="Group Icon"
-            sx={{ width: 50, height: 50 }}
-          /> */}
           <Box
             sx={{
               display: "flex",
@@ -114,7 +113,6 @@ function CreateGroupForm({groupName,onChangeGroupName}) {
           </Box>
         </Box>
         <CustomFormInput
-          
           label="Group Name or Alias"
           value={groupName}
           onChange={onChangeGroupName}
@@ -155,7 +153,7 @@ function CreateGroupForm({groupName,onChangeGroupName}) {
         <CustomFormInput
           label="Add team members by emails"
           value={searchEmail}
-          onChange={(e) => setSearchEmail(e.target.value)}
+          onChange={onChangeSearchEmail}
           fullWidth
           InputProps={{
             endAdornment: (
@@ -175,12 +173,7 @@ function CreateGroupForm({groupName,onChangeGroupName}) {
           ))}
         </MembersList>
 
-        <CustomButton
-          variant="primary"
-        //   color="primary"
-          fullWidth
-          disabled={loading}
-        >
+        <CustomButton variant="primary" fullWidth disabled={loading}>
           {loading ? <CircularProgress size={24} /> : "Create Group"}
         </CustomButton>
       </FormContainer>

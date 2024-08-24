@@ -94,7 +94,12 @@ function StepIcon(props) {
 const WelcomeModal = ({}) => {
   const [activeStep, setActiveStep] = useState(0);
   const [groupName, setGroupName] = useState("");
+  const [searchEmail, setSearchEmail] = useState("");
+  const [groupIcon, setGroupIcon] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState({});
   const [projectName, setProjectName] = useState("");
+  const [members, setMembers] = useState([]);
   const dispatch = useDispatch();
 
   const steps = ["Welcome", "Create Group", "Create Your First Project"];
@@ -108,9 +113,19 @@ const WelcomeModal = ({}) => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
+  const handleRemoveMember = (email) => {
+    setMembers(members.filter((member) => member !== email));
+  };
+
   const handleFinish = () => {
     // Handle form submission or other actions here
     handleClose(); // Close the modal after finishing
+  };
+  const handleAddMember = () => {
+    if (searchEmail && !members.includes(searchEmail)) {
+      setMembers([...members, searchEmail]);
+      setSearchEmail("");
+    }
   };
 
   const handleClose = () => {
@@ -132,6 +147,8 @@ const WelcomeModal = ({}) => {
             <CreateGroupForm
               onChangeGroupName={(e) => setGroupName(e.target.value)}
               groupName={groupName}
+              searchEmail={searchEmail}
+              onChangeSearchEmail={(e) => setSearchEmail(e.target.value)}
             />
           </StepContent>
         );
