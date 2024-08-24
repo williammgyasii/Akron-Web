@@ -53,7 +53,7 @@ const GroupIconContainer = styled("div")({
 // });
 
 const MembersList = styled(List)({
-//   marginTop: "16px",
+  //   marginTop: "16px",
   maxHeight: "200px", // Adjust the height as needed
   overflowY: "auto",
   "& li": {
@@ -73,8 +73,6 @@ const UploadText = styled(Typography)({
   //   textDecoration: "underline", // Underline to indicate it's clickable
 });
 
-
-
 function CreateGroupForm({
   groupName,
   onChangeGroupName,
@@ -86,11 +84,12 @@ function CreateGroupForm({
   setGroupIcon,
   setGroupName,
   userEmail,
-  loading,
+
   searchEmail,
   setSearchEmail,
 }) {
   const [errorMessage, setErrorMessage] = useState("");
+  const [memberLoading, setMemberLoading] = useState(false);
   const theme = useTheme();
   const currentUser = useSelector(selectCurrentUser);
 
@@ -182,7 +181,9 @@ function CreateGroupForm({
             <FiUpload size={30} color={theme.palette.secondary.main} />
           )}
           <label htmlFor="icon-upload">
-            <UploadText>Click to upload</UploadText>
+            <UploadText>
+              {groupIcon ? "Change Group Icon" : "Select Group Icon"}
+            </UploadText>
             <span
               style={{ fontSize: "10px", color: "#ccc", marginTop: "-20px" }}
             >
@@ -209,7 +210,11 @@ function CreateGroupForm({
           InputProps={{
             endAdornment: (
               <IconButton onClick={handleAddMember}>
-                <PersonAdd sx={{ color: theme.palette.primary.main }} />
+                {memberLoading ? (
+                  <CircularProgress size={20} />
+                ) : (
+                  <PersonAdd sx={{ color: theme.palette.primary.main }} />
+                )}
               </IconButton>
             ),
           }}
