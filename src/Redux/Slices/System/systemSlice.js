@@ -1,18 +1,19 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const systemSlice = createSlice({
-  name: "App Slice",
+  name: "System",
   initialState: {
     loginQuote: "",
-    isDrawerOpened: false,
+    isDrawerOpened: true,
     isAppLoading: false,
     isSnackBarOpened: false,
     snackbarMessage: "",
     snackbarState: "info", //'success', 'warning', 'error'
     isModalOpened: false,
     modalView: "",
-    welcomeModalOpened: true,
+    welcomeModalOpened: false,
     firstTimeLogging: 0,
+    appUserState:"newUser" //||"currentUser"
   },
   reducers: {
     setFirstLoginState: (state, action) => {
@@ -83,4 +84,6 @@ export const selectModalView = (state) => state.system.modalView;
 export const selectWelcomeModalOpened = (state) =>
   state.system.welcomeModalOpened;
 export const selectFirstLogin = (state) => state.system.firstTimeLogging;
+
+
 export default systemSlice.reducer;

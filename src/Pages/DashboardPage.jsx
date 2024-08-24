@@ -24,14 +24,6 @@ function DashboardPage() {
   const theme = useTheme();
   const selectedGroup = useSelector(selectGroupID);
 
-  useEffect(() => {
-    // dispatch(setWelcomeModalOpen());
-    // if (!setWelcomeModalOpen) {
-    //   dispatch(fetchUserGroups());
-    // }
-
-    return () => {};
-  }, []);
 
   return (
     <Container disableGutters maxWidth={false} sx={{ position: "relative" }}>

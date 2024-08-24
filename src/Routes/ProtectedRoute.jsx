@@ -1,14 +1,21 @@
 import React, { useEffect } from "react";
 import { Navigate, Outlet } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { CircularProgress } from "@mui/material";
 import MainLayout from "../Layouts/MainLayout";
-import { selectFirstLogin } from "../Redux/Slices/System/systemSlice";
+import { selectFirstLogin, selectWelcomeModalOpened } from "../Redux/Slices/System/systemSlice";
 
 const CheckUserWelcomeState = ({ children }) => {
   const welcomeStatus = useSelector((state) => state.system);
+  const dispatch=useDispatch()
   useEffect(() => {
-    console.log(welcomeStatus);
+    if(welcomeStatus==="newUser"){
+      dispatch(selectWelcomeModalOpened())
+    }
+    else if(welcomeStatus==="currentUser"){
+      
+    }
+    
     console.log("Shit");
 
     return () => {};
