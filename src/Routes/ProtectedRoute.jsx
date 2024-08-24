@@ -1,8 +1,21 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Navigate, Outlet } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { CircularProgress } from "@mui/material";
 import MainLayout from "../Layouts/MainLayout";
+import { selectFirstLogin } from "../Redux/Slices/System/systemSlice";
+
+const CheckUserWelcomeState = ({ children }) => {
+  const welcomeStatus = useSelector((state) => state.system);
+  useEffect(() => {
+    console.log(welcomeStatus);
+    console.log("Shit");
+
+    return () => {};
+  }, []);
+
+  return children;
+};
 
 const PrivateRoute = ({ element }) => {
   const { currentUser, loading, status, error } = useSelector(
@@ -16,9 +29,11 @@ const PrivateRoute = ({ element }) => {
 
   return currentUser ? (
     <>
-      <MainLayout>
-        <Outlet />
-      </MainLayout>
+      <CheckUserWelcomeState>
+        <MainLayout>
+          <Outlet />
+        </MainLayout>
+      </CheckUserWelcomeState>
     </>
   ) : (
     <Navigate to="/login" />

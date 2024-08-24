@@ -12,7 +12,7 @@ const systemSlice = createSlice({
     isModalOpened: false,
     modalView: "",
     welcomeModalOpened: true,
-    firstLogin: 0,
+    firstTimeLogging: 0,
   },
   reducers: {
     setFirstLoginState: (state, action) => {
@@ -82,5 +82,5 @@ export const selectAppInit = (state) => state.system.appInit;
 export const selectModalView = (state) => state.system.modalView;
 export const selectWelcomeModalOpened = (state) =>
   state.system.welcomeModalOpened;
-export const selectFirstLogin = (state) => state.system.firstLogin;
+export const selectFirstLogin = (state) => state.system.firstTimeLogging;
 export default systemSlice.reducer;
