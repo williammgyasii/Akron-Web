@@ -99,7 +99,7 @@ function CreateGroupForm({
     if (searchEmail.trim() === "") {
       setErrorMessage("Email cannot be empty.");
     } else if (searchEmail === currentUser?.email) {
-      setErrorMessage("You can't add your own email to the group.");
+      setErrorMessage("You are already a member of the group.");
     } else if (!emailRegex.test(searchEmail)) {
       setErrorMessage("Please enter a valid email address.");
     } else if (members.some((member) => member.email === searchEmail)) {
@@ -111,16 +111,12 @@ function CreateGroupForm({
         const uid = await queryUserByEmail(searchEmail)
           .then((result) => {
             console.log(result);
-            //   if (result) {
-            //     addMember((prevMembers) => [
-            //       ...prevMembers,
-            //       { email: searchEmail, uid, status: "PENDING" },
-            //     ]);
-            //     setSearchEmail("");
-            //     setErrorMessage("");
-            //   } else {
-            //     setErrorMessage("No user found with this email.");
-            //   }
+            if (result) {
+              addMember(result);
+              setSearchEmail("");
+              setErrorMessage("");
+              setMemberLoading(false);
+            }
           })
           .catch((error) => {
             setErrorMessage("Email isnt registered.");
@@ -131,13 +127,13 @@ function CreateGroupForm({
   };
 
   const renderMemberList = () => {
-    const currentUser = {
-      email: userEmail,
-      name: userEmail.split("@")[0], // Placeholder for the user's name
+    const loggedUser = {
+      email: currentUser.email,
+      name: `${currentUser.firstName} ${currentUser.lastName}`, // Placeholder for the user's name
       status: "ADMIN",
     };
 
-    return [currentUser, ...members].map((member, index) => (
+    return [loggedUser, ...members].map((member, index) => (
       <GroupMemberListView key={member.email} member={member} index={index} />
       //   <ListItem key={member.email}>
       //     <ListItemAvatar>

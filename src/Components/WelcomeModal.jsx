@@ -106,6 +106,7 @@ const WelcomeModal = ({}) => {
   const [groupLoading, setGroupLoading] = useState(true);
   const dispatch = useDispatch();
   const currentUser = useSelector(selectCurrentUser);
+  console.log(currentUser)
   const groupUploading = useSelector(
     (state) => state.groups.createGroupLoading
   );
@@ -141,12 +142,14 @@ const WelcomeModal = ({}) => {
   };
 
   // Handle adding a new member
-  const handleAddMember = (email) => {
+  const handleAddMember = (result) => {
     setMembers([
       ...members,
       {
-        email: searchEmail,
-        name: searchEmail.split("@")[0], // This is a placeholder for the user's name
+        email: result.email,
+        name: `${result.firstName} ${result.lastName}`,
+        userid: result.uid, // This is a placeholder for the user's name
+        statustype: "pending",
         status: "Pending Invitation",
       },
     ]);

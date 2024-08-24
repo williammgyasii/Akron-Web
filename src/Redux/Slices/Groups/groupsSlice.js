@@ -74,13 +74,14 @@ export const createGroup = createAsyncThunk(
       }
 
       // Ensure members array only contains emails
-      const memberEmails = members.map((member) => member.email);
+      const memberId = members.map((member) => member.userid);
+      console.log(memberId);
 
       // Add group data to Firestore
       const groupData = {
         name: groupName,
         icon: groupIconUrl,
-        members: [currentUser.email, ...memberEmails],
+        members: [currentUser.uid, ...memberId],
         projectName: projectName,
         createdAt: Timestamp.now(),
         createdBy: currentUser.uid,
@@ -95,6 +96,7 @@ export const createGroup = createAsyncThunk(
         id: groupDocRef.id,
         ...groupData,
       };
+      // return{true
     } catch (error) {
       console.log("Error Creating group", error);
       return rejectWithValue(error.message);
