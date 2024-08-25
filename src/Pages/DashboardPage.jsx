@@ -19,6 +19,7 @@ import {
 import CustomTitles from "../Components/CustomTitles";
 import { IoAddSharp } from "react-icons/io5";
 import {
+  openSnackbar,
   setWelcomeModalOpen,
   showModal,
 } from "../Redux/Slices/System/systemSlice";
@@ -32,6 +33,7 @@ function DashboardPage() {
   const projects = useSelector(selectGroupProjects);
 
   useEffect(() => {
+    dispatch(openSnackbar({message:"Group Created",snackbarState:"info"}))
     dispatch(
       fetchProjectsByGroupId({
         groupId: selectedGroupid,

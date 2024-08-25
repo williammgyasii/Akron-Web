@@ -21,7 +21,7 @@ const MemberEmail = styled(Typography)({
 
 const GroupMemberListView = ({ member, index }) => {
   return (
-    <ListItem>
+    <ListItem sx={{ padding: "10px 0" }}>
       <ListItemAvatar>
         <Avatar>{member.name.charAt(0).toUpperCase()}</Avatar>
       </ListItemAvatar>

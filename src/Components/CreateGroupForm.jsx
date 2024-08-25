@@ -175,7 +175,7 @@ function CreateGroupForm({
               marginLeft: "10px",
             }}
           >
-            <StepTitle variant="text_base">Lets Create a team</StepTitle>
+            <StepTitle variant="text_base">Lets Create a Group</StepTitle>
             {/* <StepTitle variant="text_xs">Group Information</StepTitle> */}
           </Box>
         </Box>

@@ -10,6 +10,7 @@ import {
   createGroupOnly,
 } from "../Redux/Slices/Groups/groupsSlice";
 import { validateGroupName } from "../Utils/utilityFunctions";
+import { openSnackbar } from "../Redux/Slices/System/systemSlice";
 
 // Styled components using MUI's `styled`
 const ModalContainer = styled(Box)(({ theme }) => ({
@@ -77,6 +78,7 @@ const CreateGroupModal = ({ open, handleClose }) => {
           setGroupName("");
           setMembers([]);
           setGroupIcon(null);
+         
           handleClose(); // Close the modal after finishing
         });
     } else {

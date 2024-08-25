@@ -1,8 +1,27 @@
 import React from "react";
-import { Snackbar, Alert, useTheme, Box } from "@mui/material";
+import {
+  Snackbar,
+  Alert,
+  useTheme,
+  Box,
+  SnackbarContent,
+  Button,
+  IconButton,
+  styled,
+} from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { closeSnackbar } from "../Redux/Slices/System/systemSlice";
 import { IoCafe, IoInformation } from "react-icons/io5";
+import { MdCheckCircle, MdClose } from "react-icons/md";
+
+const CenteredSnackbarContent = styled(SnackbarContent)(({ theme }) => ({
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  textAlign: "center",
+  backgroundColor: theme.palette.success.main, // Example background color
+  color: theme.palette.common.white,
+}));
 
 const GlobalSnackbar = () => {
   const dispatch = useDispatch();
@@ -21,28 +40,29 @@ const GlobalSnackbar = () => {
   return (
     <Snackbar
       open={isSnackBarOpened}
-      autoHideDuration={2000}
+      autoHideDuration={4000}
       onClose={handleClose}
-      anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      sx={{
+        width: "25%",
+        alignItems: "center",
+        justifyContent: "center",
+        margin: "0 auto",
+      }}
+      anchorOrigin={{ vertical: "top", horizontal: "center" }}
     >
-      <Alert
-        onClose={handleClose}
-        severity={snackbarState}
-        sx={{
-          width: "50%",
-          backgroundColor: theme.palette.success.main,
-          color: "#fff",
-          p: 1,
-          fontSize: theme.typography.text_base, // Increase font size
-        }}
-        // icon={false}
-      >
-        <Box display="flex" alignItems="center"></Box>
-        <IoCafe sx={{ marginRight: "100px", fontSize: "4.5rem" }} />{" "}
-        {/* Custom icon */}
-        {snackbarMessage}
-        <Box />
-      </Alert>
+      <CenteredSnackbarContent
+        message={
+          <span style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+            <MdCheckCircle size={24} /> {/* Example icon */}
+            {snackbarMessage}
+          </span>
+        }
+        action={
+          <IconButton size="small" color="inherit" onClick={handleClose}>
+            <MdClose />
+          </IconButton>
+        }
+      />
     </Snackbar>
   );
 };
