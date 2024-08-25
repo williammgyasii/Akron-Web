@@ -16,6 +16,7 @@ const CheckUserWelcomeState = ({ children }) => {
     if (welcomeStatus === "newUser") {
       dispatch(setWelcomeModalOpen());
     } else if (welcomeStatus === "currentUser") {
+      
     }
 
     console.log(welcomeStatus);

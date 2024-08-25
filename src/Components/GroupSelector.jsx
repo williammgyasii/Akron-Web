@@ -18,6 +18,7 @@ import {
 import {
   clearGroupDetails,
   fetchGroupMembers,
+  fetchProjectsByGroupId,
   fetchSelectedGroupDetails,
   selectGroupID,
   selectGroups,
@@ -39,7 +40,7 @@ const GroupSelector = ({ onSelectGroup, customStyles, ...props }) => {
   const handleGroupChange = (event) => {
     dispatch(setSelectedGroupID(event.target.value));
     dispatch(fetchGroupMembers(event.target.value));
-    // dispatch(fetchGroupProjects(event.target.value))
+    dispatch(fetchProjectsByGroupId(event.target.value))
     if (selectGroupID) {
       dispatch(fetchSelectedGroupDetails(event.target.value));
     } else {

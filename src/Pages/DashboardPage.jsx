@@ -7,7 +7,10 @@ import { useNavigate } from "react-router-dom";
 import AppBarComponent from "../Components/AppBarComponent";
 import Logo from "../Components/Logo";
 import GroupTaskList from "../Components/GroupTaskList";
-import { selectGroupID } from "../Redux/Slices/Groups/groupsSlice";
+import {
+  selectGroupID,
+  selectGroupMembers,
+} from "../Redux/Slices/Groups/groupsSlice";
 import CustomTitles from "../Components/CustomTitles";
 import { IoAddSharp } from "react-icons/io5";
 import {
@@ -17,25 +20,31 @@ import {
 
 function DashboardPage() {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const { currentUser, loading, status, error } = useSelector(
-    (state) => state.user
-  );
+  const groupMembers = useSelector(selectGroupMembers);
   const theme = useTheme();
   const selectedGroup = useSelector(selectGroupID);
 
-
   return (
     <Container disableGutters maxWidth={false} sx={{ position: "relative" }}>
-      <Box sx={{ p: 1.5, display: "flex", height: "100vh" }}>
+      <Box
+        sx={{
+          p: 1.5,
+          display: "flex",
+          height: "100vh",
+        }}
+      >
         <Box
           sx={{
             backgroundColor: theme.palette.background.paper,
             borderRadius: 2,
+            alignItems: "center",
+            justifyContent: "center",
           }}
           flexGrow={1}
         >
-          I am the other side
+          Current Group Member :{groupMembers.length}
+          <br />
+          current Group Project :{}
         </Box>
         <Box
           sx={{

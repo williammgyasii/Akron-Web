@@ -76,7 +76,7 @@ export const createGroup = createAsyncThunk(
         groupName: groupName,
         groupIcon: groupIconUrl,
         pendingMembers: [...membersId],
-        currentMembers: [currentUser.uid],
+        currentMembers: [currentUser.uid,...membersId],
         createdAt: Timestamp.now(),
         groupAdmin: currentUser.uid,
       };
@@ -90,6 +90,7 @@ export const createGroup = createAsyncThunk(
         projectTitle: projectValues.projectTitle.value,
         projectDescription: projectValues.projectDescription.value,
         groupId: groupDocRef.id,
+        createdBy: currentUser.uid,
       };
 
       const newProjectStructure = await addProjectToGroup(
@@ -120,6 +121,7 @@ export const fetchUserGroups = createAsyncThunk(
       // const createdAt = data.createdAt?.toDate();
       const userGroups = querySnapshot.docs.map((doc) => {
         const { createdAt, ...restofData } = doc.data();
+
         return {
           id: doc.id,
           createdAt: formatTimestamp(doc.data().createdAt),
@@ -182,6 +184,7 @@ export const fetchProjectsByGroupId = createAsyncThunk(
         where("groupId", "==", groupId)
       );
       const querySnapshot = await getDocs(q);
+      console.log(querySnapshot);
       const projects = querySnapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
@@ -229,6 +232,17 @@ const groupsSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      .addCase(fetchProjectsByGroupId.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(fetchProjectsByGroupId.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.groupProjects = action.payload;
+      })
+      .addCase(fetchProjectsByGroupId.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.payload;
+      })
       .addCase(createGroup.pending, (state) => {
         state.createGroupLoading = true;
       })
