@@ -1,5 +1,11 @@
 import React, { useState } from "react";
 import { Modal, Box, TextField, Button, styled } from "@mui/material";
+import CustomButton from "./CustomButton";
+import { MdFormatListBulletedAdd } from "react-icons/md";
+import CreateGroupForm from "./CreateGroupForm";
+import { useDispatch, useSelector } from "react-redux";
+import { selectCurrentUser } from "../Redux/Slices/Users/UsersSlice";
+import { createGroup } from "../Redux/Slices/Groups/groupsSlice";
 
 // Styled components using MUI's `styled`
 const ModalContainer = styled(Box)(({ theme }) => ({
@@ -18,27 +24,79 @@ const ModalContainer = styled(Box)(({ theme }) => ({
     outline: "none", // Remove the focus outline if it appears
   },
 }));
-
-const ModalHeader = styled("h2")(({ theme }) => ({
-  margin: 0,
-  paddingBottom: theme.spacing(2),
+const ButtonContainer = styled(Box)(({ theme }) => ({
+  display: "flex",
+  justifyContent: "flex-end",
+  marginTop: theme.spacing(1),
+  width: "250px",
+  marginLeft: "auto",
+  gap: "10px",
 }));
 
-const SubmitButton = styled(Button)(({ theme }) => ({
-  marginTop: theme.spacing(2),
-  backgroundColor: theme.palette.primary.main,
-  color: theme.palette.primary.contrastText,
-  "&:hover": {
-    backgroundColor: theme.palette.primary.dark,
-  },
-}));
-
-const CreateGroupModal = ({ open, handleClose, createGroup }) => {
+const CreateGroupModal = ({ open, handleClose }) => {
   const [groupName, setGroupName] = useState("");
+  const [activeStep, setActiveStep] = useState(0);
+  const [buttonNext, setButtonNext] = useState(false);
+  const [searchEmail, setSearchEmail] = useState("");
+  const [groupIcon, setGroupIcon] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState({
+    groupNameError: "",
+    groupIconError: "",
+  });
+  const [projectName, setProjectName] = useState("");
+  const [members, setMembers] = useState([]);
+  const [groupLoading, setGroupLoading] = useState(true);
+  const dispatch = useDispatch();
+  const currentUser = useSelector(selectCurrentUser);
 
-  const handleCreateGroup = () => {
-    createGroup(groupName);
-    handleClose();
+  const handleSubmit = () => {
+    // Handle form submission or other actions here
+    setLoading(true);
+    if (groupName && groupIcon) {
+      console.log("Group Name:", groupName);
+      console.log("Group Icon:", groupIcon);
+      console.log("Members:", members);
+
+      dispatch(createGroup({ groupName, groupIcon, members }))
+        .unwrap()
+        .then((result) => {
+          console.log("handlefinish", result);
+          handleClose(); // Close the modal after finishing
+        });
+    } else {
+      console.log("There was an error");
+    }
+  };
+
+  const handleGroupNameChange = (name) => {
+    setGroupName(name);
+  };
+
+  // Handle adding a new member
+  const handleAddMember = (result) => {
+    setMembers([
+      ...members,
+      {
+        email: result.email,
+        name: `${result.firstName} ${result.lastName}`,
+        userid: result.uid, // This is a placeholder for the user's name
+        statustype: "pending",
+        status: "Pending Invitation",
+      },
+    ]);
+  };
+
+  // Handle removing a member
+  const handleRemoveMember = (email) => {
+    setMembers((prevMembers) =>
+      prevMembers.filter((member) => member !== email)
+    );
+  };
+
+  // Handle icon upload
+  const handleIconUpload = (icon) => {
+    setGroupIcon(icon);
   };
 
   return (
@@ -51,15 +109,49 @@ const CreateGroupModal = ({ open, handleClose, createGroup }) => {
       onClose={handleClose}
     >
       <ModalContainer>
-        <TextField
-          label="Group Name"
-          fullWidth
-          value={groupName}
-          onChange={(e) => setGroupName(e.target.value)}
+        <CreateGroupForm
+          onChangeGroupName={(e) => setGroupName(e.target.value)}
+          groupName={groupName}
+          userEmail={currentUser.email}
+          setGroupName={handleGroupNameChange}
+          members={members}
+          searchEmail={searchEmail}
+          setSearchEmail={(value) => setSearchEmail(value)}
+          groupIcon={groupIcon}
+          setGroupIcon={handleIconUpload}
+          loading={groupLoading}
+          removeMember={handleRemoveMember}
+          addMember={handleAddMember}
+          errors={errors}
         />
-        <SubmitButton variant="contained" onClick={handleCreateGroup}>
-          Create
-        </SubmitButton>
+        <ButtonContainer>
+          <CustomButton
+            onClick={handleClose}
+            // // type="iconOnly"
+            // loadingButton={groupUploading}
+            // leftIcon={MdFormatListBulletedAdd}
+            submit
+            size="medium"
+            sx={{ color: "#fff" }}
+            variant="secondary"
+          >
+            Cancel
+          </CustomButton>
+          <CustomButton
+            onClick={handleSubmit}
+            // disabled={buttonNext}
+            leftIcon={MdFormatListBulletedAdd}
+            loadingButton={loading}
+            submit
+            size="medium"
+            sx={{ color: "#fff" }}
+            type="iconLeft"
+            variant="primary"
+            color="primary"
+          >
+            Create Group
+          </CustomButton>
+        </ButtonContainer>
       </ModalContainer>
     </Modal>
   );

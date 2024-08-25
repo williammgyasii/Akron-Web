@@ -43,8 +43,6 @@ const AddTaskForm = ({ groupId, handleClose }) => {
   const project = useSelector(selectActiveProject);
   const groupMembers = useSelector(selectGroupMembers);
 
-  console.log(groupMembers);
-
   const [formState, setFormState] = useState({
     taskTitle: { value: "", error: false, helperText: "" },
     taskDescription: { value: "", error: false, helperText: "" },

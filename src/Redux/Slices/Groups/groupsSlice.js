@@ -179,7 +179,7 @@ export const fetchGroupMembers = createAsyncThunk(
 export const fetchProjectsByGroupId = createAsyncThunk(
   "projects/fetchProjectsByGroupId",
   async ({ groupId, userId }, { rejectWithValue }) => {
-    console.log("projects/fetchProjectsByGroupId", groupId, userId);
+    // console.log("projects/fetchProjectsByGroupId", groupId, userId);
     try {
       const q = query(
         collection(firebaseFirestore, "projects"),
@@ -188,7 +188,7 @@ export const fetchProjectsByGroupId = createAsyncThunk(
       );
 
       const querySnapshot = await getDocs(q);
-      console.log(querySnapshot);
+      // console.log(querySnapshot);
       const projects = querySnapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),

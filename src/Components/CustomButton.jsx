@@ -123,7 +123,7 @@ function CustomButton({
       {loadingButton ? (
         <CircularProgress
           sx={{ p: 1, color: "#fff" }}
-          size={30}
+          size={25}
           // color={"#fff"}
         />
       ) : (
