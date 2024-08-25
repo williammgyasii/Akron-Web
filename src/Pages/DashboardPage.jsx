@@ -2,7 +2,10 @@ import { Box, Button, Container, IconButton, useTheme } from "@mui/material";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { persistor, resetState } from "../Redux/store";
-import { logoutUser } from "../Redux/Slices/Users/UsersSlice";
+import {
+  logoutUser,
+  selectCurrentUser,
+} from "../Redux/Slices/Users/UsersSlice";
 import { useNavigate } from "react-router-dom";
 import AppBarComponent from "../Components/AppBarComponent";
 import Logo from "../Components/Logo";
@@ -23,11 +26,20 @@ function DashboardPage() {
   const dispatch = useDispatch();
   const groupMembers = useSelector(selectGroupMembers);
   const theme = useTheme();
-  const selectedGroup = useSelector(selectGroupID);
+  const selectedGroupid = useSelector(selectGroupID);
+  const currentUser = useSelector(selectCurrentUser);
 
   useEffect(() => {
-    // console.log(selectedGroup);
-    dispatch(fetchProjectsByGroupId(selectedGroup));
+    dispatch(
+      fetchProjectsByGroupId({
+        groupId: selectedGroupid,
+        userId: currentUser.uid,
+      })
+    )
+      .unwrap()
+      .then((result) => {
+        console.log("Fetched projects", result);
+      });
   }, []);
 
   return (
@@ -110,7 +122,7 @@ function DashboardPage() {
               flex: 1,
             }}
           >
-            <GroupTaskList groupId={selectedGroup} />
+            <GroupTaskList groupId={selectedGroupid} />
           </Box>
         </Box>
       </Box>
