@@ -48,8 +48,8 @@ export const fetchSelectedGroupDetails = createAsyncThunk(
   }
 );
 
-// AsyncThunk for creating a group
-export const createGroup = createAsyncThunk(
+// AsyncThunk for creating a group and project
+export const createGroupWithProject = createAsyncThunk(
   "groups/createGroup",
   async (
     { groupName, groupIcon, members, projectValues },
@@ -109,6 +109,53 @@ export const createGroup = createAsyncThunk(
     }
   }
 );
+
+// AsyncThunk for creating a group and project
+export const createGroupOnly = createAsyncThunk(
+  "groups/createGroupOnly",
+  async ({ groupName, groupIcon, members }, { rejectWithValue }) => {
+    try {
+      const auth = getAuth();
+      const currentUser = auth.currentUser;
+      // Upload group icon to Firebase Storage if it exists
+      let groupIconUrl = "";
+      if (groupIcon) {
+        const iconRef = ref(
+          firebaseStorage,
+          `group_icons/${groupName}_${Date.now()}`
+        );
+        const snapshot = await uploadBytes(iconRef, groupIcon);
+        groupIconUrl = await getDownloadURL(snapshot.ref);
+      }
+
+      // Ensure members array only contains emails
+      const membersId = members.map((member) => member.userid);
+
+      // Add group data to Firestore
+      const groupData = {
+        groupName: groupName,
+        groupIcon: groupIconUrl,
+        pendingMembers: [...membersId],
+        currentMembers: [currentUser.uid, ...membersId],
+        createdAt: Timestamp.now(),
+        groupAdmin: currentUser.uid,
+      };
+
+      const groupDocRef = await addDoc(
+        collection(firebaseFirestore, "groups"),
+        groupData
+      );
+
+      return {
+        id: groupDocRef.id,
+        ...groupData,
+      };
+    } catch (error) {
+      console.log("Error Creating group", error);
+      return rejectWithValue(error.message);
+    }
+  }
+);
 // AsyncThunk for fetching groups of a user
 export const fetchUserGroups = createAsyncThunk(
   "groups/fetchUserGroups",
@@ -153,7 +200,7 @@ export const fetchGroupMembers = createAsyncThunk(
       const groupData = groupSnapshot.data();
       const memberIds = groupData.currentMembers; // Array of user IDs
 
-      console.log(memberIds);
+      // console.log(memberIds);
 
       if (memberIds.length === 0) {
         return [];
@@ -237,6 +284,17 @@ const groupsSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      .addCase(createGroupOnly.pending, (state) => {
+        state.createGroupLoading = true;
+      })
+      .addCase(createGroupOnly.fulfilled, (state, action) => {
+        state.createGroupLoading = false;
+        state.groups.push(action.payload);
+      })
+      .addCase(createGroupOnly.rejected, (state, action) => {
+        state.createGroupLoading = false;
+        state.error = action.payload;
+      })
       .addCase(fetchProjectsByGroupId.pending, (state) => {
         state.status = "loading";
       })
@@ -248,14 +306,14 @@ const groupsSlice = createSlice({
         state.status = "failed";
         state.error = action.payload;
       })
-      .addCase(createGroup.pending, (state) => {
+      .addCase(createGroupWithProject.pending, (state) => {
         state.createGroupLoading = true;
       })
-      .addCase(createGroup.fulfilled, (state, action) => {
+      .addCase(createGroupWithProject.fulfilled, (state, action) => {
         state.createGroupLoading = false;
         state.groups.push(action.payload);
       })
-      .addCase(createGroup.rejected, (state, action) => {
+      .addCase(createGroupWithProject.rejected, (state, action) => {
         state.createGroupLoading = false;
         state.error = action.payload;
       })

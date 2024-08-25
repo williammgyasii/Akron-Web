@@ -22,6 +22,7 @@ import CreateGroupForm from "./CreateGroupForm";
 import { selectCurrentUser } from "../Redux/Slices/Users/UsersSlice";
 import {
   createGroup,
+  createGroupWithProject,
   fetchGroupMembers,
   fetchProjectsByGroupId,
   fetchSelectedGroupDetails,
@@ -164,7 +165,7 @@ const WelcomeModal = ({}) => {
     // console.log("Group Icon:", groupIcon);
     // console.log("Members:", members);
     // console.log("Project Name", projectValues);
-    dispatch(createGroup({ groupName, groupIcon, members, projectValues }))
+    dispatch(createGroupWithProject({ groupName, groupIcon, members, projectValues }))
       .unwrap()
       .then((result) => {
         console.log("handlefinish", result);

@@ -5,7 +5,11 @@ import { MdFormatListBulletedAdd } from "react-icons/md";
 import CreateGroupForm from "./CreateGroupForm";
 import { useDispatch, useSelector } from "react-redux";
 import { selectCurrentUser } from "../Redux/Slices/Users/UsersSlice";
-import { createGroup } from "../Redux/Slices/Groups/groupsSlice";
+import {
+  createGroup,
+  createGroupOnly,
+} from "../Redux/Slices/Groups/groupsSlice";
+import { validateGroupName } from "../Utils/utilityFunctions";
 
 // Styled components using MUI's `styled`
 const ModalContainer = styled(Box)(({ theme }) => ({
@@ -52,20 +56,32 @@ const CreateGroupModal = ({ open, handleClose }) => {
 
   const handleSubmit = () => {
     // Handle form submission or other actions here
+
+    const nameError = validateGroupName(groupName);
+    if (nameError) {
+      setErrors({ groupNameError: nameError });
+      return; // Stop submission if there's an error
+    }
+
     setLoading(true);
+
     if (groupName && groupIcon) {
       console.log("Group Name:", groupName);
       console.log("Group Icon:", groupIcon);
       console.log("Members:", members);
 
-      dispatch(createGroup({ groupName, groupIcon, members }))
+      dispatch(createGroupOnly({ groupName, groupIcon, members }))
         .unwrap()
         .then((result) => {
           console.log("handlefinish", result);
+          setGroupName("");
+          setMembers([]);
+          setGroupIcon(null);
           handleClose(); // Close the modal after finishing
         });
     } else {
       console.log("There was an error");
+      setLoading(false);
     }
   };
 

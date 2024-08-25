@@ -86,6 +86,7 @@ function CreateGroupForm({
   setGroupIcon,
   setGroupName,
   userEmail,
+  maxCount,
   searchEmail,
   setSearchEmail,
 }) {
@@ -155,7 +156,7 @@ function CreateGroupForm({
     ));
   };
 
-//   console.log(errors);
+  //   console.log(errors);
 
   return (
     <form>
@@ -184,6 +185,7 @@ function CreateGroupForm({
           onChange={(e) => setGroupName(e.target.value)}
           fullWidth
           required
+          maxCount={20}
           helperText={errors.groupNameError}
           error={Boolean(errors.groupNameError)}
         />
@@ -215,11 +217,12 @@ function CreateGroupForm({
             hidden
             onChange={(e) => setGroupIcon(e.target.files[0])}
           />
-          
         </GroupIconContainer>
         {Boolean(errors.groupIconError) && (
-            <span style={{ color: "red",marginTop:"-10px",fontSize:"10px" }}>{errors.groupIconError}</span>
-          )}
+          <span style={{ color: "red", marginTop: "-10px", fontSize: "10px" }}>
+            {errors.groupIconError}
+          </span>
+        )}
 
         {/* <StepTitle variant="text_base">Add Members</StepTitle> */}
         <CustomFormInput

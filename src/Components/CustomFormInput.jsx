@@ -8,6 +8,7 @@ const CustomFormInput = ({
   darkLabel,
   helperText,
   customStyles,
+  maxCount,
   ...props
 }) => {
   const theme = useTheme();
@@ -38,7 +39,10 @@ const CustomFormInput = ({
         },
         customStyles,
       ]}
-      InputLabelProps={{ style: { color: theme.palette.secondary.main,fontSize:"14px" } }}
+      inputProps={{ maxLength: maxCount }} // Set maxLength here
+      InputLabelProps={{
+        style: { color: theme.palette.secondary.main, fontSize: "14px" },
+      }}
       {...props}
     />
   );
