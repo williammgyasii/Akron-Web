@@ -170,8 +170,12 @@ const WelcomeModal = ({}) => {
         console.log("handlefinish", result);
         dispatch(setAppUserState("currentUser"));
         dispatch(setSelectedGroupID(result.id));
-        dispatch(fetchGroupMembers(result.id));
-        dispatch(fetchProjectsByGroupId(result.id));
+        dispatch(
+          fetchProjectsByGroupId({
+            groupId: result.id,
+            userId: currentUser.uid,
+          })
+        );
         dispatch(fetchSelectedGroupDetails(result.id));
         handleClose(); // Close the modal after finishing
       });

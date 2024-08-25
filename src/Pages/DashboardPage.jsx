@@ -40,7 +40,6 @@ function DashboardPage() {
     )
       .unwrap()
       .then((result) => {
-        console.log("Fetched projects", result);
       });
   }, []);
 

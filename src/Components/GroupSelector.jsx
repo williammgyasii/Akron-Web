@@ -26,6 +26,7 @@ import {
   setSelectedGroupID,
 } from "../Redux/Slices/Groups/groupsSlice";
 import CustomDropdown from "./CustomDropdown";
+import { selectCurrentUser } from "../Redux/Slices/Users/UsersSlice";
 
 const GroupSelector = ({ onSelectGroup, customStyles, ...props }) => {
   const dispatch = useDispatch();
@@ -34,13 +35,19 @@ const GroupSelector = ({ onSelectGroup, customStyles, ...props }) => {
   const selectedGroup = useSelector(selectGroupID);
   const [groupError, setGroupError] = useState(false);
   const theme = useTheme();
+  const currentUser = useSelector(selectCurrentUser);
 
   // console.log(groups, selectedGroup);
 
   const handleGroupChange = (event) => {
     dispatch(setSelectedGroupID(event.target.value));
     dispatch(fetchGroupMembers(event.target.value));
-    dispatch(fetchProjectsByGroupId(event.target.value))
+    dispatch(
+      fetchProjectsByGroupId({
+        groupId: event.target.value,
+        userId: currentUser.uid,
+      })
+    );
     if (selectGroupID) {
       dispatch(fetchSelectedGroupDetails(event.target.value));
     } else {
