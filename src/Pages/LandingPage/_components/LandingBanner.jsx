@@ -1,6 +1,7 @@
 import { Box, Container, Typography, useTheme } from "@mui/material";
 import React from "react";
 import illustration from "../_assets/_images/banner.png";
+import CustomTitles from "../../../Components/CustomTitles";
 
 function LandingBanner() {
   const theme = useTheme();
@@ -9,9 +10,9 @@ function LandingBanner() {
       component={"section"}
       id="home"
       sx={{
-        backgroundColor: "red",
         paddingTop: "4%",
         minHeight: "100svh",
+        backgroundColor: theme.palette.secondary.light400,
         paddingBottom: "6px",
         [theme.breakpoints.down("tablets_port")]: {
           paddingTop: "10%",
@@ -21,10 +22,10 @@ function LandingBanner() {
       <Box
         sx={{
           display: "flex",
-          backgroundColor: "blue",
-          flexDirection:"row",
+          // backgroundColor: "blue",
+          flexDirection: "row",
           alignItems: "center",
-          justifyContent:"space-between",
+          justifyContent: "space-between",
           minHeight: "auto",
           [theme.breakpoints.between("desktop", "desktop_large")]: {
             fontSize: "12px",
@@ -38,42 +39,20 @@ function LandingBanner() {
       >
         <Box
           sx={{
-            backgroundColor:"yellow",
+            // backgroundColor: "yellow",
             textAlign: "center",
-            h1: {
-              fontWeight: 700,
-              fontSize: "8px",
-              lineHeight: "1.26",
-              letterSpacing: "0",
-              color: "#textSecondary",
-              "@media (min-width: 768px)": {
-                fontSize: "10px",
-              },
-              "@media (min-width: 1441px) and (max-width: 1600px)": {
-                fontSize: "12px",
-                lineHeight: "1.5",
-              },
-            },
-            p: {
-              fontSize: "1px",
-              lineHeight: "1.5",
-              color: "#textSecondary",
-              maxWidth: "470px",
-              margin: "30px auto",
-              marginTop: "3px",
-              "@media (min-width: 768px)": {
-                fontSize: "2px",
-                lineHeight: "2",
-              },
-              "@media (min-width: 1024px)": {
-                fontSize: "3px",
-              },
-            },
+            display: "block",
+            padding: 9,
+            marginTop: "5%",
           }}
         >
-          <Typography variant="h1">
-            Sistema de suporte final para agências líderes
-          </Typography>
+          <CustomTitles
+            weightFont={"bold"}
+            customStyles={{ lineHeight: 1.5 }}
+            variant="text_4xl"
+          >
+            Welcome to Akron
+          </CustomTitles>
           <Typography variant="p">
             Obtenha seus testes entregues em casa coletar amostra do vitória das
             gestões que fornecem melhor sistema de design diretrizes de sempre.
@@ -93,11 +72,11 @@ function LandingBanner() {
         <Box
           component={"figure"}
           sx={{
-            alignItems: "center",
-            mt: [9, null, null, null, 0],
+            // marginRight: "50px",
             img: {
-              maxWidth: [null, null, null, "80%", "100%"],
-              m: [null, null, null, "0 auto", 0],
+              // margin: "10px",
+              width: "100%",
+              height: "auto",
             },
           }}
         >

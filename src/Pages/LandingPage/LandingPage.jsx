@@ -25,16 +25,17 @@ function LandingPageNew() {
   return (
     <Container disableGutters>
       <LandingPageAppbar />
+      <LandingBanner />
       <Container
         disableGutters
         sx={{
           position: "relative",
           maxWidth: "1300px",
-          backgroundColor:"pink"
+          // backgroundColor:"pink"
         }}
         component={"main"}
       >
-        <LandingBanner />
+        
         <LandingPageBanners />
       </Container>
     </Container>

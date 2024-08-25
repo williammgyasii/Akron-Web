@@ -61,7 +61,6 @@ const LandingPageAppbar = ({}) => {
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 50) {
-        // Adjust scroll threshold as needed
         setScrolled(true);
       } else {
         setScrolled(false);
