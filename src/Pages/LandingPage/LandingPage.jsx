@@ -1,8 +1,8 @@
 import { Box, Container } from "@mui/material";
 import { Button } from "antd";
 import React from "react";
-import LandingPageHeader from "./_components/LandingPageHeader";
 import LandingBanner from "./_components/LandingBanner";
+import LandingPageAppbar from "./_components/LandingAppbar";
 
 function LandingPageNew() {
   const LandingPageBanners = () => (
@@ -22,20 +22,16 @@ function LandingPageNew() {
     </Container>
   );
   return (
-    <Container
-      disableGutters
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        // justifyContent: "center",
-        minHeight: "100svh",
-        fontSize: 30,
-      }}
-    >
-      <LandingPageHeader />
-      <LandingBanner />
-      <LandingPageBanners />
+    <Container disableGutters>
+      <LandingPageAppbar />
+      <Container
+        disableGutters
+        sx={{ position: "relative", maxWidth: "1150px" }}
+        component={"main"}
+      >
+        <LandingBanner />
+        <LandingPageBanners />
+      </Container>
     </Container>
   );
 }

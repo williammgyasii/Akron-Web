@@ -1,106 +1,108 @@
-import { Box, Container, Typography } from "@mui/material";
+import { Box, Container, Typography, useTheme } from "@mui/material";
 import React from "react";
 
 function LandingBanner() {
+  const theme = useTheme();
   return (
     <Box
       component={"section"}
       id="home"
       sx={{
-        backgroundColor: "#FFFCF7",
-        paddingTop: "14px",
+        backgroundColor: "red",
+        paddingTop: "6%",
+        minHeight: "100svh",
         paddingBottom: "6px",
-        "@media (min-width: 1900px)": {
-          paddingTop: "10px",
+        [theme.breakpoints.down("tablets_port")]: {
+          paddingTop: "10%",
         },
       }}
     >
-      <Container>
-        <Box sx={styles.contentWrapper}>
-          <Box sx={styles.bannerContent}>
-            <Typography variant="h1">
-              Sistema de suporte final para agências líderes
-            </Typography>
-            <Typography variant="p">
-              Obtenha seus testes entregues em casa coletar amostra do vitória
-              das gestões que fornecem melhor sistema de design diretrizes de
-              sempre.
-            </Typography>
-            {/* <SubscriptionForm sx={styles.subscriptionForm} /> */}
-            <Box sx={styles.sponsoredBy}>
-              <Typography as="span">Patrocinado por:</Typography>
-              {/* <Box sx={styles.sponsor}>
+      <Box
+        sx={{
+          display: "block",
+          backgroundColor: "blue",
+          gap: "50px 50px",
+          alignItems: "center",
+          minHeight: "auto",
+          paddingTop: "8px",
+          gridTemplateColumns: "1fr 1fr",
+          "@media (min-width: 768px)": {
+            gridTemplateColumns: "0.95fr 1.05fr",
+            paddingTop: "0",
+          },
+          "@media (min-width: 1441px) and (max-width: 1600px)": {
+            h1: {
+              fontSize: "12px",
+              lineHeight: "1.5",
+            },
+          },
+        }}
+      >
+        <Box
+          sx={{
+            margin: "0 auto",
+            maxWidth: "600px",
+            textAlign: "center",
+            h1: {
+              fontWeight: 700,
+              fontSize: "8px",
+              lineHeight: "1.26",
+              letterSpacing: "0",
+              color: "#textSecondary",
+              "@media (min-width: 768px)": {
+                fontSize: "10px",
+              },
+              "@media (min-width: 1441px) and (max-width: 1600px)": {
+                fontSize: "12px",
+                lineHeight: "1.5",
+              },
+            },
+            p: {
+              fontSize: "1px",
+              lineHeight: "1.5",
+              color: "#textSecondary",
+              maxWidth: "470px",
+              margin: "30px auto",
+              marginTop: "3px",
+              "@media (min-width: 768px)": {
+                fontSize: "2px",
+                lineHeight: "2",
+              },
+              "@media (min-width: 1024px)": {
+                fontSize: "3px",
+              },
+            },
+          }}
+        >
+          <Typography variant="h1">
+            Sistema de suporte final para agências líderes
+          </Typography>
+          <Typography variant="p">
+            Obtenha seus testes entregues em casa coletar amostra do vitória das
+            gestões que fornecem melhor sistema de design diretrizes de sempre.
+          </Typography>
+          {/* <SubscriptionForm sx={styles.subscriptionForm} /> */}
+          <Box sx={styles.sponsoredBy}>
+            <Typography as="span">Patrocinado por:</Typography>
+            {/* <Box sx={styles.sponsor}>
                 {logos?.map((logo, index) => (
                   <Flex as="figure" key={index}>
                     <Image src={logo.src} alt={logo.name} />
                   </Flex>
                 ))}
               </Box> */}
-            </Box>
           </Box>
-          {/* <Flex as="figure" sx={styles.bannerImage}>
+        </Box>
+        {/* <Flex as="figure" sx={styles.bannerImage}>
             <Image src={illustration} alt="illustration" />
           </Flex> */}
-        </Box>
-      </Container>
+      </Box>
     </Box>
   );
 }
 
 const styles = {
-  section: {},
-  contentWrapper: {
-    display: "block",
-    gap: "50px 50px",
-    alignItems: "center",
-    minHeight: "auto",
-    paddingTop: "8px",
-    gridTemplateColumns: "1fr 1fr",
-    "@media (min-width: 768px)": {
-      gridTemplateColumns: "0.95fr 1.05fr",
-      paddingTop: "0",
-    },
-    "@media (min-width: 1441px) and (max-width: 1600px)": {
-      h1: {
-        fontSize: "12px",
-        lineHeight: "1.5",
-      },
-    },
-  },
-  bannerContent: {
-    margin: "0 auto",
-    maxWidth: "600px",
-    textAlign: "center",
-    h1: {
-      fontWeight: 700,
-      fontSize: "8px",
-      lineHeight: "1.26",
-      letterSpacing: "0",
-      color: "#textSecondary",
-      "@media (min-width: 768px)": {
-        fontSize: "10px",
-      },
-      "@media (min-width: 1441px) and (max-width: 1600px)": {
-        fontSize: "12px",
-        lineHeight: "1.5",
-      },
-    },
-    p: {
-      fontSize: "1px",
-      lineHeight: "1.5",
-      color: "#textSecondary",
-      maxWidth: "470px",
-      margin: "30px auto",
-      marginTop: "3px",
-      "@media (min-width: 768px)": {
-        fontSize: "2px",
-        lineHeight: "2",
-      },
-      "@media (min-width: 1024px)": {
-        fontSize: "3px",
-      },
-    },
-  },
+  bannerContent: {},
   subscriptionForm: {
     maxWidth: "470px",
     margin: "30px auto",
