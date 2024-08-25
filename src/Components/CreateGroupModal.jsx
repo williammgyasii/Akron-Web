@@ -74,11 +74,13 @@ const CreateGroupModal = ({ open, handleClose }) => {
       dispatch(createGroupOnly({ groupName, groupIcon, members }))
         .unwrap()
         .then((result) => {
-          console.log("handlefinish", result);
+          dispatch(
+            openSnackbar({ message: "Group Created", snackbarState: "info" })
+          );
           setGroupName("");
           setMembers([]);
           setGroupIcon(null);
-         
+          setErrors({ groupNameError: "" });
           handleClose(); // Close the modal after finishing
         });
     } else {
