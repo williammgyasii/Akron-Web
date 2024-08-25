@@ -76,7 +76,7 @@ const ProjectNavList = ({ selectedProject, onSelectProject }) => {
       <List sx={{ mt: "-10px" }}>
         {displayProjects.map((project) => {
           // console.log(project?.id);
-          const projectInitial = project.projectTitle.charAt(0).toUpperCase();
+          const projectInitial = project?.projectTitle?.charAt(0).toUpperCase();
           return (
             <StyledListItemButton
               selected={currentProject?.id === project.id}
