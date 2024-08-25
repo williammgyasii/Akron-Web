@@ -12,7 +12,7 @@ function LandingBanner() {
       sx={{
         paddingTop: "4%",
         minHeight: "100svh",
-        backgroundColor: theme.palette.secondary.light400,
+        background: "linear-gradient(45deg, #7EC2FF 30%, #9F84FD  90%)",
         paddingBottom: "6px",
         [theme.breakpoints.down("tablets_port")]: {
           paddingTop: "10%",
@@ -22,10 +22,10 @@ function LandingBanner() {
       <Box
         sx={{
           display: "flex",
-          // backgroundColor: "blue",
           flexDirection: "row",
           alignItems: "center",
           justifyContent: "space-between",
+          marginTop:"50px",
           minHeight: "auto",
           [theme.breakpoints.between("desktop", "desktop_large")]: {
             fontSize: "12px",
@@ -44,11 +44,12 @@ function LandingBanner() {
             display: "block",
             padding: 9,
             marginTop: "5%",
+            
           }}
         >
           <CustomTitles
             weightFont={"bold"}
-            customStyles={{ lineHeight: 1.5 }}
+            customStyles={{ lineHeight: 0.9,color:"#fff" }}
             variant="text_4xl"
           >
             Welcome to Akron

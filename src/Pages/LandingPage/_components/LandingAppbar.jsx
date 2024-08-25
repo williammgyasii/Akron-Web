@@ -127,7 +127,7 @@ const LandingPageAppbar = ({}) => {
       <StyledAppBar
         sx={{
           backgroundColor: scrolled
-            ? theme.palette.secondary.main
+            ? theme.palette.primary.light300
             : "transparent",
           boxShadow: scrolled ? "0px 2px 4px rgba(0, 0, 0, 0.3)" : "none",
         }}
