@@ -28,14 +28,24 @@ import { drawerWidth, drawerWidthCollapsed } from "../Utils/Constants";
 import CustomTitles from "./CustomTitles";
 import { Link } from "react-router-dom";
 import CustomButton from "./CustomButton";
+import CreateGroupModal from "./CreateGroupModal";
 
 const AppBarComponent = ({ title, showOthers, pageHeader, customStyles }) => {
   const dispatch = useDispatch();
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("tablets_port"));
   const isDrawerOpen = useSelector(selectIsDrawerOpened);
+  const [openCreateGroupModal, setOpenCreateGroupModal] = useState(false);
 
-  const handleOpen = () => dispatch(showModal("createGroup"));
+  // const handleOpen = () => dispatch(showModal("createGroup"));
+
+  const handleOpen = () => setOpenCreateGroupModal(true);
+  const handleClose = () => setOpenCreateGroupModal(false);
+
+  const createGroup = (groupName) => {
+    // Implement the logic to create a group here.
+    console.log("Group Created:", groupName);
+  };
 
   return (
     <AppBar
@@ -83,7 +93,6 @@ const AppBarComponent = ({ title, showOthers, pageHeader, customStyles }) => {
             alt="App Logo"
             style={{ maxHeight: "30px" }}
           />
-          
         </Box>
         <CustomTitles
           variant={isSmallScreen ? "text_xs" : "text_sm"}
@@ -117,6 +126,12 @@ const AppBarComponent = ({ title, showOthers, pageHeader, customStyles }) => {
         {showOthers && <NotifcationsManager />}
         {showOthers && <UserAvatarMenu />}
       </Toolbar>
+
+      <CreateGroupModal
+        open={openCreateGroupModal}
+        handleClose={handleClose}
+        createGroup={createGroup}
+      />
     </AppBar>
   );
 };
