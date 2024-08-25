@@ -8,6 +8,7 @@ import AppBarComponent from "../Components/AppBarComponent";
 import Logo from "../Components/Logo";
 import GroupTaskList from "../Components/GroupTaskList";
 import {
+  fetchProjectsByGroupId,
   selectGroupID,
   selectGroupMembers,
 } from "../Redux/Slices/Groups/groupsSlice";
@@ -23,6 +24,11 @@ function DashboardPage() {
   const groupMembers = useSelector(selectGroupMembers);
   const theme = useTheme();
   const selectedGroup = useSelector(selectGroupID);
+
+  useEffect(() => {
+    // console.log(selectedGroup);
+    dispatch(fetchProjectsByGroupId(selectedGroup));
+  }, []);
 
   return (
     <Container disableGutters maxWidth={false} sx={{ position: "relative" }}>

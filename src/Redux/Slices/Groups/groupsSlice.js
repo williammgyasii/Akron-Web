@@ -9,6 +9,7 @@ import {
   doc,
   getDoc,
   Timestamp,
+  or,
 } from "firebase/firestore";
 import {
   firebaseAuth,
@@ -76,7 +77,7 @@ export const createGroup = createAsyncThunk(
         groupName: groupName,
         groupIcon: groupIconUrl,
         pendingMembers: [...membersId],
-        currentMembers: [currentUser.uid,...membersId],
+        currentMembers: [currentUser.uid, ...membersId],
         createdAt: Timestamp.now(),
         groupAdmin: currentUser.uid,
       };
@@ -179,12 +180,16 @@ export const fetchProjectsByGroupId = createAsyncThunk(
   "projects/fetchProjectsByGroupId",
   async (groupId, { rejectWithValue }) => {
     try {
+      console.log("projects/fetchProjectsByGroupId");
+      const auth = getAuth();
+      const currentUser = auth.currentUser;
       const q = query(
         collection(firebaseFirestore, "projects"),
-        where("groupId", "==", groupId)
+        where("groupId", "==", groupId),
+        where("members", "array-contains", currentUser.uid)
       );
+      console.log(q);
       const querySnapshot = await getDocs(q);
-      console.log(querySnapshot);
       const projects = querySnapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
