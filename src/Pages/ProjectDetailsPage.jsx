@@ -6,12 +6,11 @@ import {
 } from "../Redux/Slices/System/systemSlice";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  selectCurrentProject,
-  selectGroupProjects,
+  selectActiveProject,
 } from "../Redux/Slices/Groups/groupsSlice";
 
 const ProjectDetailsPage = () => {
-  const currentProject = useSelector(selectCurrentProject);
+  const currentProject = useSelector(selectActiveProject);
   const dispatch = useDispatch();
   const { id } = useParams(); // Retrieve the id from the route
 

@@ -14,6 +14,7 @@ import {
   fetchProjectsByGroupId,
   selectGroupID,
   selectGroupMembers,
+  selectGroupProjects,
 } from "../Redux/Slices/Groups/groupsSlice";
 import CustomTitles from "../Components/CustomTitles";
 import { IoAddSharp } from "react-icons/io5";
@@ -28,6 +29,7 @@ function DashboardPage() {
   const theme = useTheme();
   const selectedGroupid = useSelector(selectGroupID);
   const currentUser = useSelector(selectCurrentUser);
+  const projects = useSelector(selectGroupProjects);
 
   useEffect(() => {
     dispatch(
@@ -62,7 +64,7 @@ function DashboardPage() {
         >
           Current Group Member :{groupMembers.length}
           <br />
-          current Group Project :{}
+          current Group Project :{projects.length}
         </Box>
         <Box
           sx={{

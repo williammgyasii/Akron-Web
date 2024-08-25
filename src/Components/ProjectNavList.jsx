@@ -16,6 +16,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  selectActiveProject,
   selectCurrentProject,
   selectGroupProjects,
   setSelectedProject,
@@ -48,7 +49,7 @@ const ProjectNavList = ({ selectedProject, onSelectProject }) => {
   const projects = useSelector(selectGroupProjects);
   const isDrawerOpen = useSelector(selectIsDrawerOpened);
   const displayProjects = projects.slice(0, 4); // Limit to first 3 projects
-  const currentProject = useSelector(selectCurrentProject);
+  const currentProject = useSelector(selectActiveProject);
   const theme = useTheme();
   const dispatch = useDispatch();
 
@@ -56,7 +57,6 @@ const ProjectNavList = ({ selectedProject, onSelectProject }) => {
     navigate("projects"); // Adjust the path to your projects page
   };
   const handleProjectClick = (projectId, project) => {
-    // dispatch(setActiveProject(projectId));
     dispatch(setSelectedProject(project));
     navigate(`projects/${projectId}`); // Adjust the path to your project details page
   };
@@ -73,15 +73,14 @@ const ProjectNavList = ({ selectedProject, onSelectProject }) => {
 
   return (
     <Box sx={{}}>
-      
       <List sx={{ mt: "-10px" }}>
         {displayProjects.map((project) => {
           // console.log(project?.id);
-          const projectInitial = project.projectName.charAt(0).toUpperCase();
+          const projectInitial = project.projectTitle.charAt(0).toUpperCase();
           return (
             <StyledListItemButton
               selected={currentProject?.id === project.id}
-              key={project.projectName}
+              key={project.id}
               // onClick={() => onSelectProject(project.id)}
               onClick={() => handleProjectClick(project.id, project)}
             >
@@ -102,7 +101,7 @@ const ProjectNavList = ({ selectedProject, onSelectProject }) => {
                       fontSize: "0.855rem", // Adjust font size here
                     },
                   }}
-                  primary={project.projectName}
+                  primary={project.projectTitle}
                 />
               )}
             </StyledListItemButton>

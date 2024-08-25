@@ -203,7 +203,7 @@ const DrawerNav = () => {
               <IoAddSharp size={10} />
             </IconButton>
           </Box>
-          {/* <ProjectNavList /> */}
+          <ProjectNavList />
         </List>
 
         <CustomButton

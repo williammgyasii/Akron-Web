@@ -211,7 +211,7 @@ const groupsSlice = createSlice({
     groupsError: null,
     createGroupLoading: false,
     groupProjects: [],
-    selectedProject: null,
+    activeProject: null,
     groupMembers: [],
   },
   reducers: {
@@ -232,7 +232,7 @@ const groupsSlice = createSlice({
       state.projects.push(action.payload);
     },
     setSelectedProject: (state, action) => {
-      state.selectedProject = action.payload;
+      state.activeProject = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -309,7 +309,7 @@ export const {
 export const selectGroups = (state) => state.groups.groups;
 export const selectGroupID = (state) => state.groups.selectedGroupId;
 export const selectGroupProjects = (state) => state.groups.groupProjects;
-export const selectCurrentProject = (state) => state.groups.selectedProject;
+export const selectActiveProject = (state) => state.groups.activeProject;
 export const selectGroupMembers = (state) => state.groups.groupMembers;
 export const selectGroupStatus = (state) => state.groups.status;
 export default groupsSlice.reducer;

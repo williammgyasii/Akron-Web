@@ -11,6 +11,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  selectActiveProject,
   selectCurrentProject,
   selectGroupID,
   selectGroupMembers,
@@ -39,7 +40,7 @@ const AddTaskForm = ({ groupId, handleClose }) => {
   const taskState = useSelector(selectTaskState);
   const selectedGroup = useSelector(selectGroupID);
   const currentUser = useSelector(selectCurrentUser);
-  const project = useSelector(selectCurrentProject);
+  const project = useSelector(selectActiveProject);
   const groupMembers = useSelector(selectGroupMembers);
 
   console.log(groupMembers);
