@@ -67,10 +67,6 @@ const CreateGroupModal = ({ open, handleClose }) => {
     setLoading(true);
 
     if (groupName && groupIcon) {
-      console.log("Group Name:", groupName);
-      console.log("Group Icon:", groupIcon);
-      console.log("Members:", members);
-
       dispatch(createGroupOnly({ groupName, groupIcon, members }))
         .unwrap()
         .then((result) => {
@@ -80,7 +76,8 @@ const CreateGroupModal = ({ open, handleClose }) => {
           setGroupName("");
           setMembers([]);
           setGroupIcon(null);
-          setErrors({ groupNameError: "" });
+          setErrors({ groupNameError: "", groupIconError: "" });
+          setLoading(false);
           handleClose(); // Close the modal after finishing
         });
     } else {
@@ -150,6 +147,7 @@ const CreateGroupModal = ({ open, handleClose }) => {
             // // type="iconOnly"
             // loadingButton={groupUploading}
             // leftIcon={MdFormatListBulletedAdd}
+            disabled={loading}
             submit
             size="medium"
             sx={{ color: "#fff" }}
