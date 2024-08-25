@@ -2,13 +2,11 @@ import { Box, Container } from "@mui/material";
 import { Button } from "antd";
 import React from "react";
 import LandingPageHeader from "./_components/LandingPageHeader";
+import LandingBanner from "./_components/LandingBanner";
 
 function LandingPageNew() {
   const LandingPageBanners = () => (
-    <Container  component={"main"}>
-      <section id="home" style={{ padding: "100px 0" }}>
-        Home Section
-      </section>
+    <Container component={"main"}>
       <section id="support" style={{ padding: "100px 0" }}>
         Support Section
       </section>
@@ -36,6 +34,7 @@ function LandingPageNew() {
       }}
     >
       <LandingPageHeader />
+      <LandingBanner />
       <LandingPageBanners />
     </Container>
   );
