@@ -1,5 +1,6 @@
 import { Box, Container, Typography, useTheme } from "@mui/material";
 import React from "react";
+import illustration from "../_assets/_images/banner.png";
 
 function LandingBanner() {
   const theme = useTheme();
@@ -9,7 +10,7 @@ function LandingBanner() {
       id="home"
       sx={{
         backgroundColor: "red",
-        paddingTop: "6%",
+        paddingTop: "4%",
         minHeight: "100svh",
         paddingBottom: "6px",
         [theme.breakpoints.down("tablets_port")]: {
@@ -19,29 +20,25 @@ function LandingBanner() {
     >
       <Box
         sx={{
-          display: "block",
+          display: "flex",
           backgroundColor: "blue",
-          gap: "50px 50px",
+          flexDirection:"row",
           alignItems: "center",
+          justifyContent:"space-between",
           minHeight: "auto",
-          paddingTop: "8px",
-          gridTemplateColumns: "1fr 1fr",
-          "@media (min-width: 768px)": {
+          [theme.breakpoints.between("desktop", "desktop_large")]: {
+            fontSize: "12px",
+            lineHeight: "1.5",
+          },
+          [theme.breakpoints.down("tablets_port")]: {
             gridTemplateColumns: "0.95fr 1.05fr",
             paddingTop: "0",
-          },
-          "@media (min-width: 1441px) and (max-width: 1600px)": {
-            h1: {
-              fontSize: "12px",
-              lineHeight: "1.5",
-            },
           },
         }}
       >
         <Box
           sx={{
-            margin: "0 auto",
-            maxWidth: "600px",
+            backgroundColor:"yellow",
             textAlign: "center",
             h1: {
               fontWeight: 700,
@@ -93,9 +90,19 @@ function LandingBanner() {
               </Box> */}
           </Box>
         </Box>
-        {/* <Flex as="figure" sx={styles.bannerImage}>
-            <Image src={illustration} alt="illustration" />
-          </Flex> */}
+        <Box
+          component={"figure"}
+          sx={{
+            alignItems: "center",
+            mt: [9, null, null, null, 0],
+            img: {
+              maxWidth: [null, null, null, "80%", "100%"],
+              m: [null, null, null, "0 auto", 0],
+            },
+          }}
+        >
+          <img src={illustration} alt="illustration" />
+        </Box>
       </Box>
     </Box>
   );

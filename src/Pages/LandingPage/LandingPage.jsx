@@ -1,10 +1,11 @@
-import { Box, Container } from "@mui/material";
+import { Box, Container, useTheme } from "@mui/material";
 import { Button } from "antd";
 import React from "react";
 import LandingBanner from "./_components/LandingBanner";
 import LandingPageAppbar from "./_components/LandingAppbar";
 
 function LandingPageNew() {
+  const theme = useTheme();
   const LandingPageBanners = () => (
     <Container component={"main"}>
       <section id="support" style={{ padding: "100px 0" }}>
@@ -26,7 +27,11 @@ function LandingPageNew() {
       <LandingPageAppbar />
       <Container
         disableGutters
-        sx={{ position: "relative", maxWidth: "1150px" }}
+        sx={{
+          position: "relative",
+          maxWidth: "1300px",
+          backgroundColor:"pink"
+        }}
         component={"main"}
       >
         <LandingBanner />

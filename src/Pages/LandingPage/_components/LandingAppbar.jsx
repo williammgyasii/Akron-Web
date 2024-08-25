@@ -13,12 +13,10 @@ import {
   useTheme,
 } from "@mui/material";
 import { Menu as MenuIcon } from "@mui/icons-material";
-import { styled } from "@mui/system";
+import { styled } from "@mui/material/styles";
 
-const StyledAppBar = styled(AppBar)(({ theme, scrolled }) => ({
-  backgroundColor: scrolled ? theme.palette.secondary.main : "transparent",
-  transition: "background-color 0.3s ease",
-  boxShadow: scrolled ? "0px 2px 4px rgba(0, 0, 0, 0.1)" : "none",
+const StyledAppBar = styled(AppBar)(({ theme }) => ({
+  transition: "background-color 0.3s ease,boxShadow 0.5s linear",
   [theme.breakpoints.down("tablets_port")]: {
     justifyContent: "space-between",
     display: "flex",
@@ -127,7 +125,15 @@ const LandingPageAppbar = ({}) => {
 
   return (
     <>
-      <StyledAppBar scrolled={scrolled} position="fixed">
+      <StyledAppBar
+        sx={{
+          backgroundColor: scrolled
+            ? theme.palette.secondary.main
+            : "transparent",
+          boxShadow: scrolled ? "0px 2px 4px rgba(0, 0, 0, 0.3)" : "none",
+        }}
+        position="fixed"
+      >
         <Toolbar
           sx={{
             display: "flex",
