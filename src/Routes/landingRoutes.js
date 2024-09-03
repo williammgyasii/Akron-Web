@@ -7,12 +7,6 @@ import LandingPage from "../Pages/LandingPage/LandingPage";
 
 export const navbarLinks = [
   {
-    link: "/",
-    title: "Home",
-    element: <LandingPage />,
-    index: true,
-  },
-  {
     link: "/features",
     title: "Features",
     element: <Features />,

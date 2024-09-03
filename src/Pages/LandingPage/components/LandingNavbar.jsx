@@ -5,6 +5,12 @@ import LandingNavbarLinks from "./LandingNavbarLinks";
 const LandingNavbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [scroll, setScrolled] = useState(false);
+  const [hidden, setHidden] = useState(false);
+  const { scrollY } = useScroll();
+  const [isScrolled, setIsScrolled] = useState(false);
+  const color = useMotionValue(COLORS_TOP[2]);
 
   const toggleMobileNav = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -24,11 +30,22 @@ const LandingNavbar = () => {
     return () => {
       document.removeEventListener("click", closeAllDropdowns);
     };
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 0);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
   }, []);
 
   return (
-    <header className="astronav-sticky-header sticky top-0 border-b z-20 transition-all py-2 border-transparent">
-      <div className="max-w-screen-xl mx-auto px-5">
+    <header
+      className="astronav-sticky-header fixed z-10 
+       top-0 font-normal flex items-center justify-between w-full top-0 border-b z-20 transition-all py-2 border-transparent"
+    >
+      <div className="max-w-screen-xl mx-auto w-full px-10">
         <div className="flex flex-row md:flex-col  justify-between items-center relative z-10">
           <div className="flex md:w-full items-center justify-between">
             <a
@@ -82,7 +99,11 @@ const LandingNavbar = () => {
             <ul className="flex flex-row md:flex-col gap-3 md:gap-1">
               {navbarLinks.map((item, index) => {
                 return (
-                  <LandingNavbarLinks title={item.title} link={item.link} />
+                  <LandingNavbarLinks
+                    key={index}
+                    title={item.title}
+                    link={item.link}
+                  />
                 );
               })}
             </ul>
@@ -94,7 +115,7 @@ const LandingNavbar = () => {
                 Log in
               </a>
               <a
-                href="#"
+                href="/dashboard"
                 className="rounded-full text-center transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-indigo-500 focus-visible:outline-none focus-visible:shadow-outline-indigo w-full px-5 py-2 bg-indigo-600 text-white hover:bg-indigo-800"
               >
                 Try for Free
@@ -104,13 +125,13 @@ const LandingNavbar = () => {
           <div>
             <div className="flex justify-center md:hidden items-center gap-2">
               <a
-                href="#"
+                href="/login"
                 className="text-sm w-full text-center transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-indigo-500 focus-visible:outline-none focus-visible:shadow-outline-indigo rounded-lg"
               >
                 Log in
               </a>
               <a
-                href="#"
+                href="/dashboard"
                 className="rounded-lg text-sm text-center transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-indigo-500 focus-visible:outline-none focus-visible:shadow-outline-indigo w-full px-4 py-2 bg-indigo-600 text-white hover:bg-indigo-800"
               >
                 Dashboard
