@@ -14,7 +14,7 @@ function LandingPage() {
       <main>
         <AnimatePresence>
           <LandingHeroSection />
-          <LandingHeroSection />
+          {/* <LandingHeroSection /> */}
         </AnimatePresence>
       </main>
 

@@ -1,20 +1,21 @@
 import React from "react";
 import landingImage from "../assets/LandingBanner.jpg";
+import GradientAnimation from "../../../AnimatedComponents/GradientAnimation";
 
 const LandingHeroSection = () => {
   return (
-    <section className="overflow-x-clip bg-background  min-h-screen">
-      <div className="max-w-screen-xl  mx-auto py-huge md:px-2 px-huge">
+    <section className="overflow-x-clip relative min-h-screen">
+      <GradientAnimation />
+      <div className="max-w-screen-xl  mx-auto py-[7rem] md:px-2 px-huge">
         <div className="grid grid-cols-5 relative">
           {/* Background Gradients */}
-          <div className="absolute w-96 h-96 blur-2xl  bg-gradient-radial from-red-800 right-0 top-0"></div>
-          <div className="absolute w-96 h-96 blur-2xl -z-10 bg-gradient-radial from-purple-800 right-56 top-10"></div>
 
+          {/* <GradientAnimation /> */}
           <div className="max-w-sm place-items-center justify-center flex flex-col col-span-2 text-center md:col-span-5">
-            <h1 className=" md:text-4xl text-6xl font-bold tracking-tight tracking-tighter [text-wrap:balance] text-center lg:text-start">
+            <h1 className=" md:text-4xl text-6xl font-bold tracking-tight tracking-tighter [text-wrap:balance] text-center md:text-center">
               Group Task Management at its best
             </h1>
-            <p className="text-lg mt-1 max-w-lg font-medium text-slate-600 [text-wrap:balance] text-center md:text-start">
+            <p className="text-lg mt-1 max-w-lg font-medium text-slate-600 [text-wrap:balance] text-center md:text-center">
               A dynamic task management platform that empowers teams to
               collaborate effortlessly, manage tasks efficiently, and customize
               their workspace for optimal productivity.
@@ -58,7 +59,7 @@ const LandingHeroSection = () => {
                 alt="Astronaut in the air"
                 sizes="(max-width: 1024px) 100vw, 50vw"
                 loading="eager"
-                fetchPriority="high"
+                // fetchPriority="high"
                 width="1183"
                 height="787"
                 decoding="async"
