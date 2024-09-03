@@ -4,6 +4,7 @@ import React from "react";
 import LandingNavbar from "./components/LandingNavbar";
 import LandingHeroSection from "./components/LandingHeroSection";
 import { AnimatePresence } from "framer-motion";
+import LandingStartupSection from "./components/LandingStartupSection";
 
 function LandingPage() {
   const theme = useTheme();
@@ -14,7 +15,7 @@ function LandingPage() {
       <main>
         <AnimatePresence>
           <LandingHeroSection />
-          {/* <LandingHeroSection /> */}
+          <LandingStartupSection />
         </AnimatePresence>
       </main>
 
