@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { navbarLinks } from "../../../Routes/landingRoutes";
 import LandingNavbarLinks from "./LandingNavbarLinks";
+import { useMotionValueEvent, useScroll, motion } from "framer-motion";
 
 const LandingNavbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -10,7 +11,6 @@ const LandingNavbar = () => {
   const [hidden, setHidden] = useState(false);
   const { scrollY } = useScroll();
   const [isScrolled, setIsScrolled] = useState(false);
-  const color = useMotionValue(COLORS_TOP[2]);
 
   const toggleMobileNav = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -25,25 +25,40 @@ const LandingNavbar = () => {
     }
   };
 
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    const previous = scrollY.getPrevious();
+    if (latest > previous && latest > 150) {
+      setHidden(true);
+    } else {
+      setHidden(false);
+    }
+  });
+
   React.useEffect(() => {
     document.addEventListener("click", closeAllDropdowns);
-    return () => {
-      document.removeEventListener("click", closeAllDropdowns);
-    };
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 0);
     };
-
     window.addEventListener("scroll", handleScroll);
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
+    return () => {
+      document.removeEventListener("click", closeAllDropdowns);
+    };
   }, []);
 
   return (
-    <header
-      className="astronav-sticky-header fixed z-10 
-       top-0 font-normal flex items-center justify-between w-full top-0 border-b z-20 transition-all py-2 border-transparent"
+    <motion.header
+      variants={{
+        visible: { y: 0 },
+        hidden: { y: "-100%" },
+      }}
+      animate={hidden ? "hidden" : "visible"}
+      className={`astronav-sticky-header fixed z-10  ${
+        isScrolled ? "bg-dark" : "bg-transparent"
+      }
+       top-0 font-normal flex items-center justify-between w-full top-0 border-b z-20 transition-all py-2 border-transparent`}
     >
       <div className="max-w-screen-xl mx-auto w-full px-10">
         <div className="flex flex-row md:flex-col  justify-between items-center relative z-10">
@@ -140,7 +155,7 @@ const LandingNavbar = () => {
           </div>
         </div>
       </div>
-    </header>
+    </motion.header>
   );
 };
 

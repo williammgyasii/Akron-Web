@@ -3,8 +3,8 @@ import landingImage from "../assets/LandingBanner.jpg";
 
 const LandingHeroSection = () => {
   return (
-    <section className="overflow-x-clip  min-h-screen">
-      <div className="max-w-screen-xl bg-background mx-auto py-5 md:px-2 px-huge">
+    <section className="overflow-x-clip bg-background  min-h-screen">
+      <div className="max-w-screen-xl  mx-auto py-huge md:px-2 px-huge">
         <div className="grid grid-cols-5 relative">
           {/* Background Gradients */}
           <div className="absolute w-96 h-96 blur-2xl  bg-gradient-radial from-red-800 right-0 top-0"></div>

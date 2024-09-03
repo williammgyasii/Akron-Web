@@ -3,6 +3,7 @@ import { Button } from "antd";
 import React from "react";
 import LandingNavbar from "./components/LandingNavbar";
 import LandingHeroSection from "./components/LandingHeroSection";
+import { AnimatePresence } from "framer-motion";
 
 function LandingPage() {
   const theme = useTheme();
@@ -11,7 +12,10 @@ function LandingPage() {
     <>
       <LandingNavbar />
       <main>
-        <LandingHeroSection />
+        <AnimatePresence>
+          <LandingHeroSection />
+          <LandingHeroSection />
+        </AnimatePresence>
       </main>
 
       <div className="bg-red-200">WOEKRCAC</div>
