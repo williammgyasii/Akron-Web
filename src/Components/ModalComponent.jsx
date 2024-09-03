@@ -1,6 +1,6 @@
 // ModalComponent.js
 import React, { useState } from "react";
-import { Modal, Box, Typography, Button } from "@mui/material";
+import { Modal, Box, Typography } from "@mui/material";
 import { styled } from "@mui/system";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -10,7 +10,6 @@ import {
   setWelcomeModalClose,
 } from "../Redux/Slices/System/systemSlice";
 import AddTaskForm from "./AddTaskForm";
-import CreateProjectForm from "./CreateProjectForm";
 import CreateGroupForm from "./CreateGroupForm";
 import { selectCurrentUser } from "../Redux/Slices/Users/UsersSlice";
 import CustomButton from "./CustomButton";
@@ -33,8 +32,7 @@ const ModalBox = styled(Box)(({ theme }) => ({
 const ModalComponent = ({ open, onClose, view }) => {
   const modalOpened = useSelector(selectIsModalOpened);
   const modalType = useSelector(selectModalView);
-  const [activeStep, setActiveStep] = useState(0);
-  const [buttonNext, setButtonNext] = useState(false);
+
   const [groupName, setGroupName] = useState("");
   const [searchEmail, setSearchEmail] = useState("");
   const [groupIcon, setGroupIcon] = useState(null);

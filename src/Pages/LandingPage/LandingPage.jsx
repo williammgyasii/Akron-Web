@@ -1,45 +1,17 @@
 import { Box, Container, useTheme } from "@mui/material";
 import { Button } from "antd";
 import React from "react";
-import LandingBanner from "./_components/LandingBanner";
-import LandingPageAppbar from "./_components/LandingAppbar";
+import LandingNavbar from "./components/LandingNavbar";
 
-function LandingPageNew() {
+function LandingPage() {
   const theme = useTheme();
-  const LandingPageBanners = () => (
-    <Container component={"main"}>
-      <section id="support" style={{ padding: "100px 0" }}>
-        Support Section
-      </section>
-      <section id="features" style={{ padding: "100px 0" }}>
-        Features Section
-      </section>
-      <section id="testimonials" style={{ padding: "100px 0" }}>
-        Testimonials Section
-      </section>
-      <section id="login" style={{ padding: "100px 0" }}>
-        Login Section
-      </section>
-    </Container>
-  );
+
   return (
-    <Container disableGutters>
-      <LandingPageAppbar />
-      <LandingBanner />
-      <Container
-        disableGutters
-        sx={{
-          position: "relative",
-          maxWidth: "1300px",
-          // backgroundColor:"pink"
-        }}
-        component={"main"}
-      >
-        
-        <LandingPageBanners />
-      </Container>
-    </Container>
+    <>
+      <LandingNavbar />
+      <div className="bg-red-200">WOEKRCAC</div>
+    </>
   );
 }
 
-export default LandingPageNew;
+export default LandingPage;

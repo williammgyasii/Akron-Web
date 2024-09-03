@@ -6,17 +6,14 @@ import reportWebVitals from "./reportWebVitals";
 import { Provider, useDispatch, useSelector } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { store, persistor } from "./Redux/store";
-import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
+import { CssBaseline, ThemeProvider } from "@mui/material";
 import theme from "./Utils/getTheme";
 import {
   listenForAuthChanges,
   selectCurrentUser,
 } from "./Redux/Slices/Users/UsersSlice";
-import GlobalLoading from "./Components/GlobalLoading";
 import GlobalSnackbar from "./Components/GlobalSnackbar";
-import { fetchUserGroups } from "./Redux/Slices/Groups/groupsSlice";
 import WelcomeModal from "./Components/WelcomeModal";
-import { selectWelcomeModalOpened } from "./Redux/Slices/System/systemSlice";
 
 const AuthListener = () => {
   const dispatch = useDispatch();

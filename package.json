@@ -35,8 +35,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "deploy-test":"firebase deploy --only hosting:dev-site",
-    "deploy-production":"firebase deploy --only hosting:production"
+    "deploy-test": "firebase deploy --only hosting:dev-site",
+    "deploy-production": "firebase deploy --only hosting:production"
   },
   "eslintConfig": {
     "extends": [
@@ -55,5 +55,10 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.44",
+    "tailwindcss": "^3.4.10"
   }
 }
