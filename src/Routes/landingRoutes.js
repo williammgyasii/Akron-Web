@@ -1,70 +1,40 @@
-import { AccountBox, Dashboard, Settings } from "@mui/icons-material";
-import DashboardPage from "../Pages/DashboardPage";
-import ProfilePage from "../Pages/ProfilePage";
-import SettingsPage from "../Pages/SettingsPage";
-import { IoGridOutline, IoMenu, IoNotifications } from "react-icons/io5";
-import NotificationsPage from "../Pages/NotificationsPage";
-import { MdTask } from "react-icons/md";
-import TaskPage from "../Pages/TaskPage";
-import GroupsPage from "../Pages/GroupsPage";
-import { FaPeopleGroup } from "react-icons/fa6";
-import { BiMessageSquare } from "react-icons/bi";
-import MessagesPage from "../Pages/MessagesPage";
-import ProjectsPage from "../Pages/ProjectsPage";
-import ProjectDetailsPage from "../Pages/ProjectDetailsPage";
+import Features from "../Pages/LandingPage/subpages/Features";
+import Pricing from "../Pages/LandingPage/subpages/Pricing";
+import About from "../Pages/LandingPage/subpages/About";
+import Blog from "../Pages/LandingPage/subpages/Blog";
+import Contact from "../Pages/LandingPage/subpages/Contact";
+import LandingPage from "../Pages/LandingPage/LandingPage";
 
-export const DASHBOARD_ROUTES = [
+export const navbarLinks = [
   {
-    title: "Dashboard",
-    path: "/dashboard",
-    icon: <IoGridOutline />,
-    component: <DashboardPage />,
+    link: "/",
+    title: "Home",
+    element: <LandingPage />,
     index: true,
   },
   {
-    title: "Task",
-    path: "tasks",
-    icon: <MdTask />,
-    component: <TaskPage />,
+    link: "/features",
+    title: "Features",
+    element: <Features />,
   },
   {
-    title: "Groups",
-    path: "groups",
-    icon: <FaPeopleGroup />,
-    component: <GroupsPage />,
+    link: "/pricing",
+    title: "Pricing",
+    element: <Pricing />,
   },
   {
-    title: "Messages",
-    path: "messages",
-    icon: <BiMessageSquare />,
-    component: <MessagesPage />,
+    link: "/about",
+    title: "About",
+    element: <About />,
   },
   {
-    title: "Profile",
-    path: "profile",
-    // icon: < P/>,
-    component: <ProfilePage />,
-    noView: true,
+    link: "/blog",
+    title: "Blog",
+    element: <Blog />,
   },
   {
-    title: "Settings",
-    path: "settings",
-    // icon: < P/>,
-    component: <SettingsPage />,
-    noView: true,
-  },
-  {
-    title: "Projects",
-    path: "projects",
-    // icon: < P/>,
-    component: <ProjectsPage />,
-    noView: true,
-  },
-  {
-    title: "Single Project",
-    path: "projects/:id",
-    // icon: < P/>,
-    component: <ProjectDetailsPage />,
-    noView: true,
+    link: "/contact",
+    title: "Contact",
+    element: <Contact />,
   },
 ];
