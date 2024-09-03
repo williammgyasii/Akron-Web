@@ -1,5 +1,6 @@
 import React from "react";
 import SectionLayout from "../layouts/SectionLayout";
+import FeaturesBanner from '../assets/FeaturesBanner.jpg'
 
 function LandingStartupSection() {
   return (
@@ -19,7 +20,7 @@ function LandingStartupSection() {
         </p>
       </div>
 
-      <div className="grid md:grid-cols-2 py-10">
+      <div className="grid grid-cols-2  py-10">
         <div className="grid place-items-center">
           <picture>
             <source srcSet="/_astro/6.Ep0jo6kx_jbH81.avif" type="image/avif" />
