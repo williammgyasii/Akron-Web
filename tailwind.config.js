@@ -13,9 +13,7 @@ module.exports = {
         xsHuge: "7rem",
       },
       fontFamily: {
-        montserrat: ["Montserrat", "sans-serif"],
-        sans: ["Poppins", "sans-serif"],
-        mono: ["Fira Code", "monospace"],
+        sans: ["Inter", "sans-serif"],
       },
       colors: {
         dark: "#1b1b1b",

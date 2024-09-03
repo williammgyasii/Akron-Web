@@ -25,18 +25,18 @@ const LandingNavbar = () => {
   }, []);
 
   return (
-    <header className="astronav-sticky-header sticky top-0 border-b z-20 transition-all py-5 border-transparent">
+    <header className="astronav-sticky-header sticky top-0 border-b z-20 transition-all py-2 border-transparent">
       <div className="max-w-screen-xl mx-auto px-5">
         <div className="flex flex-row md:flex-col justify-between items-center relative z-10">
-          <div className="flex w-full lg:w-auto items-center justify-between">
+          <div className="flex w-auto md:w-full items-center justify-between">
             <a
               href="/"
               className="text-lg flex items-center transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-indigo-500 focus-visible:outline-none focus-visible:shadow-outline-indigo rounded-full px-2 -ml-2"
             >
-              <span className="font-bold text-indigo-600">Astro</span>
-              <span className="text-slate-600">ship</span>
-              <span className="uppercase mt-0.5 leading-none text-[10px] ml-1 font-bold bg-gray-200 text-slate-700 px-2 py-1 rounded-md">
-                PRO
+              <span className="font-bold text-indigo-600 font-sans">Akron</span>
+              <span className="text-slate-600">task</span>
+              <span className="uppercase mt-0.5 leading-none text-[10px] ml-1 bg-gray-200 text-slate-700 px-2 py-1 rounded-md font-sans">
+                Management
               </span>
             </a>
             <div className="hidden md:block">
@@ -72,41 +72,10 @@ const LandingNavbar = () => {
           </div>
           <nav
             className={`astronav-items ${
-              isMenuOpen ? "" : "hidden"
-            } w-full md:w-auto mt-2 flex lg:mt-0`}
+              isMenuOpen ? "block" : "hidden"
+            } w-full md:w-auto bg-dark md:w-full md:flex-col mt-2 flex lg:mt-0`}
           >
             <ul className="flex flex-row md:flex-col lg:gap-3">
-              {/* <li className="relative z-50 isolate">
-                <div className="astronav-dropdown group">
-                  <button
-                    className="flex items-center gap-1 text-sm w-full lg:w-auto transition lg:px-3 py-2 text-gray-600 hover:text-indigo-600 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-indigo-500 focus-visible:outline-none focus-visible:shadow-outline-indigo rounded-full"
-                    onClick={toggleDropdownMenu}
-                  >
-                    <span>Pages</span>
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="3" stroke="currentColor" className={`w-3 h-3 mt-0.5 ${isDropdownOpen ? 'rotate-180' : ''}`}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"></path>
-                    </svg>
-                  </button>
-                  <div className={`astronav-dropdown dropdown-toggle ${isDropdownOpen ? '' : 'hidden'}`}>
-                    <div className="lg:absolute w-full lg:w-48 z-50 border-l lg:border-0 border-slate-200 lg:left-0 origin-top-left">
-                      <div className="px-3 lg:py-2 lg:bg-white lg:rounded-md lg:shadow lg:border flex flex-col">
-                        <a href="/features" className="py-1 text-sm text-gray-600 hover:text-indigo-600 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-indigo-500 focus-visible:outline-none focus-visible:shadow-outline-indigo rounded">
-                          Features
-                        </a>
-                        <a href="/integrations" className="py-1 text-sm text-gray-600 hover:text-indigo-600 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-indigo-500 focus-visible:outline-none focus-visible:shadow-outline-indigo rounded">
-                          Integrations
-                        </a>
-                        <a href="/blog//typography-example" className="py-1 text-sm text-gray-600 hover:text-indigo-600 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-indigo-500 focus-visible:outline-none focus-visible:shadow-outline-indigo rounded">
-                          Blog Details
-                        </a>
-                        <a href="/404" className="py-1 text-sm text-gray-600 hover:text-indigo-600 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-indigo-500 focus-visible:outline-none focus-visible:shadow-outline-indigo rounded">
-                          404 Page
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </li> */}
               <li>
                 <a
                   href="/pricing"
@@ -155,20 +124,20 @@ const LandingNavbar = () => {
               </a>
             </div>
           </nav>
-        </div>
-        <div className="flex sm:hidden items-center gap-4">
-          <a
-            href="#"
-            className="text-sm px-2 py-1 transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-indigo-500 focus-visible:outline-none focus-visible:shadow-outline-indigo rounded-full"
-          >
-            Log in
-          </a>
-          <a
-            href="#"
-            className="rounded-full text-center transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-indigo-500 focus-visible:outline-none focus-visible:shadow-outline-indigo w-full px-5 py-2 bg-indigo-600 text-white hover:bg-indigo-800"
-          >
-            Try for Free
-          </a>
+          <div className="flex md:hidden items-center gap-4">
+            <a
+              href="#"
+              className="text-sm px-2 py-1 transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-indigo-500 focus-visible:outline-none focus-visible:shadow-outline-indigo rounded-full"
+            >
+              Log in
+            </a>
+            <a
+              href="#"
+              className="rounded-full text-center transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-indigo-500 focus-visible:outline-none focus-visible:shadow-outline-indigo w-full px-5 py-2 bg-indigo-600 text-white hover:bg-indigo-800"
+            >
+              Try for Free
+            </a>
+          </div>
         </div>
       </div>
     </header>
