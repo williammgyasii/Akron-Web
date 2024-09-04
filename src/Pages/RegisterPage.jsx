@@ -17,6 +17,7 @@ import CustomFormInput from "../Components/CustomFormInput";
 import SideBySideLayout from "../Layouts/SideBySide";
 import { IoSettings } from "react-icons/io5";
 import registerSideImage from "../Pages/LandingPage/assets/FeaturesBanner.jpg";
+import CustomTitles from "../Components/CustomTitles";
 
 const RegisterPage = () => {
   const dispatch = useDispatch();
@@ -209,14 +210,14 @@ const RegisterPage = () => {
         }}
       >
         {/* APP LOGO GOES HERE */}
-        <CustomHeader
+        <CustomTitles
           weightFont={"bold"}
           color={theme.palette.secondary.main}
-          variant="text_3xl"
-          capitalize
+          variant="text_2xl"
         >
-          Join Akron
-        </CustomHeader>
+          Create Account
+        </CustomTitles>
+
         <CustomSubtitle
           customStyles={{
             marginTop: "-10px",

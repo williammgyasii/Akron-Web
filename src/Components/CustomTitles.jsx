@@ -1,5 +1,5 @@
 import React from "react";
-import { capitalize, Typography, useTheme } from "@mui/material";
+import { Typography, useTheme } from "@mui/material";
 
 //REWRITE OPTIMIZATION
 
@@ -7,7 +7,6 @@ const CustomTitles = ({
   variant,
   align = "center",
   color,
-  capitalize = "uppercase",
   children,
   styledText,
   customStyles,
@@ -27,9 +26,25 @@ const CustomTitles = ({
       variant={variant}
       align={align}
       color={color}
-      textTransform={capitalize ? "uppercase" : "lowercase"}
       fontWeight={weight[weightFont ? weightFont : "regular"]}
-      sx={[customStyles,{display:"block"}]}
+      sx={[
+        customStyles,
+        {
+          display: "block",
+          fontFamily: "Inter",
+          position: "relative",
+          "&::before": {
+            content: '""',
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            background: theme.palette.,
+            zIndex: -1, // Puts the pseudo-element behind the content
+          },
+        },
+      ]}
       {...props}
     >
       {children}
