@@ -1,26 +1,21 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import {
-  TextField,
-  Button,
-  Typography,
   CircularProgress,
   Container,
   Box,
-  Alert,
   useTheme,
   Stack,
 } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
-import { loginUser, registerUser } from "../Redux/Slices/Users/UsersSlice";
+import {
+  REGISTER_USER,
+} from "../Redux/Slices/Users/UsersSlice";
 import CustomHeader from "../Components/CustomTitles";
-import { generateRandomQuote } from "../Utils/generateRandomQuote";
 import Quotes from "../Components/Quotes";
 import CustomSubtitle from "../Components/CustomSubtitle";
-import ButtonVariants from "../Components/CustomButton";
 import CustomButton from "../Components/CustomButton";
-import { ChevronLeft, Google, LoginOutlined } from "@mui/icons-material";
 import CustomFormInput from "../Components/CustomFormInput";
 import SideBySideLayout from "../Layouts/SideBySide";
 import { IoSettings } from "react-icons/io5";
@@ -30,11 +25,8 @@ const RegisterPage = () => {
   const navigate = useNavigate();
 
   const theme = useTheme();
-  const { currentUser, error, loading } = useSelector((state) => state.user);
+  const {loading } = useSelector((state) => state.user);
   const registerBg = require("../Images/RegisterBg.jpg");
-  const [snackBarOpen, setSnackBarOpen] = useState(false);
-
-  // console.log(currentUser);
 
   const [formValues, setFormValues] = useState({
     firstName: "",
@@ -42,6 +34,7 @@ const RegisterPage = () => {
     email: "",
     username: "",
     password: "",
+    phoneNumber:""
   });
   const [errors, setErrors] = useState({
     firstName: false,
@@ -49,6 +42,7 @@ const RegisterPage = () => {
     email: false,
     username: false,
     password: false,
+    phoneNumber:false,
   });
   const [helperTexts, setHelperTexts] = useState({
     firstName: "",
@@ -56,6 +50,7 @@ const RegisterPage = () => {
     email: "",
     username: "",
     password: "",
+    phoneNumber:""
   });
 
   const handleInputChange = (e) => {
@@ -98,18 +93,18 @@ const RegisterPage = () => {
       newHelperTexts.password = "Password must be more than 8 characters";
       valid = false;
     }
+    
 
     setErrors(newErrors);
     setHelperTexts(newHelperTexts);
     return valid;
   };
 
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (validateForm()) {
       try {
-        dispatch(registerUser(formValues))
+        dispatch(REGISTER_USER(formValues))
           .unwrap()
           .then(() => {
             navigate("/dashboard", { replace: true });
@@ -132,6 +127,9 @@ const RegisterPage = () => {
         justifyContent: "center",
         height: "100vh",
         alignItems: "center",
+        background:
+          "linear-gradient(90deg, hsla(186, 33%, 94%, 1) 0%, hsla(216, 41%, 79%, 1) 100%)",
+        // p: 2,
         [theme.breakpoints.down("tablets_port")]: {
           flexDirection: "column",
         },
@@ -146,7 +144,8 @@ const RegisterPage = () => {
           justifyContent: "center",
           alignItems: "center",
           // backgroundColor: "blue",
-          flexBasis: "40%",
+          flexBasis: "55%",
+          borderRadius: "20px",
           height: "100%",
           padding: 5,
           backgroundImage: `
@@ -195,8 +194,11 @@ const RegisterPage = () => {
           py: 20,
           backgroundColor: theme.palette.background.paper,
           flex: 1,
+          ml:"-30px",
+          zIndex:"20",
+          borderRadius:"20px",
           height: "100%",
-          px: 15,
+          // px: 15,
           [theme.breakpoints.down("tablets_landscape")]: {
             px: 8,
           },

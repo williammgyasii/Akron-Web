@@ -7,34 +7,44 @@ import {
   signOut,
   onAuthStateChanged,
 } from "firebase/auth";
-import { doc, setDoc, getDoc } from "firebase/firestore";
+import { doc, setDoc, getDoc, serverTimestamp } from "firebase/firestore";
 import { firebaseAuth, firebaseFirestore } from "../../../Firebase/getFirebase";
 import { getAuthErrorMessage } from "../../../Utils/authErrors";
 import { fetchUserGroups } from "../Groups/groupsSlice";
 
-export const registerUser = createAsyncThunk(
-  "users/registerUser",
+export const REGISTER_USER = createAsyncThunk(
+  "auth/registerUser",
   async (formValues, { rejectWithValue }) => {
     try {
+      // Create user in Firebase Auth
       const userCredential = await createUserWithEmailAndPassword(
         firebaseAuth,
         formValues.email,
         formValues.password
       );
       const user = userCredential.user;
+
       const { password, ...rest } = formValues;
+
+      // Save user data to Firestore
       await setDoc(doc(firebaseFirestore, "users", user.uid), {
         uid: user.uid,
+        createdAt: serverTimestamp(),
+        groups: [],
+        pendingGroups: [],
+        projects: [],
+        role: "admin", // Default role
         ...rest,
       });
-      return { uid: user.uid, note: "redux/registerSlice", ...rest };
+
+      return { uid: user.uid, ...rest, role: "admin" };
     } catch (error) {
-      // console.log(error.code)
-      const errorMessage = getAuthErrorMessage(error.code);
-      return rejectWithValue(errorMessage);
+      return rejectWithValue(error.message);
     }
   }
 );
+
+
 
 export const loginUser = createAsyncThunk(
   "users/loginUser",
@@ -137,16 +147,16 @@ const usersSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(registerUser.pending, (state) => {
+      .addCase(REGISTER_USER.pending, (state) => {
         state.status = "loading";
         state.loading = true;
       })
-      .addCase(registerUser.fulfilled, (state, action) => {
+      .addCase(REGISTER_USER.fulfilled, (state, action) => {
         state.status = "succeeded";
         state.currentUser = action.payload;
         state.loading = false;
       })
-      .addCase(registerUser.rejected, (state, action) => {
+      .addCase(REGISTER_USER.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.error.message;
         state.loading = false;
