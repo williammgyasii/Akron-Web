@@ -28,7 +28,7 @@ const LandingTestimonials = () => {
   const loopedTestimonials = [...testimonials, ...testimonials];
 
   return (
-    <SectionLayout className={"overflow-hidden !p-0"}>
+    <SectionLayout className={"overflow-hidden !px-0 !py-4"}>
       <div className="mt-3">
         <h2 className="text-4xl lg:text-5xl font-bold lg:tracking-tight text-center">
           Client <span className="text-indigo-600">Testimonials</span>

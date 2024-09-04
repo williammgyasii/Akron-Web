@@ -6,6 +6,7 @@ import LandingHeroSection from "./components/LandingHeroSection";
 import { AnimatePresence } from "framer-motion";
 import LandingStartupSection from "./components/LandingStartupSection";
 import LandingTestimonials from "./components/LandingTestimonials";
+import LandingToolSection from "./components/LandingToolSection";
 
 function LandingPage() {
   const theme = useTheme();
@@ -18,6 +19,7 @@ function LandingPage() {
           <LandingHeroSection />
           <LandingStartupSection />
           <LandingTestimonials />
+          <LandingToolSection />
         </AnimatePresence>
       </main>
 
