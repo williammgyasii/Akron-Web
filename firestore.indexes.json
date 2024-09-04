@@ -1,0 +1,51 @@
+{
+    "indexes": [
+      {
+        "collectionGroup": "groups",
+        "queryScope": "COLLECTION",
+        "fields": [
+          { "fieldPath": "currentMembers", "mode": "ASCENDING" },
+          { "fieldPath": "pendingMembers", "mode": "ASCENDING" }
+        ]
+      },
+      {
+        "collectionGroup": "projects",
+        "queryScope": "COLLECTION",
+        "fields": [
+          { "fieldPath": "groupId", "mode": "ASCENDING" },
+          { "fieldPath": "tasksCount", "mode": "ASCENDING" },
+          { "fieldPath": "commentsCount", "mode": "ASCENDING" }
+        ]
+      },
+      {
+        "collectionGroup": "projects",
+        "queryScope": "COLLECTION",
+        "fields": [
+          { "fieldPath": "timestamp", "mode": "ASCENDING" }
+        ]
+      },
+      {
+        "collectionGroup": "projects",
+        "queryScope": "COLLECTION",
+        "fields": [
+          { "fieldPath": "createdBy", "mode": "ASCENDING" }
+        ]
+      },
+      {
+        "collectionGroup": "tasks",
+        "queryScope": "COLLECTION",
+        "fields": [
+          { "fieldPath": "status", "mode": "ASCENDING" },
+          { "fieldPath": "dueDate", "mode": "ASCENDING" }
+        ]
+      },
+      {
+        "collectionGroup": "comments",
+        "queryScope": "COLLECTION",
+        "fields": [
+          { "fieldPath": "timestamp", "mode": "ASCENDING" }
+        ]
+      }
+    ]
+  }
+  
