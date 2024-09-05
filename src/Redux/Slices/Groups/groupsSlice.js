@@ -182,36 +182,47 @@ export const CREATE_USER_GROUPS = createAsyncThunk(
       const groupRef = doc(collection(firebaseFirestore, "groups"));
       const groupId = groupRef.id; // Get the generated ID
       const extractedInvites = invitedEmails.map((invitee, index) => ({
-        [invitee.userid]: {
-          role: "member",
-          joinedAt: new Date(),
-        },
+        userid: invitee.userid,
+        role: "member",
+        joinedAt: new Date(),
       }));
       const groupDoc = {
         groupData,
         createdAt: new Date(),
         ownerId: userId,
-        members: {
-          [userId]: {
+        members: [
+          {
+            userId: userId,
             role: "owner",
             joinedAt: new Date(),
           },
-        },
+        ],
         pendingInvitations: [...extractedInvites],
         imageUrl,
       };
 
-      // Update user document
-      const userRef = doc(firebaseFirestore, "users", userId);
-      batch.update(userRef, {
-        [`groups.${groupId}`]: {
-          role: "owner",
-          joinedAt: new Date(),
-          createdBy: true,
-        },
-      });
-
       batch.set(groupRef, groupDoc);
+
+      // Update user document to add the new group
+      const userRef = doc(firebaseFirestore, "users", userId);
+      const userDoc = await getDoc(userRef);
+      const existingGroups = userDoc.exists()
+        ? userDoc.data().groups || []
+        : [];
+
+      // Create a new group entry
+      const newGroupEntry = {
+        groupId,
+        role: "owner",
+        joinedAt: new Date(),
+        createdBy: true,
+      };
+
+      // Merge the new group with the existing ones
+      const updatedGroups = [...existingGroups, newGroupEntry];
+
+      // Update the user document
+      batch.update(userRef, { groups: updatedGroups });
 
       // // Commit batch
       await batch.commit();
@@ -257,7 +268,7 @@ export const FETCH_USER_GROUPS = createAsyncThunk(
       }
       return groups;
     } catch (error) {
-      console.error("Error fetching groups:", error.message);
+      console.error("Error groups/fetchUserGroups", error);
       return rejectWithValue(error.message);
     }
   }
