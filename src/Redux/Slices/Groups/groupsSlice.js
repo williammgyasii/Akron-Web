@@ -53,7 +53,7 @@ export const fetchSelectedGroupDetails = createAsyncThunk(
 
 // AsyncThunk for creating a group and project
 export const createGroupWithProject = createAsyncThunk(
-  "groups/createGroup",
+  "groups/createGroupWithProject",
   async (
     { groupName, groupIcon, members, projectValues },
     { rejectWithValue }
@@ -114,51 +114,51 @@ export const createGroupWithProject = createAsyncThunk(
 );
 
 // AsyncThunk for creating a group without project
-export const createGroupOnly = createAsyncThunk(
-  "groups/createGroupOnly",
-  async ({ groupName, groupIcon, members }, { rejectWithValue }) => {
-    try {
-      const auth = getAuth();
-      const currentUser = auth.currentUser;
-      // Upload group icon to Firebase Storage if it exists
-      let groupIconUrl = "";
-      if (groupIcon) {
-        const iconRef = ref(
-          firebaseStorage,
-          `group_icons/${groupName}_${Date.now()}`
-        );
-        const snapshot = await uploadBytes(iconRef, groupIcon);
-        groupIconUrl = await getDownloadURL(snapshot.ref);
-      }
+// export const createGroupOnly = createAsyncThunk(
+//   "groups/createGroupOnly",
+//   async ({ groupName, groupIcon, members }, { rejectWithValue }) => {
+//     try {
+//       const auth = getAuth();
+//       const currentUser = auth.currentUser;
+//       // Upload group icon to Firebase Storage if it exists
+//       let groupIconUrl = "";
+//       if (groupIcon) {
+//         const iconRef = ref(
+//           firebaseStorage,
+//           `group_icons/${groupName}_${Date.now()}`
+//         );
+//         const snapshot = await uploadBytes(iconRef, groupIcon);
+//         groupIconUrl = await getDownloadURL(snapshot.ref);
+//       }
 
-      // Ensure members array only contains emails
-      const membersId = members.map((member) => member.userid);
+//       // Ensure members array only contains emails
+//       const membersId = members.map((member) => member.userid);
 
-      // Add group data to Firestore
-      const groupData = {
-        groupName: groupName,
-        groupIcon: groupIconUrl,
-        pendingMembers: [...membersId],
-        currentMembers: [currentUser.uid, ...membersId],
-        createdAt: Timestamp.now(),
-        groupAdmin: currentUser.uid,
-      };
+//       // Add group data to Firestore
+//       const groupData = {
+//         groupName: groupName,
+//         groupIcon: groupIconUrl,
+//         pendingMembers: [...membersId],
+//         currentMembers: [currentUser.uid, ...membersId],
+//         createdAt: Timestamp.now(),
+//         groupAdmin: currentUser.uid,
+//       };
 
-      const groupDocRef = await addDoc(
-        collection(firebaseFirestore, "groups"),
-        groupData
-      );
+//       const groupDocRef = await addDoc(
+//         collection(firebaseFirestore, "groups"),
+//         groupData
+//       );
 
-      return {
-        id: groupDocRef.id,
-        ...groupData,
-      };
-    } catch (error) {
-      console.log("Error Creating group", error);
-      return rejectWithValue(error.message);
-    }
-  }
-);
+//       return {
+//         id: groupDocRef.id,
+//         ...groupData,
+//       };
+//     } catch (error) {
+//       console.log("Error Creating group", error);
+//       return rejectWithValue(error.message);
+//     }
+//   }
+// );
 
 // Async thunk to create a group
 export const CREATE_USER_GROUPS = createAsyncThunk(
@@ -171,8 +171,8 @@ export const CREATE_USER_GROUPS = createAsyncThunk(
     try {
       // Upload image and get URL
       const imageUrl = imageFile
-        ? await dispatch(uploadGroupImage(imageFile)).unwrap()
-        : "";
+        ? await uploadGroupImage(imageFile)
+        : undefined;
 
       // Prepare group document
       const groupRef = doc(firebaseFirestore, "groups", groupData.groupId);
@@ -385,17 +385,17 @@ const groupsSlice = createSlice({
         state.GROUP_SLICE_STATUS = "failed";
         state.error = action.payload;
       })
-      .addCase(createGroupOnly.pending, (state) => {
-        state.createGroupLoading = true;
-      })
-      .addCase(createGroupOnly.fulfilled, (state, action) => {
-        state.createGroupLoading = false;
-        state.groups.push(action.payload);
-      })
-      .addCase(createGroupOnly.rejected, (state, action) => {
-        state.createGroupLoading = false;
-        state.error = action.payload;
-      })
+      // .addCase(createGroupOnly.pending, (state) => {
+      //   state.createGroupLoading = true;
+      // })
+      // .addCase(createGroupOnly.fulfilled, (state, action) => {
+      //   state.createGroupLoading = false;
+      //   state.groups.push(action.payload);
+      // })
+      // .addCase(createGroupOnly.rejected, (state, action) => {
+      //   state.createGroupLoading = false;
+      //   state.error = action.payload;
+      // })
       .addCase(fetchProjectsByGroupId.pending, (state) => {
         state.status = "loading";
       })

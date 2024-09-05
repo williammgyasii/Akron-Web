@@ -137,22 +137,7 @@ function CreateGroupForm({
 
     return [loggedUser, ...members].map((member, index) => (
       <GroupMemberListView key={member.email} member={member} index={index} />
-      //   <ListItem key={member.email}>
-      //     <ListItemAvatar>
-      //       <Avatar>{member.name.charAt(0).toUpperCase()}</Avatar>
-      //     </ListItemAvatar>
-      //     <ListItemText
-      //       primary={member.name}
-      //       secondary={
-      //         <>
-      //           <Typography component="span" variant="body2" color="textPrimary">
-      //             {member.email}
-      //           </Typography>
-      //           {index === 0 ? " - ADMIN" : ` - ${member.status}`}
-      //         </>
-      //       }
-      //     />
-      //   </ListItem>
+
     ));
   };
 
