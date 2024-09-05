@@ -68,22 +68,18 @@ const CreateGroupModal = ({ open, handleClose }) => {
           imageFile: groupIcon,
           invitedEmails: members,
         })
-      );
-      //   .unwrap()
-      //   .then((result) => {
-      //     dispatch(
-      //       openSnackbar({ message: "Group Created", snackbarState: "info" })
-      //     );
-      //     setGroupName("");
-      //     setMembers([]);
-      //     setGroupIcon(null);
-      //     setErrors({ groupNameError: "", groupIconError: "" });
-      //     setLoading(false);
-      //     handleClose(); // Close the modal after finishing
-      //   });
-    } else {
-      console.log("There was an error");
-      setLoading(false);
+      )
+        .unwrap()
+        .then((result) => {
+          dispatch(
+            openSnackbar({ message: "Group Created", snackbarState: "info" })
+          );
+          setGroupName("");
+          setMembers([]);
+          setGroupIcon(null);
+          setErrors({ groupNameError: "", groupIconError: "" });
+          handleClose(); // Close the modal after finishing
+        });
     }
   };
 

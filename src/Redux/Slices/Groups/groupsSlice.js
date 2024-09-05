@@ -201,6 +201,16 @@ export const CREATE_USER_GROUPS = createAsyncThunk(
         imageUrl,
       };
 
+      // Update user document
+      const userRef = doc(firebaseFirestore, "users", userId);
+      batch.update(userRef, {
+        [`groups.${groupId}`]: {
+          role: "owner",
+          joinedAt: new Date(),
+          createdBy: true,
+        },
+      });
+
       batch.set(groupRef, groupDoc);
 
       // // Commit batch
@@ -209,7 +219,6 @@ export const CREATE_USER_GROUPS = createAsyncThunk(
         id: groupRef.id,
         ...groupData,
       };
-
     } catch (error) {
       console.log("error/CREATE_USER_GROUPS", error);
     }
