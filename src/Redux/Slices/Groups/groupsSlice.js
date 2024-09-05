@@ -251,13 +251,12 @@ export const fetchProjectsByGroupId = createAsyncThunk(
 const groupsSlice = createSlice({
   name: "groups",
   initialState: {
-    groups: [],
+    GROUPS: [],
     GROUP_SLICE_STATUS: "idle",
     GROUP_SLICE_ISLOADING: false,
     selectedGroupId: "",
     selectedGroupDetails: null,
-    groupsError: null,
-    createGroupLoading: false,
+    GROUP_SLICE_ERROR: null,
     groupProjects: [],
     activeProject: null,
     groupMembers: [],
