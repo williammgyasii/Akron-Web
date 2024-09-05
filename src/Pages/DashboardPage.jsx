@@ -32,17 +32,20 @@ function DashboardPage() {
   const currentUser = useSelector(selectCurrentUser);
   const projects = useSelector(selectGroupProjects);
 
+  console.log(currentUser)
+
   useEffect(() => {
     // dispatch(openSnackbar({message:"Group Created",snackbarState:"info"}))
-    dispatch(
-      fetchProjectsByGroupId({
-        groupId: selectedGroupid,
-        userId: currentUser.uid,
-      })
-    )
-      .unwrap()
-      .then((result) => {
-      });
+    dispatch(fetchUserGroups());
+    // dispatch(
+    //   fetchProjectsByGroupId({
+    //     groupId: selectedGroupid,
+    //     userId: currentUser.uid,
+    //   })
+    // )
+    //   .unwrap()
+    //   .then((result) => {
+    //   });
   }, []);
 
   return (

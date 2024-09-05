@@ -157,7 +157,7 @@ export const createGroupOnly = createAsyncThunk(
   }
 );
 // AsyncThunk for fetching groups of a user
-export const fetchUserGroups = createAsyncThunk(
+export const FETCH_USER_GROUPS = createAsyncThunk(
   "groups/fetchUserGroups",
   async (userId, { rejectWithValue }) => {
     try {
@@ -252,7 +252,8 @@ const groupsSlice = createSlice({
   name: "groups",
   initialState: {
     groups: [],
-    status: "idle",
+    GROUP_SLICE_STATUS: "idle",
+    GROUP_SLICE_ISLOADING: false,
     selectedGroupId: "",
     selectedGroupDetails: null,
     groupsError: null,
@@ -329,14 +330,14 @@ const groupsSlice = createSlice({
         state.groupsError = action.error.message;
       })
       //FETEHC USER GROUPS
-      .addCase(fetchUserGroups.pending, (state) => {
+      .addCase(FETCH_USER_GROUPS.pending, (state) => {
         state.status = "loading";
       })
-      .addCase(fetchUserGroups.fulfilled, (state, action) => {
+      .addCase(FETCH_USER_GROUPS.fulfilled, (state, action) => {
         state.status = "succeeded";
         state.groups = action.payload;
       })
-      .addCase(fetchUserGroups.rejected, (state, action) => {
+      .addCase(FETCH_USER_GROUPS.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload;
       })

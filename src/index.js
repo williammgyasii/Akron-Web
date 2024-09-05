@@ -19,7 +19,7 @@ const AuthListener = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(listenForAuthChanges());
-    // dispatch(fetchUserGroups());
+    
   }, [dispatch]);
 
   return null;
