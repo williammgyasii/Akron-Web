@@ -4,7 +4,7 @@
       "collectionGroup": "groups",
       "queryScope": "COLLECTION",
       "fields": [
-        { "fieldPath": "currentMembers", "mode": "ASCENDING" },
+        { "fieldPath": "members", "mode": "ASCENDING" },
         { "fieldPath": "pendingMembers", "mode": "ASCENDING" }
       ]
     },

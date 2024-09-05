@@ -10,6 +10,7 @@ import {
   getDoc,
   Timestamp,
   or,
+  writeBatch,
 } from "firebase/firestore";
 import {
   firebaseAuth,
@@ -162,22 +163,32 @@ export const createGroupWithProject = createAsyncThunk(
 
 // Async thunk to create a group
 export const CREATE_USER_GROUPS = createAsyncThunk(
-  "groups/createGroup",
+  "groups/CREATE_USER_GROUPS",
   async (
     { groupData, userId, imageFile, invitedEmails },
     { dispatch, rejectWithValue }
   ) => {
-    const batch = firebaseFirestore.batch(); // Use batch for atomic operations
     try {
+      console.log(invitedEmails);
+      const batch = writeBatch(firebaseFirestore);
       // Upload image and get URL
       const imageUrl = imageFile
-        ? await uploadGroupImage(imageFile)
+        ? await dispatch(
+            uploadGroupImage({ file: imageFile, groupName: groupData })
+          ).unwrap()
         : undefined;
 
       // Prepare group document
-      const groupRef = doc(firebaseFirestore, "groups", groupData.groupId);
+      const groupRef = doc(collection(firebaseFirestore, "groups"));
+      const groupId = groupRef.id; // Get the generated ID
+      const extractedInvites = invitedEmails.map((invitee, index) => ({
+        [invitee.userid]: {
+          role: "member",
+          joinedAt: new Date(),
+        },
+      }));
       const groupDoc = {
-        ...groupData,
+        groupData,
         createdAt: new Date(),
         ownerId: userId,
         members: {
@@ -186,56 +197,45 @@ export const CREATE_USER_GROUPS = createAsyncThunk(
             joinedAt: new Date(),
           },
         },
-        pendingInvitations: {},
+        pendingInvitations: [...extractedInvites],
         imageUrl,
       };
 
       batch.set(groupRef, groupDoc);
 
-      // Fetch user UIDs and update pending invitations
-      const invitedUsers = await Promise.all(
-        invitedEmails.map(async (email) => {
-          const userSnapshot = await dispatch(fetchUserByEmail(email)).unwrap();
-          if (userSnapshot.uid) {
-            return {
-              uid: userSnapshot.uid,
-              email,
-            };
-          }
-          return null;
-        })
-      );
-
-      invitedUsers.forEach((user) => {
-        if (user) {
-          groupDoc.pendingInvitations[user.uid] = {
-            email: user.email,
-            invitedAt: new Date(),
-          };
-        }
-      });
-
-      // Update group document with pending invitations
-      batch.update(groupRef, {
-        pendingInvitations: groupDoc.pendingInvitations,
-      });
-
-      // Update user document
-      const userRef = doc(firebaseFirestore, "users", userId);
-      batch.update(userRef, {
-        [`groups.${groupData.groupId}`]: {
-          role: "owner",
-          joinedAt: new Date(),
-          createdBy: true,
-        },
-      });
-
-      // Commit batch
+      // // Commit batch
       await batch.commit();
-      return groupData.groupId;
+      return {
+        id: groupRef.id,
+        ...groupData,
+      };
+
+      // console.log(imageUrl, groupId);
     } catch (error) {
-      return rejectWithValue(error.message);
+      console.log("error/CREATE_USER_GROUPS", error);
     }
+
+    //   // Update group document with pending invitations
+    //   batch.update(groupRef, {
+    //     pendingInvitations: groupDoc.pendingInvitations,
+    //   });
+
+    //   // Update user document
+    //   const userRef = doc(firebaseFirestore, "users", userId);
+    //   batch.update(userRef, {
+    //     [`groups.${groupData.groupId}`]: {
+    //       role: "owner",
+    //       joinedAt: new Date(),
+    //       createdBy: true,
+    //     },
+    //   });
+
+    //   // Commit batch
+    //   await batch.commit();
+    //   return groupData.groupId;
+    // } catch (error) {
+    //   return rejectWithValue(error.message);
+    // }
   }
 );
 
@@ -377,13 +377,16 @@ const groupsSlice = createSlice({
     builder
       .addCase(CREATE_USER_GROUPS.pending, (state) => {
         state.GROUP_SLICE_STATUS = "loading";
+        state.GROUP_SLICE_ISLOADING = true;
       })
       .addCase(CREATE_USER_GROUPS.fulfilled, (state) => {
         state.GROUP_SLICE_STATUS = "completed";
+        state.GROUP_SLICE_ISLOADING = false;
       })
       .addCase(CREATE_USER_GROUPS.rejected, (state, action) => {
         state.GROUP_SLICE_STATUS = "failed";
         state.error = action.payload;
+        state.GROUP_SLICE_ISLOADING = false;
       })
       // .addCase(createGroupOnly.pending, (state) => {
       //   state.createGroupLoading = true;

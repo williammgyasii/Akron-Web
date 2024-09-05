@@ -17,7 +17,10 @@ import { MdFormatListBulletedAdd } from "react-icons/md";
 import CreateGroupForm from "./CreateGroupForm";
 import { useDispatch, useSelector } from "react-redux";
 import { selectCurrentUser } from "../Redux/Slices/Users/UsersSlice";
-import { createGroupOnly } from "../Redux/Slices/Groups/groupsSlice";
+import {
+  CREATE_USER_GROUPS,
+  createGroupOnly,
+} from "../Redux/Slices/Groups/groupsSlice";
 import { validateGroupName } from "../Utils/utilityFunctions";
 import { openSnackbar } from "../Redux/Slices/System/systemSlice";
 import { motion } from "framer-motion";
@@ -41,23 +44,31 @@ const CreateGroupModal = ({ open, handleClose }) => {
   });
   const [members, setMembers] = useState([]);
   const [memberLoading, setMemberLoading] = useState(false);
-  const [groupLoading, setGroupLoading] = useState(true);
   const dispatch = useDispatch();
   const currentUser = useSelector(selectCurrentUser);
+  const { GROUP_SLICE_STATUS, GROUP_SLICE_ISLOADING } = useSelector(
+    (state) => state.groups
+  );
   const theme = useTheme();
 
   const handleSubmit = () => {
-    console.log("true");
+    console.log(GROUP_SLICE_ISLOADING, GROUP_SLICE_STATUS);
+    setErrors({ groupIconError: "", groupNameError: "", emailError: "" });
     const nameError = validateGroupName(groupName);
     if (nameError) {
       setErrors({ groupNameError: nameError });
       return; // Stop submission if there's an error
     }
-
-    setLoading(true);
-
     if (groupName && groupIcon) {
-      // dispatch(createGroupOnly({ groupName, groupIcon, members }))
+      console.log("Red");
+      dispatch(
+        CREATE_USER_GROUPS({
+          groupData: groupName,
+          userId: currentUser?.uid,
+          imageFile: groupIcon,
+          invitedEmails: members,
+        })
+      );
       //   .unwrap()
       //   .then((result) => {
       //     dispatch(
@@ -81,7 +92,7 @@ const CreateGroupModal = ({ open, handleClose }) => {
   };
 
   // Handle adding a new member
-  const handleAddMemberToArray = (result) => {
+  const AddMemberToArray = (result) => {
     setMembers([
       ...members,
       {
@@ -100,22 +111,22 @@ const CreateGroupModal = ({ open, handleClose }) => {
     if (searchEmail.trim() === "") {
       setErrors((prev) => ({
         ...prev,
-        groupNameError: "Email cannot be empty.",
+        emailError: "Email cannot be empty.",
       }));
     } else if (searchEmail === currentUser?.email) {
       setErrors((prev) => ({
         ...prev,
-        groupNameError: "You are already a member of the group.",
+        emailError: "You are already a member of the group.",
       }));
     } else if (!emailRegex.test(searchEmail)) {
       setErrors((prev) => ({
         ...prev,
-        groupNameError: "Please enter a valid email address",
+        emailError: "Please enter a valid email address",
       }));
     } else if (members.some((member) => member.email === searchEmail)) {
       setErrors((prev) => ({
         ...prev,
-        groupNameError: "This email has already been added",
+        emailError: "This email has already been added",
       }));
     } else {
       try {
@@ -123,7 +134,7 @@ const CreateGroupModal = ({ open, handleClose }) => {
         const uid = await queryUserByEmail(searchEmail)
           .then((result) => {
             if (result) {
-              handleAddMemberToArray(result);
+              AddMemberToArray(result);
               setSearchEmail("");
               setErrors("");
               setMemberLoading(false);
@@ -132,7 +143,7 @@ const CreateGroupModal = ({ open, handleClose }) => {
           .catch((error) => {
             setErrors((prev) => ({
               ...prev,
-              groupNameError: "Email isnt registered",
+              emailError: "Email isnt registered",
               error,
             }));
             setMemberLoading(false);
@@ -146,11 +157,6 @@ const CreateGroupModal = ({ open, handleClose }) => {
     setMembers((prevMembers) =>
       prevMembers.filter((member) => member !== email)
     );
-  };
-
-  // Handle icon upload
-  const handleIconUpload = (icon) => {
-    setGroupIcon(icon);
   };
 
   const renderMemberList = () => {
@@ -257,8 +263,8 @@ const CreateGroupModal = ({ open, handleClose }) => {
                 value={searchEmail}
                 onChange={(e) => setSearchEmail(e.target.value)}
                 fullWidth
-                error={!!errors.groupNameError}
-                helperText={errors.groupNameError}
+                error={!!errors.emailError}
+                helperText={errors.emailError}
                 InputProps={{
                   endAdornment: (
                     <IconButton onClick={handleAddMember}>
@@ -280,7 +286,7 @@ const CreateGroupModal = ({ open, handleClose }) => {
                 // // type="iconOnly"
                 // loadingButton={groupUploading}
                 // leftIcon={MdFormatListBulletedAdd}
-                disabled={loading}
+                disabled={GROUP_SLICE_ISLOADING}
                 submit
                 size="medium"
                 sx={{ color: "#fff" }}
@@ -292,7 +298,7 @@ const CreateGroupModal = ({ open, handleClose }) => {
                 onClick={handleSubmit}
                 // disabled={buttonNext}
                 leftIcon={MdFormatListBulletedAdd}
-                isLoading={loading}
+                isLoading={GROUP_SLICE_ISLOADING}
                 submit
                 size="medium"
                 sx={{ color: "#fff" }}
