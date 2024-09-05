@@ -1,7 +1,6 @@
 // src/components/GroupSelector.js
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-
 import {
   TextField,
   Button,
@@ -22,6 +21,7 @@ import {
   fetchSelectedGroupDetails,
   selectGroupID,
   selectGroups,
+  selectUserGroups,
   setPrefferedGroup,
   setSelectedGroupID,
 } from "../Redux/Slices/Groups/groupsSlice";
@@ -30,14 +30,18 @@ import { selectCurrentUser } from "../Redux/Slices/Users/UsersSlice";
 
 const GroupSelector = ({ onSelectGroup, customStyles, ...props }) => {
   const dispatch = useDispatch();
-  const groups = useSelector(selectGroups);
-  const groupsStatus = useSelector((state) => state.groups.status);
+  const groups = useSelector(selectUserGroups);
+  const groupslicestatus = useSelector(
+    (state) => state.groups.GROUP_SLICE_STATUS
+  );
   const selectedGroup = useSelector(selectGroupID);
   const [groupError, setGroupError] = useState(false);
   const theme = useTheme();
   const currentUser = useSelector(selectCurrentUser);
 
-  // console.log(groups, selectedGroup);
+
+
+  console.log(groups, groupslicestatus);
 
   const handleGroupChange = (event) => {
     dispatch(setSelectedGroupID(event.target.value));
@@ -70,13 +74,13 @@ const GroupSelector = ({ onSelectGroup, customStyles, ...props }) => {
       justifyContent={"center"}
       // fullWidth={props.fullWidth}
     >
-      {groupsStatus === "loading" && (
+      {groupslicestatus === "loading" && (
         <CircularProgress size={15} sx={{ marginTop: 2, color: "red" }} />
       )}
-      {groupsStatus === "failed" && (
+      {groupslicestatus === "failed" && (
         <Typography color="error">Failed to load groups</Typography>
       )}
-      {groupsStatus === "succeeded" && (
+      {groupslicestatus === "completed" && (
         <CustomDropdown
           disabled={props.formState}
           label="Group"

@@ -9,9 +9,10 @@ import {
   CircularProgress,
   styled,
   Avatar,
+  Typography,
 } from "@mui/material";
 
-const StyledFormControl = styled(FormControl)(({ theme, value, size }) => ({
+const StyledFormControl = styled(FormControl)(({ theme, size }) => ({
   position: "relative",
   display: "flex",
   flexDirection: "column",
@@ -19,15 +20,12 @@ const StyledFormControl = styled(FormControl)(({ theme, value, size }) => ({
   "& .MuiInputLabel-root": {
     position: "static",
     transform: "none",
-    // fontSize: "1px",
-    // marginBottom: "8px",
   },
 }));
 
 const StyledSelect = styled(Select)(({ theme, value }) => ({
   backgroundColor: value ? "#fff" : theme.palette.background.paper,
   fontSize: "14px",
-
   padding: "4px 8px", // Reduced the padding to make it thinner
   "& .MuiSelect-select": {
     padding: "4px 8px", // Ensure the internal padding is also reduced
@@ -38,7 +36,7 @@ const StyledSelect = styled(Select)(({ theme, value }) => ({
     backgroundColor: theme.palette.primary.white,
   },
   "& .MuiPaper-root": {
-    maxHeight: "20px", // Max height to show only 4 items (adjust as needed)
+    maxHeight: "200px", // Max height to show only 4 items (adjust as needed)
     overflowY: "auto", // Enable scrolling if more items are present
   },
 }));
@@ -77,14 +75,16 @@ function CustomDropdown({
   withAvatar,
   helperText,
   fullWidth = true,
+  emptyMessage = "No options available", // Add emptyMessage prop
   ...props
 }) {
   const theme = useTheme();
+
   return (
     <StyledFormControl
       sx={customStyles}
       size={pickerWidth}
-      fullWidth
+      fullWidth={fullWidth}
       error={error}
     >
       <InputLabel
@@ -107,7 +107,7 @@ function CustomDropdown({
         MenuProps={{
           PaperProps: {
             style: {
-              maxHeight: 200, // Max height for 4 items
+              maxHeight: 200, // Max height for the dropdown
             },
           },
         }}
@@ -117,6 +117,12 @@ function CustomDropdown({
           <MenuItem disabled>
             <CircularProgress size={24} />
           </MenuItem>
+        ) : options.length === 0 ? (
+          <MenuItem disabled>
+            <Typography color="textSecondary" sx={{ padding: "8px 16px" }}>
+              {emptyMessage}
+            </Typography>
+          </MenuItem>
         ) : (
           options.map((option) => (
             <StyledMenuItem
@@ -125,11 +131,13 @@ function CustomDropdown({
               value={option.value || option.id}
             >
               {withAvatar && (
-                <StyledAvatar src="https://i.pravatar.cc/150?img=3">
-                  {option?.firstName?.charAt(0)}
+                <StyledAvatar
+                  src={option.avatar || "https://i.pravatar.cc/150?img=3"}
+                >
+                  {option?.name?.charAt(0)}
                 </StyledAvatar>
               )}
-              {option.label || option.groupName || option.firstName}
+              {option.label || option.name || option.firstName}
             </StyledMenuItem>
           ))
         )}

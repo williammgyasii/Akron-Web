@@ -10,7 +10,7 @@ import {
 import { doc, setDoc, getDoc, serverTimestamp } from "firebase/firestore";
 import { firebaseAuth, firebaseFirestore } from "../../../Firebase/getFirebase";
 import { getAuthErrorMessage } from "../../../Utils/authErrors";
-import { fetchUserGroups } from "../Groups/groupsSlice";
+import { FETCH_USER_GROUPS, fetchUserGroups } from "../Groups/groupsSlice";
 
 export const REGISTER_USER = createAsyncThunk(
   "auth/registerUser",
@@ -100,7 +100,7 @@ export const listenForAuthChanges = createAsyncThunk(
                 ...userDoc.data(),
               };
               console.log("SOMEONE IS INSIDE WITH DETAILS", userStructure);
-              dispatch(fetchUserGroups(user.uid));
+              dispatch(FETCH_USER_GROUPS(user.uid));
               dispatch(setUser(userStructure));
             }
           } else {

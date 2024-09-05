@@ -156,35 +156,56 @@ export const createGroupOnly = createAsyncThunk(
     }
   }
 );
+
+// Function to batch group fetching if user has more than 10 groups
+const fetchGroupsBatch = async (groupIdsBatch) => {
+  const groupQuery = query(
+    collection(firebaseFirestore, "groups"),
+    where("groupId", "in", groupIdsBatch)
+  );
+  const groupSnapshot = await getDocs(groupQuery);
+  return groupSnapshot.docs.map((doc) => ({
+    id: doc.id,
+    ...doc.data(),
+  }));
+};
 // AsyncThunk for fetching groups of a user
 export const FETCH_USER_GROUPS = createAsyncThunk(
   "groups/fetchUserGroups",
-  async (userId, { rejectWithValue }) => {
+  async (uid, { rejectWithValue }) => {
     try {
-      const groupsQuery = query(
-        collection(firebaseFirestore, "groups"),
-        where("currentMembers", "array-contains", userId)
-      );
-      const querySnapshot = await getDocs(groupsQuery);
-      // const createdAt = data.createdAt?.toDate();
-      const userGroups = querySnapshot.docs.map((doc) => {
-        const { createdAt, ...restofData } = doc.data();
+      // Fetch user document
+      const userDocRef = doc(firebaseFirestore, "users", uid);
+      const userDocSnap = await getDoc(userDocRef);
 
-        return {
-          id: doc.id,
-          createdAt: formatTimestamp(doc.data().createdAt),
-          ...restofData,
-        };
-      });
-      // console.log(userGroups);
-      return userGroups;
+      if (!userDocSnap.exists()) {
+        throw new Error("User does not exist");
+      }
+
+      // Extract group IDs from user document
+      const userData = userDocSnap.data();
+      const groupIds = userData.groups || [];
+
+      if (groupIds.length === 0) {
+        return []; // Return an empty array if no groups
+      }
+
+      const groups = [];
+
+      // Firestore only allows 10 `in` queries at a time, so we batch requests
+      const batchSize = 10;
+      for (let i = 0; i < groupIds.length; i += batchSize) {
+        const groupIdsBatch = groupIds.slice(i, i + batchSize);
+        const batchGroups = await fetchGroupsBatch(groupIdsBatch);
+        groups.push(...batchGroups);
+      }
+      return groups;
     } catch (error) {
-      console.log("groups/fetchUserGroups", error);
+      console.error("Error fetching groups:", error.message);
       return rejectWithValue(error.message);
     }
   }
 );
-
 // AsyncThunk for fetching members of a group
 export const fetchGroupMembers = createAsyncThunk(
   "groups/fetchGroupMembers",
@@ -254,8 +275,8 @@ const groupsSlice = createSlice({
     GROUPS: [],
     GROUP_SLICE_STATUS: "idle",
     GROUP_SLICE_ISLOADING: false,
-    selectedGroupId: "",
-    selectedGroupDetails: null,
+    CURRENT_GROUP_ID: "",
+    CURRENT_GROUP_DETAILS: null,
     GROUP_SLICE_ERROR: null,
     groupProjects: [],
     activeProject: null,
@@ -328,17 +349,21 @@ const groupsSlice = createSlice({
         state.status = "failed";
         state.groupsError = action.error.message;
       })
-      //FETEHC USER GROUPS
+
+      //FETCH USER GROUPS
       .addCase(FETCH_USER_GROUPS.pending, (state) => {
-        state.status = "loading";
+        state.GROUP_SLICE_STATUS = "loading";
+        state.GROUP_SLICE_ISLOADING = true;
       })
       .addCase(FETCH_USER_GROUPS.fulfilled, (state, action) => {
-        state.status = "succeeded";
-        state.groups = action.payload;
+        state.GROUP_SLICE_STATUS = "completed";
+        state.GROUPS = action.payload;
+        state.GROUP_SLICE_ISLOADING = false;
       })
       .addCase(FETCH_USER_GROUPS.rejected, (state, action) => {
-        state.status = "failed";
+        state.GROUP_SLICE_STATUS = "failed";
         state.error = action.payload;
+        state.GROUP_SLICE_ISLOADING = false;
       })
 
       //FETCH SINGLE GROUP DETAILS
@@ -364,7 +389,7 @@ export const {
   addProject,
   setSelectedProject,
 } = groupsSlice.actions;
-export const selectGroups = (state) => state.groups.groups;
+export const selectUserGroups = (state) => state.groups.GROUPS;
 export const selectGroupID = (state) => state.groups.selectedGroupId;
 export const selectGroupProjects = (state) => state.groups.groupProjects;
 export const selectActiveProject = (state) => state.groups.activeProject;

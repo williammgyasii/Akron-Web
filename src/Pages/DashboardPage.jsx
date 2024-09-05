@@ -1,17 +1,12 @@
 import { Box, Button, Container, IconButton, useTheme } from "@mui/material";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { persistor, resetState } from "../Redux/store";
 import {
-  logoutUser,
   selectCurrentUser,
 } from "../Redux/Slices/Users/UsersSlice";
-import { useNavigate } from "react-router-dom";
-import AppBarComponent from "../Components/AppBarComponent";
-import Logo from "../Components/Logo";
 import GroupTaskList from "../Components/GroupTaskList";
 import {
-  fetchProjectsByGroupId,
+  FETCH_USER_GROUPS,
   selectGroupID,
   selectGroupMembers,
   selectGroupProjects,
@@ -19,8 +14,6 @@ import {
 import CustomTitles from "../Components/CustomTitles";
 import { IoAddSharp } from "react-icons/io5";
 import {
-  openSnackbar,
-  setWelcomeModalOpen,
   showModal,
 } from "../Redux/Slices/System/systemSlice";
 
@@ -32,11 +25,11 @@ function DashboardPage() {
   const currentUser = useSelector(selectCurrentUser);
   const projects = useSelector(selectGroupProjects);
 
-  console.log(currentUser)
+  // console.log(currentUser);
 
   useEffect(() => {
     // dispatch(openSnackbar({message:"Group Created",snackbarState:"info"}))
-    dispatch(fetchUserGroups());
+    // dispatch(FETCH_USER_GROUPS());
     // dispatch(
     //   fetchProjectsByGroupId({
     //     groupId: selectedGroupid,
@@ -57,7 +50,6 @@ function DashboardPage() {
           height: "100vh",
         }}
       >
-        
         <Box
           sx={{
             backgroundColor: theme.palette.background.paper,
