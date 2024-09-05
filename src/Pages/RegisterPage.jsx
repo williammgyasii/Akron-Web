@@ -220,7 +220,7 @@ const RegisterPage = () => {
 
         <CustomSubtitle
           customStyles={{
-            marginTop: "-10px",
+            marginTop: "3px",
             textDecoration: "none",
           }}
           variant={"text_base"}
@@ -247,6 +247,7 @@ const RegisterPage = () => {
                 <CustomFormInput
                   label="First Name"
                   name="firstName"
+                  type={"text"}
                   value={formValues.firstName}
                   onChange={handleInputChange}
                   error={errors.firstName}
@@ -257,6 +258,7 @@ const RegisterPage = () => {
                 <CustomFormInput
                   label="Last Name"
                   name="lastName"
+                  type={"text"}
                   value={formValues.lastName}
                   onChange={handleInputChange}
                   error={errors.lastName}
@@ -268,19 +270,34 @@ const RegisterPage = () => {
             <CustomFormInput
               label="Email"
               name="email"
+              type={"email"}
               value={formValues.email}
               onChange={handleInputChange}
               error={errors.email}
               helperText={helperTexts.email}
             />
 
-            <CustomFormInput
-              label="Username (only letters, numbers and underscores)"
-              name="username"
-              value={formValues.username}
-              onChange={handleInputChange}
-              error={errors.username}
-              helperText={helperTexts.username}
+            <SideBySideLayout
+              leftComponent={
+                <CustomFormInput
+                  label="Username (only letters, numbers and underscores)"
+                  name="username"
+                  value={formValues.username}
+                  onChange={handleInputChange}
+                  error={errors.username}
+                  helperText={helperTexts.username}
+                />
+              }
+              rightComponent={
+                <CustomFormInput
+                  label="Username (only letters, numbers and underscores)"
+                  name="username"
+                  value={formValues.username}
+                  onChange={handleInputChange}
+                  error={errors.username}
+                  helperText={helperTexts.username}
+                />
+              }
             />
 
             <CustomFormInput

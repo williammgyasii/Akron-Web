@@ -7,6 +7,7 @@ const CustomFormInput = ({
   error,
   darkLabel,
   helperText,
+  type,
   customStyles,
   maxCount,
   ...props
@@ -21,11 +22,12 @@ const CustomFormInput = ({
       variant="outlined"
       size="small"
       fullWidth
+      type={type}
       sx={[
         {
           "& .MuiOutlinedInput-root": {
             "& fieldset": {
-              borderColor: "grey.400",
+              borderColor: theme.palette.secondary.light200,
               borderRadius: "5px", // Rounded borders
             },
             "&:hover fieldset": {
@@ -41,7 +43,8 @@ const CustomFormInput = ({
       ]}
       inputProps={{ maxLength: maxCount }} // Set maxLength here
       InputLabelProps={{
-        style: { color: theme.palette.secondary.main, fontSize: "14px" },
+        // className={`text-gray-400`},
+        style: { color: theme.palette.secondary.light400, fontSize: "14px" },
       }}
       {...props}
     />

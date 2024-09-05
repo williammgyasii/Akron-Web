@@ -60,7 +60,7 @@ const theme = createTheme({
     },
     background: {
       default: "#f5f5f5", // Light grey background
-      paper: "#ffff", // White paper background
+      paper: "#F0F2F2", // White paper background
     },
     error: {
       dark900: "#7A0619", //BluePurple

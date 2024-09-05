@@ -58,8 +58,8 @@ const CustomTitles = ({
           background: "rgba(0, 0, 255, 0.5)", // Pseudo-element background
           zIndex: -1, // Puts the pseudo-element behind
           transition: "background 1.5s ease-in-out",
-        }} // CSS transition for pseudo-element}}
-      ></motion.span>
+        }} 
+      />
       {children}
     </AnimatedTypography>
   );
