@@ -38,6 +38,8 @@ const GroupSelector = ({ onSelectGroup, customStyles, ...props }) => {
   const [groupError, setGroupError] = useState(false);
   const theme = useTheme();
   const currentUser = useSelector(selectCurrentUser);
+
+  console.log("groupSelector",groups)
   const handleGroupChange = (event) => {
     dispatch(setSelectedGroupID(event.target.value));
     dispatch(fetchGroupMembers(event.target.value));

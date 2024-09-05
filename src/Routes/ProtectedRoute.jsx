@@ -8,21 +8,24 @@ import {
   selectWelcomeModalOpened,
   setWelcomeModalOpen,
 } from "../Redux/Slices/System/systemSlice";
+import { FETCH_USER_GROUPS } from "../Redux/Slices/Groups/groupsSlice";
+import { selectCurrentUser } from "../Redux/Slices/Users/UsersSlice";
 
 const CheckUserWelcomeState = ({ children }) => {
   const welcomeStatus = useSelector((state) => state.system.appUserState);
   const dispatch = useDispatch();
+  const currentUser = useSelector(selectCurrentUser);
   useEffect(() => {
     if (welcomeStatus === "newUser") {
       dispatch(setWelcomeModalOpen());
     } else if (welcomeStatus === "currentUser") {
-      
     }
+    dispatch(FETCH_USER_GROUPS(currentUser.uid));
 
     console.log(welcomeStatus);
 
     return () => {};
-  }, []);
+  }, [dispatch]);
 
   return children;
 };

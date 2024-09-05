@@ -251,21 +251,33 @@ export const FETCH_USER_GROUPS = createAsyncThunk(
 
       // Extract group IDs from user document
       const userData = userDocSnap.data();
-      const groupIds = userData.groups || [];
+
+      const groupIds = userData.groups.map((group) => group.groupId); // Assuming `groups` is an array of objects with `groupId`
 
       if (groupIds.length === 0) {
         return []; // Return an empty array if no groups
       }
-
+      // Fetch groups documents
       const groups = [];
+      const batchSize = 10; // Firestore limit for `in` queries
 
-      // Firestore only allows 10 `in` queries at a time, so we batch requests
-      const batchSize = 10;
       for (let i = 0; i < groupIds.length; i += batchSize) {
-        const groupIdsBatch = groupIds.slice(i, i + batchSize);
-        const batchGroups = await fetchGroupsBatch(groupIdsBatch);
+        const batchIds = groupIds.slice(i, i + batchSize);
+
+        const groupsQuery = query(
+          collection(firebaseFirestore, "groups"),
+          where("__name__", "in", batchIds)
+        );
+
+        const querySnapshot = await getDocs(groupsQuery);
+        const batchGroups = querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+
         groups.push(...batchGroups);
       }
+      // console.log("SOMEONE IS INSIDE WITH DETAILS", groups);
       return groups;
     } catch (error) {
       console.error("Error groups/fetchUserGroups", error);
@@ -385,17 +397,7 @@ const groupsSlice = createSlice({
         state.error = action.payload;
         state.GROUP_SLICE_ISLOADING = false;
       })
-      // .addCase(createGroupOnly.pending, (state) => {
-      //   state.createGroupLoading = true;
-      // })
-      // .addCase(createGroupOnly.fulfilled, (state, action) => {
-      //   state.createGroupLoading = false;
-      //   state.groups.push(action.payload);
-      // })
-      // .addCase(createGroupOnly.rejected, (state, action) => {
-      //   state.createGroupLoading = false;
-      //   state.error = action.payload;
-      // })
+
       .addCase(fetchProjectsByGroupId.pending, (state) => {
         state.status = "loading";
       })

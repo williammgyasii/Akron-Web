@@ -130,7 +130,7 @@ export const listenForAuthChanges = createAsyncThunk(
                 ...userDoc.data(),
               };
               console.log("SOMEONE IS INSIDE WITH DETAILS", userStructure);
-              dispatch(FETCH_USER_GROUPS(user.uid));
+              
               dispatch(setUser(userStructure));
             }
           } else {

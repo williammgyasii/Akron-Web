@@ -20,6 +20,7 @@ import { selectCurrentUser } from "../Redux/Slices/Users/UsersSlice";
 import {
   CREATE_USER_GROUPS,
   createGroupOnly,
+  FETCH_USER_GROUPS,
 } from "../Redux/Slices/Groups/groupsSlice";
 import { validateGroupName } from "../Utils/utilityFunctions";
 import { openSnackbar } from "../Redux/Slices/System/systemSlice";
@@ -78,6 +79,7 @@ const CreateGroupModal = ({ open, handleClose }) => {
           setMembers([]);
           setGroupIcon(null);
           setErrors({ groupNameError: "", groupIconError: "" });
+          dispatch(FETCH_USER_GROUPS(currentUser.uid));
           handleClose(); // Close the modal after finishing
         });
     }
