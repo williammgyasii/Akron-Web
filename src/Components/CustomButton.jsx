@@ -6,8 +6,9 @@ import {
   styled,
 } from "@mui/material";
 import PropTypes from "prop-types";
+import { motion } from "framer-motion";
 
-// Define button sizes
+// Define button sizes for consistent spacing and typography
 const buttonSizes = {
   small: {
     padding: "4px 8px",
@@ -23,8 +24,8 @@ const buttonSizes = {
   },
 };
 
-const StyledButton = styled(Button)(({ theme, variant, size }) => ({
-  // width:"2rem",
+// Styled button using MUI's styled and incorporating motion for future animations
+const StyledButton = styled(motion(Button))(({ theme, variant, size }) => ({
   width: "100%",
   backgroundColor:
     variant === "primary"
@@ -34,33 +35,29 @@ const StyledButton = styled(Button)(({ theme, variant, size }) => ({
       : variant === "minimal"
       ? "transparent"
       : theme.palette.background.paper,
-  border: variant === "minimal" ? "1px solid #000 " : null,
+  border: variant === "minimal" ? "1px solid #000" : null,
   color:
-    variant === "primary"
-      ? theme.palette.primary.white
-      : variant === "secondary"
-      ? theme.palette.primary.white
-      : variant === "minimal"
-      ? "none"
-      : "#fff",
+    variant === "primary" || variant === "secondary"
+      ? theme.palette.common.white
+      : "#000",
   padding: buttonSizes[size]?.padding || buttonSizes.medium.padding,
   fontSize: buttonSizes[size]?.fontSize || buttonSizes.medium.fontSize,
 
   "&:hover": {
     backgroundColor:
       variant === "primary"
-        ? theme.palette.primary.dark600
+        ? theme.palette.primary.dark
         : variant === "secondary"
-        ? "transparent"
+        ? theme.palette.secondary.dark
         : variant === "minimal"
-        ? null
-        : "#f3f",
+        ? "transparent"
+        : theme.palette.background.default,
     color:
       variant === "secondary"
-        ? theme.palette.secondary.main
-        : theme.palette.secondary.white,
-    border: variant === "secondary" ? "1px solid #000" : null,
+        ? theme.palette.secondary.light
+        : theme.palette.primary.main,
   },
+
   "&:disabled": {
     backgroundColor:
       variant === "primary"
@@ -71,14 +68,12 @@ const StyledButton = styled(Button)(({ theme, variant, size }) => ({
   },
 }));
 
-const StyledIconButton = styled(MuiIconButton)(({ theme, variant, size }) => ({
-  color:
-    variant === "minimal"
-      ? theme.palette.primary.main
-      : theme.palette.text.primary,
+const StyledIconButton = styled(MuiIconButton)(({ theme, size }) => ({
+  color: theme.palette.text.primary,
   fontSize: buttonSizes[size]?.fontSize || buttonSizes.medium.fontSize,
 }));
 
+// Main CustomButton Component
 function CustomButton({
   variant = "primary",
   size = "medium",
@@ -89,53 +84,47 @@ function CustomButton({
   leftIcon: LeftIcon,
   rightIcon: RightIcon,
   children,
-  sx, // For external styling
+  sx, // External styling
   onClick,
   iconColor,
   loadingButton = false,
   ...props
 }) {
-  const renderIcon = (icon) => {
-    if (icon) {
-      return React.cloneElement(icon, {
-        style: {
+  const renderIcon = (Icon) =>
+    Icon ? (
+      <Icon
+        style={{
+          color: iconColor || "#fff",
           marginRight: type === "iconLeft" ? 8 : 0,
           marginLeft: type === "iconRight" ? 8 : 0,
-          color: iconColor || "#fff",
-        },
-      });
-    }
-    return null;
-  };
+        }}
+      />
+    ) : null;
 
   return (
     <StyledButton
       variant={variant}
       size={size}
       disabled={loadingButton || disabled}
-      sx={sx} // Apply external styling
+      sx={sx}
       type={submit ? "submit" : "button"}
-      // type={props.type || "button"} // Default to 'button', use 'submit' if specified
       onClick={onClick}
-      // fullWidth={false}
+      whileHover={{ scale: 1.05 }} // Simple Framer Motion animation
+      whileTap={{ scale: 0.95 }} // Tap animation for button press effect
       {...props}
     >
       {loadingButton ? (
-        <CircularProgress
-          sx={{ p: 1, color: "#fff" }}
-          size={25}
-          // color={"#fff"}
-        />
+        <CircularProgress sx={{ color: "#fff" }} size={25} />
       ) : (
         <>
-          {type === "iconLeft" && renderIcon(<LeftIcon />)}
-          {type === "iconRight" && renderIcon(<RightIcon />)}
+          {type === "iconLeft" && renderIcon(LeftIcon)}
+          {type === "label" && label}
+          {type === "iconRight" && renderIcon(RightIcon)}
           {type === "iconOnly" && (
-            <StyledIconButton variant={variant} size={size}>
-              {renderIcon(<LeftIcon />)}
+            <StyledIconButton size={size}>
+              {renderIcon(LeftIcon)}
             </StyledIconButton>
           )}
-          {type === "label" && label}
           {children}
         </>
       )}
@@ -150,9 +139,12 @@ CustomButton.propTypes = {
   label: PropTypes.string,
   leftIcon: PropTypes.elementType,
   rightIcon: PropTypes.elementType,
-  children: PropTypes.node, // Allow children
-  sx: PropTypes.object, // For external styling
-  onClick: PropTypes.func, // Function to handle button clicks
+  children: PropTypes.node,
+  sx: PropTypes.object,
+  onClick: PropTypes.func,
+  iconColor: PropTypes.string,
+  loadingButton: PropTypes.bool,
+  submit: PropTypes.bool,
 };
 
 export default CustomButton;

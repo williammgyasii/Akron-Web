@@ -190,7 +190,7 @@ const RegisterPage = () => {
           display: "flex",
           flexDirection: "column",
           justifyContent: "flex-start",
-          py: 20,
+          py: 17,
           backgroundColor: theme.palette.background.paper,
           flex: 1,
           ml: "-30px",
@@ -282,20 +282,24 @@ const RegisterPage = () => {
                 <CustomFormInput
                   label="Username (only letters, numbers and underscores)"
                   name="username"
+                  type={"text"}
                   value={formValues.username}
                   onChange={handleInputChange}
                   error={errors.username}
                   helperText={helperTexts.username}
+                  maxCount={15}
                 />
               }
               rightComponent={
                 <CustomFormInput
-                  label="Username (only letters, numbers and underscores)"
-                  name="username"
-                  value={formValues.username}
+                  label="Phone"
+                  name="phoneNumber"
+                  type={"number"}
+                  maxCount={11}
+                  value={formValues.phoneNumber}
                   onChange={handleInputChange}
-                  error={errors.username}
-                  helperText={helperTexts.username}
+                  error={errors.phoneNumber}
+                  helperText={helperTexts.phoneNumber}
                 />
               }
             />
@@ -308,13 +312,14 @@ const RegisterPage = () => {
               onChange={handleInputChange}
               error={errors.password}
               helperText={helperTexts.password}
+              maxCount={15}
             />
             <CustomButton
               variant="primary"
               size="medium"
               // loading={loading}
               leftIcon={IoSettings}
-              // type="iconLeft" // Submit button for the form
+              type="iconLeft" // Submit button for the form
               // label="Submit"
               submit
             >
