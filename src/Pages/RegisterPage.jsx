@@ -18,14 +18,16 @@ import SideBySideLayout from "../Layouts/SideBySide";
 import { IoSettings } from "react-icons/io5";
 import registerSideImage from "../Pages/LandingPage/assets/FeaturesBanner.jpg";
 import CustomTitles from "../Components/CustomTitles";
+import { BiRegistered } from "react-icons/bi";
+import { JoinInner } from "@mui/icons-material";
 
 const RegisterPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const theme = useTheme();
-  const { loading } = useSelector((state) => state.user);
-  const registerBg = require("../Images/RegisterBg.jpg");
+  const { USER_SLICE_IS_LOADING } = useSelector((state) => state.user);
+  console.log(USER_SLICE_IS_LOADING);
 
   const [formValues, setFormValues] = useState({
     firstName: "",
@@ -61,6 +63,7 @@ const RegisterPage = () => {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return re.test(String(email).toLowerCase());
   };
+  const phoneRegex = /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s/0-9]*$/;
 
   const validateForm = () => {
     let valid = true;
@@ -85,6 +88,11 @@ const RegisterPage = () => {
     if (!formValues.username) {
       newErrors.username = true;
       newHelperTexts.username = "Username is required";
+      valid = false;
+    }
+    if (!phoneRegex.test(formValues.phoneNumber)) {
+      newErrors.phoneNumber = true;
+      newHelperTexts.phoneNumber = "Invalid phone number";
       valid = false;
     }
     if (formValues.password.length <= 8) {
@@ -175,7 +183,7 @@ const RegisterPage = () => {
             },
           }}
         >
-          <Quotes />
+          {/* <Quotes /> */}
         </Box>
         <CustomSubtitle variant={"text_base"} color={"#fff"}>
           Boost your productivity and achieve Your Goals: <br />
@@ -205,7 +213,7 @@ const RegisterPage = () => {
             width: "100%",
           },
           [theme.breakpoints.up("desktop")]: {
-            px: 20, // Styles for min-width of 'md' breakpoint
+            px: 17, // Styles for min-width of 'md' breakpoint
           },
         }}
       >
@@ -214,6 +222,7 @@ const RegisterPage = () => {
           weightFont={"bold"}
           color={theme.palette.secondary.main}
           variant="text_2xl"
+          withLine
         >
           Create Account
         </CustomTitles>
@@ -317,17 +326,19 @@ const RegisterPage = () => {
             <CustomButton
               variant="primary"
               size="medium"
-              // loading={loading}
-              leftIcon={IoSettings}
+              isLoading={USER_SLICE_IS_LOADING}
+              leftIcon={JoinInner}
+              iconColor={theme.palette.warning.main}
               type="iconLeft" // Submit button for the form
               // label="Submit"
               submit
             >
-              {loading ? (
+              Join
+              {/* {loading ? (
                 <CircularProgress sx={{ color: "#fff" }} size={24} />
               ) : (
-                "Join"
-              )}
+               
+              )} */}
             </CustomButton>
           </Stack>
 

@@ -29,7 +29,7 @@ const StyledButton = styled(motion(Button))(({ theme, variant, size }) => ({
   width: "100%",
   backgroundColor:
     variant === "primary"
-      ? theme.palette.primary.main
+      ? theme.palette.primary.dark700
       : variant === "secondary"
       ? theme.palette.secondary.main
       : variant === "minimal"
@@ -53,7 +53,9 @@ const StyledButton = styled(motion(Button))(({ theme, variant, size }) => ({
         ? "transparent"
         : theme.palette.background.default,
     color:
-      variant === "secondary"
+      variant === "primary"
+        ? "#fff"
+        : variant === "secondary"
         ? theme.palette.secondary.light
         : theme.palette.primary.main,
   },
@@ -87,7 +89,7 @@ function CustomButton({
   sx, // External styling
   onClick,
   iconColor,
-  loadingButton = false,
+  isLoading = false,
   ...props
 }) {
   const renderIcon = (Icon) =>
@@ -105,15 +107,16 @@ function CustomButton({
     <StyledButton
       variant={variant}
       size={size}
-      disabled={loadingButton || disabled}
+      disabled={isLoading || disabled}
       sx={sx}
       type={submit ? "submit" : "button"}
       onClick={onClick}
+      className="hover:text-white"
       whileHover={{ scale: 1.05 }} // Simple Framer Motion animation
       whileTap={{ scale: 0.95 }} // Tap animation for button press effect
       {...props}
     >
-      {loadingButton ? (
+      {isLoading ? (
         <CircularProgress sx={{ color: "#fff" }} size={25} />
       ) : (
         <>

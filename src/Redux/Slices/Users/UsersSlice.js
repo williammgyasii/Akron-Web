@@ -44,8 +44,6 @@ export const REGISTER_USER = createAsyncThunk(
   }
 );
 
-
-
 export const loginUser = createAsyncThunk(
   "users/loginUser",
   async ({ email, password }, { rejectWithValue }) => {
@@ -127,16 +125,16 @@ const usersSlice = createSlice({
     currentUser: null,
     status: "idle",
     error: null,
-    loading: false,
+    loading: true,
   },
   reducers: {
     setUser(state, action) {
       state.currentUser = action.payload;
-      state.loading = false;
+      state.USER_SLICE_IS_LOADING = false;
     },
     clearUser(state) {
       state.currentUser = null;
-      state.loading = false;
+      state.USER_SLICE_IS_LOADING = false;
     },
     clearError(state) {
       state.error = null;
@@ -149,32 +147,32 @@ const usersSlice = createSlice({
     builder
       .addCase(REGISTER_USER.pending, (state) => {
         state.status = "loading";
-        state.loading = true;
+        state.USER_SLICE_IS_LOADING = true;
       })
       .addCase(REGISTER_USER.fulfilled, (state, action) => {
         state.status = "succeeded";
         state.currentUser = action.payload;
-        state.loading = false;
+        state.USER_SLICE_IS_LOADING = false;
       })
       .addCase(REGISTER_USER.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.error.message;
-        state.loading = false;
+        state.USER_SLICE_IS_LOADING = false;
       })
 
       //LOGIN USER FUNCTIONS
       .addCase(loginUser.pending, (state) => {
         state.status = "loading";
-        state.loading = true;
+        state.USER_SLICE_IS_LOADING = true;
       })
       .addCase(loginUser.fulfilled, (state, action) => {
         state.status = "succeeded";
         state.currentUser = action.payload;
-        state.loading = false;
+        state.USER_SLICE_IS_LOADING = false;
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.status = "failed";
-        state.loading = false;
+        state.USER_SLICE_IS_LOADING = false;
         state.error = action.payload;
       })
       .addCase(logoutUser.fulfilled, (state) => {
@@ -185,12 +183,11 @@ const usersSlice = createSlice({
       //Auth Changes
       .addCase(listenForAuthChanges.pending, (state, action) => {
         console.log("listening....");
-        state.loading = true;
+        state.USER_SLICE_IS_LOADING = true;
       })
       .addCase(listenForAuthChanges.fulfilled, (state, action) => {
         console.log("listening ending....");
-
-        state.loading = false;
+        state.USER_SLICE_IS_LOADING = false;
       });
   },
 });

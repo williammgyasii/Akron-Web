@@ -209,7 +209,7 @@ const DrawerNav = () => {
         <CustomButton
           variant="secondary"
           size="small"
-          // loading={loading}
+          isLoading={false}
           onClick={handleLogout}
           leftIcon={IoLogOut}
           sx={{

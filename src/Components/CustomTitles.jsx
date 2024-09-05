@@ -14,6 +14,7 @@ const CustomTitles = ({
   customStyles,
   upperCase,
   weightFont,
+  withLine,
   ...props
 }) => {
   const theme = useTheme();
@@ -39,27 +40,29 @@ const CustomTitles = ({
       ]}
       {...props}
     >
-      <motion.span
-        initial={{ opacity: 0.5 }}
-        animate={{ opacity: 1 }}
-        transition={{
-          duration: 2,
-          ease: "easeInOut",
-          repeat: Infinity, // Repeats indefinitely
-          repeatType: "reverse", // Reverses the animation direction each time
-        }}
-        style={{
-          position: "absolute",
-          bottom: 5,
-          width: "100px",
-          height: "4px",
-          background: theme.palette.warning.light400,
-          zIndex: -1, // Puts the pseudo-element behind the content
-          background: "rgba(0, 0, 255, 0.5)", // Pseudo-element background
-          zIndex: -1, // Puts the pseudo-element behind
-          transition: "background 1.5s ease-in-out",
-        }} 
-      />
+      {withLine && (
+        <motion.span
+          initial={{ opacity: 0.5 }}
+          animate={{ opacity: 1 }}
+          transition={{
+            duration: 2,
+            ease: "easeInOut",
+            repeat: Infinity, // Repeats indefinitely
+            repeatType: "reverse", // Reverses the animation direction each time
+          }}
+          style={{
+            position: "absolute",
+            bottom: 5,
+            width: "100px",
+            height: "4px",
+            background: theme.palette.warning.light400,
+            zIndex: -1, // Puts the pseudo-element behind the content
+            background: "rgba(0, 0, 255, 0.5)", // Pseudo-element background
+            zIndex: -1, // Puts the pseudo-element behind
+            transition: "background 1.5s ease-in-out",
+          }}
+        />
+      )}
       {children}
     </AnimatedTypography>
   );
