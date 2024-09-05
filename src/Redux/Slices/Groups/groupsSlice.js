@@ -114,7 +114,7 @@ export const createGroupWithProject = createAsyncThunk(
   }
 );
 
-// AsyncThunk for creating a group without project
+
 // export const createGroupOnly = createAsyncThunk(
 //   "groups/createGroupOnly",
 //   async ({ groupName, groupIcon, members }, { rejectWithValue }) => {
@@ -368,11 +368,11 @@ const groupsSlice = createSlice({
     setSelectedGroupID: (state, action) => {
       state.selectedGroupId = action.payload;
     },
-    setSelectedGroupInfo: (state, action) => {
-      state.selectedGroupInfo = action.payload;
+    setCurrentGroup: (state, action) => {
+      state.CURRENT_GROUP_DETAILS = action.payload;
     },
     clearGroupDetails(state) {
-      state.selectedGroupDetails = null;
+      state.CURRENT_GROUP_DETAILS = null;
       state.groupsError = null;
     },
     addProject: (state, action) => {
@@ -466,7 +466,7 @@ const groupsSlice = createSlice({
 
 export const {
   setGroups,
-  setSelectedGroupID,
+  setCurrentGroup,
   clearGroupDetails,
   addProject,
   setSelectedProject,

@@ -159,28 +159,28 @@ const WelcomeModal = ({}) => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
-  const handleFinish = () => {
-    // // Handle form submission or other actions here
-    // console.log("Group Name:", groupName);
-    // console.log("Group Icon:", groupIcon);
-    // console.log("Members:", members);
-    // console.log("Project Name", projectValues);
-    dispatch(createGroupWithProject({ groupName, groupIcon, members, projectValues }))
-      .unwrap()
-      .then((result) => {
-        console.log("handlefinish", result);
-        dispatch(setAppUserState("currentUser"));
-        dispatch(setSelectedGroupID(result.id));
-        dispatch(
-          fetchProjectsByGroupId({
-            groupId: result.id,
-            userId: currentUser.uid,
-          })
-        );
-        dispatch(fetchSelectedGroupDetails(result.id));
-        handleClose(); // Close the modal after finishing
-      });
-  };
+  // const handleFinish = () => {
+  //   // // Handle form submission or other actions here
+  //   // console.log("Group Name:", groupName);
+  //   // console.log("Group Icon:", groupIcon);
+  //   // console.log("Members:", members);
+  //   // console.log("Project Name", projectValues);
+  //   dispatch(createGroupWithProject({ groupName, groupIcon, members, projectValues }))
+  //     .unwrap()
+  //     .then((result) => {
+  //       console.log("handlefinish", result);
+  //       dispatch(setAppUserState("currentUser"));
+  //       dispatch(setSelectedGroupID(result.id));
+  //       dispatch(
+  //         fetchProjectsByGroupId({
+  //           groupId: result.id,
+  //           userId: currentUser.uid,
+  //         })
+  //       );
+  //       dispatch(fetchSelectedGroupDetails(result.id));
+  //       handleClose(); // Close the modal after finishing
+  //     });
+  // };
 
   const handleGroupNameChange = (name) => {
     setGroupName(name);
@@ -308,7 +308,7 @@ const WelcomeModal = ({}) => {
           )}
           {activeStep === steps.length - 1 ? (
             <CustomButton
-              onClick={handleFinish}
+              // onClick={handleFinish}
               // type="iconOnly"
               loadingButton={groupUploading}
               leftIcon={MdFormatListBulletedAdd}

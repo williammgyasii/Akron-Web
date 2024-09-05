@@ -127,8 +127,8 @@ function CustomDropdown({
           options.map((option) => (
             <StyledMenuItem
               sx={{ fontSize: "14px" }}
-              key={option.value || option.id}
-              value={option.value || option.id}
+              key={option.id}
+              value={option}
             >
               {withAvatar && (
                 <StyledAvatar

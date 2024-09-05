@@ -1,9 +1,7 @@
 import { Box, Button, Container, IconButton, useTheme } from "@mui/material";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  selectCurrentUser,
-} from "../Redux/Slices/Users/UsersSlice";
+import { selectCurrentUser } from "../Redux/Slices/Users/UsersSlice";
 import GroupTaskList from "../Components/GroupTaskList";
 import {
   FETCH_USER_GROUPS,
@@ -13,9 +11,7 @@ import {
 } from "../Redux/Slices/Groups/groupsSlice";
 import CustomTitles from "../Components/CustomTitles";
 import { IoAddSharp } from "react-icons/io5";
-import {
-  showModal,
-} from "../Redux/Slices/System/systemSlice";
+import { showModal } from "../Redux/Slices/System/systemSlice";
 
 function DashboardPage() {
   const dispatch = useDispatch();
@@ -23,9 +19,12 @@ function DashboardPage() {
   const theme = useTheme();
   const selectedGroupid = useSelector(selectGroupID);
   const currentUser = useSelector(selectCurrentUser);
+  const currentGroup = useSelector(
+    (state) => state.groups.CURRENT_GROUP_DETAILS
+  );
   const projects = useSelector(selectGroupProjects);
 
-  // console.log(currentUser);
+  console.log(currentGroup);
 
   useEffect(() => {
     // dispatch(openSnackbar({message:"Group Created",snackbarState:"info"}))
@@ -59,7 +58,7 @@ function DashboardPage() {
           }}
           flexGrow={1}
         >
-          Current Group Member :{groupMembers.length}
+          {/* Current Group Member :{currentGroup} */}
           <br />
           current Group Project :{projects.length}
         </Box>
@@ -121,7 +120,7 @@ function DashboardPage() {
               flex: 1,
             }}
           >
-            <GroupTaskList groupId={selectedGroupid} />
+            {/* <GroupTaskList groupId={selectedGroupid} /> */}
           </Box>
         </Box>
       </Box>
