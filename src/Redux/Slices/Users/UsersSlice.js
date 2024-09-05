@@ -7,7 +7,7 @@ import {
   signOut,
   onAuthStateChanged,
 } from "firebase/auth";
-import { doc, setDoc, getDoc, serverTimestamp } from "firebase/firestore";
+import { doc, setDoc, getDoc, serverTimestamp, query, collection, getDocs, where } from "firebase/firestore";
 import { firebaseAuth, firebaseFirestore } from "../../../Firebase/getFirebase";
 import { getAuthErrorMessage } from "../../../Utils/authErrors";
 import { FETCH_USER_GROUPS, fetchUserGroups } from "../Groups/groupsSlice";
@@ -31,7 +31,6 @@ export const REGISTER_USER = createAsyncThunk(
         uid: user.uid,
         createdAt: serverTimestamp(),
         groups: [],
-        pendingGroups: [],
         projects: [],
         role: "admin", // Default role
         ...rest,
@@ -75,6 +74,29 @@ export const logoutUser = createAsyncThunk(
       dispatch(clearUser());
     } catch (error) {
       console.log(error);
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+// Async thunk to fetch user by email
+export const fetchUserByEmail = createAsyncThunk(
+  "users/fetchUserByEmail",
+  async (email, { rejectWithValue }) => {
+    const usersRef = collection(firebaseFirestore, "users");
+    const q = query(usersRef, where("email", "==", email)); // Query Firestore by email
+
+    try {
+      const querySnapshot = await getDocs(q);
+      if (querySnapshot.empty) {
+        throw new Error(`No user found with the email: ${email}`);
+      }
+
+      // Assuming that email is unique and we will get only one document
+      const user = querySnapshot.docs[0].data();
+      user.uid = querySnapshot.docs[0].id; // Adding the user ID to the result
+      return user;
+    } catch (error) {
       return rejectWithValue(error.message);
     }
   }

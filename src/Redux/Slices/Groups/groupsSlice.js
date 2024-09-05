@@ -20,6 +20,9 @@ import { formatTimestamp } from "../../../Utils/dateFunctions";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { getAuth } from "firebase/auth";
 import { addProjectToGroup } from "../../../Firebase/firebaseFunctions";
+import { fetchUserByEmail } from "../Users/UsersSlice";
+import { fetchGroupsBatch } from "../../../Firebase/firestoreFunctions";
+import { uploadGroupImage } from "../../../Firebase/storageFunctions";
 
 // Fetch group details thunk
 export const fetchSelectedGroupDetails = createAsyncThunk(
@@ -110,7 +113,7 @@ export const createGroupWithProject = createAsyncThunk(
   }
 );
 
-// AsyncThunk for creating a group and project
+// AsyncThunk for creating a group without project
 export const createGroupOnly = createAsyncThunk(
   "groups/createGroupOnly",
   async ({ groupName, groupIcon, members }, { rejectWithValue }) => {
@@ -157,18 +160,85 @@ export const createGroupOnly = createAsyncThunk(
   }
 );
 
-// Function to batch group fetching if user has more than 10 groups
-const fetchGroupsBatch = async (groupIdsBatch) => {
-  const groupQuery = query(
-    collection(firebaseFirestore, "groups"),
-    where("groupId", "in", groupIdsBatch)
-  );
-  const groupSnapshot = await getDocs(groupQuery);
-  return groupSnapshot.docs.map((doc) => ({
-    id: doc.id,
-    ...doc.data(),
-  }));
-};
+// Async thunk to create a group
+export const CREATE_USER_GROUPS = createAsyncThunk(
+  "groups/createGroup",
+  async (
+    { groupData, userId, imageFile, invitedEmails },
+    { dispatch, rejectWithValue }
+  ) => {
+    const batch = firebaseFirestore.batch(); // Use batch for atomic operations
+    try {
+      // Upload image and get URL
+      const imageUrl = imageFile
+        ? await dispatch(uploadGroupImage(imageFile)).unwrap()
+        : "";
+
+      // Prepare group document
+      const groupRef = doc(firebaseFirestore, "groups", groupData.groupId);
+      const groupDoc = {
+        ...groupData,
+        createdAt: new Date(),
+        ownerId: userId,
+        members: {
+          [userId]: {
+            role: "owner",
+            joinedAt: new Date(),
+          },
+        },
+        pendingInvitations: {},
+        imageUrl,
+      };
+
+      batch.set(groupRef, groupDoc);
+
+      // Fetch user UIDs and update pending invitations
+      const invitedUsers = await Promise.all(
+        invitedEmails.map(async (email) => {
+          const userSnapshot = await dispatch(fetchUserByEmail(email)).unwrap();
+          if (userSnapshot.uid) {
+            return {
+              uid: userSnapshot.uid,
+              email,
+            };
+          }
+          return null;
+        })
+      );
+
+      invitedUsers.forEach((user) => {
+        if (user) {
+          groupDoc.pendingInvitations[user.uid] = {
+            email: user.email,
+            invitedAt: new Date(),
+          };
+        }
+      });
+
+      // Update group document with pending invitations
+      batch.update(groupRef, {
+        pendingInvitations: groupDoc.pendingInvitations,
+      });
+
+      // Update user document
+      const userRef = doc(firebaseFirestore, "users", userId);
+      batch.update(userRef, {
+        [`groups.${groupData.groupId}`]: {
+          role: "owner",
+          joinedAt: new Date(),
+          createdBy: true,
+        },
+      });
+
+      // Commit batch
+      await batch.commit();
+      return groupData.groupId;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
 // AsyncThunk for fetching groups of a user
 export const FETCH_USER_GROUPS = createAsyncThunk(
   "groups/fetchUserGroups",
@@ -305,6 +375,16 @@ const groupsSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      .addCase(CREATE_USER_GROUPS.pending, (state) => {
+        state.GROUP_SLICE_STATUS = "loading";
+      })
+      .addCase(CREATE_USER_GROUPS.fulfilled, (state) => {
+        state.GROUP_SLICE_STATUS = "completed";
+      })
+      .addCase(CREATE_USER_GROUPS.rejected, (state, action) => {
+        state.GROUP_SLICE_STATUS = "failed";
+        state.error = action.payload;
+      })
       .addCase(createGroupOnly.pending, (state) => {
         state.createGroupLoading = true;
       })

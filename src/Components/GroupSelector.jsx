@@ -38,9 +38,6 @@ const GroupSelector = ({ onSelectGroup, customStyles, ...props }) => {
   const [groupError, setGroupError] = useState(false);
   const theme = useTheme();
   const currentUser = useSelector(selectCurrentUser);
-
-
-
   console.log(groups, groupslicestatus);
 
   const handleGroupChange = (event) => {

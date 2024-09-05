@@ -40,8 +40,6 @@ const ButtonContainer = styled(Box)(({ theme }) => ({
 
 const CreateGroupModal = ({ open, handleClose }) => {
   const [groupName, setGroupName] = useState("");
-  const [activeStep, setActiveStep] = useState(0);
-  const [buttonNext, setButtonNext] = useState(false);
   const [searchEmail, setSearchEmail] = useState("");
   const [groupIcon, setGroupIcon] = useState(null);
   const [loading, setLoading] = useState(false);
