@@ -27,7 +27,7 @@ import CustomButton from "./CustomButton";
 import { useSelector } from "react-redux";
 import { selectCurrentUser } from "../Redux/Slices/Users/UsersSlice";
 import GroupMemberListView from "./GroupMemberListView";
-import { queryUserByEmail } from "../Firebase/firebaseFunctions";
+import { queryUserByEmail } from "../Firebase/firestoreFunctions";
 
 const FormContainer = styled("div")({
   display: "flex",

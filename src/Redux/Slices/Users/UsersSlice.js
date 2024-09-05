@@ -7,7 +7,16 @@ import {
   signOut,
   onAuthStateChanged,
 } from "firebase/auth";
-import { doc, setDoc, getDoc, serverTimestamp, query, collection, getDocs, where } from "firebase/firestore";
+import {
+  doc,
+  setDoc,
+  getDoc,
+  serverTimestamp,
+  query,
+  collection,
+  getDocs,
+  where,
+} from "firebase/firestore";
 import { firebaseAuth, firebaseFirestore } from "../../../Firebase/getFirebase";
 import { getAuthErrorMessage } from "../../../Utils/authErrors";
 import { FETCH_USER_GROUPS, fetchUserGroups } from "../Groups/groupsSlice";
@@ -31,7 +40,6 @@ export const REGISTER_USER = createAsyncThunk(
         uid: user.uid,
         createdAt: serverTimestamp(),
         groups: [],
-        projects: [],
         role: "admin", // Default role
         ...rest,
       });
