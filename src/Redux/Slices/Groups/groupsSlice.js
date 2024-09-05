@@ -210,32 +210,9 @@ export const CREATE_USER_GROUPS = createAsyncThunk(
         ...groupData,
       };
 
-      // console.log(imageUrl, groupId);
     } catch (error) {
       console.log("error/CREATE_USER_GROUPS", error);
     }
-
-    //   // Update group document with pending invitations
-    //   batch.update(groupRef, {
-    //     pendingInvitations: groupDoc.pendingInvitations,
-    //   });
-
-    //   // Update user document
-    //   const userRef = doc(firebaseFirestore, "users", userId);
-    //   batch.update(userRef, {
-    //     [`groups.${groupData.groupId}`]: {
-    //       role: "owner",
-    //       joinedAt: new Date(),
-    //       createdBy: true,
-    //     },
-    //   });
-
-    //   // Commit batch
-    //   await batch.commit();
-    //   return groupData.groupId;
-    // } catch (error) {
-    //   return rejectWithValue(error.message);
-    // }
   }
 );
 
