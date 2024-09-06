@@ -1,8 +1,14 @@
-import { Box, Button, Container, IconButton, useTheme } from "@mui/material";
+import {
+  Box,
+  Button,
+  Container,
+  Grid,
+  IconButton,
+  useTheme,
+} from "@mui/material";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { selectCurrentUser } from "../Redux/Slices/Users/UsersSlice";
-import GroupTaskList from "../Components/GroupTaskList";
 import {
   FETCH_USER_GROUPS,
   selectGroupID,
@@ -12,18 +18,13 @@ import {
 import CustomTitles from "../Components/CustomTitles";
 import { IoAddSharp } from "react-icons/io5";
 import { showModal } from "../Redux/Slices/System/systemSlice";
+import { motion } from "framer-motion";
+import CreateGroupForm from "../Components/CreateGroupForm";
+import CustomFormInput from "../Components/CustomFormInput";
 
 function DashboardPage() {
   const dispatch = useDispatch();
-  const groupMembers = useSelector(selectGroupMembers);
   const theme = useTheme();
-  const selectedGroupid = useSelector(selectGroupID);
-  const currentUser = useSelector(selectCurrentUser);
-  const currentGroup = useSelector(
-    (state) => state.groups.CURRENT_GROUP_DETAILS
-  );
-  const projects = useSelector(selectGroupProjects);
-
   // console.log(currentGroup);
 
   useEffect(() => {
@@ -42,43 +43,44 @@ function DashboardPage() {
 
   return (
     <Container disableGutters maxWidth={false} sx={{ position: "relative" }}>
-      <Box
-        sx={{
-          p: 1.5,
-          display: "flex",
-          height: "100vh",
-        }}
+      <Grid
+        p={1}
+        className="min-h-screens"
+        container
+        columnSpacing={2}
       >
-        <Box
-          sx={{
-            backgroundColor: theme.palette.background.paper,
-            borderRadius: 2,
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-          flexGrow={1}
-        >
-         
-          <img src={currentGroup?.imageUrl} />
-          current Group Project :{projects.length}
-        </Box>
-        <Box
-          sx={{
-            px: 1,
-            overflowY: "auto",
-            position: "relative",
-            width: 300,
-            marginLeft: "10px",
-            backgroundColor: theme.palette.background.paper,
-            borderRadius: 2,
-            [theme.breakpoints.down("tablets_port")]: {
-              display: "none",
-            },
-          }}
-        >
+        <Grid item sx={{ height: "100%" }} desktop={8} tablets_port={10}>
+          <Box
+            sx={{
+              backgroundColor: "red",
+              display: "flex",
+              width: "100%",
+              padding: "10px",
+              height: "100%",
+              flexDirection: "column",
+            }}
+          >
+            <CustomTitles
+              color={theme.palette.secondary.main}
+              variant="text_base"
+              // capitalize="none"
+              weightFont={"medium"}
+              customStyles={{
+                textTransform: "none",
+                display: "block",
+                zIndex: 1,
+                p: 1,
+              }}
+            >
+              Tasks
+            </CustomTitles>
+          </Box>
+        </Grid>
+        <Grid item desktop={4}>
           <Box
             sx={{
               display: "flex",
+              backgroundColor: "yellow",
               justifyContent: "space-between",
               alignItems: "center",
             }}
@@ -90,7 +92,6 @@ function DashboardPage() {
               weightFont={"medium"}
               customStyles={{
                 textTransform: "none",
-
                 display: "block",
                 zIndex: 1,
                 p: 1,
@@ -120,10 +121,11 @@ function DashboardPage() {
               flex: 1,
             }}
           >
+            ac
             {/* <GroupTaskList groupId={selectedGroupid} /> */}
           </Box>
-        </Box>
-      </Box>
+        </Grid>
+      </Grid>
     </Container>
   );
 }

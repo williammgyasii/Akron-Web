@@ -21,9 +21,6 @@ const CheckUserWelcomeState = ({ children }) => {
     } else if (welcomeStatus === "currentUser") {
     }
     dispatch(FETCH_USER_GROUPS(currentUser.uid));
-
-    console.log(welcomeStatus);
-
     return () => {};
   }, [dispatch]);
 
@@ -34,6 +31,7 @@ const PrivateRoute = ({ element }) => {
   const { currentUser, loading, status, error } = useSelector(
     (state) => state.user
   );
+  
   if (status === "loading") {
     if (loading) return <CircularProgress size={24} />; // or a spinner
   }
