@@ -41,7 +41,6 @@ const GroupSelector = ({ onSelectGroup, customStyles, ...props }) => {
   const [groupError, setGroupError] = useState(false);
   const theme = useTheme();
 
-
   const handleGroupChange = (event) => {
     setSelectedGroupId(event.target.value);
     if (setSelectedGroupId) {
@@ -83,7 +82,7 @@ const GroupSelector = ({ onSelectGroup, customStyles, ...props }) => {
               : theme.palette.primary.white
           }
           options={groups}
-          value={selectedGroupId}
+          value={currentGroup.id}
           onChange={handleGroupChange}
           error={groupError}
           helperText={groupError ? "Please select a category" : ""}

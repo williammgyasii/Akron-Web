@@ -24,7 +24,7 @@ function DashboardPage() {
   );
   const projects = useSelector(selectGroupProjects);
 
-  console.log(currentGroup);
+  // console.log(currentGroup);
 
   useEffect(() => {
     // dispatch(openSnackbar({message:"Group Created",snackbarState:"info"}))
