@@ -224,7 +224,7 @@ const RegisterPage = () => {
           variant="text_2xl"
           withLine
         >
-          Create Account
+          Create Accaount
         </CustomTitles>
 
         <CustomSubtitle

@@ -24,7 +24,6 @@ import {
   selectUserGroups,
   setCurrentGroup,
   setPrefferedGroup,
-  setSelectedGroupID,
 } from "../Redux/Slices/Groups/groupsSlice";
 import CustomDropdown from "./CustomDropdown";
 import { selectCurrentUser } from "../Redux/Slices/Users/UsersSlice";
@@ -35,20 +34,22 @@ const GroupSelector = ({ onSelectGroup, customStyles, ...props }) => {
   const groupslicestatus = useSelector(
     (state) => state.groups.GROUP_SLICE_STATUS
   );
-  const selectedGroup = useSelector(selectGroupID);
-  const currentGroup =useSelector(state=>state.groups.CURRENT_GROUP_DETAILS)
+  const [selectedGroupId, setSelectedGroupId] = useState("");
+  const currentGroup = useSelector(
+    (state) => state.groups.CURRENT_GROUP_DETAILS
+  );
   const [groupError, setGroupError] = useState(false);
   const theme = useTheme();
 
-  console.log("groupSelector", groups);
-  const options = [
-    { id: 1, label: "Option 1" },
-    { id: 2, label: "Option 2" },
-    { id: 3, label: "Option 3" },
-  ];
 
   const handleGroupChange = (event) => {
-    dispatch(setCurrentGroup(event.target.value));
+    setSelectedGroupId(event.target.value);
+    if (setSelectedGroupId) {
+      const selectedGroup = groups.find(
+        (item) => item.id === event.target.value
+      );
+      dispatch(setCurrentGroup(selectedGroup));
+    }
   };
 
   return (
@@ -82,7 +83,7 @@ const GroupSelector = ({ onSelectGroup, customStyles, ...props }) => {
               : theme.palette.primary.white
           }
           options={groups}
-          value={currentGroup}
+          value={selectedGroupId}
           onChange={handleGroupChange}
           error={groupError}
           helperText={groupError ? "Please select a category" : ""}

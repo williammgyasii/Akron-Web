@@ -128,7 +128,7 @@ function CustomDropdown({
             <StyledMenuItem
               sx={{ fontSize: "14px" }}
               key={option.id}
-              value={option}
+              value={option.id}
             >
               {withAvatar && (
                 <StyledAvatar
