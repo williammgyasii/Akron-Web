@@ -58,8 +58,8 @@ function DashboardPage() {
           }}
           flexGrow={1}
         >
-          {/* Current Group Member :{currentGroup} */}
-          <br />
+         
+          <img src={currentGroup?.imageUrl} />
           current Group Project :{projects.length}
         </Box>
         <Box
