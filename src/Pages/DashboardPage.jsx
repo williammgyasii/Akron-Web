@@ -43,12 +43,7 @@ function DashboardPage() {
 
   return (
     <Container disableGutters maxWidth={false} sx={{ position: "relative" }}>
-      <Grid
-        p={1}
-        className="min-h-screens"
-        container
-        columnSpacing={2}
-      >
+      <Grid p={1} className="min-h-screens" container columnSpacing={2}>
         <Grid item sx={{ height: "100%" }} desktop={9} tablets_port={10}>
           <Box
             sx={{
@@ -76,6 +71,7 @@ function DashboardPage() {
             </CustomTitles>
           </Box>
         </Grid>
+
         <Grid item desktop={3}>
           <Box
             sx={{
