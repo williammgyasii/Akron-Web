@@ -89,6 +89,7 @@ function CreateProjectModal({ openModal, onCloseModal }) {
                 sx={{
                   backgroundColor: theme.palette.secondary.light400,
                   color: "#fff",
+                  fontSize: "10px",
                 }}
                 label={`${currentGroup?.groupData} Group`}
               />
