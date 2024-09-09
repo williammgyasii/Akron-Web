@@ -37,7 +37,7 @@ const MainLayout = ({ children }) => {
           title={`Welcome Back! ${currentUser.firstName}`}
           showOthers
         />
-        <Box sx={{ mt:"5%" }}>{children}</Box>
+        <Box sx={{ mt:"4%" }}>{children}</Box>
 
         <CreateTaskFAB />
       </Box>

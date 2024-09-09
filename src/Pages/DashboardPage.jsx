@@ -72,53 +72,62 @@ function DashboardPage() {
           </Box>
         </Grid>
 
-        <Grid item desktop={3}>
+        <Grid
+          sx={{
+            position: "relative",
+          }}
+          item
+          desktop={3}
+        >
           <Box
             sx={{
+              minHeight: "100vh",
+              backgroundColor: "red",
+              width: "100%",
               display: "flex",
-              backgroundColor: "yellow",
-              justifyContent: "space-between",
-              alignItems: "center",
+              flexDirection: "column",
             }}
           >
-            <CustomTitles
-              color={theme.palette.secondary.main}
-              variant="text_base"
-              // capitalize="none"
-              weightFont={"medium"}
-              customStyles={{
-                textTransform: "none",
-                display: "block",
-                zIndex: 1,
-                p: 1,
-              }}
-            >
-              Tasks
-            </CustomTitles>
-            <IconButton
-              onClick={() => dispatch(showModal("createTask"))}
+            <Box
               sx={{
-                backgroundColor: theme.palette.primary.main,
-                color: "white",
-                borderRadius: 1,
-                "&:hover": {
-                  backgroundColor: theme.palette.primary.dark800, // Slightly lighter black on hover
-                },
+                display: "flex",
+                backgroundColor: "yellow",
+                justifyContent: "space-between",
+                alignItems: "center",
               }}
             >
-              <IoAddSharp size={10} />
-            </IconButton>
-          </Box>
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "flex-start",
-              flex: 1,
-            }}
-          >
-            ac
-            {/* <GroupTaskList groupId={selectedGroupid} /> */}
+              <CustomTitles
+                color={theme.palette.secondary.main}
+                variant="text_base"
+                // capitalize="none"
+                weightFont={"medium"}
+                customStyles={{
+                  textTransform: "none",
+                  display: "block",
+                  zIndex: 1,
+                  p: 1,
+                }}
+              >
+                Tasks
+              </CustomTitles>
+              <IconButton
+                onClick={() => dispatch(showModal("createTask"))}
+                sx={{
+                  backgroundColor: theme.palette.primary.main,
+                  color: "white",
+                  borderRadius: 1,
+                  "&:hover": {
+                    backgroundColor: theme.palette.primary.dark800, // Slightly lighter black on hover
+                  },
+                }}
+              >
+                <IoAddSharp size={10} />
+              </IconButton>
+            </Box>
+            <Box sx={{ backgroundColor: "blue"}}>
+              ac
+              {/* <GroupTaskList groupId={selectedGroupid} /> */}
+            </Box>
           </Box>
         </Grid>
       </Grid>
