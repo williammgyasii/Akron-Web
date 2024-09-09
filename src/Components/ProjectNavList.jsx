@@ -2,11 +2,8 @@ import React, { useState } from "react";
 import {
   Avatar,
   Box,
-  Button,
   Divider,
-  IconButton,
   List,
-  ListItem,
   ListItemButton,
   ListItemText,
   Typography,
@@ -22,26 +19,11 @@ import {
   setSelectedProject,
 } from "../Redux/Slices/Groups/groupsSlice";
 import CustomButton from "./CustomButton";
-import { IoAddSharp } from "react-icons/io5";
-import CustomTitles from "./CustomTitles";
 import {
   selectIsDrawerOpened,
   showModal,
 } from "../Redux/Slices/System/systemSlice";
 import { getRandomAvatarColor } from "../Utils/randomAvatarColors";
-
-const StyledListItemButton = styled(ListItemButton)(({ theme, selected }) => ({
-  padding: "5px 10px",
-  borderRadius: theme.shape.borderRadius,
-  transition: "background-color 0.3s, box-shadow 0.3s",
-  "&.Mui-selected": {
-    backgroundColor: theme.palette.primary.main,
-    color: "white",
-  },
-  "&:hover": {
-    backgroundColor: theme.palette.primary.main,
-  },
-}));
 
 const ProjectNavList = ({ selectedProject, onSelectProject }) => {
   const navigate = useNavigate();
@@ -53,6 +35,8 @@ const ProjectNavList = ({ selectedProject, onSelectProject }) => {
   const theme = useTheme();
   const dispatch = useDispatch();
 
+  console.log(projects)
+
   const handleViewAllClick = () => {
     navigate("projects"); // Adjust the path to your projects page
   };
@@ -60,8 +44,6 @@ const ProjectNavList = ({ selectedProject, onSelectProject }) => {
     dispatch(setSelectedProject(project));
     navigate(`projects/${projectId}`); // Adjust the path to your project details page
   };
-
-  const handleOpen = () => dispatch(showModal("createProject"));
 
   if (projects.length === 0) {
     return (
@@ -129,3 +111,16 @@ const ProjectNavList = ({ selectedProject, onSelectProject }) => {
 };
 
 export default ProjectNavList;
+
+const StyledListItemButton = styled(ListItemButton)(({ theme, selected }) => ({
+  padding: "5px 10px",
+  borderRadius: theme.shape.borderRadius,
+  transition: "background-color 0.3s, box-shadow 0.3s",
+  "&.Mui-selected": {
+    backgroundColor: theme.palette.primary.main,
+    color: "white",
+  },
+  "&:hover": {
+    backgroundColor: theme.palette.primary.main,
+  },
+}));
