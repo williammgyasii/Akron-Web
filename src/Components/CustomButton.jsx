@@ -10,6 +10,10 @@ import { motion } from "framer-motion";
 
 // Define button sizes for consistent spacing and typography
 const buttonSizes = {
+  extrasmall: {
+    padding: "2px 4px",
+    fontSize: "0.60rem",
+  },
   small: {
     padding: "4px 8px",
     fontSize: "0.75rem",
@@ -25,50 +29,56 @@ const buttonSizes = {
 };
 
 // Styled button using MUI's styled and incorporating motion for future animations
-const StyledButton = styled(motion(Button))(({ theme, variant, size }) => ({
-  width: "100%",
-  backgroundColor:
-    variant === "primary"
-      ? theme.palette.primary.dark700
-      : variant === "secondary"
-      ? theme.palette.secondary.main
-      : variant === "minimal"
-      ? "transparent"
-      : theme.palette.background.paper,
-  border: variant === "minimal" ? "1px solid #000" : null,
-  color:
-    variant === "primary" || variant === "secondary"
-      ? theme.palette.common.white
-      : "#000",
-  padding: buttonSizes[size]?.padding || buttonSizes.medium.padding,
-  fontSize: buttonSizes[size]?.fontSize || buttonSizes.medium.fontSize,
-
-  "&:hover": {
+const StyledButton = styled(motion(Button))(
+  ({ theme, variant, size, minimalcolor }) => ({
+    width: "100%",
     backgroundColor:
       variant === "primary"
-        ? theme.palette.primary.dark
+        ? theme.palette.primary.dark700
         : variant === "secondary"
-        ? theme.palette.secondary.dark
+        ? theme.palette.secondary.main
         : variant === "minimal"
         ? "transparent"
-        : theme.palette.background.default,
+        : theme.palette.background.paper,
+    // border: variant === "minimal" ? "1px solid #000" : null,
     color:
       variant === "primary"
-        ? "#fff"
+        ? theme.palette.primary.dark700
         : variant === "secondary"
-        ? theme.palette.secondary.light
-        : theme.palette.primary.main,
-  },
+        ? theme.palette.secondary.main
+        : variant === "minimal"
+        ? minimalcolor
+        : theme.palette.background.paper,
+    padding: buttonSizes[size]?.padding || buttonSizes.medium.padding,
+    fontSize: buttonSizes[size]?.fontSize || buttonSizes.medium.fontSize,
 
-  "&:disabled": {
-    backgroundColor:
-      variant === "primary"
-        ? theme.palette.primary.light
-        : variant === "secondary"
-        ? theme.palette.secondary.light
-        : theme.palette.action.disabledBackground,
-  },
-}));
+    "&:hover": {
+      backgroundColor:
+        variant === "primary"
+          ? theme.palette.primary.dark
+          : variant === "secondary"
+          ? theme.palette.secondary.dark
+          : variant === "minimal"
+          ? "transparent"
+          : theme.palette.background.default,
+      color:
+        variant === "primary"
+          ? "#fff"
+          : variant === "secondary"
+          ? theme.palette.secondary.light
+          : theme.palette.primary.main,
+    },
+
+    "&:disabled": {
+      backgroundColor:
+        variant === "primary"
+          ? theme.palette.primary.light
+          : variant === "secondary"
+          ? theme.palette.secondary.light
+          : theme.palette.action.disabledBackground,
+    },
+  })
+);
 
 const StyledIconButton = styled(MuiIconButton)(({ theme, size }) => ({
   color: theme.palette.text.primary,
@@ -88,7 +98,9 @@ function CustomButton({
   children,
   sx, // External styling
   onClick,
+  minimalcolor,
   iconColor,
+  iconSize,
   isLoading = false,
   ...props
 }) {
@@ -111,6 +123,7 @@ function CustomButton({
       sx={sx}
       type={submit ? "submit" : "button"}
       onClick={onClick}
+      minimalcolor={minimalcolor}
       className="hover:text-white"
       whileHover={{ scale: 1.05 }} // Simple Framer Motion animation
       whileTap={{ scale: 0.95 }} // Tap animation for button press effect

@@ -10,6 +10,9 @@ const CustomFormInput = ({
   type,
   customStyles,
   maxCount,
+  minRows,
+  maxRows,
+  multiline,
   ...props
 }) => {
   const theme = useTheme();
@@ -18,6 +21,9 @@ const CustomFormInput = ({
       label={label}
       color="grey"
       error={error}
+      multiline={multiline}
+      minRows={minRows}
+      maxRows={maxRows}
       helperText={helperText}
       variant="outlined"
       size="small"

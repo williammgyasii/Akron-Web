@@ -1,8 +1,27 @@
-import { Box, Grid, Modal, styled } from "@mui/material";
-import React from "react";
+import { Box, Chip, Grid, Modal, styled, useTheme } from "@mui/material";
+import React, { useState } from "react";
 import CustomButton from "./CustomButton";
+import { MdFormatListBulletedAdd } from "react-icons/md";
+import { IoLink } from "react-icons/io5";
+import projectImage from "../Images/RegisterBg.jpg";
+import { motion } from "framer-motion";
+import CustomTitles from "./CustomTitles";
+import CustomFormInput from "./CustomFormInput";
+import { useSelector } from "react-redux";
 
 function CreateProjectModal({ openModal, onCloseModal }) {
+  const theme = useTheme();
+  const [projectName, setProjectName] = useState("");
+  const [projectDesc, setProjectDesc] = useState("");
+  const [errors, setErrors] = useState({
+    projectNameError: "",
+    projectDesc: "",
+    emailError: "",
+  });
+  const currentGroup = useSelector(
+    (state) => state.groups.CURRENT_GROUP_DETAILS
+  );
+  console.log(currentGroup);
   return (
     <StyledModal
       BackdropProps={{
@@ -12,12 +31,65 @@ function CreateProjectModal({ openModal, onCloseModal }) {
       open={openModal}
       onClose={onCloseModal}
     >
-      <StyledGridContainer columns={12} container columnSpacing={2}>
-        <Grid item desktop={12}>
-          Image
+      <StyledGridContainer columns={12} container>
+        <Grid item desktop={5}>
+          <Box sx={{ height: "300px" }}>
+            <img
+              style={{ borderRadius: "10px" }}
+              src={projectImage}
+              className="w-full h-full object-cover"
+            />
+          </Box>
         </Grid>
-        <Grid item desktop={12}>
-          Content
+        <Grid sx={{ padding: "20px" }} item desktop={7}>
+          <motion.div>
+            <CustomTitles
+              weightFont={"bold"}
+              align="left"
+              color={theme.palette.secondary.main}
+              variant="text_xl"
+              withLine
+              //   subtitle={"Creating a project to get started"}
+            >
+              Create A Project
+            </CustomTitles>
+            <span className="text-sm">
+              Project will be created in{" "}
+              <Chip
+                sx={{
+                  backgroundColor: theme.palette.secondary.light400,
+                  color: "#fff",
+                }}
+                label={`${currentGroup?.groupData} Group`}
+              />
+            </span>
+            <FormContainer>
+              <CustomFormInput
+                label="Project Name or Alias"
+                value={projectName}
+                type={"text"}
+                onChange={(e) => setProjectName(e.target.value)}
+                fullWidth
+                required
+                maxCount={20}
+                helperText={errors.projectNameError}
+                error={Boolean(errors.projectNameError)}
+              />
+              <CustomFormInput
+                minRows={5} // Minimum number of rows (sets height)
+                maxRows={9}
+                label="Project Description"
+                value={projectDesc}
+                type={"text"}
+                onChange={(e) => setProjectDesc(e.target.value)}
+                fullWidth
+                multiline
+                required
+                helperText={errors.projectDesc}
+                error={Boolean(errors.projectDesc)}
+              />
+            </FormContainer>
+          </motion.div>
         </Grid>
         <Grid
           sx={{
@@ -35,22 +107,25 @@ function CreateProjectModal({ openModal, onCloseModal }) {
             // loadingButton={groupUploading}
             // leftIcon={MdFormatListBulletedAdd}
             // disabled={GROUP_SLICE_ISLOADING}
-            
-            submit
-            size="medium"
-            sx={{ color: "#fff",width:"200px" }}
+            size="small"
+            sx={{
+              color: theme.palette.secondary.main,
+              width: "150px",
+              border: "1px solid #000",
+            }}
             variant="minimal"
           >
-            Copy Project Invite
+            Copy Invite Link
+            <IoLink style={{ marginLeft: "2px" }} />
           </CustomButton>
 
           <ButtonContainer>
             <CustomButton
-            //   onClick={handleClose}
+              onClick={onCloseModal}
               // // type="iconOnly"
               // loadingButton={groupUploading}
               // leftIcon={MdFormatListBulletedAdd}
-            //   disabled={GROUP_SLICE_ISLOADING}
+              //   disabled={GROUP_SLICE_ISLOADING}
               submit
               size="medium"
               sx={{ color: "#fff" }}
@@ -59,10 +134,10 @@ function CreateProjectModal({ openModal, onCloseModal }) {
               Cancel
             </CustomButton>
             <CustomButton
-            //   onClick={handleSubmit}
+              //   onClick={handleSubmit}
               // disabled={buttonNext}
-            //   leftIcon={MdFormatListBulletedAdd}
-            //   isLoading={GROUP_SLICE_ISLOADING}
+              leftIcon={MdFormatListBulletedAdd}
+              //   isLoading={GROUP_SLICE_ISLOADING}
               submit
               size="medium"
               sx={{ color: "#fff" }}
@@ -70,7 +145,7 @@ function CreateProjectModal({ openModal, onCloseModal }) {
               variant="primary"
               color="primary"
             >
-              Create Group
+              Create Project
             </CustomButton>
           </ButtonContainer>
         </Grid>
@@ -92,7 +167,7 @@ const StyledGridContainer = styled(Grid)(({ theme }) => ({
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 800,
+  width: 700,
   backgroundColor: theme.palette.background.paper,
   borderRadius: theme.shape.borderRadius,
   // boxShadow: theme.shadows[5],
@@ -116,7 +191,15 @@ const ButtonContainer = styled(Box)(({ theme }) => ({
   display: "flex",
   justifyContent: "flex-end",
   marginTop: theme.spacing(1),
-  width: "30%",
+  width: "50%",
   marginLeft: "auto",
   gap: "10px",
 }));
+
+const FormContainer = styled("form")({
+  display: "flex",
+  flexDirection: "column",
+  width: "100%",
+  gap: "10px",
+  marginTop: "10px",
+});

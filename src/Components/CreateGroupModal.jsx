@@ -37,7 +37,6 @@ const CreateGroupModal = ({ open, handleClose }) => {
   const [groupName, setGroupName] = useState("");
   const [searchEmail, setSearchEmail] = useState("");
   const [groupIcon, setGroupIcon] = useState(null);
-  const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({
     groupNameError: "",
     groupIconError: "",
