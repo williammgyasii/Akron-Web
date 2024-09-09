@@ -3,9 +3,8 @@ import { createSlice } from "@reduxjs/toolkit";
 const projectsSlice = createSlice({
   name: "Projects",
   initialState: {
-    groupProjects: [],
+    projects: [],
     activeProject: null,
-    groupMembers: [],
     PROJECT_SLICE_ISLOADING: false,
     PROJECT_SLICE_STATUS: "idle",
   },
