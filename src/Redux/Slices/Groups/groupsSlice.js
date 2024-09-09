@@ -169,7 +169,6 @@ export const CREATE_USER_GROUPS = createAsyncThunk(
     { dispatch, rejectWithValue }
   ) => {
     try {
-      console.log(invitedEmails);
       const batch = writeBatch(firebaseFirestore);
       // Upload image and get URL
       const imageUrl = imageFile
@@ -186,6 +185,8 @@ export const CREATE_USER_GROUPS = createAsyncThunk(
         role: "member",
         joinedAt: new Date(),
       }));
+
+      
       const groupDoc = {
         groupData,
         createdAt: new Date(),
