@@ -40,6 +40,7 @@ const GroupSelector = ({ onSelectGroup, customStyles, ...props }) => {
   );
   const [groupError, setGroupError] = useState(false);
   const theme = useTheme();
+  console.log(groups)
 
   const handleGroupChange = (event) => {
     setSelectedGroupId(event.target.value);

@@ -19,7 +19,7 @@ const CenteredSnackbarContent = styled(SnackbarContent)(({ theme }) => ({
   justifyContent: "center",
   alignItems: "center",
   textAlign: "center",
-  backgroundColor: theme.palette.success.main, // Example background color
+  backgroundColor: theme.palette.secondary.main, // Example background color
   color: theme.palette.common.white,
 }));
 
