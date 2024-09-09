@@ -63,14 +63,12 @@ const DrawerNav = () => {
     setOpenModal(false);
   };
 
-
   const handleLogout = () => {
     dispatch(logoutUser())
       .unwrap()
       .then(() => {
         dispatch(resetState());
-        persistor.purge(); // Clear persisted state
-        // Perform other logout logic, like redirecting to the login page
+        persistor.purge();
         navigate("/login", { replace: true });
         window.location.reload();
       });
@@ -236,7 +234,10 @@ const DrawerNav = () => {
         </CustomButton>
       </Drawer>
 
-      <CreateProjectModal openModal={openModal} onCloseModal={closeProjectModal}  />
+      <CreateProjectModal
+        openModal={openModal}
+        onCloseModal={closeProjectModal}
+      />
     </Box>
   );
 };

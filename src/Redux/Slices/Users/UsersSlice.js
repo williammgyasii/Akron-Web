@@ -19,8 +19,6 @@ import {
 } from "firebase/firestore";
 import { firebaseAuth, firebaseFirestore } from "../../../Firebase/getFirebase";
 import { getAuthErrorMessage } from "../../../Utils/authErrors";
-import { FETCH_USER_GROUPS, fetchUserGroups } from "../Groups/groupsSlice";
-
 export const REGISTER_USER = createAsyncThunk(
   "auth/registerUser",
   async (formValues, { rejectWithValue }) => {
@@ -80,6 +78,7 @@ export const logoutUser = createAsyncThunk(
     try {
       signOut(firebaseAuth);
       dispatch(clearUser());
+      
     } catch (error) {
       console.log(error);
       return rejectWithValue(error.message);
@@ -130,7 +129,7 @@ export const listenForAuthChanges = createAsyncThunk(
                 ...userDoc.data(),
               };
               console.log("SOMEONE IS INSIDE WITH DETAILS", userStructure);
-              
+
               dispatch(setUser(userStructure));
             }
           } else {

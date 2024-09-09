@@ -83,7 +83,7 @@ const GroupSelector = ({ onSelectGroup, customStyles, ...props }) => {
               : theme.palette.primary.white
           }
           options={groups}
-          value={currentGroup.id}
+          value={currentGroup?.id}
           onChange={handleGroupChange}
           error={groupError}
           helperText={groupError ? "Please select a category" : ""}

@@ -7,10 +7,14 @@ import projectImage from "../Images/RegisterBg.jpg";
 import { motion } from "framer-motion";
 import CustomTitles from "./CustomTitles";
 import CustomFormInput from "./CustomFormInput";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { CREATE_PROJECT } from "../Redux/Slices/Projects/projectsSlice";
+import { selectCurrentUser } from "../Redux/Slices/Users/UsersSlice";
+import { openSnackbar } from "../Redux/Slices/System/systemSlice";
 
 function CreateProjectModal({ openModal, onCloseModal }) {
   const theme = useTheme();
+  const dispatch = useDispatch();
   const [projectName, setProjectName] = useState("");
   const [projectDesc, setProjectDesc] = useState("");
   const [errors, setErrors] = useState({
@@ -21,7 +25,33 @@ function CreateProjectModal({ openModal, onCloseModal }) {
   const currentGroup = useSelector(
     (state) => state.groups.CURRENT_GROUP_DETAILS
   );
-  console.log(currentGroup);
+  const currentUser = useSelector(selectCurrentUser);
+  const { PROJECT_SLICE_ISLOADING, PROJECT_SLICE_STATUS } = useSelector(
+    (state) => state.projects
+  );
+
+  const handleSubmit = () => {
+    console.log("Fried Rice");
+    dispatch(
+      CREATE_PROJECT({
+        projectName,
+        groupId: currentGroup.id,
+        userId: currentUser?.uid,
+      })
+    )
+      .unwrap()
+      .then(() => {
+        dispatch(
+          openSnackbar({ message: "Project Created", snackbarState: "info" })
+        );
+        setProjectName("");
+        setProjectDesc("");
+        setErrors({ groupNameError: "", groupIconError: "" });
+        // dispatch(FETCH_USER_GROUPS(currentUser.uid));
+        onCloseModal(); // Close the modal after finishing
+      });
+  };
+
   return (
     <StyledModal
       BackdropProps={{
@@ -106,7 +136,7 @@ function CreateProjectModal({ openModal, onCloseModal }) {
             // // type="iconOnly"
             // loadingButton={groupUploading}
             // leftIcon={MdFormatListBulletedAdd}
-            // disabled={GROUP_SLICE_ISLOADING}
+            disabled={PROJECT_SLICE_ISLOADING}
             size="small"
             sx={{
               color: theme.palette.secondary.main,
@@ -125,7 +155,7 @@ function CreateProjectModal({ openModal, onCloseModal }) {
               // // type="iconOnly"
               // loadingButton={groupUploading}
               // leftIcon={MdFormatListBulletedAdd}
-              //   disabled={GROUP_SLICE_ISLOADING}
+              disabled={PROJECT_SLICE_ISLOADING}
               submit
               size="medium"
               sx={{ color: "#fff" }}
@@ -134,10 +164,9 @@ function CreateProjectModal({ openModal, onCloseModal }) {
               Cancel
             </CustomButton>
             <CustomButton
-              //   onClick={handleSubmit}
-              // disabled={buttonNext}
+              onClick={handleSubmit}
               leftIcon={MdFormatListBulletedAdd}
-              //   isLoading={GROUP_SLICE_ISLOADING}
+              isLoading={PROJECT_SLICE_ISLOADING}
               submit
               size="medium"
               sx={{ color: "#fff" }}
