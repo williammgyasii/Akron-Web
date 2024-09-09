@@ -18,7 +18,7 @@ import { GoDotFill } from "react-icons/go";
 import { IoMdCheckmarkCircleOutline } from "react-icons/io";
 import { MdFormatListBulletedAdd } from "react-icons/md";
 import CustomButton from "./CustomButton";
-import CreateGroupForm from "./CreateGroupForm";
+// import CreateGroupForm from "./CreateGroupForm";
 import { selectCurrentUser } from "../Redux/Slices/Users/UsersSlice";
 import {
   createGroup,
@@ -228,7 +228,7 @@ const WelcomeModal = ({}) => {
       case 1:
         return (
           <StepContent>
-            <CreateGroupForm
+            {/* <CreateGroupForm
               onChangeGroupName={(e) => setGroupName(e.target.value)}
               groupName={groupName}
               userEmail={currentUser.email}
@@ -242,7 +242,7 @@ const WelcomeModal = ({}) => {
               removeMember={handleRemoveMember}
               addMember={handleAddMember}
               errors={errors}
-            />
+            /> */}
           </StepContent>
         );
       case 2:

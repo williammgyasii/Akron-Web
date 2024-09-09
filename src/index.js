@@ -33,7 +33,7 @@ root.render(
           <CssBaseline />
           <AuthListener />
           <GlobalSnackbar />
-          <WelcomeModal />
+          {/* <WelcomeModal /> */}
           {/* <GlobalLoading/> */}
           <App />
         </ThemeProvider>
