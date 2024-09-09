@@ -39,7 +39,7 @@ const ProjectNavList = ({ selectedProject, onSelectProject }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(FETCH_USER_PROJECTS({ userId: currentUser?.uid }));
+    dispatch(FETCH_USER_PROJECTS(currentUser?.uid));
   }, [dispatch]);
 
   console.log(projects);

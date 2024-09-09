@@ -14,45 +14,44 @@ import { firebaseFirestore } from "../../../Firebase/getFirebase";
 // Thunk to fetch user's projects based on their group membership
 export const FETCH_USER_PROJECTS = createAsyncThunk(
   "projects/fetchUserProjects",
-  async (userId, { rejectWithValue,dispatch, }) => {
+  async (userId, { rejectWithValue, dispatch }) => {
     try {
-    
       // Fetch user document to get project IDs
       const userDocRef = doc(firebaseFirestore, "users", userId);
       const userDocSnap = await getDoc(userDocRef);
-      console.log("projects/fetchUserProjects",userDocSnap);
-      // if (!userDocSnap.exists()) {
-      //   throw new Error("User does not exist");
-      // }
+      // console.log("projects/fetchUserProjects",userDocSnap);
+      if (!userDocSnap.exists()) {
+        throw new Error("User does not exist");
+      }
 
       // console.log(userDocSnap);
 
-      // const userData = userDocSnap.data();
-      // const groupIds = userData.groups?.map(group => group.groupId) || [];
-      // console.log(groupIds)
+      const userData = userDocSnap.data();
+      const groupIds = userData.groups?.map((group) => group.groupId) || [];
+      // console.log(groupIds);
 
-      // if (groupIds.length === 0) {
-      //   return []; // If no groups, return an empty array
-      // }
+      if (groupIds.length === 0) {
+        return []; // If no groups, return an empty array
+      }
 
-      // const projects = [];
-      // const batchSize = 10; // Firestore allows up to 10 'in' queries per batch
+      const projects = [];
+      const batchSize = 10; // Firestore allows up to 10 'in' queries per batch
 
-      // // Batch queries to Firestore to retrieve projects associated with user's groups
-      // for (let i = 0; i < groupIds.length; i += batchSize) {
-      //   const groupIdsBatch = groupIds.slice(i, i + batchSize);
-      //   const projectsQuery = query(
-      //     collection(firebaseFirestore, 'projects'),
-      //     where('groupId', 'in', groupIdsBatch)
-      //   );
+      // Batch queries to Firestore to retrieve projects associated with user's groups
+      for (let i = 0; i < groupIds.length; i += batchSize) {
+        const groupIdsBatch = groupIds.slice(i, i + batchSize);
+        const projectsQuery = query(
+          collection(firebaseFirestore, "projects"),
+          where("groupId", "in", groupIdsBatch)
+        );
 
-      //   const projectDocs = await getDocs(projectsQuery);
-      //   projectDocs.forEach(doc => {
-      //     projects.push({ id: doc.id, ...doc.data() });
-      //   });
-      // }
+        const projectDocs = await getDocs(projectsQuery);
+        projectDocs.forEach((doc) => {
+          projects.push({ id: doc.id, ...doc.data() });
+        });
+      }
 
-      return true;
+      return projects;
     } catch (error) {
       console.error("Error fetching user projects:", error);
       return rejectWithValue(error.message);
