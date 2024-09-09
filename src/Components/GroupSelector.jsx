@@ -26,7 +26,7 @@ import {
   setPrefferedGroup,
 } from "../Redux/Slices/Groups/groupsSlice";
 import CustomDropdown from "./CustomDropdown";
-import { selectCurrentUser } from "../Redux/Slices/Users/UsersSlice";
+
 
 const GroupSelector = ({ onSelectGroup, customStyles, ...props }) => {
   const dispatch = useDispatch();
@@ -40,7 +40,6 @@ const GroupSelector = ({ onSelectGroup, customStyles, ...props }) => {
   );
   const [groupError, setGroupError] = useState(false);
   const theme = useTheme();
-  console.log(groups)
 
   const handleGroupChange = (event) => {
     setSelectedGroupId(event.target.value);

@@ -19,6 +19,7 @@ import {
 } from "firebase/firestore";
 import { firebaseAuth, firebaseFirestore } from "../../../Firebase/getFirebase";
 import { getAuthErrorMessage } from "../../../Utils/authErrors";
+
 export const REGISTER_USER = createAsyncThunk(
   "auth/registerUser",
   async (formValues, { rejectWithValue }) => {

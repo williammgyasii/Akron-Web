@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Avatar,
   Box,
@@ -24,6 +24,8 @@ import {
   showModal,
 } from "../Redux/Slices/System/systemSlice";
 import { getRandomAvatarColor } from "../Utils/randomAvatarColors";
+import { FETCH_USER_PROJECTS } from "../Redux/Slices/Projects/projectsSlice";
+import { selectCurrentUser } from "../Redux/Slices/Users/UsersSlice";
 
 const ProjectNavList = ({ selectedProject, onSelectProject }) => {
   const navigate = useNavigate();
@@ -32,10 +34,15 @@ const ProjectNavList = ({ selectedProject, onSelectProject }) => {
   const isDrawerOpen = useSelector(selectIsDrawerOpened);
   const displayProjects = projects.slice(0, 4); // Limit to first 3 projects
   const currentProject = useSelector(selectActiveProject);
+  const currentUser = useSelector(selectCurrentUser);
   const theme = useTheme();
   const dispatch = useDispatch();
 
-  console.log(projects)
+  useEffect(() => {
+    dispatch(FETCH_USER_PROJECTS({ userId: currentUser?.uid }));
+  }, [dispatch]);
+
+  console.log(projects);
 
   const handleViewAllClick = () => {
     navigate("projects"); // Adjust the path to your projects page
