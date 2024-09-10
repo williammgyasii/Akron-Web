@@ -7,31 +7,45 @@ import {
   signOut,
   onAuthStateChanged,
 } from "firebase/auth";
-import { doc, setDoc, getDoc } from "firebase/firestore";
+import {
+  doc,
+  setDoc,
+  getDoc,
+  serverTimestamp,
+  query,
+  collection,
+  getDocs,
+  where,
+} from "firebase/firestore";
 import { firebaseAuth, firebaseFirestore } from "../../../Firebase/getFirebase";
 import { getAuthErrorMessage } from "../../../Utils/authErrors";
-import { fetchUserGroups } from "../Groups/groupsSlice";
 
-export const registerUser = createAsyncThunk(
-  "users/registerUser",
+export const REGISTER_USER = createAsyncThunk(
+  "auth/registerUser",
   async (formValues, { rejectWithValue }) => {
     try {
+      // Create user in Firebase Auth
       const userCredential = await createUserWithEmailAndPassword(
         firebaseAuth,
         formValues.email,
         formValues.password
       );
       const user = userCredential.user;
+
       const { password, ...rest } = formValues;
+
+      // Save user data to Firestore
       await setDoc(doc(firebaseFirestore, "users", user.uid), {
         uid: user.uid,
+        createdAt: serverTimestamp(),
+        groups: [],
+        role: "admin", // Default role
         ...rest,
       });
-      return { uid: user.uid, note: "redux/registerSlice", ...rest };
+
+      return { uid: user.uid, ...rest, role: "admin" };
     } catch (error) {
-      // console.log(error.code)
-      const errorMessage = getAuthErrorMessage(error.code);
-      return rejectWithValue(errorMessage);
+      return rejectWithValue(error.message);
     }
   }
 );
@@ -65,8 +79,32 @@ export const logoutUser = createAsyncThunk(
     try {
       signOut(firebaseAuth);
       dispatch(clearUser());
+      
     } catch (error) {
       console.log(error);
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+// Async thunk to fetch user by email
+export const fetchUserByEmail = createAsyncThunk(
+  "users/fetchUserByEmail",
+  async (email, { rejectWithValue }) => {
+    const usersRef = collection(firebaseFirestore, "users");
+    const q = query(usersRef, where("email", "==", email)); // Query Firestore by email
+
+    try {
+      const querySnapshot = await getDocs(q);
+      if (querySnapshot.empty) {
+        throw new Error(`No user found with the email: ${email}`);
+      }
+
+      // Assuming that email is unique and we will get only one document
+      const user = querySnapshot.docs[0].data();
+      user.uid = querySnapshot.docs[0].id; // Adding the user ID to the result
+      return user;
+    } catch (error) {
       return rejectWithValue(error.message);
     }
   }
@@ -92,7 +130,7 @@ export const listenForAuthChanges = createAsyncThunk(
                 ...userDoc.data(),
               };
               console.log("SOMEONE IS INSIDE WITH DETAILS", userStructure);
-              dispatch(fetchUserGroups(user.uid));
+
               dispatch(setUser(userStructure));
             }
           } else {
@@ -117,16 +155,16 @@ const usersSlice = createSlice({
     currentUser: null,
     status: "idle",
     error: null,
-    loading: false,
+    loading: true,
   },
   reducers: {
     setUser(state, action) {
       state.currentUser = action.payload;
-      state.loading = false;
+      state.USER_SLICE_IS_LOADING = false;
     },
     clearUser(state) {
       state.currentUser = null;
-      state.loading = false;
+      state.USER_SLICE_IS_LOADING = false;
     },
     clearError(state) {
       state.error = null;
@@ -137,34 +175,34 @@ const usersSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(registerUser.pending, (state) => {
+      .addCase(REGISTER_USER.pending, (state) => {
         state.status = "loading";
-        state.loading = true;
+        state.USER_SLICE_IS_LOADING = true;
       })
-      .addCase(registerUser.fulfilled, (state, action) => {
+      .addCase(REGISTER_USER.fulfilled, (state, action) => {
         state.status = "succeeded";
         state.currentUser = action.payload;
-        state.loading = false;
+        state.USER_SLICE_IS_LOADING = false;
       })
-      .addCase(registerUser.rejected, (state, action) => {
+      .addCase(REGISTER_USER.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.error.message;
-        state.loading = false;
+        state.USER_SLICE_IS_LOADING = false;
       })
 
       //LOGIN USER FUNCTIONS
       .addCase(loginUser.pending, (state) => {
         state.status = "loading";
-        state.loading = true;
+        state.USER_SLICE_IS_LOADING = true;
       })
       .addCase(loginUser.fulfilled, (state, action) => {
         state.status = "succeeded";
         state.currentUser = action.payload;
-        state.loading = false;
+        state.USER_SLICE_IS_LOADING = false;
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.status = "failed";
-        state.loading = false;
+        state.USER_SLICE_IS_LOADING = false;
         state.error = action.payload;
       })
       .addCase(logoutUser.fulfilled, (state) => {
@@ -175,12 +213,11 @@ const usersSlice = createSlice({
       //Auth Changes
       .addCase(listenForAuthChanges.pending, (state, action) => {
         console.log("listening....");
-        state.loading = true;
+        state.USER_SLICE_IS_LOADING = true;
       })
       .addCase(listenForAuthChanges.fulfilled, (state, action) => {
         console.log("listening ending....");
-
-        state.loading = false;
+        state.USER_SLICE_IS_LOADING = false;
       });
   },
 });

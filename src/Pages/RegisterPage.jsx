@@ -1,40 +1,33 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-
 import {
-  TextField,
-  Button,
-  Typography,
   CircularProgress,
   Container,
   Box,
-  Alert,
   useTheme,
   Stack,
 } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
-import { loginUser, registerUser } from "../Redux/Slices/Users/UsersSlice";
+import { REGISTER_USER } from "../Redux/Slices/Users/UsersSlice";
 import CustomHeader from "../Components/CustomTitles";
-import { generateRandomQuote } from "../Utils/generateRandomQuote";
 import Quotes from "../Components/Quotes";
 import CustomSubtitle from "../Components/CustomSubtitle";
-import ButtonVariants from "../Components/CustomButton";
 import CustomButton from "../Components/CustomButton";
-import { ChevronLeft, Google, LoginOutlined } from "@mui/icons-material";
 import CustomFormInput from "../Components/CustomFormInput";
 import SideBySideLayout from "../Layouts/SideBySide";
 import { IoSettings } from "react-icons/io5";
+import registerSideImage from "../Pages/LandingPage/assets/FeaturesBanner.jpg";
+import CustomTitles from "../Components/CustomTitles";
+import { BiRegistered } from "react-icons/bi";
+import { JoinInner } from "@mui/icons-material";
 
 const RegisterPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const theme = useTheme();
-  const { currentUser, error, loading } = useSelector((state) => state.user);
-  const registerBg = require("../Images/RegisterBg.jpg");
-  const [snackBarOpen, setSnackBarOpen] = useState(false);
-
-  // console.log(currentUser);
+  const { USER_SLICE_IS_LOADING } = useSelector((state) => state.user);
+  console.log(USER_SLICE_IS_LOADING);
 
   const [formValues, setFormValues] = useState({
     firstName: "",
@@ -42,6 +35,7 @@ const RegisterPage = () => {
     email: "",
     username: "",
     password: "",
+    phoneNumber: "",
   });
   const [errors, setErrors] = useState({
     firstName: false,
@@ -49,6 +43,7 @@ const RegisterPage = () => {
     email: false,
     username: false,
     password: false,
+    phoneNumber: false,
   });
   const [helperTexts, setHelperTexts] = useState({
     firstName: "",
@@ -56,6 +51,7 @@ const RegisterPage = () => {
     email: "",
     username: "",
     password: "",
+    phoneNumber: "",
   });
 
   const handleInputChange = (e) => {
@@ -67,6 +63,7 @@ const RegisterPage = () => {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return re.test(String(email).toLowerCase());
   };
+  const phoneRegex = /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s/0-9]*$/;
 
   const validateForm = () => {
     let valid = true;
@@ -93,6 +90,11 @@ const RegisterPage = () => {
       newHelperTexts.username = "Username is required";
       valid = false;
     }
+    if (!phoneRegex.test(formValues.phoneNumber)) {
+      newErrors.phoneNumber = true;
+      newHelperTexts.phoneNumber = "Invalid phone number";
+      valid = false;
+    }
     if (formValues.password.length <= 8) {
       newErrors.password = true;
       newHelperTexts.password = "Password must be more than 8 characters";
@@ -104,12 +106,11 @@ const RegisterPage = () => {
     return valid;
   };
 
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (validateForm()) {
       try {
-        dispatch(registerUser(formValues))
+        dispatch(REGISTER_USER(formValues))
           .unwrap()
           .then(() => {
             navigate("/dashboard", { replace: true });
@@ -132,6 +133,9 @@ const RegisterPage = () => {
         justifyContent: "center",
         height: "100vh",
         alignItems: "center",
+        background:
+          "linear-gradient(90deg, hsla(186, 33%, 94%, 1) 0%, hsla(216, 41%, 79%, 1) 100%)",
+        // p: 2,
         [theme.breakpoints.down("tablets_port")]: {
           flexDirection: "column",
         },
@@ -146,15 +150,17 @@ const RegisterPage = () => {
           justifyContent: "center",
           alignItems: "center",
           // backgroundColor: "blue",
-          flexBasis: "40%",
+          flexBasis: "50%",
+          // borderRadius: "20px",
           height: "100%",
           padding: 5,
           backgroundImage: `
           linear-gradient(
-            rgba(159, 132, 253, 0.6), 
+            rgba(226, 206, 182, 0.6), 
+            
             rgba(0, 0, 0, 0.75)
           ),
-          url(${registerBg})`, // Replace with your image URL
+          url(${registerSideImage})`, // Replace with your image URL
           backgroundSize: "cover",
           backgroundPosition: "bottom",
           objectFit: "contain",
@@ -177,7 +183,7 @@ const RegisterPage = () => {
             },
           }}
         >
-          <Quotes />
+          {/* <Quotes /> */}
         </Box>
         <CustomSubtitle variant={"text_base"} color={"#fff"}>
           Boost your productivity and achieve Your Goals: <br />
@@ -192,11 +198,13 @@ const RegisterPage = () => {
           display: "flex",
           flexDirection: "column",
           justifyContent: "flex-start",
-          py: 20,
+          py: 17,
           backgroundColor: theme.palette.background.paper,
           flex: 1,
+          ml: "-30px",
+          zIndex: "20",
+          borderRadius: "20px",
           height: "100%",
-          px: 15,
           [theme.breakpoints.down("tablets_landscape")]: {
             px: 8,
           },
@@ -205,22 +213,23 @@ const RegisterPage = () => {
             width: "100%",
           },
           [theme.breakpoints.up("desktop")]: {
-            px: 10, // Styles for min-width of 'md' breakpoint
+            px: 17, // Styles for min-width of 'md' breakpoint
           },
         }}
       >
         {/* APP LOGO GOES HERE */}
-        <CustomHeader
+        <CustomTitles
           weightFont={"bold"}
           color={theme.palette.secondary.main}
-          variant="text_3xl"
-          capitalize
+          variant="text_2xl"
+          withLine
         >
-          Join Akron
-        </CustomHeader>
+          Create Accaount
+        </CustomTitles>
+
         <CustomSubtitle
           customStyles={{
-            marginTop: "-10px",
+            marginTop: "3px",
             textDecoration: "none",
           }}
           variant={"text_base"}
@@ -247,6 +256,7 @@ const RegisterPage = () => {
                 <CustomFormInput
                   label="First Name"
                   name="firstName"
+                  type={"text"}
                   value={formValues.firstName}
                   onChange={handleInputChange}
                   error={errors.firstName}
@@ -257,6 +267,7 @@ const RegisterPage = () => {
                 <CustomFormInput
                   label="Last Name"
                   name="lastName"
+                  type={"text"}
                   value={formValues.lastName}
                   onChange={handleInputChange}
                   error={errors.lastName}
@@ -268,19 +279,38 @@ const RegisterPage = () => {
             <CustomFormInput
               label="Email"
               name="email"
+              type={"email"}
               value={formValues.email}
               onChange={handleInputChange}
               error={errors.email}
               helperText={helperTexts.email}
             />
 
-            <CustomFormInput
-              label="Username (only letters, numbers and underscores)"
-              name="username"
-              value={formValues.username}
-              onChange={handleInputChange}
-              error={errors.username}
-              helperText={helperTexts.username}
+            <SideBySideLayout
+              leftComponent={
+                <CustomFormInput
+                  label="Username (only letters, numbers and underscores)"
+                  name="username"
+                  type={"text"}
+                  value={formValues.username}
+                  onChange={handleInputChange}
+                  error={errors.username}
+                  helperText={helperTexts.username}
+                  maxCount={15}
+                />
+              }
+              rightComponent={
+                <CustomFormInput
+                  label="Phone"
+                  name="phoneNumber"
+                  type={"number"}
+                  maxCount={11}
+                  value={formValues.phoneNumber}
+                  onChange={handleInputChange}
+                  error={errors.phoneNumber}
+                  helperText={helperTexts.phoneNumber}
+                />
+              }
             />
 
             <CustomFormInput
@@ -291,21 +321,24 @@ const RegisterPage = () => {
               onChange={handleInputChange}
               error={errors.password}
               helperText={helperTexts.password}
+              maxCount={15}
             />
             <CustomButton
               variant="primary"
               size="medium"
-              // loading={loading}
-              leftIcon={IoSettings}
-              // type="iconLeft" // Submit button for the form
+              isLoading={USER_SLICE_IS_LOADING}
+              leftIcon={JoinInner}
+              iconColor={theme.palette.warning.main}
+              type="iconLeft" // Submit button for the form
               // label="Submit"
               submit
             >
-              {loading ? (
+              Join
+              {/* {loading ? (
                 <CircularProgress sx={{ color: "#fff" }} size={24} />
               ) : (
-                "Join"
-              )}
+               
+              )} */}
             </CustomButton>
           </Stack>
 

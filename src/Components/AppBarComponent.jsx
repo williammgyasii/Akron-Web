@@ -115,7 +115,8 @@ const AppBarComponent = ({ title, showOthers, pageHeader, customStyles }) => {
           // loading={loading}
           leftIcon={IoAddSharp}
           onClick={handleOpen}
-          sx={{ width: "170px" }}
+          sx={{ width: "170px",color:"#fff" }}
+          
           type="iconLeft" // Submit button for the form
           // label="Submit"
         >

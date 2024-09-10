@@ -1,92 +1,49 @@
-import { Box, Button, Container, IconButton, useTheme } from "@mui/material";
+import {
+  Box,
+  Button,
+  Container,
+  Grid,
+  IconButton,
+  useTheme,
+} from "@mui/material";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { persistor, resetState } from "../Redux/store";
-import {
-  logoutUser,
-  selectCurrentUser,
-} from "../Redux/Slices/Users/UsersSlice";
-import { useNavigate } from "react-router-dom";
-import AppBarComponent from "../Components/AppBarComponent";
-import Logo from "../Components/Logo";
-import GroupTaskList from "../Components/GroupTaskList";
-import {
-  fetchProjectsByGroupId,
-  selectGroupID,
-  selectGroupMembers,
-  selectGroupProjects,
-} from "../Redux/Slices/Groups/groupsSlice";
 import CustomTitles from "../Components/CustomTitles";
 import { IoAddSharp } from "react-icons/io5";
-import {
-  openSnackbar,
-  setWelcomeModalOpen,
-  showModal,
-} from "../Redux/Slices/System/systemSlice";
+import { showModal } from "../Redux/Slices/System/systemSlice";
+import { motion } from "framer-motion";
 
 function DashboardPage() {
   const dispatch = useDispatch();
-  const groupMembers = useSelector(selectGroupMembers);
   const theme = useTheme();
-  const selectedGroupid = useSelector(selectGroupID);
-  const currentUser = useSelector(selectCurrentUser);
-  const projects = useSelector(selectGroupProjects);
+  // console.log(currentGroup);
 
   useEffect(() => {
     // dispatch(openSnackbar({message:"Group Created",snackbarState:"info"}))
-    dispatch(
-      fetchProjectsByGroupId({
-        groupId: selectedGroupid,
-        userId: currentUser.uid,
-      })
-    )
-      .unwrap()
-      .then((result) => {
-      });
+    // dispatch(FETCH_USER_GROUPS());
+    // dispatch(
+    //   fetchProjectsByGroupId({
+    //     groupId: selectedGroupid,
+    //     userId: currentUser.uid,
+    //   })
+    // )
+    //   .unwrap()
+    //   .then((result) => {
+    //   });
   }, []);
 
   return (
     <Container disableGutters maxWidth={false} sx={{ position: "relative" }}>
-      <Box
-        sx={{
-          p: 1.5,
-          display: "flex",
-          height: "100vh",
-        }}
-      >
-        
-        <Box
-          sx={{
-            backgroundColor: theme.palette.background.paper,
-            borderRadius: 2,
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-          flexGrow={1}
-        >
-          Current Group Member :{groupMembers.length}
-          <br />
-          current Group Project :{projects.length}
-        </Box>
-        <Box
-          sx={{
-            px: 1,
-            overflowY: "auto",
-            position: "relative",
-            width: 300,
-            marginLeft: "10px",
-            backgroundColor: theme.palette.background.paper,
-            borderRadius: 2,
-            [theme.breakpoints.down("tablets_port")]: {
-              display: "none",
-            },
-          }}
-        >
+      <Grid p={1} className="min-h-screens" container columnSpacing={2}>
+        <Grid item sx={{ height: "100%" }} desktop={9} tablets_port={10}>
           <Box
             sx={{
+              backgroundColor: "red",
               display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
+              width: "100%",
+              padding: "10px",
+              height: "100%",
+              flexDirection: "column",
             }}
           >
             <CustomTitles
@@ -96,7 +53,6 @@ function DashboardPage() {
               weightFont={"medium"}
               customStyles={{
                 textTransform: "none",
-
                 display: "block",
                 zIndex: 1,
                 p: 1,
@@ -104,32 +60,68 @@ function DashboardPage() {
             >
               Tasks
             </CustomTitles>
-            <IconButton
-              onClick={() => dispatch(showModal("createTask"))}
-              sx={{
-                backgroundColor: theme.palette.primary.main,
-                color: "white",
-                borderRadius: 1,
-                "&:hover": {
-                  backgroundColor: theme.palette.primary.dark800, // Slightly lighter black on hover
-                },
-              }}
-            >
-              <IoAddSharp size={10} />
-            </IconButton>
           </Box>
+        </Grid>
+
+        <Grid
+          sx={{
+            position: "relative",
+          }}
+          item
+          desktop={3}
+        >
           <Box
             sx={{
+              minHeight: "100vh",
+              backgroundColor: "red",
+              width: "100%",
               display: "flex",
-              justifyContent: "center",
-              alignItems: "flex-start",
-              flex: 1,
+              flexDirection: "column",
             }}
           >
-            <GroupTaskList groupId={selectedGroupid} />
+            <Box
+              sx={{
+                display: "flex",
+                backgroundColor: "yellow",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              <CustomTitles
+                color={theme.palette.secondary.main}
+                variant="text_base"
+                // capitalize="none"
+                weightFont={"medium"}
+                customStyles={{
+                  textTransform: "none",
+                  display: "block",
+                  zIndex: 1,
+                  p: 1,
+                }}
+              >
+                Tasks
+              </CustomTitles>
+              <IconButton
+                onClick={() => dispatch(showModal("createTask"))}
+                sx={{
+                  backgroundColor: theme.palette.primary.main,
+                  color: "white",
+                  borderRadius: 1,
+                  "&:hover": {
+                    backgroundColor: theme.palette.primary.dark800, // Slightly lighter black on hover
+                  },
+                }}
+              >
+                <IoAddSharp size={10} />
+              </IconButton>
+            </Box>
+            <Box sx={{ backgroundColor: "blue"}}>
+              ac
+              {/* <GroupTaskList groupId={selectedGroupid} /> */}
+            </Box>
           </Box>
-        </Box>
-      </Box>
+        </Grid>
+      </Grid>
     </Container>
   );
 }

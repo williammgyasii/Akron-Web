@@ -6,9 +6,14 @@ import {
   styled,
 } from "@mui/material";
 import PropTypes from "prop-types";
+import { motion } from "framer-motion";
 
-// Define button sizes
+// Define button sizes for consistent spacing and typography
 const buttonSizes = {
+  extrasmall: {
+    padding: "2px 4px",
+    fontSize: "0.60rem",
+  },
   small: {
     padding: "4px 8px",
     fontSize: "0.75rem",
@@ -23,62 +28,64 @@ const buttonSizes = {
   },
 };
 
-const StyledButton = styled(Button)(({ theme, variant, size }) => ({
-  // width:"2rem",
-  width: "100%",
-  backgroundColor:
-    variant === "primary"
-      ? theme.palette.primary.main
-      : variant === "secondary"
-      ? theme.palette.secondary.main
-      : variant === "minimal"
-      ? "transparent"
-      : theme.palette.background.paper,
-  border: variant === "minimal" ? "1px solid #000 " : null,
-  color:
-    variant === "primary"
-      ? theme.palette.primary.white
-      : variant === "secondary"
-      ? theme.palette.primary.white
-      : variant === "minimal"
-      ? "none"
-      : "#fff",
-  padding: buttonSizes[size]?.padding || buttonSizes.medium.padding,
-  fontSize: buttonSizes[size]?.fontSize || buttonSizes.medium.fontSize,
-
-  "&:hover": {
+// Styled button using MUI's styled and incorporating motion for future animations
+const StyledButton = styled(motion(Button))(
+  ({ theme, variant, size, minimalcolor }) => ({
+    width: "100%",
     backgroundColor:
       variant === "primary"
-        ? theme.palette.primary.dark600
+        ? theme.palette.primary.dark700
         : variant === "secondary"
-        ? "transparent"
-        : variant === "minimal"
-        ? null
-        : "#f3f",
-    color:
-      variant === "secondary"
         ? theme.palette.secondary.main
-        : theme.palette.secondary.white,
-    border: variant === "secondary" ? "1px solid #000" : null,
-  },
-  "&:disabled": {
-    backgroundColor:
+        : variant === "minimal"
+        ? "transparent"
+        : theme.palette.background.paper,
+    // border: variant === "minimal" ? "1px solid #000" : null,
+    color:
       variant === "primary"
-        ? theme.palette.primary.light
+        ? theme.palette.primary.dark700
         : variant === "secondary"
-        ? theme.palette.secondary.light
-        : theme.palette.action.disabledBackground,
-  },
-}));
+        ? theme.palette.secondary.main
+        : variant === "minimal"
+        ? minimalcolor
+        : theme.palette.background.paper,
+    padding: buttonSizes[size]?.padding || buttonSizes.medium.padding,
+    fontSize: buttonSizes[size]?.fontSize || buttonSizes.medium.fontSize,
 
-const StyledIconButton = styled(MuiIconButton)(({ theme, variant, size }) => ({
-  color:
-    variant === "minimal"
-      ? theme.palette.primary.main
-      : theme.palette.text.primary,
+    "&:hover": {
+      backgroundColor:
+        variant === "primary"
+          ? theme.palette.primary.dark
+          : variant === "secondary"
+          ? theme.palette.secondary.dark
+          : variant === "minimal"
+          ? "transparent"
+          : theme.palette.background.default,
+      color:
+        variant === "primary"
+          ? "#fff"
+          : variant === "secondary"
+          ? theme.palette.secondary.light
+          : theme.palette.primary.main,
+    },
+
+    "&:disabled": {
+      backgroundColor:
+        variant === "primary"
+          ? theme.palette.primary.light
+          : variant === "secondary"
+          ? theme.palette.secondary.light
+          : theme.palette.action.disabledBackground,
+    },
+  })
+);
+
+const StyledIconButton = styled(MuiIconButton)(({ theme, size }) => ({
+  color: theme.palette.text.primary,
   fontSize: buttonSizes[size]?.fontSize || buttonSizes.medium.fontSize,
 }));
 
+// Main CustomButton Component
 function CustomButton({
   variant = "primary",
   size = "medium",
@@ -89,53 +96,51 @@ function CustomButton({
   leftIcon: LeftIcon,
   rightIcon: RightIcon,
   children,
-  sx, // For external styling
+  sx, // External styling
   onClick,
+  minimalcolor,
   iconColor,
-  loadingButton = false,
+  iconSize,
+  isLoading = false,
   ...props
 }) {
-  const renderIcon = (icon) => {
-    if (icon) {
-      return React.cloneElement(icon, {
-        style: {
+  const renderIcon = (Icon) =>
+    Icon ? (
+      <Icon
+        style={{
+          color: iconColor || "#fff",
           marginRight: type === "iconLeft" ? 8 : 0,
           marginLeft: type === "iconRight" ? 8 : 0,
-          color: iconColor || "#fff",
-        },
-      });
-    }
-    return null;
-  };
+        }}
+      />
+    ) : null;
 
   return (
     <StyledButton
       variant={variant}
       size={size}
-      disabled={loadingButton || disabled}
-      sx={sx} // Apply external styling
+      disabled={isLoading || disabled}
+      sx={sx}
       type={submit ? "submit" : "button"}
-      // type={props.type || "button"} // Default to 'button', use 'submit' if specified
       onClick={onClick}
-      // fullWidth={false}
+      minimalcolor={minimalcolor}
+      className="hover:text-white"
+      whileHover={{ scale: 1.05 }} // Simple Framer Motion animation
+      whileTap={{ scale: 0.95 }} // Tap animation for button press effect
       {...props}
     >
-      {loadingButton ? (
-        <CircularProgress
-          sx={{ p: 1, color: "#fff" }}
-          size={25}
-          // color={"#fff"}
-        />
+      {isLoading ? (
+        <CircularProgress sx={{ color: "#fff" }} size={25} />
       ) : (
         <>
-          {type === "iconLeft" && renderIcon(<LeftIcon />)}
-          {type === "iconRight" && renderIcon(<RightIcon />)}
+          {type === "iconLeft" && renderIcon(LeftIcon)}
+          {type === "label" && label}
+          {type === "iconRight" && renderIcon(RightIcon)}
           {type === "iconOnly" && (
-            <StyledIconButton variant={variant} size={size}>
-              {renderIcon(<LeftIcon />)}
+            <StyledIconButton size={size}>
+              {renderIcon(LeftIcon)}
             </StyledIconButton>
           )}
-          {type === "label" && label}
           {children}
         </>
       )}
@@ -150,9 +155,12 @@ CustomButton.propTypes = {
   label: PropTypes.string,
   leftIcon: PropTypes.elementType,
   rightIcon: PropTypes.elementType,
-  children: PropTypes.node, // Allow children
-  sx: PropTypes.object, // For external styling
-  onClick: PropTypes.func, // Function to handle button clicks
+  children: PropTypes.node,
+  sx: PropTypes.object,
+  onClick: PropTypes.func,
+  iconColor: PropTypes.string,
+  loadingButton: PropTypes.bool,
+  submit: PropTypes.bool,
 };
 
 export default CustomButton;

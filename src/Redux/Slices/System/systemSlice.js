@@ -12,8 +12,8 @@ const systemSlice = createSlice({
     isModalOpened: false,
     modalView: "",
     welcomeModalOpened: false,
-    firstTimeLogging: 0,
-    appUserState:"newUser" //||"currentUser"
+    firstTimeLogging: 1,
+    appUserState:"currentUser" //||"currentUser"
   },
   reducers: {
     setAppUserState: (state, action) => {

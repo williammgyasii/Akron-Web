@@ -4,7 +4,7 @@ import FeaturesBanner from "../assets/FeaturesBanner.jpg";
 
 function LandingStartupSection() {
   return (
-    <SectionLayout className={"pt-10"}>
+    <SectionLayout className={"py-10"}>
       <div className="max-w-4xl mx-auto flex flex-col items-center justify-center">
         <span className="bg-purple-100 border-purple-200 border text-purple-600 rounded-full text-xs font-medium px-3 py-1">
           TWO-COL FEATURES

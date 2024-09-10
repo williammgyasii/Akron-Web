@@ -10,7 +10,7 @@ import {
   setWelcomeModalClose,
 } from "../Redux/Slices/System/systemSlice";
 import AddTaskForm from "./AddTaskForm";
-import CreateGroupForm from "./CreateGroupForm";
+// import CreateGroupForm from "./CreateGroupForm";
 import { selectCurrentUser } from "../Redux/Slices/Users/UsersSlice";
 import CustomButton from "./CustomButton";
 
@@ -84,21 +84,6 @@ const ModalComponent = ({ open, onClose, view }) => {
       case "createGroup":
         return (
           <>
-            <CreateGroupForm
-              onChangeGroupName={(e) => setGroupName(e.target.value)}
-              groupName={groupName}
-              userEmail={currentUser.email}
-              setGroupName={handleGroupNameChange}
-              members={members}
-              searchEmail={searchEmail}
-              setSearchEmail={(value) => setSearchEmail(value)}
-              groupIcon={groupIcon}
-              setGroupIcon={handleIconUpload}
-              loading={groupLoading}
-              removeMember={handleRemoveMember}
-              addMember={handleAddMember}
-              errors={errors}
-            />
             <Box>
               <CustomButton
                 // onClick={handleFinish}

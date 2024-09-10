@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   Drawer,
@@ -33,6 +33,8 @@ import ProjectNavList from "./ProjectNavList";
 import { logoutUser } from "../Redux/Slices/Users/UsersSlice";
 import { persistor, resetState } from "../Redux/store";
 import CustomTitles from "./CustomTitles";
+import CreateProjectForm from "./CreateProjectForm";
+import CreateProjectModal from "./CreateProjectModal";
 
 const StyledListItemText = styled(ListItemText)({
   "& .MuiTypography-root": {
@@ -46,6 +48,7 @@ const DrawerNav = () => {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("tablets_port"));
   const navigate = useNavigate();
+  const [openModal, setOpenModal] = useState(false);
 
   const handleDrawerToggle = () => {
     dispatch(toggleDrawerIsOpened());
@@ -53,13 +56,19 @@ const DrawerNav = () => {
   const handleDrawerClose = () => {
     dispatch(closeDrawer());
   };
+  const openProjectModal = () => {
+    setOpenModal(true);
+  };
+  const closeProjectModal = () => {
+    setOpenModal(false);
+  };
+
   const handleLogout = () => {
     dispatch(logoutUser())
       .unwrap()
       .then(() => {
         dispatch(resetState());
-        persistor.purge(); // Clear persisted state
-        // Perform other logout logic, like redirecting to the login page
+        persistor.purge();
         navigate("/login", { replace: true });
         window.location.reload();
       });
@@ -189,7 +198,7 @@ const DrawerNav = () => {
               Projects
             </CustomTitles>
             <IconButton
-              onClick={() => dispatch(showModal("createProject"))}
+              onClick={openProjectModal}
               sx={{
                 backgroundColor: theme.palette.primary.main,
                 color: "white",
@@ -203,13 +212,14 @@ const DrawerNav = () => {
               <IoAddSharp size={10} />
             </IconButton>
           </Box>
+          {/* show projects */}
           <ProjectNavList />
         </List>
 
         <CustomButton
           variant="secondary"
           size="small"
-          // loading={loading}
+          isLoading={false}
           onClick={handleLogout}
           leftIcon={IoLogOut}
           sx={{
@@ -223,6 +233,11 @@ const DrawerNav = () => {
           {isDrawerOpen && "Logout"}
         </CustomButton>
       </Drawer>
+
+      <CreateProjectModal
+        openModal={openModal}
+        onCloseModal={closeProjectModal}
+      />
     </Box>
   );
 };

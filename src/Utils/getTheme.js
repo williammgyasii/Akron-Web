@@ -60,7 +60,7 @@ const theme = createTheme({
     },
     background: {
       default: "#f5f5f5", // Light grey background
-      paper: "#ffff", // White paper background
+      paper: "#F0F2F2", // White paper background
     },
     error: {
       dark900: "#7A0619", //BluePurple
@@ -86,7 +86,7 @@ const theme = createTheme({
     },
   },
   typography: {
-    fontFamily: "Plus Jarkata Sans , Roboto , Arial , sans-serif",
+    fontFamily: "Plus Jarkata Sans , Inter , Arial , sans-serif",
     text_xs: {
       fontWeight: "400",
       fontSize: "12px",

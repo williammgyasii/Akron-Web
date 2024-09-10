@@ -5,23 +5,21 @@ import {
   setActiveProject,
 } from "../Redux/Slices/System/systemSlice";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  selectActiveProject,
-} from "../Redux/Slices/Groups/groupsSlice";
+import { selectActiveProject } from "../Redux/Slices/Projects/projectsSlice";
 
 const ProjectDetailsPage = () => {
-  const currentProject = useSelector(selectActiveProject);
+  const activeProject = useSelector(selectActiveProject);
   const dispatch = useDispatch();
   const { id } = useParams(); // Retrieve the id from the route
 
   useEffect(() => {
-    console.log(currentProject);
+    console.log(activeProject);
     // displayProjects.map((project) => {
     //   const projectInitial = project.projectName.charAt(0).toUpperCase();
     //   const isActive = project.id === id;
     //   dispatch(dispatch(setActiveProject(isActive)));
     // });
-  }, [currentProject]);
+  }, [activeProject]);
 
   return <div>Project Details Page:{id}</div>;
 };

@@ -19,7 +19,7 @@ const AuthListener = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(listenForAuthChanges());
-    // dispatch(fetchUserGroups());
+    
   }, [dispatch]);
 
   return null;
@@ -33,7 +33,7 @@ root.render(
           <CssBaseline />
           <AuthListener />
           <GlobalSnackbar />
-          <WelcomeModal />
+          {/* <WelcomeModal /> */}
           {/* <GlobalLoading/> */}
           <App />
         </ThemeProvider>
