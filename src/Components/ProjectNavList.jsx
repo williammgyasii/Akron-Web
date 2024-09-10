@@ -38,7 +38,7 @@ const ProjectNavList = ({ selectedProject, onSelectProject }) => {
   } = useSelector((state) => state.projects);
   const isDrawerOpen = useSelector(selectIsDrawerOpened);
   const displayProjects = PROJECTS.slice(0, 5); // Limit to first 3 projects
-  
+
   const currentUser = useSelector(selectCurrentUser);
   const currentGroup = useSelector(
     (state) => state.groups.CURRENT_GROUP_DETAILS
@@ -48,7 +48,9 @@ const ProjectNavList = ({ selectedProject, onSelectProject }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(FETCH_PROJECTS_PER_GROUP(currentGroup.id));
+    if (currentGroup) {
+      dispatch(FETCH_PROJECTS_PER_GROUP(currentGroup?.id));
+    }
   }, [dispatch]);
 
   const handleViewAllClick = () => {
