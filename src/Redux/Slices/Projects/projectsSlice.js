@@ -35,7 +35,6 @@ export const FETCH_PROJECTS_PER_GROUP = createAsyncThunk(
         ...doc.data(),
       }));
 
-      console.log(projects);
 
       return projects; // Return the fetched projects
     } catch (error) {

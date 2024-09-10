@@ -11,14 +11,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { CREATE_PROJECT } from "../Redux/Slices/Projects/projectsSlice";
 import { selectCurrentUser } from "../Redux/Slices/Users/UsersSlice";
 import { openSnackbar } from "../Redux/Slices/System/systemSlice";
-import MembersSelector from "./MembersSelector";
+import MemberSelector from "./MemberSelector";
 
 function CreateProjectModal({ openModal, onCloseModal }) {
   const theme = useTheme();
   const dispatch = useDispatch();
   const [projectName, setProjectName] = useState("");
   const [projectDesc, setProjectDesc] = useState("");
-  const [projectmembers, setProjectmembers] = useState([]);
+  const [selectedMemberIds, setSelectedMemberIds] = useState([]);
   const [errors, setErrors] = useState({
     projectNameError: "",
     projectDesc: "",
@@ -28,21 +28,19 @@ function CreateProjectModal({ openModal, onCloseModal }) {
     (state) => state.groups.CURRENT_GROUP_DETAILS
   );
   const activegroupmembers = useSelector((state) => state.groups.groupMembers);
-  const [selectedMembers, setSelectedMembers] = useState([]);
 
   const currentUser = useSelector(selectCurrentUser);
   const { PROJECT_SLICE_ISLOADING, PROJECT_SLICE_STATUS } = useSelector(
     (state) => state.projects
   );
-  console.log(activegroupmembers);
 
   const handleSubmit = () => {
     dispatch(
       CREATE_PROJECT({
-        projectName,
+        projectName: projectName,
         groupId: currentGroup.id,
         userId: currentUser?.uid,
-        members: projectmembers,
+        members: selectedMemberIds,
       })
     )
       .unwrap()
@@ -56,6 +54,24 @@ function CreateProjectModal({ openModal, onCloseModal }) {
         // dispatch(FETCH_USER_GROUPS(currentUser.uid));
         onCloseModal(); // Close the modal after finishing
       });
+  };
+
+  const handleChange = (event, newValue) => {
+    // Get the IDs of the selected members
+    const newIds = newValue.map((member) => member.id);
+
+    // Filter out any duplicates by only adding IDs that don't exist in selectedMemberIds
+    const uniqueNewIds = newIds.filter((id) => !selectedMemberIds.includes(id));
+
+    // Update the state with unique selected IDs
+    setSelectedMemberIds((prevIds) => [...prevIds, ...uniqueNewIds]);
+  };
+
+  const handleDelete = (memberToDelete) => {
+    // Remove the member id from selectedMemberIds
+    setSelectedMemberIds((prevIds) =>
+      prevIds.filter((id) => id !== memberToDelete.id)
+    );
   };
 
   return (
@@ -112,7 +128,13 @@ function CreateProjectModal({ openModal, onCloseModal }) {
                 helperText={errors.projectNameError}
                 error={Boolean(errors.projectNameError)}
               />
-              <MembersSelector groupmembers handlegroupSelect />
+
+              <MemberSelector
+                members={activegroupmembers}
+                selectedMembers={selectedMemberIds} // Pass selected ids
+                handleChange={handleChange} // Pass external handleChange
+                handleDelete={handleDelete} // Pass external handleDelete
+              />
               <CustomFormInput
                 minRows={5} // Minimum number of rows (sets height)
                 maxRows={9}
