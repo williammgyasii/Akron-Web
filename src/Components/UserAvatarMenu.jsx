@@ -61,7 +61,7 @@ const UserAvatarMenu = ({ imageUrl = "https://i.pravatar.cc/150?img=3" }) => {
         onClose={handleClose}
         sx={{
           "& .MuiPaper-root": {
-            width: "250px", // Adjust the width here
+            width: "180px", // Adjust the width here
             marginTop: 1,
             borderRadius: 1,
           },
