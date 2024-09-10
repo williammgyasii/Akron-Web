@@ -29,3 +29,34 @@ export const queryUserByEmail = async (searchEmail) => {
     throw new Error(error);
   }
 };
+
+
+export const fetchProjectsInBatches = async (projectIds) => {
+  const batchSize = 10;
+  let projects = [];
+
+  if (!Array.isArray(projectIds) || !projectIds.every(id => typeof id === 'string')) {
+    throw new Error('Invalid project IDs format');
+  }
+
+  for (let i = 0; i < projectIds.length; i += batchSize) {
+    const batchIds = projectIds.slice(i, i + batchSize);
+
+    const projectQuery = query(
+      collection(firebaseFirestore, 'projects'),
+      where('__name__', 'in', batchIds)
+    );
+
+    try {
+      const projectDocs = await getDocs(projectQuery);
+      projectDocs.forEach(doc => {
+        projects.push({ id: doc.id, ...doc.data() });
+      });
+    } catch (error) {
+      console.error('Error fetching projects batch:', error);
+      throw error;
+    }
+  }
+
+  return projects;
+};

@@ -10,50 +10,30 @@ import {
   where,
 } from "firebase/firestore";
 import { firebaseFirestore } from "../../../Firebase/getFirebase";
+import { fetchProjectsInBatches } from "../../../Firebase/firestoreFunctions";
 
-// Thunk to fetch user's projects based on their group membership
-export const FETCH_USER_PROJECTS = createAsyncThunk(
-  "projects/fetchUserProjects",
-  async (userId, { rejectWithValue, dispatch }) => {
+// Fetch projects based on the selected group ID
+export const FETCH_PROJECTS_PER_GROUP = createAsyncThunk(
+  'projects/fetchProjectsForGroup',
+  async (groupId, { rejectWithValue }) => {
     try {
-      // Fetch user document to get project IDs
-      const userDocRef = doc(firebaseFirestore, "users", userId);
-      const userDocSnap = await getDoc(userDocRef);
-      // console.log("projects/fetchUserProjects",userDocSnap);
-      if (!userDocSnap.exists()) {
-        throw new Error("User does not exist");
+      console.log(groupId)
+      // Fetch group document to get project IDs
+      const groupDocRef = doc(firebaseFirestore, 'groups', groupId);
+      const groupDocSnap = await getDoc(groupDocRef);
+
+      if (!groupDocSnap.exists()) {
+        throw new Error('Group does not exist');
       }
 
-      // console.log(userDocSnap);
+      const groupData = groupDocSnap.data();
+      const projectIds = groupData.projects || [];
 
-      const userData = userDocSnap.data();
-      const groupIds = userData.groups?.map((group) => group.groupId) || [];
-      // console.log(groupIds);
-
-      if (groupIds.length === 0) {
-        return []; // If no groups, return an empty array
-      }
-
-      const projects = [];
-      const batchSize = 10; // Firestore allows up to 10 'in' queries per batch
-
-      // Batch queries to Firestore to retrieve projects associated with user's groups
-      for (let i = 0; i < groupIds.length; i += batchSize) {
-        const groupIdsBatch = groupIds.slice(i, i + batchSize);
-        const projectsQuery = query(
-          collection(firebaseFirestore, "projects"),
-          where("groupId", "in", groupIdsBatch)
-        );
-
-        const projectDocs = await getDocs(projectsQuery);
-        projectDocs.forEach((doc) => {
-          projects.push({ id: doc.id, ...doc.data() });
-        });
-      }
-
+      // Fetch projects in batches
+      const projects = await fetchProjectsInBatches(projectIds);
       return projects;
     } catch (error) {
-      console.error("Error fetching user projects:", error);
+      console.error('Error fetching projects for group:', error);
       return rejectWithValue(error.message);
     }
   }
@@ -101,14 +81,14 @@ const projectsSlice = createSlice({
   extraReducers: (builder) => {
     builder
       // Fetch User Project reducers
-      .addCase(FETCH_USER_PROJECTS.pending, (state) => {
+      .addCase(FETCH_PROJECTS_PER_GROUP.pending, (state) => {
         state.status = "loading";
       })
-      .addCase(FETCH_USER_PROJECTS.fulfilled, (state, action) => {
+      .addCase(FETCH_PROJECTS_PER_GROUP.fulfilled, (state, action) => {
         state.status = "succeeded";
         state.projects = action.payload;
       })
-      .addCase(FETCH_USER_PROJECTS.rejected, (state, action) => {
+      .addCase(FETCH_PROJECTS_PER_GROUP.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload;
       })

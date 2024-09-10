@@ -24,7 +24,7 @@ import {
   showModal,
 } from "../Redux/Slices/System/systemSlice";
 import { getRandomAvatarColor } from "../Utils/randomAvatarColors";
-import { FETCH_USER_PROJECTS } from "../Redux/Slices/Projects/projectsSlice";
+import { FETCH_PROJECTS_PER_GROUP, FETCH_USER_PROJECTS } from "../Redux/Slices/Projects/projectsSlice";
 import { selectCurrentUser } from "../Redux/Slices/Users/UsersSlice";
 
 const ProjectNavList = ({ selectedProject, onSelectProject }) => {
@@ -35,11 +35,14 @@ const ProjectNavList = ({ selectedProject, onSelectProject }) => {
   const displayProjects = projects.slice(0, 4); // Limit to first 3 projects
   const currentProject = useSelector(selectActiveProject);
   const currentUser = useSelector(selectCurrentUser);
+  const currentGroup = useSelector(
+    (state) => state.groups.CURRENT_GROUP_DETAILS
+  );
   const theme = useTheme();
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(FETCH_USER_PROJECTS(currentUser?.uid));
+    dispatch(FETCH_PROJECTS_PER_GROUP(currentGroup.id));
   }, [dispatch]);
 
   console.log(projects);
