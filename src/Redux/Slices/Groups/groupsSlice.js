@@ -114,7 +114,6 @@ export const createGroupWithProject = createAsyncThunk(
   }
 );
 
-
 // export const createGroupOnly = createAsyncThunk(
 //   "groups/createGroupOnly",
 //   async ({ groupName, groupIcon, members }, { rejectWithValue }) => {
@@ -186,7 +185,6 @@ export const CREATE_USER_GROUPS = createAsyncThunk(
         joinedAt: new Date(),
       }));
 
-      
       const groupDoc = {
         groupData,
         createdAt: new Date(),
@@ -197,6 +195,7 @@ export const CREATE_USER_GROUPS = createAsyncThunk(
             role: "owner",
             joinedAt: new Date(),
           },
+          ...extractedInvites,
         ],
         pendingInvitations: [...extractedInvites],
         imageUrl,
@@ -462,13 +461,8 @@ const groupsSlice = createSlice({
   },
 });
 
-export const {
-  setGroups,
-  setCurrentGroup,
-  clearGroupDetails,
-  addProject,
-
-} = groupsSlice.actions;
+export const { setGroups, setCurrentGroup, clearGroupDetails, addProject } =
+  groupsSlice.actions;
 export const selectUserGroups = (state) => state.groups.GROUPS;
 export const selectGroupID = (state) => state.groups.selectedGroupId;
 export const selectGroupProjects = (state) => state.groups.groupProjects;

@@ -9,14 +9,24 @@ import {
   useTheme,
   IconButton,
   Divider,
+  Chip,
+  Tooltip,
 } from "@mui/material";
 import { motion } from "framer-motion";
 import { styled } from "@mui/material/styles";
-import { IoClose, IoStar } from "react-icons/io5";
+import {
+  IoClose,
+  IoInformation,
+  IoInformationCircleOutline,
+  IoStar,
+} from "react-icons/io5";
 import CustomFormInput from "./CustomFormInput";
 import BorderlessInput from "./CustomBorderlessInput";
 import CustomBorderlessInput from "./CustomBorderlessInput";
 import AssignTo from "./AssignTo";
+import { useSelector } from "react-redux";
+import { MdOutlineDelete } from "react-icons/md";
+import ProjectSelector from "./ProjectSelector";
 
 // Define animation variants for Framer Motion
 const slideInFromRight = {
@@ -50,7 +60,6 @@ const ModalBox = styled(motion.div)(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
   borderRadius: theme.shape.borderRadius,
   maxWidth: "450px",
-
   padding: "10px 12px",
   //   margin: "auto",
   height: "100%",
@@ -75,11 +84,30 @@ const OverlayBox = styled(Box)(({ theme }) => ({
   zIndex: theme.zIndex.modal,
 }));
 
-const members = [{ name: "William Gyasi" }, { name: "Kwabena William" }];
+const options = [
+  { value: "option1", label: "Option 1" },
+  { value: "option2", label: "Option 2" },
+  { value: "option3", label: "Option 3" },
+  { value: "option4", label: "Option 4" },
+];
 
 const CreateTaskModal = ({ isOpen, onClose }) => {
   const theme = useTheme();
   const [taskTitle, setTaskTitle] = useState("");
+  const {
+    PROJECT_SLICE_ISLOADING,
+    PROJECT_SLICE_STATUS,
+    PROJECT_SLICE_ERROR,
+    ACTIVE_PROJECT,
+    PROJECTS,
+  } = useSelector((state) => state.projects);
+
+  const [selectedValue, setSelectedValue] = useState("");
+
+  const handleChange = (value) => {
+    setSelectedValue(value);
+  };
+
   return (
     <Modal
       BackdropProps={{
@@ -137,7 +165,38 @@ const CreateTaskModal = ({ isOpen, onClose }) => {
             onChange={(e) => setTaskTitle(e.target.value)}
           />
 
-          <AssignTo members={members} />
+          {/* ACTIVE PROJECT BOX */}
+          <div className="flex w-full text-sm mt-2 items-center">
+            <span style={{ color: theme.palette.zinc.dark,marginRight:"10px" }}>
+              Active Project:
+            </span>
+            <ProjectSelector
+            width={"150px"}
+              options={options}
+              value={selectedValue}
+              onChange={handleChange}
+            //   placeholder="Select Options"
+            />
+            {/* <Chip
+              sx={{
+                backgroundColor: theme.palette.primary.light400,
+                marginLeft: "5px",
+                color: "#fff",
+                borderRadius: "10px!important",
+              }}
+              label={ACTIVE_PROJECT?.projectName}
+            /> */}
+            <Tooltip title="Task will be created in active group">
+              <IconButton>
+                <IoInformationCircleOutline
+                  style={{ color: theme.palette.primary.main }}
+                  size={20}
+                />
+              </IconButton>
+            </Tooltip>
+          </div>
+
+          <AssignTo members={options} />
 
           {/* <form style={{ width: "100%" }}>
             <Box mb={3}>
