@@ -28,6 +28,7 @@ import { getRandomAvatarColor } from "../Utils/randomAvatarColors";
 import {
   FETCH_PROJECTS_PER_GROUP,
   FETCH_USER_PROJECTS,
+  setActiveProject,
 } from "../Redux/Slices/Projects/projectsSlice";
 import { selectCurrentUser } from "../Redux/Slices/Users/UsersSlice";
 
@@ -38,11 +39,11 @@ const ProjectNavList = ({ selectedProject, onSelectProject }) => {
     PROJECT_SLICE_ISLOADING,
     PROJECT_SLICE_STATUS,
     PROJECT_SLICE_ERROR,
+    ACTIVE_PROJECT,
     PROJECTS,
   } = useSelector((state) => state.projects);
   const isDrawerOpen = useSelector(selectIsDrawerOpened);
   const displayProjects = PROJECTS.slice(0, 4); // Limit to first 3 projects
-  const currentProject = useSelector(selectActiveProject);
   const currentUser = useSelector(selectCurrentUser);
   const currentGroup = useSelector(
     (state) => state.groups.CURRENT_GROUP_DETAILS
@@ -55,12 +56,11 @@ const ProjectNavList = ({ selectedProject, onSelectProject }) => {
     dispatch(FETCH_PROJECTS_PER_GROUP(currentGroup.id));
   }, [dispatch]);
 
-  console.log(PROJECTS);
-
   const handleViewAllClick = () => {
     navigate("projects"); // Adjust the path to your projects page
   };
   const handleProjectClick = (projectId, project) => {
+    dispatch(setActiveProject(project));
     navigate(`projects/${projectId}`); // Adjust the path to your project details page
   };
 
@@ -73,13 +73,21 @@ const ProjectNavList = ({ selectedProject, onSelectProject }) => {
   }
 
   return (
-    <Box sx={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",width:"100%"}}> 
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        width: "100%",
+      }}
+    >
       {PROJECT_SLICE_STATUS === "loading" && <CircularProgress />}
       {PROJECT_SLICE_STATUS === "failed" && (
         <Typography color="error">{PROJECT_SLICE_ERROR}</Typography>
       )}
       {PROJECT_SLICE_STATUS === "completed" && (
-        <List sx={{ mt: "-10px",width:"100%" }}>
+        <List sx={{ mt: "-10px", width: "100%" }}>
           {displayProjects.map((project) => {
             // console.log(project?.id);
             const projectInitial = project?.projectName
@@ -87,7 +95,7 @@ const ProjectNavList = ({ selectedProject, onSelectProject }) => {
               .toUpperCase();
             return (
               <StyledListItemButton
-                selected={currentProject?.id === project.id}
+                selected={ACTIVE_PROJECT?.id === project.id}
                 key={project.id}
                 onClick={() => handleProjectClick(project.id, project)}
               >
@@ -124,7 +132,7 @@ const ProjectNavList = ({ selectedProject, onSelectProject }) => {
                   variant="primary"
                   color="primary"
                   onClick={handleViewAllClick}
-                  sx={{color:"#fff",marginTop:"10px"}}
+                  sx={{ color: "#fff", marginTop: "10px" }}
                 >
                   View All Projects
                 </CustomButton>

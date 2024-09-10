@@ -83,12 +83,16 @@ const projectsSlice = createSlice({
   initialState: {
     PROJECTS: [],
     tasks: [],
-    activeProject: null,
+    ACTIVE_PROJECT: null,
     PROJECT_SLICE_ISLOADING: false,
     PROJECT_SLICE_STATUS: "idle",
     PROJECT_SLICE_ERROR: null,
   },
-  reducers: {},
+  reducers: {
+    setActiveProject: (state, action) => {
+      state.ACTIVE_PROJECT = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder
       // Fetch User Project reducers
@@ -123,5 +127,7 @@ const projectsSlice = createSlice({
       });
   },
 });
+
+export const { setActiveProject } = projectsSlice.actions;
 
 export default projectsSlice.reducer;
