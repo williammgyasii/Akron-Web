@@ -114,6 +114,18 @@ export const createGroupWithProject = createAsyncThunk(
   }
 );
 
+export const FETCH_GROUP_MEMBER_DETAILS = createAsyncThunk(
+  "groups/FETCH_GROUP_MEMBER_DETAILS",
+  async (memberIds, { rejectWithValue, dispatch }) => {
+    try {
+
+    } catch (error) {
+      console.log("error/FETCH_GROUP_MEMBER_DETAILS", error);
+      rejectWithValue(error);
+    }
+  }
+);
+
 // export const createGroupOnly = createAsyncThunk(
 //   "groups/createGroupOnly",
 //   async ({ groupName, groupIcon, members }, { rejectWithValue }) => {
@@ -298,7 +310,7 @@ export const fetchGroupMembers = createAsyncThunk(
       }
 
       const groupData = groupSnapshot.data();
-      const memberIds = groupData.currentMembers; // Array of user IDs
+      const memberIds = groupData.members; // Array of user IDs
 
       // console.log(memberIds);
 
@@ -360,6 +372,7 @@ const groupsSlice = createSlice({
     groupProjects: [],
     activeProject: null,
     groupMembers: [],
+
   },
   reducers: {
     setGroups: (state, action) => {
@@ -417,15 +430,17 @@ const groupsSlice = createSlice({
         state.createGroupLoading = false;
         state.error = action.payload;
       })
+
+      // Fetch members
       .addCase(fetchGroupMembers.pending, (state) => {
-        state.status = "loading";
+        state.GROUP_SLICE_STATUS = "loading";
       })
       .addCase(fetchGroupMembers.fulfilled, (state, action) => {
-        state.status = "succeeded";
+        state.GROUP_SLICE_STATUS = "completed";
         state.groupMembers = action.payload;
       })
       .addCase(fetchGroupMembers.rejected, (state, action) => {
-        state.status = "failed";
+        state.GROUP_SLICE_STATUS = "failed";
         state.groupsError = action.error.message;
       })
 

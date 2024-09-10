@@ -60,7 +60,6 @@ const CreateGroupModal = ({ open, handleClose }) => {
       return; // Stop submission if there's an error
     }
     if (groupName && groupIcon) {
-      console.log("Red");
       dispatch(
         CREATE_USER_GROUPS({
           groupData: groupName,
