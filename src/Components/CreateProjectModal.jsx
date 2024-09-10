@@ -56,7 +56,7 @@ function CreateProjectModal({ openModal, onCloseModal }) {
       });
   };
 
-  const handleChange = (event, newValue) => {
+  const handleChange = (newValue) => {
     // Get the IDs of the selected members
     const newIds = newValue.map((member) => member.id);
 
@@ -67,10 +67,12 @@ function CreateProjectModal({ openModal, onCloseModal }) {
     setSelectedMemberIds((prevIds) => [...prevIds, ...uniqueNewIds]);
   };
 
-  const handleDelete = (memberToDelete) => {
+  const handleDelete = (idToDelete) => {
+    console.log("BABEL");
+    console.log(idToDelete);
     // Remove the member id from selectedMemberIds
     setSelectedMemberIds((prevIds) =>
-      prevIds.filter((id) => id !== memberToDelete.id)
+      prevIds.filter((id) => id !== idToDelete)
     );
   };
 
