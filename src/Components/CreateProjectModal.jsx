@@ -138,7 +138,7 @@ function CreateProjectModal({ openModal, onCloseModal }) {
                 handleDelete={handleDelete} // Pass external handleDelete
               />
               <CustomFormInput
-                minRows={5} // Minimum number of rows (sets height)
+                minRows={3} // Minimum number of rows (sets height)
                 maxRows={9}
                 label="Project Description"
                 value={projectDesc}
