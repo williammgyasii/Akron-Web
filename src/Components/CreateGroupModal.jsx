@@ -32,6 +32,7 @@ import { FiUploadCloud } from "react-icons/fi";
 import { PersonAdd } from "@mui/icons-material";
 import GroupMemberListView from "./GroupMemberListView";
 import { queryUserByEmail } from "../Firebase/firestoreFunctions";
+import VerticalStepper from "../AnimatedComponents/AnimatedCreateGroupModalStepper";
 
 const CreateGroupModal = ({ open, handleClose }) => {
   const [groupName, setGroupName] = useState("");

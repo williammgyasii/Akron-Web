@@ -13,11 +13,14 @@ import { IoAddSharp } from "react-icons/io5";
 import { showModal } from "../Redux/Slices/System/systemSlice";
 import { motion } from "framer-motion";
 import CreateTaskModal from "../Components/CreateTaskModal";
+import CreateGroupModal from "../Components/CreateGroupModal";
+import VerticalStepper from "../AnimatedComponents/AnimatedCreateGroupModalStepper";
+import HorizontalLinearStepper from "../AnimatedComponents/AnimatedCreateGroupModalStepper";
 
 function DashboardPage() {
   const dispatch = useDispatch();
   const theme = useTheme();
-  const [openTaskModal,setOpenTaskModal]=useState(false)
+  const [openTaskModal, setOpenTaskModal] = useState(false);
   // console.log(currentGroup);
 
   useEffect(() => {
@@ -34,16 +37,16 @@ function DashboardPage() {
     //   });
   }, []);
 
-  const handleCloseTaskModal=()=>{
-    setOpenTaskModal(false)
-  }
-  const handleOpenTaskModal=()=>{
-    setOpenTaskModal(true)
-  }
+  const handleCloseTaskModal = () => {
+    setOpenTaskModal(false);
+  };
+  const handleOpenTaskModal = () => {
+    setOpenTaskModal(true);
+  };
 
   return (
     <Container disableGutters maxWidth={false} sx={{ position: "relative" }}>
-      
+      <HorizontalLinearStepper />
       <Grid p={1} className="min-h-screens" container columnSpacing={2}>
         <Grid item sx={{ height: "100%" }} desktop={9} tablets_port={10}>
           <Box
@@ -125,7 +128,7 @@ function DashboardPage() {
                 <IoAddSharp size={10} />
               </IconButton>
             </Box>
-            <Box sx={{ backgroundColor: "blue"}}>
+            <Box sx={{ backgroundColor: "blue" }}>
               ac
               {/* <GroupTaskList groupId={selectedGroupid} /> */}
             </Box>
