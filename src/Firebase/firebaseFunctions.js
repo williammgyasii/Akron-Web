@@ -6,7 +6,7 @@ import { firebaseFirestore } from "./getFirebase";
 
 export const addProjectToGroup = async (projectData, groupid) => {
   try {
-    console.log(groupid);
+    // console.log(groupid);
     const projectRef = collection(firebaseFirestore, "projects");
     const projectDocRef = await addDoc(projectRef, projectData);
     if (projectDocRef.id) {
@@ -18,6 +18,6 @@ export const addProjectToGroup = async (projectData, groupid) => {
       throw new Error("Error with document red");
     }
   } catch (error) {
-    console.log(error);
+    // console.log(error);
   }
 };

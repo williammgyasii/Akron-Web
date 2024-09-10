@@ -47,7 +47,7 @@ const GroupSelector = ({ onSelectGroup, customStyles, ...props }) => {
       const selectedGroup = groups.find(
         (item) => item.id === event.target.value
       );
-      console.log(selectedGroup);
+      // console.log(selectedGroup);
       dispatch(setCurrentGroup(selectedGroup));
       dispatch(fetchGroupMembers(event.target.value));
       dispatch(FETCH_PROJECTS_PER_GROUP(event.target.value));

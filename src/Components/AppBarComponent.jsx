@@ -44,7 +44,7 @@ const AppBarComponent = ({ title, showOthers, pageHeader, customStyles }) => {
 
   const createGroup = (groupName) => {
     // Implement the logic to create a group here.
-    console.log("Group Created:", groupName);
+    // console.log("Group Created:", groupName);
   };
 
   return (

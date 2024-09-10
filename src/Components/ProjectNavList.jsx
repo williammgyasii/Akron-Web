@@ -22,6 +22,7 @@ import { getRandomAvatarColor } from "../Utils/randomAvatarColors";
 import {
   FETCH_PROJECTS_PER_GROUP,
   FETCH_USER_PROJECTS,
+  fetchProjectMembersbyDetails,
   setActiveProject,
 } from "../Redux/Slices/Projects/projectsSlice";
 import { selectCurrentUser } from "../Redux/Slices/Users/UsersSlice";
@@ -38,7 +39,7 @@ const ProjectNavList = ({ selectedProject, onSelectProject }) => {
   } = useSelector((state) => state.projects);
   const isDrawerOpen = useSelector(selectIsDrawerOpened);
   const displayProjects = PROJECTS.slice(0, 5); // Limit to first 3 projects
-  console.log(displayProjects);
+  // console.log(displayProjects);
 
   const currentUser = useSelector(selectCurrentUser);
   const currentGroup = useSelector(
@@ -57,9 +58,10 @@ const ProjectNavList = ({ selectedProject, onSelectProject }) => {
   const handleViewAllClick = () => {
     navigate("projects"); // Adjust the path to your projects page
   };
-  
+
   const handleProjectClick = (projectId, project) => {
     dispatch(setActiveProject(project));
+    dispatch(fetchProjectMembersbyDetails(project.members))
     navigate(`projects/${projectId}`); // Adjust the path to your project details page
   };
 

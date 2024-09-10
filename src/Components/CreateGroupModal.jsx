@@ -52,7 +52,7 @@ const CreateGroupModal = ({ open, handleClose }) => {
   const theme = useTheme();
 
   const handleSubmit = () => {
-    console.log(GROUP_SLICE_ISLOADING, GROUP_SLICE_STATUS);
+    // console.log(GROUP_SLICE_ISLOADING, GROUP_SLICE_STATUS);
     setErrors({ groupIconError: "", groupNameError: "", emailError: "" });
     const nameError = validateGroupName(groupName);
     if (nameError) {

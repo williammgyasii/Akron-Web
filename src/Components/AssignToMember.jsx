@@ -9,7 +9,7 @@ import CustomDropdown from "./CustomDropdown";
 function AssignToMember({ onChange, value, error, customStyles }) {
   const groupMembers = useSelector(selectGroupMembers);
   const status = useSelector(selectGroupStatus);
-  console.log(groupMembers);
+  // console.log(groupMembers);
 
   return (
     <CustomDropdown

@@ -140,7 +140,7 @@ const WelcomeModal = ({}) => {
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
       // console.log("ready");
     } else {
-      console.log("error found");
+      // console.log("error found");
       setErrors({
         groupNameError: "Group name is required",
         groupIconError: "Group icon is required",

@@ -79,6 +79,29 @@ export const CREATE_PROJECT = createAsyncThunk(
   }
 );
 
+// AsyncThunk for fetching member details of a project
+export const fetchProjectMembersbyDetails = createAsyncThunk(
+  "groups/fetchProjectMembersbyDetails",
+  async (projectIds, { rejectWithValue }) => {
+    try {
+      // Fetch user details for each member ID
+      const usersRef = collection(firebaseFirestore, "users");
+      const userPromises = projectIds.map((id) => getDoc(doc(usersRef, id)));
+      const userSnapshots = await Promise.all(userPromises);
+
+      const projectmembers = userSnapshots.map((snapshot) => ({
+        id: snapshot.id,
+        ...snapshot.data(),
+      }));
+      // console.log(projectmembers);
+      return projectmembers;
+    } catch (error) {
+      console.log("error/fetchProjectMembersbyDetails", error);
+      rejectWithValue(error);
+    }
+  }
+);
+
 const projectsSlice = createSlice({
   name: "Projects",
   initialState: {
@@ -88,6 +111,7 @@ const projectsSlice = createSlice({
     PROJECT_SLICE_ISLOADING: false,
     PROJECT_SLICE_STATUS: "idle",
     PROJECT_SLICE_ERROR: null,
+    projectMembersDetails: [],
   },
   reducers: {
     setActiveProject: (state, action) => {
@@ -96,6 +120,20 @@ const projectsSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+
+      // Fetch members of group actual details
+      .addCase(fetchProjectMembersbyDetails.pending, (state) => {
+        state.GROUP_SLICE_STATUS = "loading";
+      })
+      .addCase(fetchProjectMembersbyDetails.fulfilled, (state, action) => {
+        state.GROUP_SLICE_STATUS = "completed";
+        state.projectMembersDetails = action.payload;
+      })
+      .addCase(fetchProjectMembersbyDetails.rejected, (state, action) => {
+        state.GROUP_SLICE_STATUS = "failed";
+        state.GROUP_SLICE_ERROR = action.error.message;
+      })
+
       // Fetch User Project reducers
       .addCase(FETCH_PROJECTS_PER_GROUP.pending, (state) => {
         state.PROJECT_SLICE_STATUS = "loading";
