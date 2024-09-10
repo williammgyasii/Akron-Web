@@ -6,16 +6,18 @@ import {
   IconButton,
   useTheme,
 } from "@mui/material";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import CustomTitles from "../Components/CustomTitles";
 import { IoAddSharp } from "react-icons/io5";
 import { showModal } from "../Redux/Slices/System/systemSlice";
 import { motion } from "framer-motion";
+import CreateTaskModal from "../Components/CreateTaskModal";
 
 function DashboardPage() {
   const dispatch = useDispatch();
   const theme = useTheme();
+  const [openTaskModal,setOpenTaskModal]=useState(false)
   // console.log(currentGroup);
 
   useEffect(() => {
@@ -32,8 +34,16 @@ function DashboardPage() {
     //   });
   }, []);
 
+  const handleCloseTaskModal=()=>{
+    setOpenTaskModal(false)
+  }
+  const handleOpenTaskModal=()=>{
+    setOpenTaskModal(true)
+  }
+
   return (
     <Container disableGutters maxWidth={false} sx={{ position: "relative" }}>
+      
       <Grid p={1} className="min-h-screens" container columnSpacing={2}>
         <Grid item sx={{ height: "100%" }} desktop={9} tablets_port={10}>
           <Box
@@ -102,7 +112,7 @@ function DashboardPage() {
                 Tasks
               </CustomTitles>
               <IconButton
-                onClick={() => dispatch(showModal("createTask"))}
+                onClick={handleOpenTaskModal}
                 sx={{
                   backgroundColor: theme.palette.primary.main,
                   color: "white",
@@ -122,6 +132,9 @@ function DashboardPage() {
           </Box>
         </Grid>
       </Grid>
+
+      {/* CREATE TASK MODAL IN DASHBOARD */}
+      <CreateTaskModal isOpen={openTaskModal} onClose={handleCloseTaskModal} />
     </Container>
   );
 }

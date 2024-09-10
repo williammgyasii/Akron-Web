@@ -28,7 +28,7 @@ import {
   fetchSelectedGroupDetails,
   setSelectedGroupID,
 } from "../Redux/Slices/Groups/groupsSlice";
-import CreateProjectForm from "./CreateProjectForm";
+// import CreateProjectForm from "./CreateProjectForm";
 const ModalContainer = styled(Box)(({ theme }) => ({
   position: "absolute",
   top: "50%",
@@ -248,10 +248,10 @@ const WelcomeModal = ({}) => {
       case 2:
         return (
           <StepContent>
-            <CreateProjectForm
+            {/* <CreateProjectForm
               projectValues={projectValues}
               handleProjectChange={handleProjectChange}
-            />
+            /> */}
           </StepContent>
         );
       default:

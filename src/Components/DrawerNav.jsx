@@ -33,7 +33,6 @@ import ProjectNavList from "./ProjectNavList";
 import { logoutUser } from "../Redux/Slices/Users/UsersSlice";
 import { persistor, resetState } from "../Redux/store";
 import CustomTitles from "./CustomTitles";
-import CreateProjectForm from "./CreateProjectForm";
 import CreateProjectModal from "./CreateProjectModal";
 
 const StyledListItemText = styled(ListItemText)({
