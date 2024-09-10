@@ -13,12 +13,6 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  selectActiveProject,
-  selectCurrentProject,
-  selectGroupProjects,
-  setSelectedProject,
-} from "../Redux/Slices/Groups/groupsSlice";
 import CustomButton from "./CustomButton";
 import {
   selectIsDrawerOpened,
