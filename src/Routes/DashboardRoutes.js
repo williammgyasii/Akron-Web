@@ -63,7 +63,6 @@ export const DASHBOARD_ROUTES = [
   {
     title: "Single Project",
     path: "projects/:id",
-    // icon: < P/>,
     component: <ProjectDetailsPage />,
     noView: true,
   },

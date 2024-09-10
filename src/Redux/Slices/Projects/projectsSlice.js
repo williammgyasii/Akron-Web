@@ -129,5 +129,5 @@ const projectsSlice = createSlice({
 });
 
 export const { setActiveProject } = projectsSlice.actions;
-
+export const selectActiveProject = (state) => state.projects.ACTIVE_PROJECT;
 export default projectsSlice.reducer;

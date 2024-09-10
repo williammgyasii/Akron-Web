@@ -43,7 +43,8 @@ const ProjectNavList = ({ selectedProject, onSelectProject }) => {
     PROJECTS,
   } = useSelector((state) => state.projects);
   const isDrawerOpen = useSelector(selectIsDrawerOpened);
-  const displayProjects = PROJECTS.slice(0, 4); // Limit to first 3 projects
+  const displayProjects = PROJECTS.slice(0, 5); // Limit to first 3 projects
+  
   const currentUser = useSelector(selectCurrentUser);
   const currentGroup = useSelector(
     (state) => state.groups.CURRENT_GROUP_DETAILS
