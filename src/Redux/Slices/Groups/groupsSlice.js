@@ -118,7 +118,6 @@ export const FETCH_GROUP_MEMBER_DETAILS = createAsyncThunk(
   "groups/FETCH_GROUP_MEMBER_DETAILS",
   async (memberIds, { rejectWithValue, dispatch }) => {
     try {
-
     } catch (error) {
       console.log("error/FETCH_GROUP_MEMBER_DETAILS", error);
       rejectWithValue(error);
@@ -203,7 +202,7 @@ export const CREATE_USER_GROUPS = createAsyncThunk(
         ownerId: userId,
         members: [
           {
-            userId: userId,
+            userid: userId,
             role: "owner",
             joinedAt: new Date(),
           },
@@ -282,6 +281,7 @@ export const FETCH_USER_GROUPS = createAsyncThunk(
         );
 
         const querySnapshot = await getDocs(groupsQuery);
+        
         const batchGroups = querySnapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
@@ -300,7 +300,7 @@ export const FETCH_USER_GROUPS = createAsyncThunk(
 // AsyncThunk for fetching members of a group
 export const fetchGroupMembers = createAsyncThunk(
   "groups/fetchGroupMembers",
-  async (groupId) => {
+  async (groupId, { rejectWithValue }) => {
     try {
       const groupDoc = doc(firebaseFirestore, "groups", groupId);
       const groupSnapshot = await getDoc(groupDoc);
@@ -310,7 +310,7 @@ export const fetchGroupMembers = createAsyncThunk(
       }
 
       const groupData = groupSnapshot.data();
-      const memberIds = groupData.members; // Array of user IDs
+      const memberIds = groupData.members.map((member) => member.userid); // Array of user IDs
 
       // console.log(memberIds);
 
@@ -323,13 +323,15 @@ export const fetchGroupMembers = createAsyncThunk(
       const userPromises = memberIds.map((id) => getDoc(doc(usersRef, id)));
       const userSnapshots = await Promise.all(userPromises);
 
-      const users = userSnapshots.map((snapshot) => ({
+      const groupmembers = userSnapshots.map((snapshot) => ({
         id: snapshot.id,
         ...snapshot.data(),
       }));
-      return users;
+      // console.log(groupmembers);
+      return groupmembers;
     } catch (error) {
-      throw new Error(error.message);
+      console.log("error/fetchgroupmembers", error);
+      rejectWithValue(error);
     }
   }
 );
@@ -372,7 +374,6 @@ const groupsSlice = createSlice({
     groupProjects: [],
     activeProject: null,
     groupMembers: [],
-
   },
   reducers: {
     setGroups: (state, action) => {
@@ -431,7 +432,7 @@ const groupsSlice = createSlice({
         state.error = action.payload;
       })
 
-      // Fetch members
+      // Fetch members of group actual details
       .addCase(fetchGroupMembers.pending, (state) => {
         state.GROUP_SLICE_STATUS = "loading";
       })
@@ -441,7 +442,7 @@ const groupsSlice = createSlice({
       })
       .addCase(fetchGroupMembers.rejected, (state, action) => {
         state.GROUP_SLICE_STATUS = "failed";
-        state.groupsError = action.error.message;
+        state.GROUP_SLICE_ERROR = action.error.message;
       })
 
       //FETCH USER GROUPS

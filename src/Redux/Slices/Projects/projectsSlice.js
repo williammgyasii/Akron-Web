@@ -47,72 +47,32 @@ export const FETCH_PROJECTS_PER_GROUP = createAsyncThunk(
 // Async thunk to create a new project
 export const CREATE_PROJECT = createAsyncThunk(
   "projects/createProject",
-  async ({ projectName, groupId, userId }, { rejectWithValue }) => {
+  async ({ projectName, groupId, userId, members }, { rejectWithValue }) => {
     try {
-      const batch = writeBatch(firebaseFirestore);
-
-      // Check if user is a member of the group
-      const groupRef = doc(firebaseFirestore, "groups", groupId);
-      const groupSnap = await getDoc(groupRef);
-
-      if (!groupSnap.exists()) {
-        throw new Error("Group does not exist");
-      }
-
-      const groupData = groupSnap.data();
-      if (!groupData.members[userId]) {
-        throw new Error("User is not a member of this group");
-      }
-
-      // Create new project
-      const projectsRef = collection(firebaseFirestore, "projects");
-      const projectRef = await addDoc(projectsRef, {
-        projectName,
-        createdBy: userId,
-        timestamp: new Date(),
-      });
-
-      // Add project ID to group's projects array
-      batch.update(groupRef, {
-        projects: [...(groupData.projects || []), projectRef.id],
-      });
-
-      // Add project members (initially the creator)
-      batch.set(
-        doc(firebaseFirestore, "projects", projectRef.id, "members", userId),
+      // Create a new document in the 'projects' collection
+      const projectRef = await addDoc(
+        collection(firebaseFirestore, "projects"),
         {
-          role: "admin",
+          projectName,
+          groupId,
+          createdBy: userId,
+          createdAt: Timestamp.now(),
+          members: members,
         }
       );
+      // Optionally, update group with new project
+      const groupRef = doc(firebaseFirestore, "groups", groupId);
+      await updateDoc(groupRef, {
+        projects: arrayUnion(projectRef.id),
+      });
 
-      await batch.commit();
-
-      return { projectId: projectRef.id, projectName };
-
-      // // Create a new document in the 'projects' collection
-      // const projectRef = await addDoc(
-      //   collection(firebaseFirestore, "projects"),
-      //   {
-      //     projectName,
-      //     groupId,
-      //     createdBy: userId,
-      //     createdAt: Timestamp.now(),
-      //   }
-      // );
-
-      // // Optionally, update group with new project
-      // const groupRef = doc(firebaseFirestore, "groups", groupId);
-      // await updateDoc(groupRef, {
-      //   projects: arrayUnion(projectRef.id),
-      // });
-
-      // return {
-      //   projectId: projectRef.id,
-      //   projectName,
-      //   groupId,
-      //   createdBy: userId,
-      //   createdAt: Timestamp.now(),
-      // };
+      return {
+        projectId: projectRef.id,
+        projectName,
+        groupId,
+        createdBy: userId,
+        createdAt: Timestamp.now(),
+      };
     } catch (error) {
       return rejectWithValue(error.message);
     }

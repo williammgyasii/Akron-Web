@@ -68,7 +68,7 @@ const AssignTo = ({members}) => {
               key={email}
               label={email}
               avatar={
-                <Avatar src={`https://ui-avatars.com/api/?name=${email}`} />
+                <Avatar src={`https://www.tapback.co/api/avatar.webp`} />
               }
               onDelete={() => handleRemoveEmail(email)}
             />

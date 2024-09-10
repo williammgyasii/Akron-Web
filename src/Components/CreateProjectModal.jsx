@@ -11,12 +11,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { CREATE_PROJECT } from "../Redux/Slices/Projects/projectsSlice";
 import { selectCurrentUser } from "../Redux/Slices/Users/UsersSlice";
 import { openSnackbar } from "../Redux/Slices/System/systemSlice";
+import MembersSelector from "./MembersSelector";
 
 function CreateProjectModal({ openModal, onCloseModal }) {
   const theme = useTheme();
   const dispatch = useDispatch();
   const [projectName, setProjectName] = useState("");
   const [projectDesc, setProjectDesc] = useState("");
+  const [projectmembers, setProjectmembers] = useState([]);
   const [errors, setErrors] = useState({
     projectNameError: "",
     projectDesc: "",
@@ -25,10 +27,12 @@ function CreateProjectModal({ openModal, onCloseModal }) {
   const currentGroup = useSelector(
     (state) => state.groups.CURRENT_GROUP_DETAILS
   );
+
   const currentUser = useSelector(selectCurrentUser);
   const { PROJECT_SLICE_ISLOADING, PROJECT_SLICE_STATUS } = useSelector(
     (state) => state.projects
   );
+  console.log(currentGroup);
 
   const handleSubmit = () => {
     console.log("Fried Rice");
@@ -37,6 +41,7 @@ function CreateProjectModal({ openModal, onCloseModal }) {
         projectName,
         groupId: currentGroup.id,
         userId: currentUser?.uid,
+        members: projectmembers,
       })
     )
       .unwrap()
@@ -106,6 +111,7 @@ function CreateProjectModal({ openModal, onCloseModal }) {
                 helperText={errors.projectNameError}
                 error={Boolean(errors.projectNameError)}
               />
+              <MembersSelector/>
               <CustomFormInput
                 minRows={5} // Minimum number of rows (sets height)
                 maxRows={9}
