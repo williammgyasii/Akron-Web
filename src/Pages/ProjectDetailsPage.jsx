@@ -14,11 +14,6 @@ const ProjectDetailsPage = () => {
 
   useEffect(() => {
     console.log(activeProject);
-    // displayProjects.map((project) => {
-    //   const projectInitial = project.projectName.charAt(0).toUpperCase();
-    //   const isActive = project.id === id;
-    //   dispatch(dispatch(setActiveProject(isActive)));
-    // });
   }, [activeProject]);
 
   return <div>Project Details Page:{id}</div>;
