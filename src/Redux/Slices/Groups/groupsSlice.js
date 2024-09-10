@@ -25,106 +25,6 @@ import { fetchUserByEmail } from "../Users/UsersSlice";
 import { fetchGroupsBatch } from "../../../Firebase/firestoreFunctions";
 import { uploadGroupImage } from "../../../Firebase/storageFunctions";
 
-// Fetch group details thunk
-export const fetchSelectedGroupDetails = createAsyncThunk(
-  "group/fetchGroupDetails",
-  async (groupId, { rejectWithValue }) => {
-    try {
-      const groupDoc = doc(firebaseFirestore, "groups", groupId);
-      const groupSnapshot = await getDoc(groupDoc);
-
-      if (!groupSnapshot.exists()) {
-        throw new Error("Group not found");
-      }
-
-      const { createdAt, ...dataExtract } = groupSnapshot.data();
-
-      const groupDetails = {
-        createdAt: formatTimestamp(groupSnapshot.data().createdAt),
-        ...dataExtract,
-      };
-
-      return groupDetails;
-    } catch (error) {
-      console.log("group/fetchGroupDetails", error);
-      return rejectWithValue(error.message);
-    }
-  }
-);
-
-// AsyncThunk for creating a group and project
-export const createGroupWithProject = createAsyncThunk(
-  "groups/createGroupWithProject",
-  async (
-    { groupName, groupIcon, members, projectValues },
-    { rejectWithValue }
-  ) => {
-    try {
-      const auth = getAuth();
-      const currentUser = auth.currentUser;
-      // Upload group icon to Firebase Storage if it exists
-      let groupIconUrl = "";
-      if (groupIcon) {
-        const iconRef = ref(
-          firebaseStorage,
-          `group_icons/${groupName}_${Date.now()}`
-        );
-        const snapshot = await uploadBytes(iconRef, groupIcon);
-        groupIconUrl = await getDownloadURL(snapshot.ref);
-      }
-
-      // Ensure members array only contains emails
-      const membersId = members.map((member) => member.userid);
-
-      // Add group data to Firestore
-      const groupData = {
-        groupName: groupName,
-        groupIcon: groupIconUrl,
-        pendingMembers: [...membersId],
-        currentMembers: [currentUser.uid, ...membersId],
-        createdAt: Timestamp.now(),
-        groupAdmin: currentUser.uid,
-      };
-
-      const groupDocRef = await addDoc(
-        collection(firebaseFirestore, "groups"),
-        groupData
-      );
-
-      const projectData = {
-        projectTitle: projectValues.projectTitle.value,
-        projectDescription: projectValues.projectDescription.value,
-        groupId: groupDocRef.id,
-        createdBy: currentUser.uid,
-      };
-
-      const newProjectStructure = await addProjectToGroup(
-        projectData,
-        groupDocRef.id
-      );
-      return {
-        id: groupDocRef.id,
-        ...newProjectStructure,
-        ...groupData,
-      };
-    } catch (error) {
-      console.log("Error Creating group", error);
-      return rejectWithValue(error.message);
-    }
-  }
-);
-
-export const FETCH_GROUP_MEMBER_DETAILS = createAsyncThunk(
-  "groups/FETCH_GROUP_MEMBER_DETAILS",
-  async (memberIds, { rejectWithValue, dispatch }) => {
-    try {
-    } catch (error) {
-      console.log("error/FETCH_GROUP_MEMBER_DETAILS", error);
-      rejectWithValue(error);
-    }
-  }
-);
-
 // export const createGroupOnly = createAsyncThunk(
 //   "groups/createGroupOnly",
 //   async ({ groupName, groupIcon, members }, { rejectWithValue }) => {
@@ -281,7 +181,7 @@ export const FETCH_USER_GROUPS = createAsyncThunk(
         );
 
         const querySnapshot = await getDocs(groupsQuery);
-        
+
         const batchGroups = querySnapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
@@ -420,17 +320,6 @@ const groupsSlice = createSlice({
         state.status = "failed";
         state.error = action.payload;
       })
-      .addCase(createGroupWithProject.pending, (state) => {
-        state.createGroupLoading = true;
-      })
-      .addCase(createGroupWithProject.fulfilled, (state, action) => {
-        state.createGroupLoading = false;
-        state.groups.push(action.payload);
-      })
-      .addCase(createGroupWithProject.rejected, (state, action) => {
-        state.createGroupLoading = false;
-        state.error = action.payload;
-      })
 
       // Fetch members of group actual details
       .addCase(fetchGroupMembers.pending, (state) => {
@@ -459,20 +348,6 @@ const groupsSlice = createSlice({
         state.GROUP_SLICE_STATUS = "failed";
         state.error = action.payload;
         state.GROUP_SLICE_ISLOADING = false;
-      })
-
-      //FETCH SINGLE GROUP DETAILS
-      .addCase(fetchSelectedGroupDetails.pending, (state) => {
-        state.status = "loading";
-        state.error = null;
-      })
-      .addCase(fetchSelectedGroupDetails.fulfilled, (state, action) => {
-        state.selectedGroupDetails = action.payload;
-        state.status = "succeeded";
-      })
-      .addCase(fetchSelectedGroupDetails.rejected, (state, action) => {
-        state.error = action.payload;
-        state.status = "failed";
       });
   },
 });

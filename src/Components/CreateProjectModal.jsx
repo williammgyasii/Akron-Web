@@ -56,23 +56,13 @@ function CreateProjectModal({ openModal, onCloseModal }) {
       });
   };
 
-  const handleChange = (newValue) => {
-    // Get the IDs of the selected members
-    const newIds = newValue.map((member) => member.id);
-
-    // Filter out any duplicates by only adding IDs that don't exist in selectedMemberIds
-    const uniqueNewIds = newIds.filter((id) => !selectedMemberIds.includes(id));
-
-    // Update the state with unique selected IDs
-    setSelectedMemberIds((prevIds) => [...prevIds, ...uniqueNewIds]);
+  const handleChange = (event, newValue) => {
+    setSelectedMemberIds(newValue);
   };
 
-  const handleDelete = (idToDelete) => {
-    console.log("BABEL");
-    console.log(idToDelete);
-    // Remove the member id from selectedMemberIds
-    setSelectedMemberIds((prevIds) =>
-      prevIds.filter((id) => id !== idToDelete)
+  const handleDelete = (memberId) => {
+    setSelectedMemberIds((prev) =>
+      prev.filter((member) => member.id !== memberId)
     );
   };
 
