@@ -48,7 +48,7 @@ const ProjectNavList = ({ selectedProject, onSelectProject }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (currentGroup) {
+    if (currentGroup ) {
       dispatch(FETCH_PROJECTS_PER_GROUP(currentGroup?.id));
     }
   }, [dispatch]);

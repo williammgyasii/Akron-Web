@@ -117,7 +117,7 @@ const projectsSlice = createSlice({
       })
       .addCase(CREATE_PROJECT.fulfilled, (state, action) => {
         state.PROJECT_SLICE_STATUS = "completed";
-        state.projects.push(action.payload);
+        state.PROJECTS.push(action.payload);
         state.PROJECT_SLICE_ISLOADING = false;
       })
       .addCase(CREATE_PROJECT.rejected, (state, action) => {
