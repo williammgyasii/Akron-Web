@@ -26,6 +26,7 @@ import {
   setPrefferedGroup,
 } from "../Redux/Slices/Groups/groupsSlice";
 import CustomDropdown from "./CustomDropdown";
+import { FETCH_PROJECTS_PER_GROUP } from "../Redux/Slices/Projects/projectsSlice";
 
 
 const GroupSelector = ({ onSelectGroup, customStyles, ...props }) => {
@@ -48,6 +49,7 @@ const GroupSelector = ({ onSelectGroup, customStyles, ...props }) => {
         (item) => item.id === event.target.value
       );
       dispatch(setCurrentGroup(selectedGroup));
+      dispatch(FETCH_PROJECTS_PER_GROUP(event.target.value));
     }
   };
 

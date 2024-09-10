@@ -1,39 +1,43 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import {
   addDoc,
+  arrayUnion,
   collection,
   doc,
   getDoc,
   getDocs,
+  limit,
   query,
+  startAfter,
   Timestamp,
+  updateDoc,
   where,
 } from "firebase/firestore";
 import { firebaseFirestore } from "../../../Firebase/getFirebase";
 import { fetchProjectsInBatches } from "../../../Firebase/firestoreFunctions";
 
-// Fetch projects based on the selected group ID
+// Async thunk for fetching projects in a specific group
 export const FETCH_PROJECTS_PER_GROUP = createAsyncThunk(
-  'projects/fetchProjectsForGroup',
+  "projects/fetchProjectsByGroup",
   async (groupId, { rejectWithValue }) => {
     try {
-      console.log(groupId)
-      // Fetch group document to get project IDs
-      const groupDocRef = doc(firebaseFirestore, 'groups', groupId);
-      const groupDocSnap = await getDoc(groupDocRef);
+      // Create a query against the "projects" collection
+      const q = query(
+        collection(firebaseFirestore, "projects"),
+        where("groupId", "==", groupId)
+      );
 
-      if (!groupDocSnap.exists()) {
-        throw new Error('Group does not exist');
-      }
+      // Fetch the projects
+      const querySnapshot = await getDocs(q);
+      const projects = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
 
-      const groupData = groupDocSnap.data();
-      const projectIds = groupData.projects || [];
+      console.log(projects);
 
-      // Fetch projects in batches
-      const projects = await fetchProjectsInBatches(projectIds);
-      return projects;
+      return projects; // Return the fetched projects
     } catch (error) {
-      console.error('Error fetching projects for group:', error);
       return rejectWithValue(error.message);
     }
   }
@@ -55,6 +59,12 @@ export const CREATE_PROJECT = createAsyncThunk(
         }
       );
 
+      // Optionally, update group with new project
+      const groupRef = doc(firebaseFirestore, "groups", groupId);
+      await updateDoc(groupRef, {
+        projects: arrayUnion(projectRef.id),
+      });
+
       return {
         projectId: projectRef.id,
         projectName,
@@ -71,26 +81,30 @@ export const CREATE_PROJECT = createAsyncThunk(
 const projectsSlice = createSlice({
   name: "Projects",
   initialState: {
-    projects: [],
+    PROJECTS: [],
     tasks: [],
     activeProject: null,
     PROJECT_SLICE_ISLOADING: false,
     PROJECT_SLICE_STATUS: "idle",
+    PROJECT_SLICE_ERROR: null,
   },
   reducers: {},
   extraReducers: (builder) => {
     builder
       // Fetch User Project reducers
       .addCase(FETCH_PROJECTS_PER_GROUP.pending, (state) => {
-        state.status = "loading";
+        state.PROJECT_SLICE_STATUS = "loading";
+        state.PROJECT_SLICE_ISLOADING = true;
       })
       .addCase(FETCH_PROJECTS_PER_GROUP.fulfilled, (state, action) => {
-        state.status = "succeeded";
-        state.projects = action.payload;
+        state.PROJECT_SLICE_STATUS = "completed";
+        state.PROJECTS = action.payload;
+        state.PROJECT_SLICE_ISLOADING = false;
       })
       .addCase(FETCH_PROJECTS_PER_GROUP.rejected, (state, action) => {
-        state.status = "failed";
-        state.error = action.payload;
+        state.PROJECT_SLICE_STATUS = "failed";
+        state.PROJECT_SLICE_ERROR = action.payload;
+        state.PROJECT_SLICE_ISLOADING = false;
       })
       // Project creation reducers
       .addCase(CREATE_PROJECT.pending, (state) => {

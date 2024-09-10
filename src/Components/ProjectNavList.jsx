@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import {
   Avatar,
   Box,
+  CircularProgress,
   Divider,
   List,
   ListItemButton,
@@ -24,20 +25,29 @@ import {
   showModal,
 } from "../Redux/Slices/System/systemSlice";
 import { getRandomAvatarColor } from "../Utils/randomAvatarColors";
-import { FETCH_PROJECTS_PER_GROUP, FETCH_USER_PROJECTS } from "../Redux/Slices/Projects/projectsSlice";
+import {
+  FETCH_PROJECTS_PER_GROUP,
+  FETCH_USER_PROJECTS,
+} from "../Redux/Slices/Projects/projectsSlice";
 import { selectCurrentUser } from "../Redux/Slices/Users/UsersSlice";
 
 const ProjectNavList = ({ selectedProject, onSelectProject }) => {
   const navigate = useNavigate();
   const [selected, setSelected] = useState(null);
-  const projects = useSelector(selectGroupProjects);
+  const {
+    PROJECT_SLICE_ISLOADING,
+    PROJECT_SLICE_STATUS,
+    PROJECT_SLICE_ERROR,
+    PROJECTS,
+  } = useSelector((state) => state.projects);
   const isDrawerOpen = useSelector(selectIsDrawerOpened);
-  const displayProjects = projects.slice(0, 4); // Limit to first 3 projects
+  const displayProjects = PROJECTS.slice(0, 4); // Limit to first 3 projects
   const currentProject = useSelector(selectActiveProject);
   const currentUser = useSelector(selectCurrentUser);
   const currentGroup = useSelector(
     (state) => state.groups.CURRENT_GROUP_DETAILS
   );
+
   const theme = useTheme();
   const dispatch = useDispatch();
 
@@ -45,7 +55,7 @@ const ProjectNavList = ({ selectedProject, onSelectProject }) => {
     dispatch(FETCH_PROJECTS_PER_GROUP(currentGroup.id));
   }, [dispatch]);
 
-  console.log(projects);
+  console.log(PROJECTS);
 
   const handleViewAllClick = () => {
     navigate("projects"); // Adjust the path to your projects page
@@ -55,7 +65,7 @@ const ProjectNavList = ({ selectedProject, onSelectProject }) => {
     navigate(`projects/${projectId}`); // Adjust the path to your project details page
   };
 
-  if (projects.length === 0) {
+  if (PROJECTS.length === 0) {
     return (
       <Box p={2} textAlign="center">
         <Typography variant="body1">No projects available.</Typography>
@@ -64,57 +74,75 @@ const ProjectNavList = ({ selectedProject, onSelectProject }) => {
   }
 
   return (
-    <Box sx={{}}>
-      <List sx={{ mt: "-10px" }}>
-        {displayProjects.map((project) => {
-          // console.log(project?.id);
-          const projectInitial = project?.projectTitle?.charAt(0).toUpperCase();
-          return (
-            <StyledListItemButton
-              selected={currentProject?.id === project.id}
-              key={project.id}
-              // onClick={() => onSelectProject(project.id)}
-              onClick={() => handleProjectClick(project.id, project)}
-            >
-              <Avatar
-                sx={{
-                  bgcolor: getRandomAvatarColor(),
-                  width: 30,
-                  height: 30,
-                  marginRight: 1,
-                }}
+    <Box
+      sx={{
+        display: "flex",
+        backgroundColor: "red",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        width: "100%",
+      }}
+    >
+      {PROJECT_SLICE_STATUS === "loading" && <CircularProgress />}
+      {PROJECT_SLICE_STATUS === "failed" && (
+        <Typography color="error">{PROJECT_SLICE_ERROR}</Typography>
+      )}
+      {PROJECT_SLICE_STATUS === "completed" && (
+        <List sx={{ mt: "-10px" }}>
+          {displayProjects.map((project) => {
+            // console.log(project?.id);
+            const projectInitial = project?.projectTitle
+              ?.charAt(0)
+              .toUpperCase();
+            return (
+              <StyledListItemButton
+                selected={currentProject?.id === project.id}
+                key={project.id}
+                // onClick={() => onSelectProject(project.id)}
+                onClick={() => handleProjectClick(project.id, project)}
               >
-                {projectInitial}
-              </Avatar>
-              {isDrawerOpen && (
-                <ListItemText
+                <Avatar
                   sx={{
-                    "& .MuiTypography-root": {
-                      fontSize: "0.855rem", // Adjust font size here
-                    },
+                    bgcolor: getRandomAvatarColor(),
+                    width: 30,
+                    height: 30,
+                    marginRight: 1,
                   }}
-                  primary={project.projectTitle}
-                />
-              )}
-            </StyledListItemButton>
-          );
-        })}
-      </List>
-      {projects.length > 3 && (
-        <>
-          <Divider />
+                >
+                  {projectInitial}
+                </Avatar>
+                {isDrawerOpen && (
+                  <ListItemText
+                    sx={{
+                      "& .MuiTypography-root": {
+                        fontSize: "0.855rem", // Adjust font size here
+                      },
+                    }}
+                    primary={project.projectName}
+                  />
+                )}
+              </StyledListItemButton>
+            );
+          })}
+          {PROJECTS.length > 3 && (
+            <>
+              <Divider />
 
-          {isDrawerOpen && (
-            <CustomButton
-              size="small"
-              variant="primary"
-              color="primary"
-              onClick={handleViewAllClick}
-            >
-              View All Projects
-            </CustomButton>
+              {isDrawerOpen && (
+                <CustomButton
+                  size="small"
+                  variant="primary"
+                  color="primary"
+                  onClick={handleViewAllClick}
+                  sx={{ color: "#fff", marginTop: "10px" }}
+                >
+                  View All Projects
+                </CustomButton>
+              )}
+            </>
           )}
-        </>
+        </List>
       )}
     </Box>
   );
