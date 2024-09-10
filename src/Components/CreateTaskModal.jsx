@@ -8,6 +8,7 @@ import {
   Grid,
   useTheme,
   IconButton,
+  Divider,
 } from "@mui/material";
 import { motion } from "framer-motion";
 import { styled } from "@mui/material/styles";
@@ -15,6 +16,7 @@ import { IoClose, IoStar } from "react-icons/io5";
 import CustomFormInput from "./CustomFormInput";
 import BorderlessInput from "./CustomBorderlessInput";
 import CustomBorderlessInput from "./CustomBorderlessInput";
+import AssignTo from "./AssignTo";
 
 // Define animation variants for Framer Motion
 const slideInFromRight = {
@@ -72,6 +74,8 @@ const OverlayBox = styled(Box)(({ theme }) => ({
   justifyContent: "center",
   zIndex: theme.zIndex.modal,
 }));
+
+const members = [{ name: "William Gyasi" }, { name: "Kwabena William" }];
 
 const CreateTaskModal = ({ isOpen, onClose }) => {
   const theme = useTheme();
@@ -133,6 +137,7 @@ const CreateTaskModal = ({ isOpen, onClose }) => {
             onChange={(e) => setTaskTitle(e.target.value)}
           />
 
+          <AssignTo members={members} />
 
           {/* <form style={{ width: "100%" }}>
             <Box mb={3}>

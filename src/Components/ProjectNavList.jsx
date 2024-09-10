@@ -48,7 +48,7 @@ const ProjectNavList = ({ selectedProject, onSelectProject }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (currentGroup ) {
+    if (currentGroup) {
       dispatch(FETCH_PROJECTS_PER_GROUP(currentGroup?.id));
     }
   }, [dispatch]);
@@ -79,7 +79,7 @@ const ProjectNavList = ({ selectedProject, onSelectProject }) => {
         width: "100%",
       }}
     >
-      {PROJECT_SLICE_STATUS === "loading" && <CircularProgress />}
+      {PROJECT_SLICE_STATUS === "loading" && <CircularProgress size={20} />}
       {PROJECT_SLICE_STATUS === "failed" && (
         <Typography color="error">{PROJECT_SLICE_ERROR}</Typography>
       )}
