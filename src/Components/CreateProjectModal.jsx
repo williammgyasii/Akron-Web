@@ -27,15 +27,16 @@ function CreateProjectModal({ openModal, onCloseModal }) {
   const currentGroup = useSelector(
     (state) => state.groups.CURRENT_GROUP_DETAILS
   );
+  const activegroupmembers = useSelector((state) => state.groups.groupMembers);
+  const [selectedMembers, setSelectedMembers] = useState([]);
 
   const currentUser = useSelector(selectCurrentUser);
   const { PROJECT_SLICE_ISLOADING, PROJECT_SLICE_STATUS } = useSelector(
     (state) => state.projects
   );
-  console.log(currentGroup);
+  console.log(activegroupmembers);
 
   const handleSubmit = () => {
-    console.log("Fried Rice");
     dispatch(
       CREATE_PROJECT({
         projectName,
@@ -111,7 +112,7 @@ function CreateProjectModal({ openModal, onCloseModal }) {
                 helperText={errors.projectNameError}
                 error={Boolean(errors.projectNameError)}
               />
-              <MembersSelector/>
+              <MembersSelector groupmembers handlegroupSelect />
               <CustomFormInput
                 minRows={5} // Minimum number of rows (sets height)
                 maxRows={9}

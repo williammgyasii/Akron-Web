@@ -9,12 +9,13 @@ import {
   IconButton,
   CircularProgress,
   useTheme,
+  Autocomplete,
 } from "@mui/material";
 import CustomFormInput from "./CustomFormInput";
 import { PersonAdd } from "@mui/icons-material";
 import CustomButton from "./CustomButton";
 
-const MembersSelector = ({}) => {
+const MembersSelector = ({ setMembers }) => {
   const members = [
     {
       email: "john@example.com",
@@ -36,31 +37,61 @@ const MembersSelector = ({}) => {
   const [memberloading, setMemberLoading] = useState(false);
   const theme = useTheme();
 
-  const handleSearch = () => {
-    // Find the member by email
-    const foundMember = members.find((member) => member.email === searchValue);
-
-    if (
-      foundMember &&
-      !selectedMembers.some((member) => member.email === foundMember.email)
-    ) {
-      // Add to selected members
-      setSelectedMembers([...selectedMembers, foundMember]);
-      setSearchValue(""); // Clear search after adding
-    }
+  const handleChange = (event, newValue) => {
+    // Avoid adding duplicate members based on email
+    const uniqueMembers = newValue.filter(
+      (member, index, self) =>
+        index === self.findIndex((m) => m.email === member.email)
+    );
+    setSelectedMembers(uniqueMembers);
   };
 
-  const handleDelete = (email) => {
-    // Remove member from selected members
-
-    setSelectedMembers(
-      selectedMembers.filter((member) => member.email !== email)
+  const handleDelete = (memberToDelete) => {
+    // Remove the member from selectedMembers array
+    setSelectedMembers((prevSelectedMembers) =>
+      prevSelectedMembers.filter(
+        (member) => member.email !== memberToDelete.email
+      )
     );
   };
 
   return (
     <Box>
-      <CustomFormInput
+      <Autocomplete
+        id="size-small-filled-multi"
+        size="small"
+        options={members}
+        getOptionLabel={(option) => option.name}
+        value={selectedMembers}
+        onChange={handleChange}
+        multiple
+        isOptionEqualToValue={(option, value) => option.email === value.email} // Avoid duplicate display in dropdown
+        renderTags={(value, getTagProps) =>
+          value.map((option, index) => {
+            const { key, ...tagProps } = getTagProps({ index });
+            return (
+              <Chip
+                key={key}
+                variant="outlined"
+                label={option.name}
+                avatar={<Avatar>{option.name[0]}</Avatar>} // Show avatar with first letter of name
+                size="small"
+                onDelete={() => handleDelete(option)} // Remove member when delete icon is clicked
+                {...tagProps}
+              />
+            );
+          })
+        }
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            variant="outlined"
+            label="Project Members"
+            placeholder="Add members by email"
+          />
+        )}
+      />
+      {/* <CustomFormInput
         label="Add project members by email"
         value={searchValue}
         onChange={(e) => setSearchValue(e.target.value)}
@@ -77,7 +108,7 @@ const MembersSelector = ({}) => {
                   sx={{
                     backgroundColor: theme.palette.zinc.main,
                     color: theme.palette.zinc.light,
-                    padding:"2px 4px"
+                    padding: "2px 4px",
                   }}
                   onClick={handleSearch}
                 >
@@ -87,22 +118,7 @@ const MembersSelector = ({}) => {
             </Box>
           ),
         }}
-      />
-
-      <Box display="flex" mt={2} flexWrap="wrap" gap={1}>
-        {selectedMembers.length === 0 && (
-          <Typography>No members invited yet.</Typography>
-        )}
-        {selectedMembers.map((member) => (
-          <Chip
-            key={member.email}
-            avatar={<Avatar src={member.avatar} />}
-            label={member.name}
-            onDelete={() => handleDelete(member.email)}
-            sx={{ backgroundColor: "#f3f3f3" }}
-          />
-        ))}
-      </Box>
+      /> */}
     </Box>
   );
 };
