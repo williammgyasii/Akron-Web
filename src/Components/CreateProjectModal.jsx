@@ -65,6 +65,9 @@ function CreateProjectModal({ openModal, onCloseModal }) {
       prev.filter((member) => member.id !== memberId)
     );
   };
+  const filteredMembers = activegroupmembers.filter(
+    (member) => member.id !== currentUser.uid
+  );
 
   return (
     <StyledModal
@@ -122,7 +125,7 @@ function CreateProjectModal({ openModal, onCloseModal }) {
               />
 
               <MemberSelector
-                members={activegroupmembers}
+                members={filteredMembers}
                 selectedMembers={selectedMemberIds} // Pass selected ids
                 handleChange={handleChange} // Pass external handleChange
                 handleDelete={handleDelete} // Pass external handleDelete

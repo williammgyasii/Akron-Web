@@ -38,7 +38,7 @@ const ProjectNavList = ({ selectedProject, onSelectProject }) => {
   } = useSelector((state) => state.projects);
   const isDrawerOpen = useSelector(selectIsDrawerOpened);
   const displayProjects = PROJECTS.slice(0, 5); // Limit to first 3 projects
-  console.log(displayProjects)
+  console.log(displayProjects);
 
   const currentUser = useSelector(selectCurrentUser);
   const currentGroup = useSelector(
@@ -57,11 +57,13 @@ const ProjectNavList = ({ selectedProject, onSelectProject }) => {
   const handleViewAllClick = () => {
     navigate("projects"); // Adjust the path to your projects page
   };
+  
   const handleProjectClick = (projectId, project) => {
     dispatch(setActiveProject(project));
     navigate(`projects/${projectId}`); // Adjust the path to your project details page
   };
 
+  
   if (PROJECTS.length === 0) {
     return (
       <Box p={2} textAlign="center">

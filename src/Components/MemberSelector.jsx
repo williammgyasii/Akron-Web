@@ -30,6 +30,7 @@ const MemberSelector = ({
       options={members}
       getOptionLabel={(option) => option.email}
       value={selectedMembers}
+      
       limitTags={2}
       noOptionsText="No Members Available"
       onChange={handleChange}

@@ -20,14 +20,7 @@ import { MdFormatListBulletedAdd } from "react-icons/md";
 import CustomButton from "./CustomButton";
 // import CreateGroupForm from "./CreateGroupForm";
 import { selectCurrentUser } from "../Redux/Slices/Users/UsersSlice";
-import {
-  createGroup,
-  createGroupWithProject,
-  fetchGroupMembers,
-  fetchProjectsByGroupId,
-  fetchSelectedGroupDetails,
-  setSelectedGroupID,
-} from "../Redux/Slices/Groups/groupsSlice";
+
 // import CreateProjectForm from "./CreateProjectForm";
 const ModalContainer = styled(Box)(({ theme }) => ({
   position: "absolute",

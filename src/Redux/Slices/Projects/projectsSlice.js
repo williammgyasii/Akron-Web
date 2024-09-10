@@ -57,7 +57,7 @@ export const CREATE_PROJECT = createAsyncThunk(
           groupId,
           createdBy: userId,
           createdAt: Timestamp.now(),
-          members: [userId, ...memberIds],
+          members: memberIds,
         }
       );
       // Optionally, update group with new project
