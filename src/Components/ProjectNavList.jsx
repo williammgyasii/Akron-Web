@@ -38,6 +38,7 @@ const ProjectNavList = ({ selectedProject, onSelectProject }) => {
   } = useSelector((state) => state.projects);
   const isDrawerOpen = useSelector(selectIsDrawerOpened);
   const displayProjects = PROJECTS.slice(0, 5); // Limit to first 3 projects
+  console.log(displayProjects)
 
   const currentUser = useSelector(selectCurrentUser);
   const currentGroup = useSelector(
@@ -93,7 +94,7 @@ const ProjectNavList = ({ selectedProject, onSelectProject }) => {
             return (
               <StyledListItemButton
                 selected={ACTIVE_PROJECT?.id === project.id}
-                key={project.id}
+                key={project?.id}
                 onClick={() => handleProjectClick(project.id, project)}
               >
                 <Avatar

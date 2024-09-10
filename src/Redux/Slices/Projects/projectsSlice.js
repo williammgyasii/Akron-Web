@@ -35,7 +35,6 @@ export const FETCH_PROJECTS_PER_GROUP = createAsyncThunk(
         ...doc.data(),
       }));
 
-
       return projects; // Return the fetched projects
     } catch (error) {
       return rejectWithValue(error.message);
@@ -49,6 +48,8 @@ export const CREATE_PROJECT = createAsyncThunk(
   async ({ projectName, groupId, userId, members }, { rejectWithValue }) => {
     try {
       // Create a new document in the 'projects' collection
+      const memberIds = members.map((member) => member.id);
+
       const projectRef = await addDoc(
         collection(firebaseFirestore, "projects"),
         {
@@ -56,7 +57,7 @@ export const CREATE_PROJECT = createAsyncThunk(
           groupId,
           createdBy: userId,
           createdAt: Timestamp.now(),
-          members: members,
+          members: [userId, ...memberIds],
         }
       );
       // Optionally, update group with new project
