@@ -46,7 +46,7 @@ function DashboardPage() {
 
   return (
     <Container disableGutters maxWidth={false} sx={{ position: "relative" }}>
-      <HorizontalLinearStepper />
+      <VerticalStepper />
       <Grid p={1} className="min-h-screens" container columnSpacing={2}>
         <Grid item sx={{ height: "100%" }} desktop={9} tablets_port={10}>
           <Box
