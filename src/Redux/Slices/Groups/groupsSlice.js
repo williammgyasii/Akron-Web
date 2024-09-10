@@ -379,9 +379,6 @@ const groupsSlice = createSlice({
     addProject: (state, action) => {
       state.projects.push(action.payload);
     },
-    setSelectedProject: (state, action) => {
-      state.activeProject = action.payload;
-    },
   },
   extraReducers: (builder) => {
     builder
@@ -470,7 +467,7 @@ export const {
   setCurrentGroup,
   clearGroupDetails,
   addProject,
-  setSelectedProject,
+
 } = groupsSlice.actions;
 export const selectUserGroups = (state) => state.groups.GROUPS;
 export const selectGroupID = (state) => state.groups.selectedGroupId;

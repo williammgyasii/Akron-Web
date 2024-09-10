@@ -61,7 +61,6 @@ const ProjectNavList = ({ selectedProject, onSelectProject }) => {
     navigate("projects"); // Adjust the path to your projects page
   };
   const handleProjectClick = (projectId, project) => {
-    dispatch(setSelectedProject(project));
     navigate(`projects/${projectId}`); // Adjust the path to your project details page
   };
 
@@ -74,32 +73,22 @@ const ProjectNavList = ({ selectedProject, onSelectProject }) => {
   }
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        backgroundColor: "red",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        width: "100%",
-      }}
-    >
+    <Box sx={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",width:"100%"}}> 
       {PROJECT_SLICE_STATUS === "loading" && <CircularProgress />}
       {PROJECT_SLICE_STATUS === "failed" && (
         <Typography color="error">{PROJECT_SLICE_ERROR}</Typography>
       )}
       {PROJECT_SLICE_STATUS === "completed" && (
-        <List sx={{ mt: "-10px" }}>
+        <List sx={{ mt: "-10px",width:"100%" }}>
           {displayProjects.map((project) => {
             // console.log(project?.id);
-            const projectInitial = project?.projectTitle
+            const projectInitial = project?.projectName
               ?.charAt(0)
               .toUpperCase();
             return (
               <StyledListItemButton
                 selected={currentProject?.id === project.id}
                 key={project.id}
-                // onClick={() => onSelectProject(project.id)}
                 onClick={() => handleProjectClick(project.id, project)}
               >
                 <Avatar
@@ -135,7 +124,7 @@ const ProjectNavList = ({ selectedProject, onSelectProject }) => {
                   variant="primary"
                   color="primary"
                   onClick={handleViewAllClick}
-                  sx={{ color: "#fff", marginTop: "10px" }}
+                  sx={{color:"#fff",marginTop:"10px"}}
                 >
                   View All Projects
                 </CustomButton>
@@ -155,10 +144,10 @@ const StyledListItemButton = styled(ListItemButton)(({ theme, selected }) => ({
   borderRadius: theme.shape.borderRadius,
   transition: "background-color 0.3s, box-shadow 0.3s",
   "&.Mui-selected": {
-    backgroundColor: theme.palette.primary.main,
+    backgroundColor: theme.palette.primary.dark700,
     color: "white",
   },
   "&:hover": {
-    backgroundColor: theme.palette.primary.main,
+    backgroundColor: theme.palette.primary.light400,
   },
 }));
