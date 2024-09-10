@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Modal,
   Box,
@@ -6,10 +6,15 @@ import {
   Button,
   TextareaAutosize,
   Grid,
+  useTheme,
+  IconButton,
 } from "@mui/material";
 import { motion } from "framer-motion";
 import { styled } from "@mui/material/styles";
-
+import { IoClose, IoStar } from "react-icons/io5";
+import CustomFormInput from "./CustomFormInput";
+import BorderlessInput from "./CustomBorderlessInput";
+import CustomBorderlessInput from "./CustomBorderlessInput";
 
 // Define animation variants for Framer Motion
 const slideInFromRight = {
@@ -42,11 +47,16 @@ const ModalBox = styled(motion.div)(({ theme }) => ({
   position: "absolute",
   backgroundColor: theme.palette.background.paper,
   borderRadius: theme.shape.borderRadius,
-  padding: theme.spacing(4),
   maxWidth: "450px",
+
+  padding: "10px 12px",
   //   margin: "auto",
-  height:"100%",
+  height: "100%",
   right: 10,
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "flex-start",
+  flexDirection: "column",
   width: "100%",
   boxShadow: theme.shadows[5],
   outline: "none",
@@ -64,6 +74,8 @@ const OverlayBox = styled(Box)(({ theme }) => ({
 }));
 
 const CreateTaskModal = ({ isOpen, onClose }) => {
+  const theme = useTheme();
+  const [taskTitle, setTaskTitle] = useState("");
   return (
     <Modal
       BackdropProps={{
@@ -79,9 +91,50 @@ const CreateTaskModal = ({ isOpen, onClose }) => {
           animate="visible"
           exit="exit"
         >
-          <h2>Create New Task</h2>
+          {/* Toolbar */}
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              width: "100%",
+              marginBottom: "10px",
+            }}
+          >
+            <IconButton
+              sx={{
+                "&:hover": {
+                  backgroundColor: theme.palette.secondary.main, // No background change on hover
+                },
+              }}
+              onClick={onClose}
+            >
+              <IoClose color="rgb(113 113 122 )" size={12} />
+            </IconButton>
 
-          <form>
+            <span className="text-zinc-500 text-sm">Add a new task</span>
+
+            <IconButton
+              sx={{
+                // borderRadius: "20px",
+                "&:hover": {
+                  backgroundColor: theme.palette.secondary.main, // No background change on hover
+                },
+              }}
+              onClick={onClose}
+            >
+              <IoStar color="rgb(113 113 122 )" size={12} />
+            </IconButton>
+          </Box>
+
+          <CustomBorderlessInput
+            placeholder="Task Title"
+            value={taskTitle}
+            onChange={(e) => setTaskTitle(e.target.value)}
+          />
+
+
+          {/* <form style={{ width: "100%" }}>
             <Box mb={3}>
               <TextField label="Task Name" variant="outlined" fullWidth />
             </Box>
@@ -116,7 +169,7 @@ const CreateTaskModal = ({ isOpen, onClose }) => {
                 Create Task
               </Button>
             </Box>
-          </form>
+          </form> */}
         </ModalBox>
       </OverlayBox>
     </Modal>

@@ -25,6 +25,11 @@ const theme = createTheme({
       light100: "#DCE4FF",
       white: "#fff",
     },
+    zinc: {
+      main: "rgb(169, 172, 172)",
+      dark: "rgb(71, 71, 71)",
+      light: "rgba(242, 242, 242,1)",
+    },
     secondary: {
       dark900: "#040815", //BluePurple
       dark800: "#060713",
