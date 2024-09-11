@@ -11,6 +11,11 @@ const statusOptions = [
   { key: "approved", label: "Approved", color: "purple" },
 ];
 
+const createStatusOptions = [
+  { key: "to-do", label: "To-Do", color: "gray" },
+  { key: "in-progress", label: "In-Progress", color: "blue" },
+];
+
 const CustomButton = styled(Button)(({ color }) => ({
   display: "flex",
   alignItems: "center",
@@ -33,7 +38,7 @@ const CustomButton = styled(Button)(({ color }) => ({
   },
 }));
 
-const TaskStatusDropdown = ({mode}) => {
+const TaskStatusDropdown = ({ mode, status, setStatus }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedStatus, setSelectedStatus] = useState({
     label: "Select Status",
@@ -52,7 +57,9 @@ const TaskStatusDropdown = ({mode}) => {
 
   const handleMenuItemClick = (key) => {
     const selectedOption = statusOptions.find((option) => option.key === key);
+
     if (selectedOption) {
+      setStatus(key);
       setSelectedStatus({
         key: selectedOption.key,
         label: selectedOption.label,
@@ -87,29 +94,33 @@ const TaskStatusDropdown = ({mode}) => {
           },
         }}
       >
-        {statusOptions.map((status, index) => (
-          <motion.div
-            key={status.key}
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: index * 0.1, duration: 0.3 }}
-          >
-            <MenuItem sx={{fontSize:"14px"}} onClick={() => handleMenuItemClick(status.key)}>
-              <span
-                style={{
-                  backgroundColor: "red",
-                  width: "8px",
-                  height: "8px",
-                  borderRadius: "50%",
-                  display: "inline-block",
-                  backgroundColor: status.color,
-                  marginRight: "8px",
-                }}
-              />
-              {status.label}
-            </MenuItem>
-          </motion.div>
-        ))}
+        {mode === "create-task" &&
+          createStatusOptions.map((status, index) => (
+            <motion.div
+              key={status.key}
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.1, duration: 0.3 }}
+            >
+              <MenuItem
+                sx={{ fontSize: "14px" }}
+                onClick={() => handleMenuItemClick(status.key)}
+              >
+                <span
+                  style={{
+                    backgroundColor: "red",
+                    width: "8px",
+                    height: "8px",
+                    borderRadius: "50%",
+                    display: "inline-block",
+                    backgroundColor: status.color,
+                    marginRight: "8px",
+                  }}
+                />
+                {status.label}
+              </MenuItem>
+            </motion.div>
+          ))}
       </Menu>
     </>
   );

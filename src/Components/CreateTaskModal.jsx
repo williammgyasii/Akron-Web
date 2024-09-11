@@ -65,7 +65,7 @@ const ModalBox = styled(motion.div)(({ theme }) => ({
   background: "linear-gradient(270deg, #ffffff, #fffff1)",
   borderRadius: theme.shape.borderRadius,
   maxWidth: "450px",
-  padding: "10px 12px",
+  padding: "10px 15px",
   //   margin: "auto",
   height: "100%",
   right: 10,
@@ -98,7 +98,6 @@ const options = [
 
 const CreateTaskModal = ({ isOpen, onClose }) => {
   const theme = useTheme();
-  const [taskTitle, setTaskTitle] = useState("");
   const {
     PROJECT_SLICE_ISLOADING,
     PROJECT_SLICE_STATUS,
@@ -108,12 +107,13 @@ const CreateTaskModal = ({ isOpen, onClose }) => {
     projectMembersDetails,
   } = useSelector((state) => state.projects);
   const currentUser = useSelector(selectCurrentUser);
+  const [taskTitle, setTaskTitle] = useState("");
   const [selectedValue, setSelectedValue] = useState("");
   const [dueDate, setDueDate] = useState(null);
-
   const [assigneesId, setAssigneesIds] = useState([]);
+  const [status, setStatus] = useState(null);
 
-  const handleChange = (value) => {
+  const handleActiveProjectChange = (value) => {
     setSelectedValue(value);
   };
 
@@ -201,7 +201,7 @@ const CreateTaskModal = ({ isOpen, onClose }) => {
               width={"150px"}
               options={options}
               value={selectedValue}
-              onChange={handleChange}
+              onChange={handleActiveProjectChange}
 
               //   placeholder="Select Options"
             />
@@ -229,7 +229,7 @@ const CreateTaskModal = ({ isOpen, onClose }) => {
               style={{
                 color: theme.palette.zinc.dark,
                 marginRight: "10px",
-                minWidth: "70px",
+                minWidth: "90px",
               }}
             >
               Assignees
@@ -249,7 +249,7 @@ const CreateTaskModal = ({ isOpen, onClose }) => {
               style={{
                 color: theme.palette.zinc.dark,
                 marginRight: "10px",
-                minWidth: "70px",
+                minWidth: "90px",
               }}
             >
               Due Date
@@ -263,13 +263,35 @@ const CreateTaskModal = ({ isOpen, onClose }) => {
               style={{
                 color: theme.palette.zinc.dark,
                 marginRight: "10px",
-                minWidth: "70px",
+                minWidth: "90px",
               }}
             >
               Status
             </span>
             {/* //Only project adminds can assign task fix in future */}
-            <TaskStatusDropdown />
+            <TaskStatusDropdown
+              status={status}
+              setStatus={setStatus}
+              mode={"create-task"}
+            />
+          </div>
+
+          <div className="flex w-full h-fit text-sm mt-2 items-center z-50">
+            <span
+              style={{
+                color: theme.palette.zinc.dark,
+                marginRight: "10px",
+                minWidth: "90px",
+              }}
+            >
+              Created by:
+            </span>
+            {/* //Only project adminds can assign task fix in future */}
+            <TaskStatusDropdown
+              status={status}
+              setStatus={setStatus}
+              mode={"create-task"}
+            />
           </div>
 
           {/* <form style={{ width: "100%" }}>
