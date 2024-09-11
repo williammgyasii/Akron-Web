@@ -1,17 +1,12 @@
 import React from "react";
-import { Box, CssBaseline, Typography, useTheme } from "@mui/material";
-
+import { Box, useTheme } from "@mui/material";
 import CreateTaskFAB from "../Components/CreateTaskFAB";
 import AppBarComponent from "../Components/AppBarComponent";
-
 import DrawerNav from "../Components/DrawerNav";
 import { useSelector } from "react-redux";
-import zIndex from "@mui/material/styles/zIndex";
 
 const MainLayout = ({ children }) => {
-  const { currentUser, loading, status, error } = useSelector(
-    (state) => state.user
-  );
+  const { currentUser } = useSelector((state) => state.user);
   const theme = useTheme();
   return (
     <Box
@@ -37,7 +32,7 @@ const MainLayout = ({ children }) => {
           title={`Welcome Back! ${currentUser.firstName}`}
           showOthers
         />
-        <Box sx={{ mt:"5%" }}>{children}</Box>
+        <Box sx={{ mt: "5%" }}>{children}</Box>
 
         <CreateTaskFAB />
       </Box>

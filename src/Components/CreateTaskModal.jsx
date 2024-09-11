@@ -27,6 +27,7 @@ import AssignTo from "./AssignTo";
 import { useSelector } from "react-redux";
 import { MdOutlineDelete } from "react-icons/md";
 import ProjectSelector from "./ProjectSelector";
+import MemberSelector from "./MemberSelector";
 
 // Define animation variants for Framer Motion
 const slideInFromRight = {
@@ -167,15 +168,17 @@ const CreateTaskModal = ({ isOpen, onClose }) => {
 
           {/* ACTIVE PROJECT BOX */}
           <div className="flex w-full text-sm mt-2 items-center">
-            <span style={{ color: theme.palette.zinc.dark,marginRight:"10px" }}>
+            <span
+              style={{ color: theme.palette.zinc.dark, marginRight: "10px" }}
+            >
               Active Project:
             </span>
             <ProjectSelector
-            width={"150px"}
+              width={"150px"}
               options={options}
               value={selectedValue}
               onChange={handleChange}
-            //   placeholder="Select Options"
+              //   placeholder="Select Options"
             />
             {/* <Chip
               sx={{
@@ -196,7 +199,8 @@ const CreateTaskModal = ({ isOpen, onClose }) => {
             </Tooltip>
           </div>
 
-          <AssignTo members={options} />
+          {/* //Only project adminds can assign task fix in future */}
+          <MemberSelector />
 
           {/* <form style={{ width: "100%" }}>
             <Box mb={3}>
