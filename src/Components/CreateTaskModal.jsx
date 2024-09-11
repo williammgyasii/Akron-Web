@@ -30,6 +30,8 @@ import ProjectSelector from "./ProjectSelector";
 import MemberSelector from "./MemberSelector";
 import { selectCurrentUser } from "../Redux/Slices/Users/UsersSlice";
 import { DatePicker } from "antd";
+import CustomDatePicker from "./CustomDatePicker";
+import TaskStatusDropdown from "./TaskStatusDropdown";
 
 // Define animation variants for Framer Motion
 const slideInFromRight = {
@@ -60,7 +62,7 @@ const slideInFromRight = {
 // Styled container for the modal content using MUI's styled API
 const ModalBox = styled(motion.div)(({ theme }) => ({
   position: "absolute",
-  backgroundColor: `#ccc`,
+  background: "linear-gradient(270deg, #ffffff, #f0e4f8)",
   borderRadius: theme.shape.borderRadius,
   maxWidth: "450px",
   padding: "10px 12px",
@@ -107,6 +109,7 @@ const CreateTaskModal = ({ isOpen, onClose }) => {
   } = useSelector((state) => state.projects);
   const currentUser = useSelector(selectCurrentUser);
   const [selectedValue, setSelectedValue] = useState("");
+  const [dueDate, setDueDate] = useState(null);
 
   const [assigneesId, setAssigneesIds] = useState([]);
 
@@ -226,7 +229,7 @@ const CreateTaskModal = ({ isOpen, onClose }) => {
               style={{
                 color: theme.palette.zinc.dark,
                 marginRight: "10px",
-                minWidth: "90px",
+                minWidth: "70px",
               }}
             >
               Assignees
@@ -241,18 +244,32 @@ const CreateTaskModal = ({ isOpen, onClose }) => {
             />
           </div>
 
-          <div className="flex w-full h-fit text-sm mt-2 items-center">
+          <div className="flex w-full h-fit text-sm mt-2 items-center z-50">
             <span
               style={{
                 color: theme.palette.zinc.dark,
                 marginRight: "10px",
-                minWidth: "90px",
+                minWidth: "70px",
               }}
             >
               Due Date
             </span>
             {/* //Only project adminds can assign task fix in future */}
-            <DatePicker />
+            <CustomDatePicker date={dueDate} setDate={setDueDate} />
+          </div>
+
+          <div className="flex w-full h-fit text-sm mt-2 items-center z-50">
+            <span
+              style={{
+                color: theme.palette.zinc.dark,
+                marginRight: "10px",
+                minWidth: "70px",
+              }}
+            >
+              Status
+            </span>
+            {/* //Only project adminds can assign task fix in future */}
+            <TaskStatusDropdown />
           </div>
 
           {/* <form style={{ width: "100%" }}>

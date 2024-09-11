@@ -29,6 +29,7 @@ import GroupMemberListView from "./GroupMemberListView";
 import { queryUserByEmail } from "../Firebase/firestoreFunctions";
 import VerticalStepperModal from "../AnimatedComponents/VerticalStepperModal";
 import { AddMembersSection, CreateAccountSection } from "./ModalSteppers";
+import { DatePicker } from "antd";
 
 const gradientAnimation = {
   animate: {
