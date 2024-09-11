@@ -6,7 +6,7 @@ import CustomTitles from "./CustomTitles";
 import CustomFormInput from "./CustomFormInput";
 import CustomButton from "./CustomButton";
 import { MdFormatListBulletedAdd } from "react-icons/md";
-import AssignToMember from "./AssignToMember";
+// import AssignToMember from "./AssignToMember";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useDispatch, useSelector } from "react-redux";
@@ -183,10 +183,7 @@ const AddTaskForm = ({ groupId, handleClose }) => {
             marginTop: 2,
           }}
         >
-          <AssignToMember
-            customStyles={{ width: "90%", marginRight: "20px" }}
-            onChange={(e) => console.log(e)}
-          />
+         
           <ProjectPicker
             value={formState.groupProject.value}
             onChange={(e) => handleChange("groupProject", e.target.value)}

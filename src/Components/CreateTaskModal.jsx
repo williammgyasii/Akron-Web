@@ -62,7 +62,7 @@ const slideInFromRight = {
 // Styled container for the modal content using MUI's styled API
 const ModalBox = styled(motion.div)(({ theme }) => ({
   position: "absolute",
-  background: "linear-gradient(270deg, #ffffff, #f0e4f8)",
+  background: "linear-gradient(270deg, #ffffff, #fffff1)",
   borderRadius: theme.shape.borderRadius,
   maxWidth: "450px",
   padding: "10px 12px",
