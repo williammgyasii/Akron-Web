@@ -327,6 +327,7 @@ const CreateTaskModal = ({ isOpen, onClose }) => {
                   label={option.label}
                   icon={option.icon}
                   iconPosition="start"
+                  
                   value={option.key}
                 />
               ))}
