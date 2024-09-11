@@ -240,7 +240,7 @@ const AnimatedModalContainer = styled(motion(Box))(({ theme }) => ({
   transform: "translate(-50%, -50%)",
   width: 700,
   height: 400,
-  background: "linear-gradient(270deg, #ffffff, #f0e4f8)", // White to light gray/blue
+  background: "linear-gradient(270deg, #ffffff, #fffff1)", // White to light gray/blue
   backgroundSize: "200% 200%",
   borderRadius: theme.shape.borderRadius,
   // boxShadow: theme.shadows[5],

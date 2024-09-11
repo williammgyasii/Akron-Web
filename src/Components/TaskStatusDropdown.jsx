@@ -33,7 +33,7 @@ const CustomButton = styled(Button)(({ color }) => ({
   },
 }));
 
-const TaskStatusDropdown = () => {
+const TaskStatusDropdown = ({mode}) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedStatus, setSelectedStatus] = useState({
     label: "Select Status",
@@ -94,7 +94,7 @@ const TaskStatusDropdown = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.1, duration: 0.3 }}
           >
-            <MenuItem onClick={() => handleMenuItemClick(status.key)}>
+            <MenuItem sx={{fontSize:"14px"}} onClick={() => handleMenuItemClick(status.key)}>
               <span
                 style={{
                   backgroundColor: "red",

@@ -33,6 +33,7 @@ const MemberSelector = ({
       sx={{
         width: width || "100%",
       }}
+      size="small"
       options={members}
       getOptionLabel={(option) => option.email}
       value={selectedMembers}
