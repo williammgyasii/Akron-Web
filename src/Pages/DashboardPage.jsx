@@ -14,8 +14,8 @@ import { showModal } from "../Redux/Slices/System/systemSlice";
 import { motion } from "framer-motion";
 import CreateTaskModal from "../Components/CreateTaskModal";
 import CreateGroupModal from "../Components/CreateGroupModal";
-import VerticalStepper from "../AnimatedComponents/AnimatedCreateGroupModalStepper";
-import HorizontalLinearStepper from "../AnimatedComponents/AnimatedCreateGroupModalStepper";
+import VerticalStepper from "../AnimatedComponents/VerticalStepper";
+import HorizontalLinearStepper from "../AnimatedComponents/VerticalStepper";
 
 function DashboardPage() {
   const dispatch = useDispatch();
@@ -46,7 +46,7 @@ function DashboardPage() {
 
   return (
     <Container disableGutters maxWidth={false} sx={{ position: "relative" }}>
-      <VerticalStepper />
+      {/* <VerticalStepper /> */}
       <Grid p={1} className="min-h-screens" container columnSpacing={2}>
         <Grid item sx={{ height: "100%" }} desktop={9} tablets_port={10}>
           <Box
