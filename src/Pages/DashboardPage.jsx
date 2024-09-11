@@ -14,8 +14,8 @@ import { showModal } from "../Redux/Slices/System/systemSlice";
 import { motion } from "framer-motion";
 import CreateTaskModal from "../Components/CreateTaskModal";
 import CreateGroupModal from "../Components/CreateGroupModal";
-import VerticalStepper from "../AnimatedComponents/VerticalStepper";
-import HorizontalLinearStepper from "../AnimatedComponents/VerticalStepper";
+import VerticalStepper from "../AnimatedComponents/VerticalStepperModal";
+import HorizontalLinearStepper from "../AnimatedComponents/VerticalStepperModal";
 
 function DashboardPage() {
   const dispatch = useDispatch();
