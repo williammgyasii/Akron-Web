@@ -20,6 +20,7 @@ import {
   IoClose,
   IoInformation,
   IoInformationCircleOutline,
+  IoSettings,
   IoStar,
 } from "react-icons/io5";
 import CustomFormInput from "./CustomFormInput";
@@ -35,6 +36,7 @@ import { Avatar, DatePicker } from "antd";
 import CustomDatePicker from "./CustomDatePicker";
 import TaskStatusDropdown from "./TaskStatusDropdown";
 import { SettingsInputComponent } from "@mui/icons-material";
+import { SettingsTab, TaskDescription } from "./StyledComponents";
 
 // Define animation variants for Framer Motion
 const slideInFromRight = {
@@ -65,24 +67,44 @@ const slideInFromRight = {
 // Define styled components
 const CustomTabs = styled(Tabs)(({ theme }) => ({
   borderBottom: `1px solid ${theme.palette.divider}`,
+  // minHeight: "40px",
+  height: "50px",
   "& .MuiTabs-indicator": {
-    backgroundColor: "black", // Set the indicator color to black
+    backgroundColor: theme.palette.secondary.main, // Set the indicator color to black
   },
 }));
 
 const CustomTab = styled(Tab)(({ theme }) => ({
-  fontSize: "0.875rem", // Smaller font size
+  fontSize: "0.975rem", // Smaller font size
+  textTransform: "capitalize",
+  fontFamily: "Inter",
+  height: "auto",
   minWidth: "120px", // Smaller width
-  padding: "6px 12px", // Smaller padding
+  padding: "0", // Smaller padding
   "&.Mui-selected": {
-    color: theme.palette.primary.main,
-    fontWeight: theme.typography.fontWeightBold,
+    color: theme.palette.secondary.main,
+    // fontWeight: theme.typography.fontWeightBold,
     borderBottom: `2px solid ${theme.palette.primary.main}`,
   },
   "&:hover": {
     color: theme.palette.primary.dark,
   },
 }));
+
+const tabOptions = [
+  {
+    key: 0,
+    label: "Description",
+    icon: <IoInformation />,
+    component: TaskDescription,
+  },
+  {
+    key: 1,
+    label: "Settings",
+    icon: <IoSettings />,
+    component: SettingsTab,
+  },
+];
 
 const CreateTaskModal = ({ isOpen, onClose }) => {
   const theme = useTheme();
@@ -100,6 +122,7 @@ const CreateTaskModal = ({ isOpen, onClose }) => {
     setValue(newValue);
   };
   const [taskTitle, setTaskTitle] = useState("");
+  const [taskDesc, setTaskDesc] = useState("");
   const [selectedValue, setSelectedValue] = useState("");
   const [dueDate, setDueDate] = useState(null);
   const [assigneesId, setAssigneesIds] = useState([]);
@@ -108,6 +131,10 @@ const CreateTaskModal = ({ isOpen, onClose }) => {
   const handleActiveProjectChange = (value) => {
     setSelectedValue(value);
   };
+
+  const TabContent = tabOptions.find(
+    (option) => option.key === value
+  )?.component;
 
   const filteredMembers = projectMembersDetails.filter(
     (member) => member.id !== currentUser.uid
@@ -295,26 +322,27 @@ const CreateTaskModal = ({ isOpen, onClose }) => {
 
           {/* <Divider sx={{ backgroundColor: "red", width: "100%",alignSelf:"flex-end" }} /> */}
 
-          <Box width={"100%"}>
-            <Tabs
+          <Box sx={{ width: "100%", marginTop: "15px" }}>
+            <CustomTabs
               value={value}
               onChange={handleTabChange}
               aria-label="task tabs"
-              sx={{ borderBottom: 1, borderColor: "divider" }}
             >
-              <Tab
-                label="Description"
-                icon={<IoInformation />}
-                iconPosition="start"
-                value={0}
-              />
-              <Tab
-                label="Settings"
-                icon={<SettingsInputComponent />}
-                iconPosition="start"
-                value={1}
-              />
-            </Tabs>
+              {tabOptions.map((option) => (
+                <CustomTab
+                  key={option.key}
+                  label={option.label}
+                  icon={option.icon}
+                  iconPosition="start"
+                  value={option.key}
+                />
+              ))}
+            </CustomTabs>
+            <Box sx={{ py: 1 }}>
+              {TabContent && (
+                <TabContent setTaskDesc={setTaskDesc} taskDesc={taskDesc} />
+              )}
+            </Box>
           </Box>
         </ModalBox>
       </OverlayBox>
