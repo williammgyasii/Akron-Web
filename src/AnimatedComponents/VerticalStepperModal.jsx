@@ -115,7 +115,7 @@ export default function VerticalStepperModal({
   // };
 
   return (
-    <Stack direction="row" spacing={2} sx={{ width: "100%" }}>
+    <Stack direction="row" spacing={2} sx={{ width: "100%", height: "100%" }}>
       {/* Stepper Section */}
       <Box
         sx={{ width: "40%", borderRight: "1px solid", borderColor: "divider" }}
@@ -147,16 +147,14 @@ export default function VerticalStepperModal({
       <Box
         sx={{
           width: "60%",
-          display: "flex",
-          flexDirection: "column",
-
-          padding: 2,
+          padding: "10px 15px",
         }}
       >
         <motion.div
           key={activeStep}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
+          className="flex w-full h-full flex-col justify-between"
           transition={{ duration: 0.5, staggerChildren: 0.8 }}
         >
           <Box>
@@ -168,7 +166,7 @@ export default function VerticalStepperModal({
               );
             })}
           </Box>
-          <Box sx={{ marginTop: 2 }}>
+          <Box sx={{ marginTop: "auto" }}>
             {activeStep === 0 ? (
               <>
                 <Button onClick={handleCancel}>Cancel</Button>
