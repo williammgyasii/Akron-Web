@@ -14,11 +14,10 @@ export const TaskDescription = ({ taskDesc, setTaskDesc, description }) => {
       }}
     >
       <CustomBorderlessMultiInput
-        placeholder="Description"
+        placeholder="Task Description"
         value={taskDesc}
         onChange={(e) => setTaskDesc(e.target.value)}
       />
-      ACRIOACR
     </motion.div>
   );
 };

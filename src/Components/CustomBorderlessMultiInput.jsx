@@ -13,21 +13,24 @@ const BorderlessInput = styled(Input)(({ theme }) => ({
     opacity: 1, // Ensure the color is applied properly
     fontFamily: "Inter",
   },
+  "&:focus": {
+    border: "none", // Ensure no border on focus
+    outline: "none",
+  },
 }));
 
 // Usage of the BorderlessInput component
 const CustomBorderlessMultiInput = ({ placeholder, onChange, value }) => {
-  const theme = useTheme();
-  const ariaLabel = { "aria-label": "Borderless Input" };
 
   return (
     <BorderlessInput
       placeholder={placeholder}
-      inputProps={ariaLabel}
+    //   inputProps={ariaLabel}
       value={value}
+      multiline
       onChange={onChange}
-      minRows={3}
-      maxRows={5}
+      minRows={5}
+      maxRows={7}
     />
   );
 };

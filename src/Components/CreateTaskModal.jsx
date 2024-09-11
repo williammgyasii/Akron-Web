@@ -14,9 +14,10 @@ import {
   Tab,
   Tabs,
 } from "@mui/material";
-import { motion } from "framer-motion";
+import { color, motion } from "framer-motion";
 import { styled } from "@mui/material/styles";
 import {
+  IoAddCircle,
   IoClose,
   IoInformation,
   IoInformationCircleOutline,
@@ -37,6 +38,7 @@ import CustomDatePicker from "./CustomDatePicker";
 import TaskStatusDropdown from "./TaskStatusDropdown";
 import { SettingsInputComponent } from "@mui/icons-material";
 import { SettingsTab, TaskDescription } from "./StyledComponents";
+import CustomButton from "./CustomButton";
 
 // Define animation variants for Framer Motion
 const slideInFromRight = {
@@ -224,15 +226,6 @@ const CreateTaskModal = ({ isOpen, onClose }) => {
 
               //   placeholder="Select Options"
             />
-            {/* <Chip
-              sx={{
-                backgroundColor: theme.palette.primary.light400,
-                marginLeft: "5px",
-                color: "#fff",
-                borderRadius: "10px!important",
-              }}
-              label={ACTIVE_PROJECT?.projectName}
-            /> */}
             <Tooltip title="Task will be created in active group">
               <IconButton>
                 <IoInformationCircleOutline
@@ -343,6 +336,17 @@ const CreateTaskModal = ({ isOpen, onClose }) => {
                 <TabContent setTaskDesc={setTaskDesc} taskDesc={taskDesc} />
               )}
             </Box>
+          </Box>
+
+          <Box sx={{ width: "100%", marginLeft: "auto", marginTop: "20px" }}>
+            <CustomButton
+              leftIcon={IoAddCircle}
+              type="iconLeft"
+              variant="secondary"
+              sx={{ color: "#fff" }}
+            >
+              Create Task
+            </CustomButton>
           </Box>
         </ModalBox>
       </OverlayBox>

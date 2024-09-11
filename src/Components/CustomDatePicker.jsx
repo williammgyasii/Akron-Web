@@ -15,6 +15,9 @@ const StyledDatePicker = styled(DatePicker)(({ theme }) => ({
     padding: "4px 11px",
     transition: "border-color 0.3s, box-shadow 0.3s",
   },
+  "& .ant-picker-dropdown": {
+    zIndex: "1500", // Ensure dropdown appears above other elements
+  },
 }));
 
 const CustomDatePicker = ({ date, setDate }) => {
