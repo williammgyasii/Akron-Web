@@ -11,6 +11,8 @@ import {
   Divider,
   Chip,
   Tooltip,
+  Tab,
+  Tabs,
 } from "@mui/material";
 import { motion } from "framer-motion";
 import { styled } from "@mui/material/styles";
@@ -29,9 +31,10 @@ import { MdOutlineDelete } from "react-icons/md";
 import ProjectSelector from "./ProjectSelector";
 import MemberSelector from "./MemberSelector";
 import { selectCurrentUser } from "../Redux/Slices/Users/UsersSlice";
-import { DatePicker } from "antd";
+import { Avatar, DatePicker } from "antd";
 import CustomDatePicker from "./CustomDatePicker";
 import TaskStatusDropdown from "./TaskStatusDropdown";
+import { SettingsInputComponent } from "@mui/icons-material";
 
 // Define animation variants for Framer Motion
 const slideInFromRight = {
@@ -59,42 +62,27 @@ const slideInFromRight = {
   },
 };
 
-// Styled container for the modal content using MUI's styled API
-const ModalBox = styled(motion.div)(({ theme }) => ({
-  position: "absolute",
-  background: "linear-gradient(270deg, #ffffff, #fffff1)",
-  borderRadius: theme.shape.borderRadius,
-  maxWidth: "450px",
-  padding: "10px 15px",
-  //   margin: "auto",
-  height: "100%",
-  right: 10,
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "flex-start",
-  flexDirection: "column",
-  width: "100%",
-  boxShadow: theme.shadows[5],
-  outline: "none",
+// Define styled components
+const CustomTabs = styled(Tabs)(({ theme }) => ({
+  borderBottom: `1px solid ${theme.palette.divider}`,
+  "& .MuiTabs-indicator": {
+    backgroundColor: "black", // Set the indicator color to black
+  },
 }));
 
-const OverlayBox = styled(Box)(({ theme }) => ({
-  position: "absolute",
-  inset: 0,
-  // Dark background overlay
-  backgroundColor: "rgba(0, 0, 0, 0.55)",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  zIndex: theme.zIndex.modal,
+const CustomTab = styled(Tab)(({ theme }) => ({
+  fontSize: "0.875rem", // Smaller font size
+  minWidth: "120px", // Smaller width
+  padding: "6px 12px", // Smaller padding
+  "&.Mui-selected": {
+    color: theme.palette.primary.main,
+    fontWeight: theme.typography.fontWeightBold,
+    borderBottom: `2px solid ${theme.palette.primary.main}`,
+  },
+  "&:hover": {
+    color: theme.palette.primary.dark,
+  },
 }));
-
-const options = [
-  { value: "option1", label: "Option 1" },
-  { value: "option2", label: "Option 2" },
-  { value: "option3", label: "Option 3" },
-  { value: "option4", label: "Option 4" },
-];
 
 const CreateTaskModal = ({ isOpen, onClose }) => {
   const theme = useTheme();
@@ -107,6 +95,10 @@ const CreateTaskModal = ({ isOpen, onClose }) => {
     projectMembersDetails,
   } = useSelector((state) => state.projects);
   const currentUser = useSelector(selectCurrentUser);
+  const [value, setValue] = useState(0);
+  const handleTabChange = (event, newValue) => {
+    setValue(newValue);
+  };
   const [taskTitle, setTaskTitle] = useState("");
   const [selectedValue, setSelectedValue] = useState("");
   const [dueDate, setDueDate] = useState(null);
@@ -286,50 +278,44 @@ const CreateTaskModal = ({ isOpen, onClose }) => {
             >
               Created by:
             </span>
-            {/* //Only project adminds can assign task fix in future */}
-            <TaskStatusDropdown
-              status={status}
-              setStatus={setStatus}
-              mode={"create-task"}
+            <Chip
+              size="medium"
+              // sx={{ fontSize:"1rem" }}
+              label={currentUser.firstName + " " + currentUser.lastName}
+              avatar={
+                <Avatar
+                  src={
+                    `https://www.tapback.co/api/avatar.webp` ||
+                    currentUser.imageUrl
+                  }
+                />
+              }
             />
           </div>
 
-          {/* <form style={{ width: "100%" }}>
-            <Box mb={3}>
-              <TextField label="Task Name" variant="outlined" fullWidth />
-            </Box>
+          {/* <Divider sx={{ backgroundColor: "red", width: "100%",alignSelf:"flex-end" }} /> */}
 
-            <Box mb={3}>
-              <TextareaAutosize
-                minRows={4}
-                placeholder="Task Description"
-                style={{
-                  width: "100%",
-                  padding: "10px",
-                  borderRadius: "8px",
-                  borderColor: "#ccc",
-                }}
+          <Box width={"100%"}>
+            <Tabs
+              value={value}
+              onChange={handleTabChange}
+              aria-label="task tabs"
+              sx={{ borderBottom: 1, borderColor: "divider" }}
+            >
+              <Tab
+                label="Description"
+                icon={<IoInformation />}
+                iconPosition="start"
+                value={0}
               />
-            </Box>
-
-            <Box mb={3}>
-              <TextField
-                label="Due Date"
-                type="date"
-                InputLabelProps={{ shrink: true }}
-                fullWidth
+              <Tab
+                label="Settings"
+                icon={<SettingsInputComponent />}
+                iconPosition="start"
+                value={1}
               />
-            </Box>
-
-            <Box display="flex" justifyContent="flex-end" gap={2}>
-              <Button variant="contained" color="secondary" onClick={onClose}>
-                Cancel
-              </Button>
-              <Button variant="contained" color="primary">
-                Create Task
-              </Button>
-            </Box>
-          </form> */}
+            </Tabs>
+          </Box>
         </ModalBox>
       </OverlayBox>
     </Modal>
@@ -337,3 +323,40 @@ const CreateTaskModal = ({ isOpen, onClose }) => {
 };
 
 export default CreateTaskModal;
+
+// Styled container for the modal content using MUI's styled API
+const ModalBox = styled(motion.div)(({ theme }) => ({
+  position: "absolute",
+  background: "linear-gradient(270deg, #ffffff, #fffff1)",
+  borderRadius: theme.shape.borderRadius,
+  maxWidth: "450px",
+  padding: "10px 15px",
+  //   margin: "auto",
+  height: "100%",
+  right: 10,
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "flex-start",
+  flexDirection: "column",
+  width: "100%",
+  boxShadow: theme.shadows[5],
+  outline: "none",
+}));
+
+const OverlayBox = styled(Box)(({ theme }) => ({
+  position: "absolute",
+  inset: 0,
+  // Dark background overlay
+  backgroundColor: "rgba(0, 0, 0, 0.55)",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  zIndex: theme.zIndex.modal,
+}));
+
+const options = [
+  { value: "option1", label: "Option 1" },
+  { value: "option2", label: "Option 2" },
+  { value: "option3", label: "Option 3" },
+  { value: "option4", label: "Option 4" },
+];
