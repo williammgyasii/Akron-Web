@@ -129,6 +129,8 @@ function CreateProjectModal({ openModal, onCloseModal }) {
                 selectedMembers={selectedMemberIds} // Pass selected ids
                 handleChange={handleChange} // Pass external handleChange
                 handleDelete={handleDelete} // Pass external handleDelete
+                label={"Project Members"}
+                placeholder={"Search Members Via Email"}
               />
               <CustomFormInput
                 minRows={3} // Minimum number of rows (sets height)

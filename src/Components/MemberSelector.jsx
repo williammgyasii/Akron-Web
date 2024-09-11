@@ -22,15 +22,20 @@ const MemberSelector = ({
   selectedMembers,
   handleChange,
   handleDelete,
+  placeholder,
+  label,
+  width,
 }) => {
   const { GROUP_SLICE_ISLOADING } = useSelector((state) => state.groups);
   return (
     <Autocomplete
       multiple
+      sx={{
+        width: width || "100%",
+      }}
       options={members}
       getOptionLabel={(option) => option.email}
       value={selectedMembers}
-      
       limitTags={2}
       noOptionsText="No Members Available"
       onChange={handleChange}
@@ -59,8 +64,8 @@ const MemberSelector = ({
         <TextField
           {...params}
           variant="outlined"
-          label="Select Members"
-          placeholder="Search members"
+          label={label}
+          placeholder={placeholder}
           size="small"
         />
       )}

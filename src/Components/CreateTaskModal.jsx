@@ -28,6 +28,8 @@ import { useSelector } from "react-redux";
 import { MdOutlineDelete } from "react-icons/md";
 import ProjectSelector from "./ProjectSelector";
 import MemberSelector from "./MemberSelector";
+import { selectCurrentUser } from "../Redux/Slices/Users/UsersSlice";
+import { DatePicker } from "antd";
 
 // Define animation variants for Framer Motion
 const slideInFromRight = {
@@ -58,7 +60,7 @@ const slideInFromRight = {
 // Styled container for the modal content using MUI's styled API
 const ModalBox = styled(motion.div)(({ theme }) => ({
   position: "absolute",
-  backgroundColor: theme.palette.background.paper,
+  backgroundColor: `#ccc`,
   borderRadius: theme.shape.borderRadius,
   maxWidth: "450px",
   padding: "10px 12px",
@@ -101,12 +103,27 @@ const CreateTaskModal = ({ isOpen, onClose }) => {
     PROJECT_SLICE_ERROR,
     ACTIVE_PROJECT,
     PROJECTS,
+    projectMembersDetails,
   } = useSelector((state) => state.projects);
-
+  const currentUser = useSelector(selectCurrentUser);
   const [selectedValue, setSelectedValue] = useState("");
+
+  const [assigneesId, setAssigneesIds] = useState([]);
 
   const handleChange = (value) => {
     setSelectedValue(value);
+  };
+
+  const filteredMembers = projectMembersDetails.filter(
+    (member) => member.id !== currentUser.uid
+  );
+
+  const handleMemberChange = (event, newValue) => {
+    setAssigneesIds(newValue);
+  };
+
+  const handleDelete = (memberId) => {
+    setAssigneesIds((prev) => prev.filter((member) => member.id !== memberId));
   };
 
   return (
@@ -169,7 +186,11 @@ const CreateTaskModal = ({ isOpen, onClose }) => {
           {/* ACTIVE PROJECT BOX */}
           <div className="flex w-full text-sm mt-2 items-center">
             <span
-              style={{ color: theme.palette.zinc.dark, marginRight: "10px" }}
+              style={{
+                color: theme.palette.zinc.dark,
+                marginRight: "10px",
+                minWidth: "80px",
+              }}
             >
               Active Project:
             </span>
@@ -178,6 +199,7 @@ const CreateTaskModal = ({ isOpen, onClose }) => {
               options={options}
               value={selectedValue}
               onChange={handleChange}
+
               //   placeholder="Select Options"
             />
             {/* <Chip
@@ -199,8 +221,39 @@ const CreateTaskModal = ({ isOpen, onClose }) => {
             </Tooltip>
           </div>
 
-          {/* //Only project adminds can assign task fix in future */}
-          <MemberSelector />
+          <div className="flex w-full h-fit text-sm mt-2 items-center">
+            <span
+              style={{
+                color: theme.palette.zinc.dark,
+                marginRight: "10px",
+                minWidth: "90px",
+              }}
+            >
+              Assignees
+            </span>
+            {/* //Only project adminds can assign task fix in future */}
+            <MemberSelector
+              width
+              members={filteredMembers}
+              selectedMembers={assigneesId} // Pass selected ids
+              handleChange={handleMemberChange} // Pass external handleChange
+              handleDelete={handleDelete} // Pass external handleDelete
+            />
+          </div>
+
+          <div className="flex w-full h-fit text-sm mt-2 items-center">
+            <span
+              style={{
+                color: theme.palette.zinc.dark,
+                marginRight: "10px",
+                minWidth: "90px",
+              }}
+            >
+              Due Date
+            </span>
+            {/* //Only project adminds can assign task fix in future */}
+            <DatePicker />
+          </div>
 
           {/* <form style={{ width: "100%" }}>
             <Box mb={3}>
