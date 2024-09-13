@@ -37,16 +37,17 @@ function DashboardTaskView({ handleOpenTaskModal }) {
     <Box
       sx={{
         minHeight: "100vh",
-        backgroundColor: "red",
+        backgroundColor: theme.palette.background.paper,
+        borderRadius: "10px",
         width: "100%",
         display: "flex",
         flexDirection: "column",
+        padding: 1,
       }}
     >
       <Box
         sx={{
           display: "flex",
-          backgroundColor: "yellow",
           justifyContent: "space-between",
           alignItems: "center",
         }}
@@ -100,12 +101,24 @@ function DashboardTaskView({ handleOpenTaskModal }) {
 
 const TaskCheckboxView = ({ task, checkedTasks, onTaskCheck }) => {
   return (
-    <ListItem sx={{ display: "flex", flexDirection: "row",alignItems:"center" }} disableGutters>
+    <ListItem
+      sx={{
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+        borderRadius: "10px",
+        my: 1,
+        backgroundColor:"#fff",
+      }}
+      disableGutters
+    >
       <Checkbox
         checked={checkedTasks.includes(task.id)}
         onChange={() => onTaskCheck(task.id)}
       />
-      <ListItemText primary={task.id} />
+      <div className="flex flex-col items-start justify-center w-full">
+        <span style={{fontWeight:"bold"}}>{task.taskName}</span>
+      </div>
     </ListItem>
   );
 };
