@@ -27,7 +27,6 @@ const CustomDatePicker = ({ date, setDate }) => {
   };
 
   const handleDateChange = (date) => {
-    // console.log(date.toDate());
     setDate(date);
   };
 
@@ -40,7 +39,6 @@ const CustomDatePicker = ({ date, setDate }) => {
         onChange={handleDateChange}
         value={date}
         getPopupContainer={(trigger) => trigger.parentNode} // Ensures the calendar renders inside the modal
-        popupClassName="custom-date-picker-dropdown" // Add custom styles if needed
       />
     </>
   );

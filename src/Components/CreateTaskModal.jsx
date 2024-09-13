@@ -125,20 +125,21 @@ const CreateTaskModal = ({ isOpen, onClose }) => {
   };
   const [taskTitle, setTaskTitle] = useState("");
   const [taskDesc, setTaskDesc] = useState("");
-  const [activeProject, setActiveProject] = useState(PROJECTS[0]?.id);
+  const [activeProjectId, setActiveProjectId] = useState(PROJECTS[0]?.id);
   const [dueDate, setDueDate] = useState(null);
   const [assigneesId, setAssigneesIds] = useState([]);
   const [status, setStatus] = useState(null);
 
-  const handleActiveProjectChange = (event) => {
-    console.log("ActiveProject", event.target.value);
-    // setProjectName(event.target.value?.projectName);
-    setActiveProject(event.target.value);
-  };
+  //HELPER FUNCTION
 
   const TabContent = tabOptions.find(
     (option) => option.key === value
   )?.component;
+
+  //FUNCTIONS
+  const handleActiveProjectChange = (event) => {
+    setActiveProjectId(event.target.value);
+  };
 
   const filteredMembers = projectMembersDetails.filter(
     (member) => member.id !== currentUser.uid
@@ -150,6 +151,11 @@ const CreateTaskModal = ({ isOpen, onClose }) => {
 
   const handleDelete = (memberId) => {
     setAssigneesIds((prev) => prev.filter((member) => member.id !== memberId));
+  };
+
+  const handleTaskSubmit = () => {
+    console.log(activeProjectId)
+    console.log(status);
   };
 
   return (
@@ -167,188 +173,191 @@ const CreateTaskModal = ({ isOpen, onClose }) => {
           animate="visible"
           exit="exit"
         >
-          {/* Toolbar */}
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              width: "100%",
-              marginBottom: "10px",
-            }}
-          >
-            <IconButton
+          <Box sx={{ width: "100%", position: "relative" }}>
+            {/* Toolbar */}
+            <Box
               sx={{
-                "&:hover": {
-                  backgroundColor: theme.palette.secondary.main, // No background change on hover
-                },
-              }}
-              onClick={onClose}
-            >
-              <IoClose color="rgb(113 113 122 )" size={12} />
-            </IconButton>
-
-            <span className="text-zinc-500 text-sm">Add a new task</span>
-
-            <IconButton
-              sx={{
-                // borderRadius: "20px",
-                "&:hover": {
-                  backgroundColor: theme.palette.secondary.main, // No background change on hover
-                },
-              }}
-              onClick={onClose}
-            >
-              <IoStar color="rgb(113 113 122 )" size={12} />
-            </IconButton>
-          </Box>
-
-          <CustomBorderlessInput
-            placeholder="Task Title"
-            value={taskTitle}
-            onChange={(e) => setTaskTitle(e.target.value)}
-          />
-
-          {/* ACTIVE PROJECT BOX */}
-          <div className="flex w-full text-sm mt-2 items-center">
-            <span
-              style={{
-                color: theme.palette.zinc.dark,
-                marginRight: "10px",
-                minWidth: "80px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                width: "100%",
+                marginBottom: "10px",
               }}
             >
-              Active Project:
-            </span>
-            <ProjectSelector
-              width={"170px"}
-              options={PROJECTS}
-              value={activeProject}
-              onChange={handleActiveProjectChange}
-
-              //   placeholder="Select Options"
-            />
-            <Tooltip title="Task will be created in active group">
-              <IconButton>
-                <IoInformationCircleOutline
-                  style={{ color: theme.palette.primary.main }}
-                  size={20}
-                />
+              <IconButton
+                sx={{
+                  "&:hover": {
+                    backgroundColor: theme.palette.secondary.main, // No background change on hover
+                  },
+                }}
+                onClick={onClose}
+              >
+                <IoClose color="rgb(113 113 122 )" size={12} />
               </IconButton>
-            </Tooltip>
-          </div>
 
-          <div className="flex w-full h-fit text-sm mt-2 items-center">
-            <span
-              style={{
-                color: theme.palette.zinc.dark,
-                marginRight: "10px",
-                minWidth: "90px",
-              }}
-            >
-              Assignees
-            </span>
-            {/* //Only project adminds can assign task fix in future */}
-            <MemberSelector
-              width
-              members={filteredMembers}
-              selectedMembers={assigneesId} // Pass selected ids
-              handleChange={handleMemberChange} // Pass external handleChange
-              handleDelete={handleDelete} // Pass external handleDelete
-            />
-          </div>
+              <span className="text-zinc-500 text-sm">Add a new task</span>
 
-          <div className="flex w-full h-fit text-sm mt-2 items-center z-50">
-            <span
-              style={{
-                color: theme.palette.zinc.dark,
-                marginRight: "10px",
-                minWidth: "90px",
-              }}
-            >
-              Due Date
-            </span>
-            {/* //Only project adminds can assign task fix in future */}
-            <CustomDatePicker date={dueDate} setDate={setDueDate} />
-          </div>
-
-          <div className="flex w-full h-fit text-sm mt-2 items-center z-50">
-            <span
-              style={{
-                color: theme.palette.zinc.dark,
-                marginRight: "10px",
-                minWidth: "90px",
-              }}
-            >
-              Status
-            </span>
-            {/* //Only project adminds can assign task fix in future */}
-            <TaskStatusDropdown
-              status={status}
-              setStatus={setStatus}
-              mode={"create-task"}
-            />
-          </div>
-
-          <div className="flex w-full h-fit text-sm mt-2 items-center z-50">
-            <span
-              style={{
-                color: theme.palette.zinc.dark,
-                marginRight: "10px",
-                minWidth: "90px",
-              }}
-            >
-              Created by:
-            </span>
-            <Chip
-              size="medium"
-              // sx={{ fontSize:"1rem" }}
-              label={currentUser.firstName + " " + currentUser.lastName}
-              avatar={
-                <Avatar
-                  src={
-                    `https://www.tapback.co/api/avatar.webp` ||
-                    currentUser.imageUrl
-                  }
-                />
-              }
-            />
-          </div>
-
-          {/* <Divider sx={{ backgroundColor: "red", width: "100%",alignSelf:"flex-end" }} /> */}
-
-          <Box sx={{ width: "100%", marginTop: "15px" }}>
-            <CustomTabs
-              value={value}
-              onChange={handleTabChange}
-              aria-label="task tabs"
-            >
-              {tabOptions.map((option) => (
-                <CustomTab
-                  key={option.key}
-                  label={option.label}
-                  icon={option.icon}
-                  iconPosition="start"
-                  value={option.key}
-                />
-              ))}
-            </CustomTabs>
-            <Box sx={{ py: 1 }}>
-              {TabContent && (
-                <TabContent setTaskDesc={setTaskDesc} taskDesc={taskDesc} />
-              )}
+              <IconButton
+                sx={{
+                  // borderRadius: "20px",
+                  "&:hover": {
+                    backgroundColor: theme.palette.secondary.main, // No background change on hover
+                  },
+                }}
+                onClick={onClose}
+              >
+                <IoStar color="rgb(113 113 122 )" size={12} />
+              </IconButton>
             </Box>
-          </Box>
 
-          <Box sx={{ width: "100%", marginLeft: "auto", marginTop: "20px" }}>
-            <CustomButton
-              leftIcon={IoAddCircle}
-              type="iconLeft"
-              variant="secondary"
-              sx={{ color: "#fff" }}
-            >
-              Create Task
-            </CustomButton>
+            <CustomBorderlessInput
+              placeholder="Task Title"
+              value={taskTitle}
+              onChange={(e) => setTaskTitle(e.target.value)}
+            />
+
+            {/* ACTIVE PROJECT BOX */}
+            <div className="flex w-full text-sm mt-2 items-center">
+              <span
+                style={{
+                  color: theme.palette.zinc.dark,
+                  marginRight: "10px",
+                  minWidth: "80px",
+                }}
+              >
+                Active Project:
+              </span>
+              <ProjectSelector
+                width={"170px"}
+                options={PROJECTS}
+                value={activeProjectId}
+                onChange={handleActiveProjectChange}
+
+                //   placeholder="Select Options"
+              />
+              <Tooltip title="Task will be created in active group">
+                <IconButton>
+                  <IoInformationCircleOutline
+                    style={{ color: theme.palette.primary.main }}
+                    size={20}
+                  />
+                </IconButton>
+              </Tooltip>
+            </div>
+
+            <div className="flex w-full h-fit text-sm mt-2 items-center">
+              <span
+                style={{
+                  color: theme.palette.zinc.dark,
+                  marginRight: "10px",
+                  minWidth: "90px",
+                }}
+              >
+                Assignees
+              </span>
+              {/* //Only project adminds can assign task fix in future */}
+              <MemberSelector
+                width
+                members={filteredMembers}
+                selectedMembers={assigneesId} // Pass selected ids
+                handleChange={handleMemberChange} // Pass external handleChange
+                handleDelete={handleDelete} // Pass external handleDelete
+              />
+            </div>
+
+            <div className="flex w-full h-fit text-sm mt-2 items-center z-50">
+              <span
+                style={{
+                  color: theme.palette.zinc.dark,
+                  marginRight: "10px",
+                  minWidth: "90px",
+                }}
+              >
+                Due Date
+              </span>
+              {/* //Only project adminds can assign task fix in future */}
+              <CustomDatePicker date={dueDate} setDate={setDueDate} />
+            </div>
+
+            <div className="flex w-full h-fit text-sm mt-2 items-center z-50">
+              <span
+                style={{
+                  color: theme.palette.zinc.dark,
+                  marginRight: "10px",
+                  minWidth: "90px",
+                }}
+              >
+                Status
+              </span>
+              {/* //Only project adminds can assign task fix in future */}
+              <TaskStatusDropdown
+                status={status}
+                setStatus={setStatus}
+                mode={"create-task"}
+              />
+            </div>
+
+            <div className="flex w-full h-fit text-sm mt-2 items-center z-50">
+              <span
+                style={{
+                  color: theme.palette.zinc.dark,
+                  marginRight: "10px",
+                  minWidth: "90px",
+                }}
+              >
+                Created by:
+              </span>
+              <Chip
+                size="medium"
+                // sx={{ fontSize:"1rem" }}
+                label={currentUser.firstName + " " + currentUser.lastName}
+                avatar={
+                  <Avatar
+                    src={
+                      `https://www.tapback.co/api/avatar.webp` ||
+                      currentUser.imageUrl
+                    }
+                  />
+                }
+              />
+            </div>
+
+            {/* <Divider sx={{ backgroundColor: "red", width: "100%",alignSelf:"flex-end" }} /> */}
+
+            <Box sx={{ width: "100%", marginTop: "15px" }}>
+              <CustomTabs
+                value={value}
+                onChange={handleTabChange}
+                aria-label="task tabs"
+              >
+                {tabOptions.map((option) => (
+                  <CustomTab
+                    key={option.key}
+                    label={option.label}
+                    icon={option.icon}
+                    iconPosition="start"
+                    value={option.key}
+                  />
+                ))}
+              </CustomTabs>
+              <Box sx={{ py: 1 }}>
+                {TabContent && (
+                  <TabContent setTaskDesc={setTaskDesc} taskDesc={taskDesc} />
+                )}
+              </Box>
+            </Box>
+
+            <Box sx={{ width: "100%", marginLeft: "auto", marginTop: "20px" }}>
+              <CustomButton
+                onClick={handleTaskSubmit}
+                leftIcon={IoAddCircle}
+                type="iconLeft"
+                variant="secondary"
+                sx={{ color: "#fff" }}
+              >
+                Create Task
+              </CustomButton>
+            </Box>
           </Box>
         </ModalBox>
       </OverlayBox>

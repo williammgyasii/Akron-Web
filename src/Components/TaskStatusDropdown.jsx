@@ -121,6 +121,33 @@ const TaskStatusDropdown = ({ mode, status, setStatus }) => {
               </MenuItem>
             </motion.div>
           ))}
+        {mode === "edit-task" &&
+          createStatusOptions.map((status, index) => (
+            <motion.div
+              key={status.key}
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.1, duration: 0.3 }}
+            >
+              <MenuItem
+                sx={{ fontSize: "14px" }}
+                onClick={() => handleMenuItemClick(status.key)}
+              >
+                <span
+                  style={{
+                    backgroundColor: "red",
+                    width: "8px",
+                    height: "8px",
+                    borderRadius: "50%",
+                    display: "inline-block",
+                    backgroundColor: status.color,
+                    marginRight: "8px",
+                  }}
+                />
+                {status.label}
+              </MenuItem>
+            </motion.div>
+          ))}
       </Menu>
     </>
   );
