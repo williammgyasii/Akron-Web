@@ -27,13 +27,16 @@ export const FETCH_PROJECTS_PER_GROUP = createAsyncThunk(
         collection(firebaseFirestore, "projects"),
         where("groupId", "==", groupId)
       );
+      
 
       // Fetch the projects
       const querySnapshot = await getDocs(q);
-      const projects = querySnapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
+      const projects = querySnapshot.docs.map((doc) => {
+        return {
+          id: doc.id,
+          ...doc.data(),
+        };
+      });
 
       return projects; // Return the fetched projects
     } catch (error) {

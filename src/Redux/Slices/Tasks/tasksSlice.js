@@ -2,6 +2,12 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { firebaseFirestore } from "../../../Firebase/getFirebase";
+import debounce from lod
+
+// Debounce updates to limit how often the state is updated
+const debouncedSetTasks = debounce((dispatch, tasks) => {
+  dispatch(setTasks(tasks));
+}, 300); // Adjust debounce time as needed
 
 // Async thunk to add a new task
 export const createTask = createAsyncThunk(

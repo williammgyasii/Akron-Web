@@ -39,15 +39,13 @@ const ProjectNavList = ({}) => {
   } = useSelector((state) => state.projects);
   const isDrawerOpen = useSelector(selectIsDrawerOpened);
   const displayProjects = PROJECTS.slice(0, 5); // Limit to first 3 projects
-  // console.log(displayProjects);
-
   const currentUser = useSelector(selectCurrentUser);
   const currentGroup = useSelector(
     (state) => state.groups.CURRENT_GROUP_DETAILS
   );
-
   const theme = useTheme();
   const dispatch = useDispatch();
+  console.log(PROJECTS);
 
   useEffect(() => {
     if (currentGroup) {
@@ -62,6 +60,7 @@ const ProjectNavList = ({}) => {
   const handleProjectClick = (projectId, project) => {
     dispatch(setActiveProject(project));
     dispatch(fetchProjectMembersbyDetails(project.members));
+    dispatch(fetchTasksInProject({ projectId }));
     navigate(`projects/${projectId}`); // Adjust the path to your project details page
   };
 

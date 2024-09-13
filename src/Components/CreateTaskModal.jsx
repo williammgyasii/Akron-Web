@@ -120,8 +120,6 @@ const CreateTaskModal = ({ isOpen, onClose }) => {
   const [assigneesId, setAssigneesIds] = useState([]);
   const [status, setStatus] = useState(null);
 
-  console.log(projectMembersDetails);
-
   //HELPER FUNCTION
 
   const TabContent = tabOptions.find(
@@ -146,9 +144,6 @@ const CreateTaskModal = ({ isOpen, onClose }) => {
   };
 
   const handleTaskSubmit = (event) => {
-    console.log(activeProjectId);
-    console.log(assigneesId);
-
     event.preventDefault();
 
     const taskData = {
@@ -158,14 +153,16 @@ const CreateTaskModal = ({ isOpen, onClose }) => {
       status: status,
       assignees: assigneesId.map((member) => member.id),
       createdby: currentUser?.uid,
+      projectId: activeProjectId,
     };
 
     dispatch(createTask({ projectId: activeProjectId, taskData }))
       .unwrap()
       .then((result) => {
         dispatch(
-          openSnackbar({ message: "Group Created", snackbarState: "info" })
+          openSnackbar({ message: "Task Created", snackbarState: "info" })
         );
+        onClose();
       });
   };
 
