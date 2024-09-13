@@ -1,22 +1,16 @@
 import React, { useState } from "react";
 import {
   Fab,
-  Modal,
-  Box,
-  Button,
   Tooltip,
   useTheme,
   useMediaQuery,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import { useDispatch, useSelector } from "react-redux";
-import AddTaskForm from "./AddTaskForm";
 import {
-  hideModal,
   selectIsModalOpened,
-  showModal,
 } from "../Redux/Slices/System/systemSlice";
-import ModalComponent from "./ModalComponent";
+import CreateTaskModal from "./CreateTaskModal";
 
 const CreateTaskFAB = () => {
   const [open, setOpen] = useState(false);
@@ -24,9 +18,14 @@ const CreateTaskFAB = () => {
   const dispatch = useDispatch();
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("tablets_port"));
+  const [openTaskModal, setOpenTaskModal] = useState(false);
 
-  const handleOpen = () => dispatch(showModal("createTask"));
-  const handleClose = () => dispatch(hideModal());
+  const handleCloseTaskModal = () => {
+    setOpenTaskModal(false);
+  };
+  const handleOpenTaskModal = () => {
+    setOpenTaskModal(true);
+  };
 
   return (
     <>
@@ -35,7 +34,7 @@ const CreateTaskFAB = () => {
           <Fab
             color="primary"
             aria-label="add"
-            onClick={handleOpen}
+            onClick={handleOpenTaskModal}
             size="medium"
             style={{
               position: "absolute",
@@ -47,7 +46,8 @@ const CreateTaskFAB = () => {
           </Fab>
         </Tooltip>
       )}
-      <ModalComponent view={"createTask"} />
+      {/* CREATE TASK MODAL IN DASHBOARD */}
+      <CreateTaskModal isOpen={openTaskModal} onClose={handleCloseTaskModal} />
     </>
   );
 };
