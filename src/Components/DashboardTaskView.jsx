@@ -1,10 +1,38 @@
-import { Box, IconButton, useTheme } from "@mui/material";
-import React from "react";
+import {
+  Box,
+  Checkbox,
+  CircularProgress,
+  IconButton,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemText,
+  Typography,
+  useTheme,
+} from "@mui/material";
+import React, { useState } from "react";
 import { IoAddSharp } from "react-icons/io5";
 import CustomTitles from "./CustomTitles";
+import { useSelector } from "react-redux";
+import styled from "styled-components";
 
 function DashboardTaskView({ handleOpenTaskModal }) {
   const theme = useTheme();
+  const { PROJECT_TASKS, TASK_SLICE_STATUS } = useSelector(
+    (state) => state.tasks
+  );
+  console.log(TASK_SLICE_STATUS);
+  const [checkedTasks, setCheckedTasks] = useState([]);
+
+  const handleTaskCheck = (taskId) => {
+    // Toggle checked state of the task
+    setCheckedTasks((prevCheckedTasks) =>
+      prevCheckedTasks.includes(taskId)
+        ? prevCheckedTasks.filter((id) => id !== taskId)
+        : [...prevCheckedTasks, taskId]
+    );
+  };
+
   return (
     <Box
       sx={{
@@ -51,12 +79,35 @@ function DashboardTaskView({ handleOpenTaskModal }) {
           <IoAddSharp size={10} />
         </IconButton>
       </Box>
-      <Box sx={{ backgroundColor: "blue" }}>
-        ac
-        {/* <GroupTaskList groupId={selectedGroupid} /> */}
+      <Box sx={{}}>
+        {/* {TASK_SLICE_STATUS === "loading" && <CircularProgress />} */}
+        <List>
+          {PROJECT_TASKS.map((task) => {
+            return (
+              <TaskCheckboxView
+                key={task.id}
+                task={task}
+                checkedTasks={checkedTasks}
+                onTaskCheck={handleTaskCheck}
+              />
+            );
+          })}
+        </List>
       </Box>
     </Box>
   );
 }
+
+const TaskCheckboxView = ({ task, checkedTasks, onTaskCheck }) => {
+  return (
+    <ListItem sx={{ display: "flex", flexDirection: "row",alignItems:"center" }} disableGutters>
+      <Checkbox
+        checked={checkedTasks.includes(task.id)}
+        onChange={() => onTaskCheck(task.id)}
+      />
+      <ListItemText primary={task.id} />
+    </ListItem>
+  );
+};
 
 export default DashboardTaskView;

@@ -28,7 +28,7 @@ function DashboardPage() {
     <Container disableGutters maxWidth={false} sx={{ position: "relative" }}>
       {/* <VerticalStepper /> */}
       <Grid p={1} className="min-h-screens" container columnSpacing={2}>
-        <Grid item sx={{ height: "100%" }} desktop={9} tablets_port={10}>
+        <Grid item sx={{ height: "100%" }} desktop={8} tablets_port={10}>
           <Box
             sx={{
               backgroundColor: "red",
@@ -61,7 +61,7 @@ function DashboardPage() {
             position: "relative",
           }}
           item
-          desktop={3}
+          desktop={4}
         >
           <DashboardTaskView handleOpenTaskModal={handleOpenTaskModal} />
         </Grid>
