@@ -51,16 +51,13 @@ const StyledChip = styled(Chip)(({ theme }) => ({
 const MenuItemChip = styled(MenuItem)(({ theme }) => ({}));
 
 const ProjectSelector = ({ options, value, onChange, placeholder, width }) => {
-  const handleSelectChange = (event) => {
-    onChange(event.target.value);
-  };
-
   return (
     <FormControl>
       <InputLabel>{placeholder}</InputLabel>
       <StyledSelect
         value={value}
-        onChange={handleSelectChange}
+        defaultValue={options[0]?.projectName.toString()}
+        onChange={onChange}
         renderValue={(selected) => (
           <StyledChip label={selected || placeholder} />
         )}
@@ -77,8 +74,8 @@ const ProjectSelector = ({ options, value, onChange, placeholder, width }) => {
         width={width}
       >
         {options.map((option) => (
-          <MenuItemChip key={option.value} value={option.value}>
-            <ListItemText primary={option.label} />
+          <MenuItemChip key={option.id} value={option}>
+            <ListItemText primary={option.projectName} />
           </MenuItemChip>
         ))}
       </StyledSelect>

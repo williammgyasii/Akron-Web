@@ -27,7 +27,7 @@ import {
 } from "../Redux/Slices/Projects/projectsSlice";
 import { selectCurrentUser } from "../Redux/Slices/Users/UsersSlice";
 
-const ProjectNavList = ({ selectedProject, onSelectProject }) => {
+const ProjectNavList = ({}) => {
   const navigate = useNavigate();
   const [selected, setSelected] = useState(null);
   const {
@@ -61,11 +61,10 @@ const ProjectNavList = ({ selectedProject, onSelectProject }) => {
 
   const handleProjectClick = (projectId, project) => {
     dispatch(setActiveProject(project));
-    dispatch(fetchProjectMembersbyDetails(project.members))
+    dispatch(fetchProjectMembersbyDetails(project.members));
     navigate(`projects/${projectId}`); // Adjust the path to your project details page
   };
 
-  
   if (PROJECTS.length === 0) {
     return (
       <Box p={2} textAlign="center">

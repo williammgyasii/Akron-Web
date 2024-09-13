@@ -236,32 +236,6 @@ export const fetchGroupMembers = createAsyncThunk(
   }
 );
 
-// Async thunk to fetch projects by groupId
-export const fetchProjectsByGroupId = createAsyncThunk(
-  "projects/fetchProjectsByGroupId",
-  async ({ groupId, userId }, { rejectWithValue }) => {
-    // console.log("projects/fetchProjectsByGroupId", groupId, userId);
-    try {
-      const q = query(
-        collection(firebaseFirestore, "projects"),
-        where("groupId", "==", groupId),
-        where("members", "array-contains", userId)
-      );
-
-      const querySnapshot = await getDocs(q);
-      // console.log(querySnapshot);
-      const projects = querySnapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-      return projects;
-    } catch (error) {
-      console.log(error);
-      return rejectWithValue(error.message);
-    }
-  }
-);
-
 const groupsSlice = createSlice({
   name: "groups",
   initialState: {
@@ -307,18 +281,6 @@ const groupsSlice = createSlice({
         state.GROUP_SLICE_STATUS = "failed";
         state.error = action.payload;
         state.GROUP_SLICE_ISLOADING = false;
-      })
-
-      .addCase(fetchProjectsByGroupId.pending, (state) => {
-        state.status = "loading";
-      })
-      .addCase(fetchProjectsByGroupId.fulfilled, (state, action) => {
-        state.status = "succeeded";
-        state.groupProjects = action.payload;
-      })
-      .addCase(fetchProjectsByGroupId.rejected, (state, action) => {
-        state.status = "failed";
-        state.error = action.payload;
       })
 
       // Fetch members of group actual details
