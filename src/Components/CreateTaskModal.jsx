@@ -21,13 +21,15 @@ import {
   IoStar,
 } from "react-icons/io5";
 import CustomBorderlessInput from "./CustomBorderlessInput";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import ProjectSelector from "./ProjectSelector";
 import MemberSelector from "./MemberSelector";
 import { selectCurrentUser } from "../Redux/Slices/Users/UsersSlice";
 import CustomDatePicker from "./CustomDatePicker";
 import TaskStatusDropdown from "./TaskStatusDropdown";
 import { SettingsTab, TaskDescription } from "./StyledComponents";
+import { openSnackbar } from "../Redux/Slices/System/systemSlice";
+import { createTask } from "../Redux/Slices/Tasks/tasksSlice";
 import CustomButton from "./CustomButton";
 
 // Define animation variants for Framer Motion
@@ -100,10 +102,12 @@ const tabOptions = [
 
 const CreateTaskModal = ({ isOpen, onClose }) => {
   const theme = useTheme();
-  const {
-    PROJECTS,
-    projectMembersDetails,
-  } = useSelector((state) => state.projects);
+  const dispatch = useDispatch();
+  const { PROJECTS, projectMembersDetails } = useSelector(
+    (state) => state.projects
+  );
+  const { TASK_SLICE_ISLOADING } = useSelector((state) => state.tasks);
+  // console.log(TASK_SLICE_ISLOADING)
   const currentUser = useSelector(selectCurrentUser);
   const [value, setValue] = useState(0);
   const handleTabChange = (event, newValue) => {
@@ -139,9 +143,28 @@ const CreateTaskModal = ({ isOpen, onClose }) => {
     setAssigneesIds((prev) => prev.filter((member) => member.id !== memberId));
   };
 
-  const handleTaskSubmit = () => {
+  const handleTaskSubmit = (event) => {
     console.log(activeProjectId);
-    console.log(status);
+    console.log(assigneesId);
+
+    event.preventDefault();
+
+    const taskData = {
+      taskName: taskTitle,
+      taskDescription: taskDesc,
+      dueDate: new Date(dueDate), // Format the dueDate before sending
+      status: status,
+      assignees: assigneesId,
+      createdby: currentUser?.uid,
+    };
+
+    dispatch(createTask({ projectId: activeProjectId, taskData }))
+      .unwrap()
+      .then((result) => {
+        dispatch(
+          openSnackbar({ message: "Group Created", snackbarState: "info" })
+        );
+      });
   };
 
   return (
@@ -332,6 +355,8 @@ const CreateTaskModal = ({ isOpen, onClose }) => {
 
             <Box sx={{ width: "100%", marginLeft: "auto", marginTop: "20px" }}>
               <CustomButton
+                isLoading={TASK_SLICE_ISLOADING}
+                disabled={TASK_SLICE_ISLOADING}
                 onClick={handleTaskSubmit}
                 leftIcon={IoAddCircle}
                 type="iconLeft"
