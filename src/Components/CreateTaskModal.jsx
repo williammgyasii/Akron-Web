@@ -125,18 +125,15 @@ const CreateTaskModal = ({ isOpen, onClose }) => {
   };
   const [taskTitle, setTaskTitle] = useState("");
   const [taskDesc, setTaskDesc] = useState("");
-  const [activeProjectId, setActiveProjectId] = useState("");
-  const [projectName, setProjectName] = useState(
-    ACTIVE_PROJECT[0]?.projectName
-  );
+  const [activeProject, setActiveProject] = useState(" ");
   const [dueDate, setDueDate] = useState(null);
   const [assigneesId, setAssigneesIds] = useState([]);
   const [status, setStatus] = useState(null);
 
   const handleActiveProjectChange = (event) => {
     console.log("ActiveProject", event.target.value?.id);
-    setProjectName(event.target.value?.projectName);
-    setActiveProjectId(event.target.value?.id);
+    // setProjectName(event.target.value?.projectName);
+    setActiveProject(event.target.value);
   };
 
   const TabContent = tabOptions.find(
@@ -226,7 +223,7 @@ const CreateTaskModal = ({ isOpen, onClose }) => {
             <ProjectSelector
               width={"170px"}
               options={PROJECTS}
-              value={projectName}
+              value={activeProject?.id}
               onChange={handleActiveProjectChange}
 
               //   placeholder="Select Options"

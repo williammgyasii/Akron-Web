@@ -56,7 +56,6 @@ const ProjectSelector = ({ options, value, onChange, placeholder, width }) => {
       <InputLabel>{placeholder}</InputLabel>
       <StyledSelect
         value={value}
-        defaultValue={options[0]?.projectName.toString()}
         onChange={onChange}
         renderValue={(selected) => (
           <StyledChip label={selected || placeholder} />
@@ -74,7 +73,7 @@ const ProjectSelector = ({ options, value, onChange, placeholder, width }) => {
         width={width}
       >
         {options.map((option) => (
-          <MenuItemChip key={option.id} value={option}>
+          <MenuItemChip key={option.id} value={option.id}>
             <ListItemText primary={option.projectName} />
           </MenuItemChip>
         ))}

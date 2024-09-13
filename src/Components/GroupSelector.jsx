@@ -88,7 +88,7 @@ const GroupSelector = ({ onSelectGroup, customStyles, ...props }) => {
           value={currentGroup?.id}
           onChange={handleGroupChange}
           error={groupError}
-          helperText={groupError ? "Please select a category" : ""}
+          helperText={groupError ? "Please select a group" : ""}
         />
       )}
     </Box>
