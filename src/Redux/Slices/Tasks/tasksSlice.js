@@ -9,20 +9,20 @@ export const createTask = createAsyncThunk(
   async ({ projectId, taskData }, { rejectWithValue }) => {
     try {
       console.log(projectId, taskData);
-      // const taskRef = collection(
-      //   firebaseFirestore,
-      //   "projects",
-      //   projectId,
-      //   "tasks"
-      // );
-      // const newTask = {
-      //   ...taskData,
-      //   dueDate: taskData.dueDate, // Pass the due date from the taskData
-      //   timestamp: serverTimestamp(), // Add server timestamp for task creation
-      // };
-      // const docRef = await addDoc(taskRef, newTask);
-      // return { ...newTask, id: docRef.id }; // Return task data along with the generated document ID
-      
+
+      const taskRef = collection(
+        firebaseFirestore,
+        "projects",
+        projectId,
+        "tasks"
+      );
+      const newTask = {
+        ...taskData,
+        dueDate: taskData.dueDate, // Pass the due date from the taskData
+        timestamp: serverTimestamp(), // Add server timestamp for task creation
+      };
+      const docRef = await addDoc(taskRef, newTask);
+      return { ...newTask, id: docRef.id }; // Return task data along with the generated document ID
     } catch (error) {
       console.log("error/createTask", error);
       return rejectWithValue(error.message);

@@ -120,6 +120,8 @@ const CreateTaskModal = ({ isOpen, onClose }) => {
   const [assigneesId, setAssigneesIds] = useState([]);
   const [status, setStatus] = useState(null);
 
+  console.log(projectMembersDetails);
+
   //HELPER FUNCTION
 
   const TabContent = tabOptions.find(
@@ -131,7 +133,7 @@ const CreateTaskModal = ({ isOpen, onClose }) => {
     setActiveProjectId(event.target.value);
   };
 
-  const filteredMembers = projectMembersDetails.filter(
+  const filteredMembers = projectMembersDetails?.filter(
     (member) => member.id !== currentUser.uid
   );
 
@@ -154,7 +156,7 @@ const CreateTaskModal = ({ isOpen, onClose }) => {
       taskDescription: taskDesc,
       dueDate: new Date(dueDate), // Format the dueDate before sending
       status: status,
-      assignees: assigneesId,
+      assignees: assigneesId.map((member) => member.id),
       createdby: currentUser?.uid,
     };
 
