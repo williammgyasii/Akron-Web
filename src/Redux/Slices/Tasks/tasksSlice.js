@@ -1,14 +1,42 @@
 // src/features/tasks/tasksSlice.js
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  getDocs,
+  query,
+  serverTimestamp,
+} from "firebase/firestore";
 import { firebaseFirestore } from "../../../Firebase/getFirebase";
-import debounce from lod
 
-// Debounce updates to limit how often the state is updated
-const debouncedSetTasks = debounce((dispatch, tasks) => {
-  dispatch(setTasks(tasks));
-}, 300); // Adjust debounce time as needed
+export const fetchTasksInProject = createAsyncThunk(
+  "tasks/fetchTasks",
+  async ({ projectId }, { rejectWithValue }) => {
+    try {
+      // Create a reference to the tasks subcollection under the specific project
+      const taskRef = collection(
+        firebaseFirestore,
+        "projects",
+        projectId,
+        "tasks"
+      );
 
+      // Create a Firestore query
+      const q = query(taskRef);
+
+      // Fetch the tasks
+      const snapshot = await getDocs(q);
+      const tasks = [];
+      snapshot.forEach((doc) => {
+        tasks.push({ ...doc.data(), id: doc.id });
+      });
+
+      return tasks; // Return the fetched tasks
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
 // Async thunk to add a new task
 export const createTask = createAsyncThunk(
   "tasks/createTask",
@@ -45,9 +73,25 @@ const tasksSlice = createSlice({
     TASK_SLICE_ISLOADING: false,
     TASK_UNSUBSCRIBE: null,
   },
-  reducers: {},
+  reducers: {
+    clearTasks: (state) => {
+      state.PROJECT_TASKS = [];
+    },
+  },
   extraReducers: (builder) => {
     builder
+      //Fetch Task in Group
+      .addCase(fetchTasksInProject.pending, (state) => {
+        state.TASK_SLICE_ISLOADING = true;
+      })
+      .addCase(fetchTasksInProject.fulfilled, (state, action) => {
+        state.TASK_SLICE_ISLOADING = false;
+        state.PROJECT_TASKS = action.payload;
+      })
+      .addCase(fetchTasksInProject.rejected, (state, action) => {
+        state.TASK_SLICE_ISLOADING = false;
+        state.TASK_SLICE_ERROR = action.payload;
+      })
       .addCase(createTask.pending, (state) => {
         state.TASK_SLICE_ISLOADING = true;
       })

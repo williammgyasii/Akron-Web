@@ -26,6 +26,7 @@ import {
   setActiveProject,
 } from "../Redux/Slices/Projects/projectsSlice";
 import { selectCurrentUser } from "../Redux/Slices/Users/UsersSlice";
+import { fetchTasksInProject } from "../Redux/Slices/Tasks/tasksSlice";
 
 const ProjectNavList = ({}) => {
   const navigate = useNavigate();
@@ -45,8 +46,6 @@ const ProjectNavList = ({}) => {
   );
   const theme = useTheme();
   const dispatch = useDispatch();
-  console.log(PROJECTS);
-
   useEffect(() => {
     if (currentGroup) {
       dispatch(FETCH_PROJECTS_PER_GROUP(currentGroup?.id));

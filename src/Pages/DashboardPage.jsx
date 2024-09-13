@@ -1,12 +1,6 @@
-import {
-  Box,
-  Container,
-  Grid,
-  IconButton,
-  useTheme,
-} from "@mui/material";
+import { Box, Container, Grid, IconButton, useTheme } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import CustomTitles from "../Components/CustomTitles";
 import { IoAddSharp } from "react-icons/io5";
 import CreateTaskModal from "../Components/CreateTaskModal";
@@ -15,20 +9,11 @@ function DashboardPage() {
   const dispatch = useDispatch();
   const theme = useTheme();
   const [openTaskModal, setOpenTaskModal] = useState(false);
+  const { PROJECT_TASKS } = useSelector((state) => state.tasks);
   // console.log(currentGroup);
 
   useEffect(() => {
-    // dispatch(openSnackbar({message:"Group Created",snackbarState:"info"}))
-    // dispatch(FETCH_USER_GROUPS());
-    // dispatch(
-    //   fetchProjectsByGroupId({
-    //     groupId: selectedGroupid,
-    //     userId: currentUser.uid,
-    //   })
-    // )
-    //   .unwrap()
-    //   .then((result) => {
-    //   });
+    console.log(PROJECT_TASKS);
   }, []);
 
   const handleCloseTaskModal = () => {
