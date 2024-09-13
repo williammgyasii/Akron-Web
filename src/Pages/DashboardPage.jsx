@@ -1,22 +1,15 @@
 import {
   Box,
-  Button,
   Container,
   Grid,
   IconButton,
   useTheme,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import CustomTitles from "../Components/CustomTitles";
 import { IoAddSharp } from "react-icons/io5";
-import { showModal } from "../Redux/Slices/System/systemSlice";
-import { motion } from "framer-motion";
 import CreateTaskModal from "../Components/CreateTaskModal";
-import CreateGroupModal from "../Components/CreateGroupModal";
-import VerticalStepper from "../AnimatedComponents/VerticalStepperModal";
-import HorizontalLinearStepper from "../AnimatedComponents/VerticalStepperModal";
-import { DatePicker } from "antd";
 
 function DashboardPage() {
   const dispatch = useDispatch();

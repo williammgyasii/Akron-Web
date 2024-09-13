@@ -2,19 +2,15 @@ import React, { useState } from "react";
 import {
   Modal,
   Box,
-  TextField,
-  Button,
-  TextareaAutosize,
-  Grid,
   useTheme,
   IconButton,
-  Divider,
   Chip,
   Tooltip,
   Tab,
   Tabs,
+  Avatar,
 } from "@mui/material";
-import { color, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import { styled } from "@mui/material/styles";
 import {
   IoAddCircle,
@@ -24,19 +20,13 @@ import {
   IoSettings,
   IoStar,
 } from "react-icons/io5";
-import CustomFormInput from "./CustomFormInput";
-import BorderlessInput from "./CustomBorderlessInput";
 import CustomBorderlessInput from "./CustomBorderlessInput";
-import AssignTo from "./AssignTo";
 import { useSelector } from "react-redux";
-import { MdOutlineDelete } from "react-icons/md";
 import ProjectSelector from "./ProjectSelector";
 import MemberSelector from "./MemberSelector";
 import { selectCurrentUser } from "../Redux/Slices/Users/UsersSlice";
-import { Avatar, DatePicker } from "antd";
 import CustomDatePicker from "./CustomDatePicker";
 import TaskStatusDropdown from "./TaskStatusDropdown";
-import { SettingsInputComponent } from "@mui/icons-material";
 import { SettingsTab, TaskDescription } from "./StyledComponents";
 import CustomButton from "./CustomButton";
 
@@ -111,10 +101,6 @@ const tabOptions = [
 const CreateTaskModal = ({ isOpen, onClose }) => {
   const theme = useTheme();
   const {
-    PROJECT_SLICE_ISLOADING,
-    PROJECT_SLICE_STATUS,
-    PROJECT_SLICE_ERROR,
-    ACTIVE_PROJECT,
     PROJECTS,
     projectMembersDetails,
   } = useSelector((state) => state.projects);
@@ -154,7 +140,7 @@ const CreateTaskModal = ({ isOpen, onClose }) => {
   };
 
   const handleTaskSubmit = () => {
-    console.log(activeProjectId)
+    console.log(activeProjectId);
     console.log(status);
   };
 
@@ -321,9 +307,6 @@ const CreateTaskModal = ({ isOpen, onClose }) => {
                 }
               />
             </div>
-
-            {/* <Divider sx={{ backgroundColor: "red", width: "100%",alignSelf:"flex-end" }} /> */}
-
             <Box sx={{ width: "100%", marginTop: "15px" }}>
               <CustomTabs
                 value={value}
@@ -396,10 +379,3 @@ const OverlayBox = styled(Box)(({ theme }) => ({
   justifyContent: "center",
   zIndex: theme.zIndex.modal,
 }));
-
-const options = [
-  { value: "option1", label: "Option 1" },
-  { value: "option2", label: "Option 2" },
-  { value: "option3", label: "Option 3" },
-  { value: "option4", label: "Option 4" },
-];

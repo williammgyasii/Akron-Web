@@ -108,7 +108,6 @@ const TaskStatusDropdown = ({ mode, status, setStatus }) => {
               >
                 <span
                   style={{
-                    backgroundColor: "red",
                     width: "8px",
                     height: "8px",
                     borderRadius: "50%",
@@ -135,7 +134,6 @@ const TaskStatusDropdown = ({ mode, status, setStatus }) => {
               >
                 <span
                   style={{
-                    backgroundColor: "red",
                     width: "8px",
                     height: "8px",
                     borderRadius: "50%",

@@ -1,21 +1,11 @@
 import React, { useState } from "react";
-import {
-  Fab,
-  Tooltip,
-  useTheme,
-  useMediaQuery,
-} from "@mui/material";
+import { Fab, Tooltip, useTheme, useMediaQuery } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  selectIsModalOpened,
-} from "../Redux/Slices/System/systemSlice";
+import { selectIsModalOpened } from "../Redux/Slices/System/systemSlice";
 import CreateTaskModal from "./CreateTaskModal";
 
 const CreateTaskFAB = () => {
-  const [open, setOpen] = useState(false);
-  const modalOpened = useSelector(selectIsModalOpened);
-  const dispatch = useDispatch();
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("tablets_port"));
   const [openTaskModal, setOpenTaskModal] = useState(false);
