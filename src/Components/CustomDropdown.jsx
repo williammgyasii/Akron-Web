@@ -131,10 +131,8 @@ function CustomDropdown({
               value={option.id}
             >
               {withAvatar && (
-                <StyledAvatar
-                  src={option.avatar || "https://i.pravatar.cc/150?img=3"}
-                >
-                  {option?.name?.charAt(0)}
+                <StyledAvatar src={option.avatar || option?.imageUrl}>
+                  {/* {option?.name?.charAt(0)} */}
                 </StyledAvatar>
               )}
               {option.label || option.groupData || option.firstName}

@@ -22,7 +22,7 @@ const StyledSelect = styled(Select)(({ theme, width }) => ({
   "& .MuiSelect-select": {
     display: "flex",
     alignItems: "center",
-    padding: "2px 2px",
+    padding: "5px 10px",
     color: theme.palette.primary.contrastText, // White text
   },
   "& .MuiOutlinedInput-notchedOutline": {
@@ -57,9 +57,6 @@ const ProjectSelector = ({ options, value, onChange, placeholder, width }) => {
       <StyledSelect
         value={value}
         onChange={onChange}
-        renderValue={(selected) => (
-          <StyledChip label={selected || placeholder} />
-        )}
         input={<OutlinedInput label={placeholder} />}
         MenuProps={{
           PaperProps: {
@@ -74,7 +71,7 @@ const ProjectSelector = ({ options, value, onChange, placeholder, width }) => {
       >
         {options.map((option) => (
           <MenuItemChip key={option.id} value={option.id}>
-            <ListItemText primary={option.projectName} />
+            {option.projectName}
           </MenuItemChip>
         ))}
       </StyledSelect>

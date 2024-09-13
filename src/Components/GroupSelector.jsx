@@ -77,6 +77,7 @@ const GroupSelector = ({ onSelectGroup, customStyles, ...props }) => {
       )}
       {groupslicestatus === "completed" && (
         <CustomDropdown
+          withAvatar
           disabled={props.formState}
           label="Group"
           labelColor={
